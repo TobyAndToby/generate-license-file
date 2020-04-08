@@ -1,7 +1,10 @@
 import { promisify } from "util";
 import glob from "glob";
-import { readFileAsync, doesFileExist } from "./utils/file.utils";
+import { readFileAsync, doesFileExist, doesFolderExist } from "./utils/file.utils";
 import { ILicense } from "./models/license.interface";
+import { InitOpts, ModuleInfos, init } from "license-checker";
+
+const initAsync: (options: InitOpts) => Promise<ModuleInfos> = promisify(init);
 
 const globAsync: (pattern: string, options?: glob.IOptions) => Promise<string[]> = promisify(glob);
 const UTF8: string = "utf-8";
@@ -11,32 +14,28 @@ export async function getProjectLicenses(path: string): Promise<ILicense[]> {
   try {
     const dependencyLicenses: Map<string, ILicense> = new Map<string, ILicense>();
 
-    if (!await doesFileExist(path)) {
-      throw new Error("Cannot find file " + path);
+    if (!await doesFolderExist(path)) {
+      throw new Error("Cannot find directory " + path);
     }
 
-    const file: string = await readFileAsync(path, { encoding: UTF8 });
-    const packageJson: any = JSON.parse(file);
+    const file: ModuleInfos = await initAsync({
+      start: path,
+      production: true
+    });
 
-    const dependencies: string[] = packageJson.dependencies ?? [];
+    for (const [dependencyName, dependencyValue] of Object.entries(file)) {
+      if (dependencyValue.licenseFile) {
+        const license: string = await readFileAsync(dependencyValue.licenseFile, { encoding: "utf-8" });
 
-    for (const dep in dependencies) {
-      if (dependencies.hasOwnProperty(dep)) {
-        const licenseFiles: string[] = await findLicenses(dep);
-          for(const license of licenseFiles) {
-            const content: string = await readFileAsync(license, { encoding: UTF8 });
-
-            if (!dependencyLicenses.has(content)) {
-              dependencyLicenses.set(content, {
-                dependencies: [],
-                content
-              });
-            }
-
-            const foundLicence: ILicense | undefined = dependencyLicenses.get(content);
-            foundLicence?.dependencies.push(dep);
-          }
+        if (!dependencyLicenses.has(license)) {
+          dependencyLicenses.set(license, {
+            content: license,
+            dependencies: []
+          });
         }
+
+        dependencyLicenses.get(license)?.dependencies.push(dependencyName);
+      }
     }
 
     return Array.from(dependencyLicenses.values());
@@ -44,8 +43,4 @@ export async function getProjectLicenses(path: string): Promise<ILicense[]> {
     console.error(error);
     return Promise.reject();
   }
-}
-
-async function findLicenses(packageName: string): Promise<string[]> {
-  return globAsync(`node_modules/${packageName}/**/LICEN{S,C}E*`, { nocase: true });
 }

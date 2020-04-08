@@ -9,6 +9,7 @@ import * as os from "os";
 import ora, { Ora } from "ora";
 import { pong } from "cli-spinners";
 import { prompt } from "enquirer";
+import path from "path";
 
 const BULLET: string = " - ";
 const PREFIX: string = "The following NPM packages may be included in this product:" + os.EOL + os.EOL;
@@ -45,6 +46,7 @@ async function promptForAnswers(options: IArguments): Promise<IArguments> {
     const answer: any = await prompt({
       type: "input",
       name: "output",
+      initial: "3rd-party-licenses.txt",
       message: "Output file location:"
     });
 
@@ -74,7 +76,9 @@ export async function cli(args: string[]): Promise<void> {
   });
   spinner.start();
 
-  const licenses: ILicense[] = await getProjectLicenses(options.input);
+  const directory: string = path.dirname(options.input);
+
+  const licenses: ILicense[] = await getProjectLicenses(directory);
   const stream: fs.WriteStream = fs.createWriteStream(options.output, {
     encoding: "utf-8",
     flags: "w+"
@@ -84,7 +88,7 @@ export async function cli(args: string[]): Promise<void> {
     spinner.stop();
   });
 
-  stream.once("open" , (fd) => {
+  stream.once("open" , () => {
     for (const license of licenses) {
       stream.write(PREFIX);
 

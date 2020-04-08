@@ -13,3 +13,12 @@ export async function doesFileExist(path: string): Promise<boolean> {
 		return false;
 	}
 }
+
+export async function doesFolderExist(path: string): Promise<boolean> {
+	try {
+		const stats: fs.Stats = await statAsync(path);
+		return stats.isDirectory();
+	} catch {
+		return false;
+	}
+}

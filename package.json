@@ -47,11 +47,13 @@
     "esm": "^3.2.25",
     "glob": "^7.1.6",
     "inquirer": "^7.1.0",
+    "license-checker": "^25.0.1",
     "ora": "^4.0.3"
   },
   "devDependencies": {
     "@types/glob": "^7.1.1",
     "@types/inquirer": "^6.5.0",
+    "@types/license-checker": "^25.0.0",
     "@types/node": "^13.11.0"
   }
 }
