@@ -1,4 +1,4 @@
-# Generate Licence File [![Build Status](https://dev.azure.com/tobysmith568/Generate-License-File/_apis/build/status/tobysmith568.Generate-License-File?branchName=master)](https://dev.azure.com/tobysmith568/Generate-License-File/_build/latest?definitionId=15&branchName=master)
+# Generate License File [![Build Status](https://dev.azure.com/tobysmith568/Generate-License-File/_apis/build/status/tobysmith568.Generate-License-File?branchName=master)](https://dev.azure.com/tobysmith568/Generate-License-File/_build/latest?definitionId=15&branchName=master)
 
 This CLI generates a text file containing all the licences for your production 3rd-party dependencies.
 
@@ -22,16 +22,17 @@ $ npm install generate-license-file
 ```js
 const generateLicenseFile = require("generate-license-file");
 
-generateLicenseFile.getProjectLicenses("package.json", "3rd-party-licenses.txt")
-.then(() => {
-
+// get licenses for the current project (assuming this file is on the same level as the package.json)
+generateLicenseFile.getProjectLicenses("./")
+.then((licenses) => {
+  // do stuff with licenses...
 })
-.catch(() => {
-
+.catch((error) => {
+  // do stuff with error...
 });
 ```
 ```ts
 import * as generateLicenseFile from "generate-license-file";
 
-await licenseSorter.getProjectLicenses("package.json", "3rd-party-licenses.txt");
+const licenses = await generateLicenseFile.getProjectLicenses("./");
 ```
