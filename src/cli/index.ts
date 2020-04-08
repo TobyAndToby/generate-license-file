@@ -10,6 +10,7 @@ import * as os from "os";
 import { promisify } from "util";
 import ora, { Ora } from "ora";
 import { pong } from "cli-spinners";
+import { prompt } from "enquirer";
 
 const BULLET: string = " - ";
 const PREFIX: string = "The following NPM packages may be included in this product:" + os.EOL + os.EOL;
@@ -30,55 +31,51 @@ function parseArgumentsIntoOptions(rawArgs: string[]): IArguments {
 }
 
 async function promptForAnswers(options: IArguments): Promise<IArguments> {
-  const questions: Question[] = [];
+  const result: IArguments = {
+    ...options
+  };
 
   if (!options.input) {
-    questions.push({
+    const answer: any = await prompt({
       type: "input",
       name: "input",
-      message: "Please give the location of the input package.json file:",
-      validate: async (input: any, answers?: Answers | undefined): Promise<string | boolean> => {
-        return (await doesFileExist(input)) ? true : "That is not a valid file";
-      }
+      initial: "package.json",
+      message: "package.json location:"
     });
+
+    result.input = answer.input;
   }
 
-  if (!options.output) {
-    questions.push({
+  while (!result.output || result.overwriteOutput === false) {
+    const answer: any = await prompt({
       type: "input",
       name: "output",
-      message: "Please give the location of the output JSON file:",
-      validate: (input: any, answers?: Answers | undefined): string | boolean => {
-        return ("" + input).length !== 0 ? true : "You need to enter an output file location";
-      }
+      message: "Output file location:"
     });
+
+    result.output = answer.output;
+
+    if (await doesFileExist(result.output)) {
+      const yesNoAnswer: any = await prompt({
+        type: "confirm",
+        name: "overwriteOutput",
+        message: "The given output file already exists and will be overwritten. Is this OK?"
+      });
+
+      result.overwriteOutput = yesNoAnswer.overwriteOutput;
+    }
   }
 
-  questions.push({
-    type: "confirm",
-    name: "overwriteOutput",
-    message: "The given output file already exists and will be overwritten. Is this OK?",
-    when: async (answers: Answers): Promise<boolean> => {
-      return await doesFileExist(answers.output);
-    }
-  });
-
-  const results: any = await inquirer.prompt(questions);
-
-  return {
-    ...options,
-    input: options.input || results.input,
-    output: options.output || results.output,
-    overwriteOutput: options.overwriteOutput || results.overwriteOutput,
-  };
+  return result;
 }
 
 export async function cli(args: string[]): Promise<void> {
   let options: IArguments = parseArgumentsIntoOptions(args);
-  //options = await promptForAnswers(options);
+  options = await promptForAnswers(options);
 
   const spinner: Ora = ora({
-    spinner: pong
+    spinner: pong,
+    text: "Resolving licenses..."
   });
   spinner.start();
 
