@@ -1,14 +1,15 @@
 import { promisify } from "util";
-import glob from "glob";
-import { readFileAsync, doesFileExist, doesFolderExist } from "./utils/file.utils";
+import { readFileAsync, doesFolderExist } from "./utils/file.utils";
 import { ILicense } from "./models/license.interface";
 import { InitOpts, ModuleInfos, init } from "license-checker";
 
 const initAsync: (options: InitOpts) => Promise<ModuleInfos> = promisify(init);
-
-const globAsync: (pattern: string, options?: glob.IOptions) => Promise<string[]> = promisify(glob);
 const UTF8: string = "utf-8";
 
+/**
+ * @param path  Directory containing the project's package.json (relative or absolute).
+ * @returns Array of `ILicense`s each containing the license content and respective dependencies
+ */
 export async function getProjectLicenses(path: string): Promise<ILicense[]> {
 
   try {
@@ -25,7 +26,7 @@ export async function getProjectLicenses(path: string): Promise<ILicense[]> {
 
     for (const [dependencyName, dependencyValue] of Object.entries(file)) {
       if (dependencyValue.licenseFile) {
-        const license: string = await readFileAsync(dependencyValue.licenseFile, { encoding: "utf-8" });
+        const license: string = await readFileAsync(dependencyValue.licenseFile, { encoding: UTF8 });
 
         if (!dependencyLicenses.has(license)) {
           dependencyLicenses.set(license, {
