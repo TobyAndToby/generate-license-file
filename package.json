@@ -16,6 +16,16 @@
     "deploy": "npm publish",
     "nvm": "nvm use 13.2.0"
   },
+  "contributors": [
+    {
+      "name": "Toby Smith",
+      "url": "https://github.com/tobysmith568"
+    },
+    {
+      "name": "Toby Bessant",
+      "url": "https://github.com/tobybessant"
+    }
+  ],
   "files": [
     "dist",
     "bin"
