@@ -1,15 +1,16 @@
 {
-  "name": "license-file",
+  "name": "generate-license-file",
   "version": "1.0.0",
   "description": "Generates a text file containing all of the licences for your production dependencies",
   "main": "dist/main.js",
   "bin": {
-    "license-file": "bin/license-file"
+    "generate-license-file": "bin/generate-license-file"
   },
   "scripts": {
     "clean": "trash dist",
     "build": "npm run clean&&npm run build:pipeline",
     "build:pipeline": "tsc",
+    "start": "npm run build&&generate-license-file",
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepublish": "npm run build",
     "deploy": "npm publish",
