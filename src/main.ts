@@ -29,7 +29,7 @@ export async function getProjectLicenses(path: string): Promise<ILicense[]> {
             if (!dependencyLicenses.has(content)) {
               dependencyLicenses.set(content, {
                 dependencies: [],
-                content: content
+                content
               });
             }
 

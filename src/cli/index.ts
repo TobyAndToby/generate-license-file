@@ -76,8 +76,6 @@ export async function cli(args: string[]): Promise<void> {
   options = await promptForAnswers(options);
 
   const licenses: ILicense[] = await getProjectLicenses(options.input);
-
-  const createStream: any = promisify(fs.createWriteStream);
   const stream: fs.WriteStream = fs.createWriteStream(options.output, {
     encoding: "utf-8",
     flags: "w+"
