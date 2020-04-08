@@ -8,6 +8,8 @@ import { ILicense } from "../models/license.interface";
 import * as fs from "fs";
 import * as os from "os";
 import { promisify } from "util";
+import ora, { Ora } from "ora";
+import { pong } from "cli-spinners";
 
 const BULLET: string = " - ";
 const PREFIX: string = "The following NPM packages may be included in this product:" + os.EOL + os.EOL;
@@ -73,7 +75,12 @@ async function promptForAnswers(options: IArguments): Promise<IArguments> {
 
 export async function cli(args: string[]): Promise<void> {
   let options: IArguments = parseArgumentsIntoOptions(args);
-  options = await promptForAnswers(options);
+  //options = await promptForAnswers(options);
+
+  const spinner: Ora = ora({
+    spinner: pong
+  });
+  spinner.start();
 
   const licenses: ILicense[] = await getProjectLicenses(options.input);
 
@@ -81,6 +88,10 @@ export async function cli(args: string[]): Promise<void> {
   const stream: fs.WriteStream = fs.createWriteStream(options.output, {
     encoding: "utf-8",
     flags: "w+"
+  });
+
+  stream.on("close", () => {
+    spinner.stop();
   });
 
   stream.once("open" , (fd) => {

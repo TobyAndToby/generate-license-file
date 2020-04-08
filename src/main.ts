@@ -49,7 +49,3 @@ export async function getProjectLicenses(path: string): Promise<ILicense[]> {
 async function findLicenses(packageName: string): Promise<string[]> {
   return globAsync(`node_modules/${packageName}/**/LICEN{S,C}E*`, { nocase: true });
 }
-
-(async () => {
-	const licenses: ILicense[] = await getProjectLicenses("./package.json");
-})();
