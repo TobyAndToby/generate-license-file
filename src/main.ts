@@ -2,12 +2,53 @@ import { promisify } from "util";
 import { readFileAsync, doesFolderExist } from "./utils/file.utils";
 import { ILicense } from "./models/license.interface";
 import { InitOpts, ModuleInfos, init } from "license-checker";
+import * as fs from "fs";
+import * as os from "os";
+
+const BULLET: string = " - ";
+const PREFIX: string = "The following NPM packages may be included in this product:" + os.EOL + os.EOL;
+const MIDFIX: string = os.EOL + "These packages each contain the following license and notice below:" + os.EOL + os.EOL;
+const SUFFIX: string = os.EOL + os.EOL + "-----------" + os.EOL + os.EOL;
+const FOOTER: string = "This file was generated with generate-license-file! https://www.npmjs.com/package/generate-license-file";
 
 const initAsync: (options: InitOpts) => Promise<ModuleInfos> = promisify(init);
 const UTF8: string = "utf-8";
 
 /**
- * @param path  Directory containing the project's package.json (relative or absolute).
+ * Scans the project found at the given path and creates a license file at the given output location
+ * @param path A path to a directory containing a package.json
+ * @param outputPath A file path for the resulting license file
+ */
+export async function generateLicenseFile(path: string, outputPath: string): Promise<void> {
+  const licenses: ILicense[] = await getProjectLicenses(path);
+  const stream: fs.WriteStream = fs.createWriteStream(outputPath, {
+    encoding: "utf-8",
+    flags: "w+"
+  });
+
+  stream.once("open" , () => {
+    for (const license of licenses) {
+      stream.write(PREFIX);
+
+      for (const dep of license.dependencies) {
+        stream.write(BULLET);
+        stream.write(dep);
+        stream.write(os.EOL);
+      }
+
+      stream.write(MIDFIX);
+
+      stream.write(license.content.trim());
+
+      stream.write(SUFFIX);
+    }
+
+    stream.end(FOOTER);
+  });
+}
+
+/**
+ * @param path Directory containing the project's package.json (relative or absolute).
  * @returns Array of `ILicense`s each containing the license content and respective dependencies
  */
 export async function getProjectLicenses(path: string): Promise<ILicense[]> {
