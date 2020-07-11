@@ -7,8 +7,10 @@ import * as fs from "fs";
 import * as os from "os";
 
 const BULLET: string = " - ";
-const PREFIX: string = "The following NPM packages may be included in this product:" + os.EOL + os.EOL;
-const MIDFIX: string = os.EOL + "These packages each contain the following license and notice below:" + os.EOL + os.EOL;
+const PREFIX: string = "The following NPM package may be included in this product:" + os.EOL + os.EOL;
+const PREFIX_PLURAL: string = "The following NPM packages may be included in this product:" + os.EOL + os.EOL;
+const MIDFIX: string = os.EOL + "This package contains the following license and notice below:" + os.EOL + os.EOL;
+const MIDFIX_PLURAL: string = os.EOL + "These packages each contain the following license and notice below:" + os.EOL + os.EOL;
 const SUFFIX: string = os.EOL + os.EOL + "-----------" + os.EOL + os.EOL;
 const FOOTER: string = "This file was generated with generate-license-file! https://www.npmjs.com/package/generate-license-file";
 
@@ -29,7 +31,8 @@ export async function generateLicenseFile(path: string, outputPath: string): Pro
 
   stream.once("open", () => {
     for (const license of licenses) {
-      stream.write(PREFIX);
+      const hasMultipleDeps: boolean = license.dependencies.length > 1;
+      stream.write(hasMultipleDeps ? PREFIX_PLURAL : PREFIX);
 
       for (const dep of license.dependencies) {
         stream.write(BULLET);
@@ -37,7 +40,7 @@ export async function generateLicenseFile(path: string, outputPath: string): Pro
         stream.write(os.EOL);
       }
 
-      stream.write(MIDFIX);
+      stream.write(hasMultipleDeps ? MIDFIX_PLURAL : MIDFIX);
 
       stream.write(license.content.trim());
 
