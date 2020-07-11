@@ -2,6 +2,7 @@ import { promisify } from "util";
 import { readFileAsync, doesFolderExist } from "./utils/file.utils";
 import { ILicense } from "./models/license.interface";
 import { InitOpts, ModuleInfos, init } from "license-checker";
+import * as nodePath from "path";
 import * as fs from "fs";
 import * as os from "os";
 
@@ -26,7 +27,7 @@ export async function generateLicenseFile(path: string, outputPath: string): Pro
     flags: "w+"
   });
 
-  stream.once("open" , () => {
+  stream.once("open", () => {
     for (const license of licenses) {
       stream.write(PREFIX);
 
@@ -67,12 +68,26 @@ export async function getProjectLicenses(path: string): Promise<ILicense[]> {
 
     for (const [dependencyName, dependencyValue] of Object.entries(file)) {
       if (dependencyValue.licenseFile) {
-        const license: string = await readFileAsync(dependencyValue.licenseFile, { encoding: UTF8 });
+        let license: string = "";
+
+        // Make sure only real license files are read
+        if (nodePath.basename(dependencyValue.licenseFile!).match(/license|copyright/i)) {
+          license = await readFileAsync(
+            dependencyValue.licenseFile,
+            { encoding: UTF8 }
+          );
+        } else {
+          // If we cannot find the license text, we use the license type as a fallback
+          const { licenses } = dependencyValue;
+          if (typeof licenses !== "undefined" && licenses.length > 0) {
+            license = `(${typeof licenses === "string" ? licenses : licenses[0]})`;
+          }
+        }
 
         if (!dependencyLicenses.has(license)) {
           dependencyLicenses.set(license, {
             content: license,
-            dependencies: []
+            dependencies: [],
           });
         }
 
