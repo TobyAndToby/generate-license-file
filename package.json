@@ -7,7 +7,7 @@
     "generate-license-file": "bin/generate-license-file"
   },
   "scripts": {
-    "clean": "trash dist",
+    "clean": "rm -rf ./dist",
     "build": "npm run clean&&npm run build:pipeline",
     "build:pipeline": "tsc",
     "start": "npm run build&&generate-license-file",
