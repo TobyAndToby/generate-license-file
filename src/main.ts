@@ -74,7 +74,7 @@ export async function getProjectLicenses(path: string): Promise<ILicense[]> {
         let license: string = "";
 
         // Make sure only real license files are read
-        if (nodePath.basename(dependencyValue.licenseFile!).match(/license|copyright/i)) {
+        if (nodePath.basename(dependencyValue.licenseFile!).match(/license|licence|copyright/i)) {
           license = await readFileAsync(
             dependencyValue.licenseFile,
             { encoding: UTF8 }
