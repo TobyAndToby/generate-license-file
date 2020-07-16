@@ -2,12 +2,15 @@ import { promisify } from "util";
 import { readFileAsync, doesFolderExist } from "./utils/file.utils";
 import { ILicense } from "./models/license.interface";
 import { InitOpts, ModuleInfos, init } from "license-checker";
+import * as nodePath from "path";
 import * as fs from "fs";
 import * as os from "os";
 
 const BULLET: string = " - ";
-const PREFIX: string = "The following NPM packages may be included in this product:" + os.EOL + os.EOL;
-const MIDFIX: string = os.EOL + "These packages each contain the following license and notice below:" + os.EOL + os.EOL;
+const PREFIX: string = "The following NPM package may be included in this product:" + os.EOL + os.EOL;
+const PREFIX_PLURAL: string = "The following NPM packages may be included in this product:" + os.EOL + os.EOL;
+const MIDFIX: string = os.EOL + "This package contains the following license and notice below:" + os.EOL + os.EOL;
+const MIDFIX_PLURAL: string = os.EOL + "These packages each contain the following license and notice below:" + os.EOL + os.EOL;
 const SUFFIX: string = os.EOL + os.EOL + "-----------" + os.EOL + os.EOL;
 const FOOTER: string = "This file was generated with generate-license-file! https://www.npmjs.com/package/generate-license-file";
 
@@ -26,9 +29,10 @@ export async function generateLicenseFile(path: string, outputPath: string): Pro
     flags: "w+"
   });
 
-  stream.once("open" , () => {
+  stream.once("open", () => {
     for (const license of licenses) {
-      stream.write(PREFIX);
+      const hasMultipleDeps: boolean = license.dependencies.length > 1;
+      stream.write(hasMultipleDeps ? PREFIX_PLURAL : PREFIX);
 
       for (const dep of license.dependencies) {
         stream.write(BULLET);
@@ -36,7 +40,7 @@ export async function generateLicenseFile(path: string, outputPath: string): Pro
         stream.write(os.EOL);
       }
 
-      stream.write(MIDFIX);
+      stream.write(hasMultipleDeps ? MIDFIX_PLURAL : MIDFIX);
 
       stream.write(license.content.trim());
 
@@ -67,12 +71,25 @@ export async function getProjectLicenses(path: string): Promise<ILicense[]> {
 
     for (const [dependencyName, dependencyValue] of Object.entries(file)) {
       if (dependencyValue.licenseFile) {
-        const license: string = await readFileAsync(dependencyValue.licenseFile, { encoding: UTF8 });
+        let license: string = "";
+
+        if (fs.existsSync(dependencyValue.licenseFile)) {
+          license = await readFileAsync(
+            dependencyValue.licenseFile,
+            { encoding: UTF8 }
+          );
+        } else {
+          // If we cannot find the license text, we use the license type as a fallback
+          const { licenses } = dependencyValue;
+          if (typeof licenses !== "undefined" && licenses.length > 0) {
+            license = `(${typeof licenses === "string" ? licenses : licenses[0]})`;
+          }
+        }
 
         if (!dependencyLicenses.has(license)) {
           dependencyLicenses.set(license, {
             content: license,
-            dependencies: []
+            dependencies: [],
           });
         }
 
