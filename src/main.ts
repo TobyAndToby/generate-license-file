@@ -2,7 +2,6 @@ import { promisify } from "util";
 import { readFileAsync, doesFolderExist } from "./utils/file.utils";
 import { ILicense } from "./models/license.interface";
 import { InitOpts, ModuleInfos, init } from "license-checker";
-import * as nodePath from "path";
 import * as fs from "fs";
 import * as os from "os";
 
@@ -89,7 +88,7 @@ export async function getProjectLicenses(path: string): Promise<ILicense[]> {
         if (!dependencyLicenses.has(license)) {
           dependencyLicenses.set(license, {
             content: license,
-            dependencies: [],
+            dependencies: []
           });
         }
 

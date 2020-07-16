@@ -7,9 +7,9 @@
     "generate-license-file": "bin/generate-license-file"
   },
   "scripts": {
-    "clean": "rm -rf ./dist",
+    "clean": "./node_modules/.bin/del-cli ./dist",
     "build": "npm run clean&&npm run build:pipeline",
-    "build:pipeline": "tsc",
+    "build:pipeline": "./node_modules/.bin/tsc",
     "start": "npm run build&&generate-license-file",
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepare": "npm run build",
@@ -64,6 +64,9 @@
     "@types/glob": "^7.1.1",
     "@types/inquirer": "^6.5.0",
     "@types/license-checker": "^25.0.0",
-    "@types/node": "^13.11.0"
+    "@types/node": "^13.11.0",
+    "del-cli": "^3.0.1",
+    "tsc": "^1.20150623.0",
+    "typescript": "^3.9.6"
   }
 }
