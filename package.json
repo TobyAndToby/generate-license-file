@@ -8,7 +8,7 @@
   },
   "scripts": {
     "build": "del-cli ./dist&&tsc",
-    "start": "npm run build&&generate-license-file",
+    "build:watch": "del-cli ./dist&&tsc --watch",
     "test": "jest ./test",
     "test:e2e": "jest ./e2e"
   },

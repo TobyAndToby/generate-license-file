@@ -16,7 +16,8 @@ function parseArgumentsIntoOptions(rawArgs: string[]): IArguments {
   return {
     input: args["--input"] || undefined,
     output: args["--output"] || undefined,
-    overwriteOutput: args["--overwrite"] || undefined
+    overwriteOutput: args["--overwrite"] || undefined,
+    eol: args["--eol"] || undefined
   };
 }
 
@@ -68,7 +69,7 @@ export async function cli(args: string[]): Promise<void> {
 
   const directory: string = path.dirname(options.input);
 
-  await generateLicenseFile(directory, options.output);
+  await generateLicenseFile(directory, options.output, options.eol);
 
   spinner.stop();
 }
