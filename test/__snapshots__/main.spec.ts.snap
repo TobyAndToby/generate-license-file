@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`main generateLicenseFile should write the found licences to the given file name 1`] = `
+"The following NPM packages may be included in this product:
+
+ - lib1
+ - lib3
+
+These packages each contain the following license and notice below:
+
+licence content
+
+-----------
+
+The following NPM package may be included in this product:
+
+ - lib2
+
+This package contains the following license and notice below:
+
+different licence content
+
+-----------
+
+This file was generated with generate-license-file! https://www.npmjs.com/package/generate-license-file"
+`;

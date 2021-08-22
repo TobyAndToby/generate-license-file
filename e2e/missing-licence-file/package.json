@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "casual": "^1.6.2",
+    "is-string": "^1.0.7",
+    "lodash.isfunction": "^3.0.9"
+  }
+}

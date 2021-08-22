@@ -1,9 +1,14 @@
-import * as fs from "fs";
-import { init, ModuleInfos } from "license-checker";
+import { WriteStream } from "fs";
 import { EOL } from "os";
-import { promisify } from "util";
 import { ILicense } from "./models/license.interface";
-import { doesFileExist, doesFolderExist, readFileAsync } from "./utils/file.utils";
+import console from "./utils/console.utils";
+import {
+  createWriteStream,
+  doesFileExist,
+  doesFolderExist,
+  readFileAsync
+} from "./utils/file.utils";
+import { getProject, Project } from "./utils/licence.utils";
 
 const BULLET: string = " - ";
 const PREFIX: string = "The following NPM package may be included in this product:" + EOL + EOL;
@@ -17,7 +22,6 @@ const SUFFIX: string = EOL + EOL + "-----------" + EOL + EOL;
 const FOOTER: string =
   "This file was generated with generate-license-file! https://www.npmjs.com/package/generate-license-file";
 
-const initAsync = promisify(init);
 const UTF8 = "utf-8";
 
 /**
@@ -27,10 +31,7 @@ const UTF8 = "utf-8";
  */
 export async function generateLicenseFile(path: string, outputPath: string): Promise<void> {
   const licenses: ILicense[] = await getProjectLicenses(path);
-  const stream: fs.WriteStream = fs.createWriteStream(outputPath, {
-    encoding: UTF8,
-    flags: "w+"
-  });
+  const stream: WriteStream = createWriteStream(outputPath);
 
   stream.once("open", () => {
     for (const license of licenses) {
@@ -66,13 +67,13 @@ export async function getProjectLicenses(path: string): Promise<ILicense[]> {
       throw new Error("Cannot find directory " + path);
     }
 
-    const file: ModuleInfos = await initAsync({
+    const project: Project = await getProject({
       start: path,
       production: true
     });
 
-    for (const [dependencyName, dependencyValue] of Object.entries(file)) {
-      if (dependencyValue.licenseFile) {
+    for (const [dependencyName, dependencyValue] of Object.entries(project)) {
+      if (!!dependencyValue.licenseFile) {
         let license: string = "";
 
         if (await doesFileExist(dependencyValue.licenseFile)) {
@@ -98,7 +99,7 @@ export async function getProjectLicenses(path: string): Promise<ILicense[]> {
 
     return Array.from(dependencyLicenses.values());
   } catch (error) {
-    console.error(error);
+    console.error(error.message);
     return Promise.reject();
   }
 }
