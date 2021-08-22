@@ -1,17 +1,22 @@
-import { promisify } from "util";
-import { readFileAsync, doesFolderExist } from "./utils/file.utils";
-import { ILicense } from "./models/license.interface";
-import { InitOpts, ModuleInfos, init } from "license-checker";
 import * as fs from "fs";
+import { init, InitOpts, ModuleInfos } from "license-checker";
 import * as os from "os";
+import { promisify } from "util";
+import { ILicense } from "./models/license.interface";
+import { doesFolderExist, readFileAsync } from "./utils/file.utils";
 
 const BULLET: string = " - ";
-const PREFIX: string = "The following NPM package may be included in this product:" + os.EOL + os.EOL;
-const PREFIX_PLURAL: string = "The following NPM packages may be included in this product:" + os.EOL + os.EOL;
-const MIDFIX: string = os.EOL + "This package contains the following license and notice below:" + os.EOL + os.EOL;
-const MIDFIX_PLURAL: string = os.EOL + "These packages each contain the following license and notice below:" + os.EOL + os.EOL;
+const PREFIX: string =
+  "The following NPM package may be included in this product:" + os.EOL + os.EOL;
+const PREFIX_PLURAL: string =
+  "The following NPM packages may be included in this product:" + os.EOL + os.EOL;
+const MIDFIX: string =
+  os.EOL + "This package contains the following license and notice below:" + os.EOL + os.EOL;
+const MIDFIX_PLURAL: string =
+  os.EOL + "These packages each contain the following license and notice below:" + os.EOL + os.EOL;
 const SUFFIX: string = os.EOL + os.EOL + "-----------" + os.EOL + os.EOL;
-const FOOTER: string = "This file was generated with generate-license-file! https://www.npmjs.com/package/generate-license-file";
+const FOOTER: string =
+  "This file was generated with generate-license-file! https://www.npmjs.com/package/generate-license-file";
 
 const initAsync: (options: InitOpts) => Promise<ModuleInfos> = promisify(init);
 const UTF8: string = "utf-8";
@@ -55,11 +60,10 @@ export async function generateLicenseFile(path: string, outputPath: string): Pro
  * @returns Array of `ILicense`s each containing the license content and respective dependencies
  */
 export async function getProjectLicenses(path: string): Promise<ILicense[]> {
-
   try {
     const dependencyLicenses: Map<string, ILicense> = new Map<string, ILicense>();
 
-    if (!await doesFolderExist(path)) {
+    if (!(await doesFolderExist(path))) {
       throw new Error("Cannot find directory " + path);
     }
 
@@ -73,10 +77,7 @@ export async function getProjectLicenses(path: string): Promise<ILicense[]> {
         let license: string = "";
 
         if (fs.existsSync(dependencyValue.licenseFile)) {
-          license = await readFileAsync(
-            dependencyValue.licenseFile,
-            { encoding: UTF8 }
-          );
+          license = await readFileAsync(dependencyValue.licenseFile, { encoding: UTF8 });
         } else {
           // If we cannot find the license text, we use the license type as a fallback
           const { licenses } = dependencyValue;

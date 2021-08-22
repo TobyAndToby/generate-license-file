@@ -1,17 +1,17 @@
 import arg from "arg";
-import { validArguments } from "./valid-arguments";
-import { IArguments } from "./arguements.interface";
-import { doesFileExist } from "../utils/file.utils";
-import ora, { Ora } from "ora";
 import { pong } from "cli-spinners";
 import { prompt } from "enquirer";
+import ora, { Ora } from "ora";
 import path from "path";
 import { generateLicenseFile } from "../main";
+import { doesFileExist } from "../utils/file.utils";
+import { IArguments } from "./arguements.interface";
+import { validArguments } from "./valid-arguments";
 
 function parseArgumentsIntoOptions(rawArgs: string[]): IArguments {
   const args: arg.Result<any> = arg(validArguments, {
-     argv: rawArgs.slice(2),
-   });
+    argv: rawArgs.slice(2)
+  });
 
   return {
     input: args["--input"] || undefined,
@@ -21,12 +21,11 @@ function parseArgumentsIntoOptions(rawArgs: string[]): IArguments {
 }
 
 async function promptForAnswers(options: IArguments): Promise<IArguments> {
-
   if (!options.input) {
     const answer: any = await prompt({
       type: "input",
       name: "input",
-      initial: await doesFileExist("./package.json") ? "./package.json" : "",
+      initial: (await doesFileExist("./package.json")) ? "./package.json" : "",
       message: "package.json location:"
     });
 
