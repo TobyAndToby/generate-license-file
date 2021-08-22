@@ -1,20 +1,19 @@
 import * as fs from "fs";
 import { init, InitOpts, ModuleInfos } from "license-checker";
-import * as os from "os";
+import { EOL } from "os";
 import { promisify } from "util";
 import { ILicense } from "./models/license.interface";
 import { doesFileExist, doesFolderExist, readFileAsync } from "./utils/file.utils";
 
 const BULLET: string = " - ";
-const PREFIX: string =
-  "The following NPM package may be included in this product:" + os.EOL + os.EOL;
+const PREFIX: string = "The following NPM package may be included in this product:" + EOL + EOL;
 const PREFIX_PLURAL: string =
-  "The following NPM packages may be included in this product:" + os.EOL + os.EOL;
+  "The following NPM packages may be included in this product:" + EOL + EOL;
 const MIDFIX: string =
-  os.EOL + "This package contains the following license and notice below:" + os.EOL + os.EOL;
+  EOL + "This package contains the following license and notice below:" + EOL + EOL;
 const MIDFIX_PLURAL: string =
-  os.EOL + "These packages each contain the following license and notice below:" + os.EOL + os.EOL;
-const SUFFIX: string = os.EOL + os.EOL + "-----------" + os.EOL + os.EOL;
+  EOL + "These packages each contain the following license and notice below:" + EOL + EOL;
+const SUFFIX: string = EOL + EOL + "-----------" + EOL + EOL;
 const FOOTER: string =
   "This file was generated with generate-license-file! https://www.npmjs.com/package/generate-license-file";
 
@@ -29,7 +28,7 @@ const UTF8: string = "utf-8";
 export async function generateLicenseFile(path: string, outputPath: string): Promise<void> {
   const licenses: ILicense[] = await getProjectLicenses(path);
   const stream: fs.WriteStream = fs.createWriteStream(outputPath, {
-    encoding: "utf-8",
+    encoding: UTF8,
     flags: "w+"
   });
 
@@ -41,7 +40,7 @@ export async function generateLicenseFile(path: string, outputPath: string): Pro
       for (const dep of license.dependencies) {
         stream.write(BULLET);
         stream.write(dep);
-        stream.write(os.EOL);
+        stream.write(EOL);
       }
 
       stream.write(hasMultipleDeps ? MIDFIX_PLURAL : MIDFIX);
