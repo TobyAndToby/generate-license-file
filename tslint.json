@@ -34,15 +34,6 @@
     "ordered-imports": false,
     "quotemark": [true, "double", "backtick"],
     "semicolon": [true, "always"],
-    "trailing-comma": false,
-    "typedef": [
-      true,
-      "call-signature",
-      "parameter",
-      "property-declaration",
-      "variable-declaration",
-      "variable-declaration-ignore-function",
-      "member-variable-declaration"
-    ]
+    "trailing-comma": false
   }
 }

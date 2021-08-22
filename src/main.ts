@@ -1,5 +1,5 @@
 import * as fs from "fs";
-import { init, InitOpts, ModuleInfos } from "license-checker";
+import { init, ModuleInfos } from "license-checker";
 import { EOL } from "os";
 import { promisify } from "util";
 import { ILicense } from "./models/license.interface";
@@ -17,8 +17,8 @@ const SUFFIX: string = EOL + EOL + "-----------" + EOL + EOL;
 const FOOTER: string =
   "This file was generated with generate-license-file! https://www.npmjs.com/package/generate-license-file";
 
-const initAsync: (options: InitOpts) => Promise<ModuleInfos> = promisify(init);
-const UTF8: string = "utf-8";
+const initAsync = promisify(init);
+const UTF8 = "utf-8";
 
 /**
  * Scans the project found at the given path and creates a license file at the given output location
