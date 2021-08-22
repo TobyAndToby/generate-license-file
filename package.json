@@ -10,7 +10,8 @@
     "build": "del-cli ./dist&&tsc",
     "build:watch": "del-cli ./dist&&tsc --watch",
     "test": "jest ./test",
-    "test:e2e": "jest ./e2e"
+    "test:e2e": "jest ./e2e",
+    "test:ci": "jest --ci"
   },
   "contributors": [
     {
