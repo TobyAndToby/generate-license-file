@@ -3,7 +3,7 @@ import { init, InitOpts, ModuleInfos } from "license-checker";
 import * as os from "os";
 import { promisify } from "util";
 import { ILicense } from "./models/license.interface";
-import { doesFolderExist, readFileAsync } from "./utils/file.utils";
+import { doesFileExist, doesFolderExist, readFileAsync } from "./utils/file.utils";
 
 const BULLET: string = " - ";
 const PREFIX: string =
@@ -76,7 +76,7 @@ export async function getProjectLicenses(path: string): Promise<ILicense[]> {
       if (dependencyValue.licenseFile) {
         let license: string = "";
 
-        if (fs.existsSync(dependencyValue.licenseFile)) {
+        if (await doesFileExist(dependencyValue.licenseFile)) {
           license = await readFileAsync(dependencyValue.licenseFile, { encoding: UTF8 });
         } else {
           // If we cannot find the license text, we use the license type as a fallback
