@@ -5,6 +5,7 @@ import { Compiler } from "webpack";
 interface Options {
   outputFileName: string;
   outputFolder: string;
+  projectFolder: string;
   isDev: boolean;
   lineEnding?: LineEnding;
 }
@@ -20,6 +21,7 @@ class LicenseFilePlugin {
   private static defaultOptions: Options = {
     outputFileName: "third-party-licenses.txt",
     outputFolder: "./",
+    projectFolder: "./",
     isDev: false,
     lineEnding: undefined
   };
@@ -34,7 +36,13 @@ class LicenseFilePlugin {
     const { webpack } = compiler;
     const { Compilation } = webpack;
     const { RawSource } = webpack.sources;
-    const { outputFileName, outputFolder, isDev, lineEnding } = this.options;
+    const {
+      outputFileName,
+      outputFolder,
+      isDev,
+      lineEnding,
+      projectFolder: configuredProjectFolder
+    } = this.options;
 
     compiler.hooks.thisCompilation.tap(this.pluginName, compilation => {
       compilation.hooks.processAssets.tapAsync(
@@ -43,10 +51,10 @@ class LicenseFilePlugin {
           stage: Compilation.PROCESS_ASSETS_STAGE_ADDITIONAL
         },
         (_, resolve) => {
-          const projectFolder = compiler.context;
+          const projectFolder = configuredProjectFolder ?? compiler.context;
           const outputPath = join(outputFolder, outputFileName);
 
-          const implementation = isDev ? devImplementation : getLicenseFileText;
+          const implementation = !!isDev ? devImplementation : getLicenseFileText;
 
           implementation(projectFolder, lineEnding).then(text => {
             compilation.emitAsset(outputPath, new RawSource(text));
