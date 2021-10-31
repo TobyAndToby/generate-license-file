@@ -2,7 +2,7 @@
 
 exports[`main getProjectLicenses should match snapshot for: ./all-have-licences 1`] = `
 Array [
-  Object {
+  License {
     "content": "MIT License
 
 Copyright (c) 2016 Jordan Harband
@@ -29,7 +29,7 @@ SOFTWARE.
       "has-symbols@1.0.2",
     ],
   },
-  Object {
+  License {
     "content": "MIT License
 
 Copyright (c) 2021 Inspect JS
@@ -56,7 +56,7 @@ SOFTWARE.
       "has-tostringtag@1.0.0",
     ],
   },
-  Object {
+  License {
     "content": "The MIT License (MIT)
 
 Copyright (c) 2015 Jordan Harband
@@ -84,7 +84,7 @@ SOFTWARE.
       "is-string@1.0.7",
     ],
   },
-  Object {
+  License {
     "content": "The MIT License (MIT)
 
 Copyright (c) 2015-2018, Jon Schlinkert.
@@ -111,7 +111,7 @@ THE SOFTWARE.
       "is-windows@1.0.2",
     ],
   },
-  Object {
+  License {
     "content": "Copyright JS Foundation and other contributors <https://js.foundation/>
 
 Based on Underscore.js, copyright Jeremy Ashkenas,
@@ -170,7 +170,7 @@ terms above.
 
 exports[`main getProjectLicenses should match snapshot for: ./missing-licence-file 1`] = `
 Array [
-  Object {
+  License {
     "content": "## Fake data generator [![Build Status](https://travis-ci.org/boo1ean/casual.svg?branch=master)](https://travis-ci.org/boo1ean/casual)
 
 ## Installation
@@ -545,7 +545,7 @@ OR OTHER DEALINGS IN THE SOFTWARE.
       "casual@1.6.2",
     ],
   },
-  Object {
+  License {
     "content": "MIT License
 
 Copyright (c) 2016 Jordan Harband
@@ -572,7 +572,7 @@ SOFTWARE.
       "has-symbols@1.0.2",
     ],
   },
-  Object {
+  License {
     "content": "MIT License
 
 Copyright (c) 2021 Inspect JS
@@ -599,7 +599,7 @@ SOFTWARE.
       "has-tostringtag@1.0.0",
     ],
   },
-  Object {
+  License {
     "content": "The MIT License (MIT)
 
 Copyright (c) 2015 Jordan Harband
@@ -627,7 +627,7 @@ SOFTWARE.
       "is-string@1.0.7",
     ],
   },
-  Object {
+  License {
     "content": "Copyright JS Foundation and other contributors <https://js.foundation/>
 
 Based on Underscore.js, copyright Jeremy Ashkenas,
@@ -680,7 +680,7 @@ terms above.
       "lodash.isfunction@3.0.9",
     ],
   },
-  Object {
+  License {
     "content": "## Pseudorandom number generator [![Build Status](https://travis-ci.org/boo1ean/mersenne-twister.png?branch=master)](https://travis-ci.org/boo1ean/mersenne-twister)
 
 Mersenne Twister pseudorandom number generator.
@@ -742,7 +742,7 @@ See source
       "mersenne-twister@1.1.0",
     ],
   },
-  Object {
+  License {
     "content": "Copyright (c) JS Foundation and other contributors
 
 Permission is hereby granted, free of charge, to any person
