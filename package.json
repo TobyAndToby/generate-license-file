@@ -3,6 +3,7 @@
   "version": "1.2.0",
   "description": "Generates a text file containing all of the licences for your production dependencies",
   "main": "dist/main.js",
+  "license": "ISC",
   "bin": {
     "generate-license-file": "bin/generate-license-file"
   },
@@ -41,8 +42,6 @@
     "type": "git",
     "url": "git+https://github.com/TobyAndToby/generate-license-file.git"
   },
-  "author": "Toby Bessant & Toby Smith",
-  "license": "ISC",
   "bugs": {
     "url": "https://github.com/TobyAndToby/generate-license-file/issues"
   },
