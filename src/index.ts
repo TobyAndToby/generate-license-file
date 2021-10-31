@@ -1,6 +1,6 @@
 import { Compiler } from "webpack";
 import { getLicenseFileText, LineEnding } from "generate-license-file";
-import { join } from "path";
+import { join } from "path/posix";
 
 interface Options {
 	outputFileName: string;
@@ -39,7 +39,7 @@ class LicenseFilePlugin {
       compilation.hooks.processAssets.tapAsync(
         {
           name: this.pluginName,
-          stage: Compilation.PROCESS_ASSETS_STAGE_SUMMARIZE,
+          stage: Compilation.PROCESS_ASSETS_STAGE_ADDITIONAL,
         },
         (_, resolve) => {
           const projectFolder = compiler.context;
