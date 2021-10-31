@@ -26,32 +26,31 @@ export class License implements ILicense {
   }
 
   public format(EOL: string): string {
-    // prettier-ignore
     const formattedText =
-      `${this.prefix(EOL)}${this.formatDependencies(EOL)}${this.midfix(EOL)}${this.content.trim()}`;
+      this.prefix(EOL) + this.formatDependencies(EOL) + this.midfix(EOL) + this.content.trim();
 
     return formattedText;
   }
 
   private prefix(EOL: string): string {
     if (this.dependencies.length === 1) {
-      return `${PREFIX}${EOL}${EOL}`;
+      return PREFIX + EOL + EOL;
     }
 
-    return `${PREFIX_PLURAL}${EOL}${EOL}`;
+    return PREFIX_PLURAL + EOL + EOL;
   }
 
   private midfix(EOL: string): string {
     if (this.dependencies.length === 1) {
-      return `${EOL}${MIDFIX}${EOL}${EOL}`;
+      return EOL + MIDFIX + EOL + EOL;
     }
 
-    return `${EOL}${MIDFIX_PLURAL}${EOL}${EOL}`;
+    return EOL + MIDFIX_PLURAL + EOL + EOL;
   }
 
   private formatDependencies(EOL: string): string {
     const formattedText = this.dependencies.map(dependency => {
-      return `${BULLET}${dependency}${EOL}`;
+      return BULLET + dependency + EOL;
     });
 
     return formattedText.join("");

@@ -1,13 +1,7 @@
-import { WriteStream } from "fs";
 import * as os from "os";
 import { ILicense, License } from "./models/license";
 import console from "./utils/console.utils";
-import {
-  createWriteStream,
-  doesFileExist,
-  doesFolderExist,
-  readFileAsync
-} from "./utils/file.utils";
+import { doesFileExist, doesFolderExist, readFileAsync, writeFileAsync } from "./utils/file.utils";
 import { getProject, Project } from "./utils/licence.utils";
 
 const SUFFIX: string = "-----------";
@@ -36,24 +30,27 @@ export async function generateLicenseFile(
   outputPath: string,
   lineEnding?: LineEnding
 ): Promise<void> {
-  const licenses: ILicense[] = await getProjectLicenses(path);
-  const licenses: License[] = await getProjectLicensesInternal(path);
-  const stream: WriteStream = createWriteStream(outputPath);
+  const licenseFileText: string = await getLicenseFileText(path, lineEnding);
+  await writeFileAsync(outputPath, licenseFileText, { encoding: UTF8 });
+}
 
+/**
+ * Scans the project found at the given path and returns a string containing the licenses for all the dependencies
+ * @param path A path to a directory containing a package.json
+ * @optional @param lineEnding "windows" or "posix". Will use the system default if omitted
+ * @returns A promise that resolves to the license file text
+ */
+export async function getLicenseFileText(path: string, lineEnding?: LineEnding): Promise<string> {
   const EOL = getLineEnding(lineEnding);
+  const licenses: License[] = await getProjectLicensesInternal(path);
+  let licenseFile = "";
 
-  stream.once("open", () => {
-    for (const license of licenses) {
-      stream.write(license.format(EOL));
-      stream.write(EOL);
-      stream.write(EOL);
-      stream.write(SUFFIX);
-      stream.write(EOL);
-      stream.write(EOL);
-    }
+  for (const license of licenses) {
+    licenseFile += license.format(EOL) + EOL + EOL + SUFFIX + EOL + EOL;
+  }
 
-    stream.end(FOOTER);
-  });
+  licenseFile += FOOTER + EOL;
+  return licenseFile;
 }
 
 /**
