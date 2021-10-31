@@ -2,11 +2,20 @@
   "name": "generate-license-file-webpack-plugin",
   "version": "0.0.0",
   "main": "dist/index.js",
-  "author": "",
   "license": "ISC",
   "description": "generate-license-file-webpack-plugin",
   "keywords": [],
   "homepage": "https://github.com/TobyAndToby/generate-license-file-webpack-plugin#readme",
+  "contributors": [
+    {
+      "name": "Toby Smith",
+      "url": "https://github.com/tobysmith568"
+    },
+    {
+      "name": "Toby Bessant",
+      "url": "https://github.com/tobybessant"
+    }
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/TobyAndToby/generate-license-file-webpack-plugin.git"
