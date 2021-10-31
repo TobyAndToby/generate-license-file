@@ -83,7 +83,7 @@ export async function generateLicenseFile(
  */
 export async function getProjectLicenses(path: string): Promise<ILicense[]> {
   try {
-    const dependencyLicenses: Map<string, ILicense> = new Map<string, ILicense>();
+    const dependencyLicenses: Map<string, string[]> = new Map<string, string[]>();
 
     if (!(await doesFolderExist(path))) {
       throw new Error("Cannot find directory " + path);
@@ -109,17 +109,21 @@ export async function getProjectLicenses(path: string): Promise<ILicense[]> {
         }
 
         if (!dependencyLicenses.has(license)) {
-          dependencyLicenses.set(license, {
-            content: license,
-            dependencies: []
-          });
+          dependencyLicenses.set(license, []);
         }
 
-        dependencyLicenses.get(license)?.dependencies.push(dependencyName);
+        dependencyLicenses.get(license)?.push(dependencyName);
       }
     }
 
-    return Array.from(dependencyLicenses.values());
+    const licences: ILicense[] = [];
+    for (const [license, dependencies] of dependencyLicenses) {
+      licences.push({
+        content: license,
+        dependencies
+      });
+    }
+    return licences;
   } catch (error) {
     console.error(error.message);
     return Promise.reject();
