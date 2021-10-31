@@ -5,14 +5,20 @@ import { join } from "path";
 interface Options {
 	outputFileName: string;
   outputFolder: string;
+  isDev: boolean
 }
+
+const devImplementation = () => Promise.resolve(`In a production build this file will contain the licenses of your production dependencies.
+
+For dev builds it only contains this text for the sake of build speed.`);
 
 class LicenseFilePlugin {
 	private pluginName = LicenseFilePlugin.name;
 
   private static defaultOptions: Options = {
     outputFileName: "third-party-licenses.txt",
-    outputFolder: "./"
+    outputFolder: "./",
+    isDev: false
   };
 
 	private options: Options;
@@ -25,7 +31,7 @@ class LicenseFilePlugin {
     const { webpack } = compiler;
     const { Compilation } = webpack;
     const { RawSource } = webpack.sources;
-    const { outputFileName, outputFolder } = this.options;
+    const { outputFileName, outputFolder, isDev } = this.options;
 		
     compiler.hooks.thisCompilation.tap(this.pluginName, (compilation) => {
       compilation.hooks.processAssets.tapAsync(
@@ -35,10 +41,13 @@ class LicenseFilePlugin {
         },
         (_, resolve) => {
           const projectFolder = compiler.context;
+          const outputPath = join(outputFolder, outputFileName);
 
-					getLicenseFileText(projectFolder).then(text => {
+          const implementation = isDev ? devImplementation : getLicenseFileText;
+
+					implementation(projectFolder).then(text => {
             compilation.emitAsset(
-              join(outputFolder, outputFileName),
+              outputPath,
               new RawSource(text)
             );
             resolve();
