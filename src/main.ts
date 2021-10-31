@@ -1,6 +1,6 @@
 import { WriteStream } from "fs";
 import * as os from "os";
-import { ILicense } from "./models/license.interface";
+import { ILicense, License } from "./models/license";
 import console from "./utils/console.utils";
 import {
   createWriteStream,
@@ -10,11 +10,6 @@ import {
 } from "./utils/file.utils";
 import { getProject, Project } from "./utils/licence.utils";
 
-const BULLET: string = " - ";
-const PREFIX: string = "The following NPM package may be included in this product:";
-const PREFIX_PLURAL: string = "The following NPM packages may be included in this product:";
-const MIDFIX: string = "This package contains the following license and notice below:";
-const MIDFIX_PLURAL: string = "These packages each contain the following license and notice below:";
 const SUFFIX: string = "-----------";
 const FOOTER: string =
   "This file was generated with generate-license-file! https://www.npmjs.com/package/generate-license-file";
@@ -42,30 +37,14 @@ export async function generateLicenseFile(
   lineEnding?: LineEnding
 ): Promise<void> {
   const licenses: ILicense[] = await getProjectLicenses(path);
+  const licenses: License[] = await getProjectLicensesInternal(path);
   const stream: WriteStream = createWriteStream(outputPath);
 
   const EOL = getLineEnding(lineEnding);
 
   stream.once("open", () => {
     for (const license of licenses) {
-      const hasMultipleDeps: boolean = license.dependencies.length > 1;
-      stream.write(hasMultipleDeps ? PREFIX_PLURAL : PREFIX);
-      stream.write(EOL);
-      stream.write(EOL);
-
-      for (const dep of license.dependencies) {
-        stream.write(BULLET);
-        stream.write(dep);
-        stream.write(EOL);
-      }
-
-      stream.write(EOL);
-      stream.write(hasMultipleDeps ? MIDFIX_PLURAL : MIDFIX);
-      stream.write(EOL);
-      stream.write(EOL);
-
-      stream.write(license.content.trim());
-
+      stream.write(license.format(EOL));
       stream.write(EOL);
       stream.write(EOL);
       stream.write(SUFFIX);
@@ -82,6 +61,10 @@ export async function generateLicenseFile(
  * @returns Array of `ILicense`s each containing the license content and respective dependencies
  */
 export async function getProjectLicenses(path: string): Promise<ILicense[]> {
+  return getProjectLicensesInternal(path);
+}
+
+async function getProjectLicensesInternal(path: string): Promise<License[]> {
   try {
     const dependencyLicenses: Map<string, string[]> = new Map<string, string[]>();
 
@@ -116,12 +99,9 @@ export async function getProjectLicenses(path: string): Promise<ILicense[]> {
       }
     }
 
-    const licences: ILicense[] = [];
+    const licences: License[] = [];
     for (const [license, dependencies] of dependencyLicenses) {
-      licences.push({
-        content: license,
-        dependencies
-      });
+      licences.push(new License(license, dependencies));
     }
     return licences;
   } catch (error) {
@@ -130,7 +110,7 @@ export async function getProjectLicenses(path: string): Promise<ILicense[]> {
   }
 }
 
-function getLineEnding(lineEndings?: LineEnding) {
+function getLineEnding(lineEndings?: LineEnding): string {
   switch (lineEndings) {
     case "windows":
       return "\r\n";
