@@ -1,6 +1,6 @@
 import { getLicenseFileText, LineEnding } from "generate-license-file";
 import { join } from "path/posix";
-import { Compiler } from "webpack";
+import { Compiler, WebpackError } from "webpack";
 
 interface Options {
   outputFileName: string;
@@ -9,6 +9,8 @@ interface Options {
   isDev: boolean;
   lineEnding?: LineEnding;
 }
+
+const unknownError = "Unknown Error! Check for error output above.";
 
 const devImplementation = () =>
   Promise.resolve(`In a production build this file will contain the licenses of your production dependencies.
@@ -56,10 +58,17 @@ class LicenseFilePlugin {
 
           const implementation = !!isDev ? devImplementation : getLicenseFileText;
 
-          implementation(projectFolder, lineEnding).then(text => {
-            compilation.emitAsset(outputPath, new RawSource(text));
-            resolve();
-          });
+          implementation(projectFolder, lineEnding)
+            .then(text => {
+              compilation.emitAsset(outputPath, new RawSource(text));
+              resolve();
+            })
+            .catch(error => {
+              const errorMessage = `${this.pluginName}: ${error ?? unknownError}`;
+              const webpackError = new WebpackError(errorMessage);
+              compilation.errors.push(webpackError);
+              resolve(webpackError);
+            });
         }
       );
     });
