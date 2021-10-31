@@ -1,7 +1,7 @@
 {
   "name": "generate-license-file-webpack-plugin",
   "version": "0.0.0",
-  "main": "index.js",
+  "main": "dist/index.js",
   "author": "",
   "license": "ISC",
   "description": "generate-license-file-webpack-plugin",
@@ -14,6 +14,17 @@
   "bugs": {
     "url": "https://github.com/TobyAndToby/generate-license-file-webpack-plugin/issues"
   },
+  "files": [
+    "dist"
+  ],
   "scripts": {
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "@types/webpack": "^5.28.0",
+    "typescript": "^4.4.4"
+  },
+  "dependencies": {
+    "generate-license-file": "file:../generate-license-file/generate-license-file-1.2.0.tgz"
   }
 }
