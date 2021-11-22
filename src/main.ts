@@ -102,7 +102,9 @@ async function getProjectLicensesInternal(path: string): Promise<License[]> {
     }
     return licences;
   } catch (error) {
-    console.error(error.message);
+    if (error instanceof Error) {
+      console.error(error.message);
+    }
     return Promise.reject();
   }
 }

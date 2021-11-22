@@ -190,4 +190,7 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+# test output text file
+output.txt
+
 # End of https://www.gitignore.io/api/node,code,linux,macos,windows,visualstudiocode
