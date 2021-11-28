@@ -3,9 +3,9 @@ import { pong } from "cli-spinners";
 import { prompt } from "enquirer";
 import ora, { Ora } from "ora";
 import path from "path";
-import { generateLicenseFile } from "../main";
+import { generateLicenseFile } from "../generateLicenseFile";
 import { doesFileExist } from "../utils/file.utils";
-import { IArguments } from "./arguements.interface";
+import { IArguments } from "./arguments.interface";
 import { validArguments } from "./valid-arguments";
 
 function parseArgumentsIntoOptions(rawArgs: string[]): IArguments {
