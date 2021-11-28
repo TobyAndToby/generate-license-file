@@ -3,7 +3,7 @@ import LicenseFilePlugin from ".";
 import { asyncProcessAssetTapFactory } from "./asyncProcessAssetTapFactory";
 import { Options } from "./options";
 
-type CompilationTap = (compilation: Compilation) => void;
+export type CompilationTap = (compilation: Compilation) => void;
 
 export const compilationTapFactory = (options: Options, compiler: Compiler): CompilationTap => {
   const pluginName = LicenseFilePlugin.name;

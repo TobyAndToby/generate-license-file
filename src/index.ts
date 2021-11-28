@@ -1,14 +1,7 @@
 import { Compiler } from "webpack";
 import { compilationTapFactory } from "./compilationTapFactory";
+import { defaultOptions } from "./defaultOptions";
 import { Options } from "./options";
-
-const defaultOptions: Options = {
-  outputFileName: "third-party-licenses.txt",
-  outputFolder: "./",
-  projectFolder: "./",
-  isDev: false,
-  lineEnding: undefined
-};
 
 class LicenseFilePlugin {
   private pluginName = LicenseFilePlugin.name;
