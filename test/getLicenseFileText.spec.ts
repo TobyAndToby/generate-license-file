@@ -13,9 +13,13 @@ describe("getLicenseFileText", () => {
   const mockGetProjectLicensesInternal = mocked(getProjectLicensesInternal);
 
   beforeEach(() => {
-    mockGetProjectLicensesInternal.mockReset();
+    jest.resetAllMocks();
 
     mockGetProjectLicensesInternal.mockResolvedValue([]);
+  });
+
+  afterAll(() => {
+    jest.restoreAllMocks();
   });
 
   it("should call the internal getProjectLicenses", async () => {

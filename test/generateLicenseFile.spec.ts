@@ -18,9 +18,8 @@ describe("generateLicenseFile", () => {
   const mockWriteFileAsync = mocked(writeFileAsync);
 
   beforeEach(() => {
-    mockGetLicenseFileText.mockReset();
+    jest.resetAllMocks();
     mockGetLicenseFileText.mockResolvedValue(fakeLicenseFileText);
-    mockWriteFileAsync.mockReset();
   });
 
   afterAll(() => {

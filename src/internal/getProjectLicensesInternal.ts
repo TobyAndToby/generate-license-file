@@ -10,11 +10,7 @@ export async function getProjectLicensesInternal(path: string): Promise<License[
   try {
     const dependencyLicenses = await getDependencyMapForProject(path);
 
-    const licences: License[] = [];
-    for (const [license, dependencies] of dependencyLicenses) {
-      licences.push(new License(license, dependencies));
-    }
-
+    const licences = flattenDependencyMapToLicenceArray(dependencyLicenses);
     return licences;
   } catch (error) {
     console.error(error.message);
@@ -40,10 +36,6 @@ const groupProjectDependenciesByLicenseText = async (project: Project) => {
   const dependencyLicenses: Map<string, string[]> = new Map<string, string[]>();
 
   for (const [dependencyName, dependencyValue] of Object.entries(project)) {
-    if (!dependencyValue.licenseFile) {
-      continue;
-    }
-
     const license: string = await getLicenseContent(dependencyValue);
 
     if (!dependencyLicenses.has(license)) {
@@ -76,4 +68,14 @@ const getLicenseType = (moduleInfo: ModuleInfo) => {
 
   console.warn(`No license found for ${moduleInfo.name}!`);
   return "Unknown Licence!";
+};
+
+const flattenDependencyMapToLicenceArray = (dependencyLicenses: Map<string, string[]>) => {
+  const licences: License[] = [];
+
+  for (const [license, dependencies] of dependencyLicenses) {
+    licences.push(new License(license, dependencies));
+  }
+
+  return licences;
 };
