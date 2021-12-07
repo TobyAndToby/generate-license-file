@@ -40,19 +40,19 @@ export class License implements ILicense {
     return PREFIX_PLURAL + EOL + EOL;
   }
 
-  private midfix(EOL: string): string {
-    if (this.dependencies.length === 1) {
-      return EOL + MIDFIX + EOL + EOL;
-    }
-
-    return EOL + MIDFIX_PLURAL + EOL + EOL;
-  }
-
   private formatDependencies(EOL: string): string {
     const formattedText = this.dependencies.map(dependency => {
       return BULLET + dependency + EOL;
     });
 
     return formattedText.join("");
+  }
+
+  private midfix(EOL: string): string {
+    if (this.dependencies.length === 1) {
+      return EOL + MIDFIX + EOL + EOL;
+    }
+
+    return EOL + MIDFIX_PLURAL + EOL + EOL;
   }
 }
