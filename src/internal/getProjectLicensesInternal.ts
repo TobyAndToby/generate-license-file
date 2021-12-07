@@ -38,11 +38,10 @@ const groupProjectDependenciesByLicenseText = async (project: Project) => {
   for (const [dependencyName, dependencyValue] of Object.entries(project)) {
     const license: string = await getLicenseContent(dependencyValue);
 
-    if (!dependencyLicenses.has(license)) {
-      dependencyLicenses.set(license, []);
-    }
+    const listForLicense = dependencyLicenses.get(license) ?? [];
+    listForLicense.push(dependencyName);
 
-    dependencyLicenses.get(license)?.push(dependencyName);
+    dependencyLicenses.set(license, listForLicense);
   }
 
   return dependencyLicenses;
