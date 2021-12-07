@@ -26,6 +26,7 @@ describe("getProjectLicensesInternal", () => {
   const mockDoesFolderExist = mocked(doesFolderExist);
   const mockReadFileAsync = mocked(readFileAsync);
   const mockConsoleError = mocked(console.error);
+  const mockConsoleWarn = mocked(console.warn);
   const mockGetProject = mocked(getProject);
 
   const dependencies: ModuleInfo[] = [
@@ -169,5 +170,38 @@ describe("getProjectLicensesInternal", () => {
 
     expect(result.length).toBe(1);
     expect(result[0].content).toBe("(licence1)");
+  });
+
+  it("should warn log if a dependency has no licence file or licence type", async () => {
+    mockDoesFileExist.mockReset();
+    mockDoesFileExist.mockResolvedValue(false);
+
+    const projectWithSharedLicenses: Project = {
+      name1: { licenses: [], name: "name1" }
+    };
+    mockGetProject.mockReset();
+    mockGetProject.mockResolvedValue(projectWithSharedLicenses);
+
+    await getProjectLicensesInternal(projectPath);
+
+    expect(mockConsoleWarn).toBeCalledTimes(1);
+
+    const firstCallFirstArg = mockConsoleWarn.mock.calls[0][0];
+    expect(firstCallFirstArg).toBe("No license found for name1!");
+  });
+
+  it("should return a default value for a dependency has no licence file or licence type", async () => {
+    mockDoesFileExist.mockReset();
+    mockDoesFileExist.mockResolvedValue(false);
+
+    const projectWithSharedLicenses: Project = {
+      name1: { licenses: [], name: "name1" }
+    };
+    mockGetProject.mockReset();
+    mockGetProject.mockResolvedValue(projectWithSharedLicenses);
+
+    const result = await getProjectLicensesInternal(projectPath);
+
+    expect(result[0].content).toBe("Unknown Licence!");
   });
 });
