@@ -1,6 +1,14 @@
 # Generate License File
 
-This CLI generates a text file containing all the licences for your production 3rd-party dependencies.
+A CLI to generate a text file containing all the licences for your production 3rd-party dependencies.
+
+<a href="https://www.npmjs.com/package/generate-license-file">
+  <img alt="npm" src="https://img.shields.io/npm/v/generate-license-file?logo=npm">
+</a>
+
+<a href="https://codecov.io/github/TobyAndToby/generate-license-file">
+  <img src="https://codecov.io/github/TobyAndToby/generate-license-file/branch/main/graph/badge.svg"/>
+</a>
 
 ## Installation and Usage (CLI)
 
