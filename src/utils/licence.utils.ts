@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import { init } from "license-checker";
 import { promisify } from "util";
 

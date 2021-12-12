@@ -3,6 +3,5 @@ module.exports = {
   preset: "ts-jest",
   testEnvironment: "node",
   testMatch: ["**/*.spec.ts"],
-  collectCoverageFrom: ["src/**/*.ts"],
-  coveragePathIgnorePatterns: ["/cli/", "console.utils.ts"]
+  collectCoverageFrom: ["src/**/*.ts"]
 };
