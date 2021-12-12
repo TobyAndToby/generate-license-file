@@ -1,6 +1,15 @@
 # generate-license-file-webpack-plugin
 
 Webpack plugin to create an asset file containing all the licenses for your production dependencies.  
+
+<a href="https://www.npmjs.com/package/generate-license-file-webpack-plugin">
+  <img alt="npm" src="https://img.shields.io/npm/v/generate-license-file-webpack-plugin?logo=npm">
+</a>
+
+<a href="https://codecov.io/github/TobyAndToby/generate-license-file-webpack-plugin">
+  <img src="https://codecov.io/github/TobyAndToby/generate-license-file-webpack-plugin/branch/main/graph/badge.svg"/>
+</a>
+
 Based on the npm package [generate-licence-file](https://www.npmjs.com/package/generate-license-file).  
 Currently supports Webpack v5.
 
