@@ -17,14 +17,12 @@ export async function getProjectLicensesInternal(pathToPackageJson: string): Pro
 
 const getDependencyMapForProject = async (pathToPackageJson: string) => {
   const directoryOfPackageJson: string = path.dirname(pathToPackageJson);
-
-  const packageJson: PackageJson = await readPackageJson(pathToPackageJson);
-  const currentPackage = `${packageJson.name}@${packageJson.version}`;
+  const currentProjectIdentifier = await getCurrentProjectIdentifier(pathToPackageJson);
 
   const project: Project = await getProject({
     start: directoryOfPackageJson,
     production: true,
-    excludePackages: currentPackage
+    excludePackages: currentProjectIdentifier
   });
 
   const projectDependencies = groupProjectDependenciesByLicenseText(project);
@@ -76,4 +74,11 @@ const flattenDependencyMapToLicenseArray = (dependencyLicenses: Map<string, stri
   }
 
   return licenses;
+};
+
+const getCurrentProjectIdentifier = async (pathToPackageJson: string) => {
+  const packageJson: PackageJson = await readPackageJson(pathToPackageJson);
+
+  const currentProjectIdentifier = `${packageJson.name}@${packageJson.version}`;
+  return currentProjectIdentifier;
 };
