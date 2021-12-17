@@ -1,4 +1,5 @@
 import { prompt } from "enquirer";
+import ora from "ora";
 import { mocked } from "ts-jest/utils";
 import { cli } from "../../src/cli/index";
 import { generateLicenseFile } from "../../src/generateLicenseFile";
@@ -16,15 +17,22 @@ jest.mock("../../src/utils/file.utils", () => ({
   doesFileExist: jest.fn().mockResolvedValue(false)
 }));
 
-jest.mock("ora", () => () => ({
+const mockOra = {
   start: jest.fn(),
-  stop: jest.fn()
-}));
+  stop: jest.fn(),
+  fail: jest.fn()
+};
+jest.mock("ora", () => () => mockOra);
 
 describe("cli", () => {
+  const spinner = ora();
+
   const mockedGenerateLicenseFile = mocked(generateLicenseFile);
   const mockedPrompt = mocked(prompt);
-  const mockDoesFileExist = mocked(doesFileExist);
+  const mockedDoesFileExist = mocked(doesFileExist);
+  const mockedStartSpinner = mocked(spinner.start);
+  const mockedStopSpinner = mocked(spinner.stop);
+  const mockedFailSpinner = mocked(spinner.fail);
 
   beforeEach(() => {
     jest.resetAllMocks();
@@ -57,7 +65,7 @@ describe("cli", () => {
     });
 
     it("should initially prompt the input with a package json if one exists", async () => {
-      mockDoesFileExist.mockResolvedValue(true);
+      mockedDoesFileExist.mockResolvedValue(true);
 
       await cli(["", "", "--output", "any path"]);
 
@@ -67,7 +75,7 @@ describe("cli", () => {
     });
 
     it("should initially prompt the input with nothing if one doesn't exists", async () => {
-      mockDoesFileExist.mockResolvedValue(false);
+      mockedDoesFileExist.mockResolvedValue(false);
 
       await cli(["", "", "--output", "any path"]);
 
@@ -92,7 +100,7 @@ describe("cli", () => {
 
   describe("overwriteOutput", () => {
     it("should confirm overwriting is OK if the output file is given and exists", async () => {
-      mockDoesFileExist.mockResolvedValue(true);
+      mockedDoesFileExist.mockResolvedValue(true);
 
       await cli(["", "", "--input", "any path", "--output", "any path"]);
 
@@ -104,7 +112,7 @@ describe("cli", () => {
     });
 
     it("should not confirm overwriting is OK if the output file is given but does not exist", async () => {
-      mockDoesFileExist.mockResolvedValue(false);
+      mockedDoesFileExist.mockResolvedValue(false);
 
       await cli(["", "", "--input", "any path", "--output", "any path"]);
 
@@ -116,7 +124,7 @@ describe("cli", () => {
     });
 
     it("should not confirm overwriting is OK if the output file is given, exists, and overwriting is true", async () => {
-      mockDoesFileExist.mockResolvedValue(true);
+      mockedDoesFileExist.mockResolvedValue(true);
 
       await cli(["", "", "--input", "any path", "--output", "any path", "--overwrite"]);
 
@@ -126,5 +134,77 @@ describe("cli", () => {
         })
       );
     });
+  });
+
+  it("should start the spinner", async () => {
+    await cli(["", "", "--input", "any input path", "--output", "any output path"]);
+
+    expect(mockedStartSpinner).toHaveBeenCalledTimes(1);
+  });
+
+  it("should call generateLicenseFile with the given input values", async () => {
+    await cli(["", "", "--input", "any input path", "--output", "any output path"]);
+
+    expect(mockedGenerateLicenseFile).toHaveBeenCalledWith(
+      "any input path",
+      "any output path",
+      undefined
+    );
+  });
+
+  it("should stop the spinner if the generateLicenseFile call succeeds", async () => {
+    await cli(["", "", "--input", "any input path", "--output", "any output path"]);
+
+    expect(mockedStopSpinner).toHaveBeenCalledTimes(1);
+  });
+
+  it("should not fail the spinner if the generateLicenseFile call succeeds", async () => {
+    await cli(["", "", "--input", "any input path", "--output", "any output path"]);
+
+    expect(mockedFailSpinner).toHaveBeenCalledTimes(0);
+  });
+
+  it("should fail the spinner if the generateLicenseFile call throws", async () => {
+    mockedGenerateLicenseFile.mockReset();
+    mockedGenerateLicenseFile.mockRejectedValue(new Error("any error"));
+
+    await cli(["", "", "--input", "any input path", "--output", "any output path"]);
+
+    expect(mockedFailSpinner).toHaveBeenCalledTimes(1);
+  });
+
+  it("should fail the spinner with the error message it an error is thrown", async () => {
+    mockedGenerateLicenseFile.mockReset();
+    mockedGenerateLicenseFile.mockRejectedValue(new Error("any error"));
+
+    await cli(["", "", "--input", "any input path", "--output", "any output path"]);
+
+    expect(mockedFailSpinner).toHaveBeenCalledWith("any error");
+  });
+
+  it("should fail the spinner with the thrown object if it's not an error", async () => {
+    mockedGenerateLicenseFile.mockReset();
+    mockedGenerateLicenseFile.mockRejectedValue("This string is not an error");
+
+    await cli(["", "", "--input", "any input path", "--output", "any output path"]);
+
+    expect(mockedFailSpinner).toHaveBeenCalledWith("This string is not an error");
+  });
+
+  it("should fail the spinner with 'Unknown error' if the value thrown is falsy (undefined)", async () => {
+    mockedGenerateLicenseFile.mockReset();
+    mockedGenerateLicenseFile.mockRejectedValue(undefined);
+
+    await cli(["", "", "--input", "any input path", "--output", "any output path"]);
+
+    expect(mockedFailSpinner).toHaveBeenCalledWith("Unknown error");
+  });
+
+  it("should not stop the spinner if the generateLicenseFile call throws", async () => {
+    mockedGenerateLicenseFile.mockRejectedValue(new Error("any error"));
+
+    await cli(["", "", "--input", "any input path", "--output", "any output path"]);
+
+    expect(mockedStopSpinner).toHaveBeenCalledTimes(0);
   });
 });
