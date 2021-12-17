@@ -14,15 +14,15 @@ export type LineEnding = "windows" | "posix";
 
 /**
  * Scans the project found at the given path and creates a license file at the given output location
- * @param path A path to a directory containing a package.json
+ * @param pathToPackageJson A path to a package.json
  * @param outputPath A file path for the resulting license file
  * @optional @param lineEnding "windows" or "posix". Will use the system default if omitted
  */
 export async function generateLicenseFile(
-  path: string,
+  pathToPackageJson: string,
   outputPath: string,
   lineEnding?: LineEnding
 ): Promise<void> {
-  const licenseFileText: string = await getLicenseFileText(path, lineEnding);
+  const licenseFileText: string = await getLicenseFileText(pathToPackageJson, lineEnding);
   await writeFileAsync(outputPath, licenseFileText, { encoding: UTF8 });
 }

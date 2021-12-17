@@ -2,7 +2,6 @@ import arg from "arg";
 import { pong } from "cli-spinners";
 import { prompt } from "enquirer";
 import ora, { Ora } from "ora";
-import path from "path";
 import { generateLicenseFile } from "../generateLicenseFile";
 import { doesFileExist } from "../utils/file.utils";
 import { IArguments } from "./arguments.interface";
@@ -18,9 +17,7 @@ export async function cli(args: string[]): Promise<void> {
   });
   spinner.start();
 
-  const directory: string = path.dirname(options.input);
-
-  await generateLicenseFile(directory, options.output, options.eol);
+  await generateLicenseFile(options.input, options.output, options.eol);
 
   spinner.stop();
 }

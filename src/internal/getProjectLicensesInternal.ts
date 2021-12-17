@@ -1,30 +1,24 @@
 import { ModuleInfo } from "license-checker";
+import path from "path";
 import { License } from "../models/license";
 import console from "../utils/console.utils";
-import { doesFileExist, doesFolderExist, readFileAsync } from "../utils/file.utils";
+import { doesFileExist, readFileAsync } from "../utils/file.utils";
 import { getProject, Project } from "../utils/license.utils";
 
 const UTF8 = "utf-8";
 
-export async function getProjectLicensesInternal(path: string): Promise<License[]> {
-  try {
-    const dependencyLicenses = await getDependencyMapForProject(path);
+export async function getProjectLicensesInternal(pathToPackageJson: string): Promise<License[]> {
+  const dependencyLicenses = await getDependencyMapForProject(pathToPackageJson);
 
   const licenses = flattenDependencyMapToLicenseArray(dependencyLicenses);
   return licenses;
-  } catch (error) {
-    console.error(error.message);
-    return Promise.reject();
-  }
 }
 
-const getDependencyMapForProject = async (path: string) => {
-  if (!(await doesFolderExist(path))) {
-    throw new Error("Cannot find directory " + path);
-  }
+const getDependencyMapForProject = async (pathToPackageJson: string) => {
+  const directoryOfPackageJson: string = path.dirname(pathToPackageJson);
 
   const project: Project = await getProject({
-    start: path,
+    start: directoryOfPackageJson,
     production: true
   });
 

@@ -9,13 +9,16 @@ const FOOTER: string =
 
 /**
  * Scans the project found at the given path and returns a string containing the licenses for all the dependencies
- * @param path A path to a directory containing a package.json
+ * @param pathToPackageJson A path to a the package.json for the project
  * @optional @param lineEnding "windows" or "posix". Will use the system default if omitted
  * @returns A promise that resolves to the license file text
  */
-export async function getLicenseFileText(path: string, lineEnding?: LineEnding): Promise<string> {
+export async function getLicenseFileText(
+  pathToPackageJson: string,
+  lineEnding?: LineEnding
+): Promise<string> {
   const EOL = getLineEnding(lineEnding);
-  const licenses: License[] = await getProjectLicensesInternal(path);
+  const licenses: License[] = await getProjectLicensesInternal(pathToPackageJson);
   let licenseFile = "";
 
   for (const license of licenses) {
