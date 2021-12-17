@@ -57,13 +57,13 @@ describe("License", () => {
     );
 
     it("should end with the license content", () => {
-      const thelicenseContent = "The license content";
+      const theLicenseContent = "The license content";
 
-      const license = new License(thelicenseContent, dependencies);
+      const license = new License(theLicenseContent, dependencies);
 
       const result = license.format("|");
 
-      expect(result.endsWith(thelicenseContent)).toBeTruthy();
+      expect(result.endsWith(theLicenseContent)).toBeTruthy();
     });
   });
 });
