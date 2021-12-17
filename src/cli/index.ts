@@ -17,9 +17,12 @@ export async function cli(args: string[]): Promise<void> {
   });
   spinner.start();
 
-  await generateLicenseFile(options.input, options.output, options.eol);
-
-  spinner.stop();
+  try {
+    await generateLicenseFile(options.input, options.output, options.eol);
+    spinner.stop();
+  } catch (e) {
+    spinner.fail(e?.message ?? e ?? "Unknown error");
+  }
 }
 
 function parseArgumentsIntoOptions(rawArgs: string[]): IArguments {
