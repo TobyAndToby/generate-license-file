@@ -3,7 +3,7 @@ import { mocked } from "ts-jest/utils";
 import { getProjectLicensesInternal } from "../../src/internal/getProjectLicensesInternal";
 import console from "../../src/utils/console.utils";
 import { doesFileExist, doesFolderExist, readFileAsync } from "../../src/utils/file.utils";
-import { getProject, Project } from "../../src/utils/licence.utils";
+import { getProject, Project } from "../../src/utils/license.utils";
 
 jest.mock("../../src/utils/file.utils", () => ({
   doesFileExist: jest.fn(),
@@ -17,7 +17,7 @@ jest.mock("../../src/utils/console.utils", () => ({
   error: jest.fn()
 }));
 
-jest.mock("../../src/utils/licence.utils", () => ({
+jest.mock("../../src/utils/license.utils", () => ({
   getProject: jest.fn()
 }));
 
@@ -97,14 +97,14 @@ describe("getProjectLicensesInternal", () => {
     expect(firstCallFirstArg.production).toBeTruthy();
   });
 
-  it("should get the licence file for all returned dependencies", async () => {
+  it("should get the license file for all returned dependencies", async () => {
     await getProjectLicensesInternal(projectPath);
 
     expect(mockDoesFileExist).toBeCalledTimes(dependencies.length);
     expect(mockReadFileAsync).toBeCalledTimes(dependencies.length);
   });
 
-  it("should return all licence contents for returned dependencies", async () => {
+  it("should return all license contents for returned dependencies", async () => {
     const result = await getProjectLicensesInternal(projectPath);
 
     expect(result.length).toBe(dependencies.length);
@@ -114,16 +114,16 @@ describe("getProjectLicensesInternal", () => {
     );
   });
 
-  it("should group dependencies by their licence values", async () => {
-    const dependenciesWhichShareLicences: ModuleInfo[] = [
+  it("should group dependencies by their license values", async () => {
+    const dependenciesWhichShareLicenses: ModuleInfo[] = [
       { licenseFile: "path1", name: "name1" },
       { licenseFile: "path1", name: "also1" },
       { licenseFile: "path2", name: "name2" }
     ];
     const projectWithSharedLicenses: Project = {
-      name1: dependenciesWhichShareLicences[0],
-      also1: dependenciesWhichShareLicences[1],
-      name2: dependenciesWhichShareLicences[2]
+      name1: dependenciesWhichShareLicenses[0],
+      also1: dependenciesWhichShareLicenses[1],
+      name2: dependenciesWhichShareLicenses[2]
     };
     mockGetProject.mockReset();
     mockGetProject.mockResolvedValue(projectWithSharedLicenses);
@@ -140,12 +140,12 @@ describe("getProjectLicensesInternal", () => {
     expect(result[1].dependencies[0]).toBe("name2");
   });
 
-  it("should use a dependency's licence type of the licence file doesn't exist", async () => {
+  it("should use a dependency's license type of the license file doesn't exist", async () => {
     mockDoesFileExist.mockReset();
     mockDoesFileExist.mockResolvedValue(false);
 
     const projectWithSharedLicenses: Project = {
-      name1: { licenses: "licence1", name: "name1" }
+      name1: { licenses: "license1", name: "name1" }
     };
     mockGetProject.mockReset();
     mockGetProject.mockResolvedValue(projectWithSharedLicenses);
@@ -153,15 +153,15 @@ describe("getProjectLicensesInternal", () => {
     const result = await getProjectLicensesInternal(projectPath);
 
     expect(result.length).toBe(1);
-    expect(result[0].content).toBe("(licence1)");
+    expect(result[0].content).toBe("(license1)");
   });
 
-  it("should use a dependency's first licence type if it has multiple and the licence file doesn't exist", async () => {
+  it("should use a dependency's first license type if it has multiple and the license file doesn't exist", async () => {
     mockDoesFileExist.mockReset();
     mockDoesFileExist.mockResolvedValue(false);
 
     const projectWithSharedLicenses: Project = {
-      name1: { licenses: ["licence1", "licence2"], name: "name1" }
+      name1: { licenses: ["license1", "license2"], name: "name1" }
     };
     mockGetProject.mockReset();
     mockGetProject.mockResolvedValue(projectWithSharedLicenses);
@@ -169,10 +169,10 @@ describe("getProjectLicensesInternal", () => {
     const result = await getProjectLicensesInternal(projectPath);
 
     expect(result.length).toBe(1);
-    expect(result[0].content).toBe("(licence1)");
+    expect(result[0].content).toBe("(license1)");
   });
 
-  it("should warn log if a dependency has no licence file or licence type", async () => {
+  it("should warn log if a dependency has no license file or license type", async () => {
     mockDoesFileExist.mockReset();
     mockDoesFileExist.mockResolvedValue(false);
 
@@ -190,7 +190,7 @@ describe("getProjectLicensesInternal", () => {
     expect(firstCallFirstArg).toBe("No license found for name1!");
   });
 
-  it("should return a default value for a dependency has no licence file or licence type", async () => {
+  it("should return a default value for a dependency has no license file or license type", async () => {
     mockDoesFileExist.mockReset();
     mockDoesFileExist.mockResolvedValue(false);
 
@@ -202,6 +202,6 @@ describe("getProjectLicensesInternal", () => {
 
     const result = await getProjectLicensesInternal(projectPath);
 
-    expect(result[0].content).toBe("Unknown Licence!");
+    expect(result[0].content).toBe("Unknown license!");
   });
 });

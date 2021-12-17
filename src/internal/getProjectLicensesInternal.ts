@@ -2,7 +2,7 @@ import { ModuleInfo } from "license-checker";
 import { License } from "../models/license";
 import console from "../utils/console.utils";
 import { doesFileExist, doesFolderExist, readFileAsync } from "../utils/file.utils";
-import { getProject, Project } from "../utils/licence.utils";
+import { getProject, Project } from "../utils/license.utils";
 
 const UTF8 = "utf-8";
 
@@ -10,8 +10,8 @@ export async function getProjectLicensesInternal(path: string): Promise<License[
   try {
     const dependencyLicenses = await getDependencyMapForProject(path);
 
-    const licences = flattenDependencyMapToLicenceArray(dependencyLicenses);
-    return licences;
+  const licenses = flattenDependencyMapToLicenseArray(dependencyLicenses);
+  return licenses;
   } catch (error) {
     console.error(error.message);
     return Promise.reject();
@@ -61,20 +61,20 @@ const getLicenseType = (moduleInfo: ModuleInfo) => {
   const { licenses } = moduleInfo;
 
   if (!!licenses && licenses.length > 0) {
-    const licenceType = typeof licenses === "string" ? licenses : licenses[0];
-    return `(${licenceType})`;
+    const licenseType = typeof licenses === "string" ? licenses : licenses[0];
+    return `(${licenseType})`;
   }
 
   console.warn(`No license found for ${moduleInfo.name}!`);
-  return "Unknown Licence!";
+  return "Unknown license!";
 };
 
-const flattenDependencyMapToLicenceArray = (dependencyLicenses: Map<string, string[]>) => {
-  const licences: License[] = [];
+const flattenDependencyMapToLicenseArray = (dependencyLicenses: Map<string, string[]>) => {
+  const licenses: License[] = [];
 
   for (const [license, dependencies] of dependencyLicenses) {
-    licences.push(new License(license, dependencies));
+    licenses.push(new License(license, dependencies));
   }
 
-  return licences;
+  return licenses;
 };

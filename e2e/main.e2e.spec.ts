@@ -5,7 +5,7 @@ import { getProjectLicenses } from "../src/main";
 
 const execAsync = promisify(exec);
 
-const testFiles = ["./all-have-licences", "./missing-licence-file"];
+const testFiles = ["./all-have-licenses", "./missing-license-file"];
 
 describe("main", () => {
   describe("getProjectLicenses", () => {

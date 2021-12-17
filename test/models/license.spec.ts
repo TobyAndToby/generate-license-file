@@ -11,7 +11,7 @@ describe("License", () => {
   describe("format", () => {
     const prefix = "The following NPM packages may be included in this product:";
 
-    it("should prefix the licence", () => {
+    it("should prefix the license", () => {
       const license = new License("", []);
 
       const result = license.format("\n");
@@ -56,14 +56,14 @@ describe("License", () => {
       })
     );
 
-    it("should end with the licence content", () => {
-      const theLicenceContent = "The licence content";
+    it("should end with the license content", () => {
+      const thelicenseContent = "The license content";
 
-      const license = new License(theLicenceContent, dependencies);
+      const license = new License(thelicenseContent, dependencies);
 
       const result = license.format("|");
 
-      expect(result.endsWith(theLicenceContent)).toBeTruthy();
+      expect(result.endsWith(thelicenseContent)).toBeTruthy();
     });
   });
 });

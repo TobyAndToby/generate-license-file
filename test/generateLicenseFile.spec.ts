@@ -65,7 +65,7 @@ describe("generateLicenseFile", () => {
     expect(firstCallFirstArg).toBe(outputPath);
   });
 
-  it("should call writeFileAsync with the returned licence file content", async () => {
+  it("should call writeFileAsync with the returned license file content", async () => {
     await generateLicenseFile("path", "outputPath");
 
     const firstCallSecondArg = mockWriteFileAsync.mock.calls[0][1];
