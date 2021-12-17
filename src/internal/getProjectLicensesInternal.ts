@@ -4,6 +4,7 @@ import { License } from "../models/license";
 import console from "../utils/console.utils";
 import { doesFileExist, readFileAsync } from "../utils/file.utils";
 import { getProject, Project } from "../utils/license.utils";
+import { PackageJson, readPackageJson } from "../utils/packageJson.utils";
 
 const UTF8 = "utf-8";
 
@@ -17,9 +18,13 @@ export async function getProjectLicensesInternal(pathToPackageJson: string): Pro
 const getDependencyMapForProject = async (pathToPackageJson: string) => {
   const directoryOfPackageJson: string = path.dirname(pathToPackageJson);
 
+  const packageJson: PackageJson = await readPackageJson(pathToPackageJson);
+  const currentPackage = `${packageJson.name}@${packageJson.version}`;
+
   const project: Project = await getProject({
     start: directoryOfPackageJson,
-    production: true
+    production: true,
+    excludePackages: currentPackage
   });
 
   const projectDependencies = groupProjectDependenciesByLicenseText(project);
