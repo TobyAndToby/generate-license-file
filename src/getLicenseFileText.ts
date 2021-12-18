@@ -3,8 +3,8 @@ import { LineEnding } from "./generateLicenseFile";
 import { getProjectLicensesInternal } from "./internal/getProjectLicensesInternal";
 import { License } from "./models/license";
 
-const SUFFIX: string = "-----------";
-const FOOTER: string =
+const SUFFIX = "-----------";
+const FOOTER =
   "This file was generated with generate-license-file! https://www.npmjs.com/package/generate-license-file";
 
 /**
