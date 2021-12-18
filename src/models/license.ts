@@ -1,8 +1,8 @@
-const BULLET: string = " - ";
-const PREFIX: string = "The following NPM package may be included in this product:";
-const PREFIX_PLURAL: string = "The following NPM packages may be included in this product:";
-const MIDFIX: string = "This package contains the following license and notice below:";
-const MIDFIX_PLURAL: string = "These packages each contain the following license and notice below:";
+const BULLET = " - ";
+const PREFIX = "The following NPM package may be included in this product:";
+const PREFIX_PLURAL = "The following NPM packages may be included in this product:";
+const MIDFIX = "This package contains the following license and notice below:";
+const MIDFIX_PLURAL = "These packages each contain the following license and notice below:";
 
 export interface ILicense {
   /**
