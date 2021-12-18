@@ -14,7 +14,7 @@ export type LineEnding = "windows" | "posix";
 
 /**
  * Scans the project found at the given path and creates a license file at the given output location
- * @param pathToPackageJson A path to a package.json
+ * @param pathToPackageJson A path to the package.json for the project
  * @param outputPath A file path for the resulting license file
  * @optional @param lineEnding "windows" or "posix". Will use the system default if omitted
  */

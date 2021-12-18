@@ -9,7 +9,7 @@ const FOOTER: string =
 
 /**
  * Scans the project found at the given path and returns a string containing the licenses for all the dependencies
- * @param pathToPackageJson A path to a the package.json for the project
+ * @param pathToPackageJson A path to the package.json for the project
  * @optional @param lineEnding "windows" or "posix". Will use the system default if omitted
  * @returns A promise that resolves to the license file text
  */
