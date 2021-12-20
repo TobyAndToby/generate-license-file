@@ -20,7 +20,7 @@ export async function cli(args: string[]): Promise<void> {
   try {
     await generateLicenseFile(options.input, options.output, options.eol);
     spinner.stop();
-  } catch (e) {
+  } catch (e: any) {
     spinner.fail(e?.message ?? e ?? "Unknown error");
   }
 }
@@ -40,55 +40,54 @@ function parseArgumentsIntoOptions(rawArgs: string[]): IArguments {
 
 async function promptForAnswers(options: IArguments): Promise<IArguments> {
   if (!options.input) {
-    options = await promptForInput(options);
+    options.input = await promptForInput();
   }
 
   let outputFileExists: boolean = await doesFileExist(options.output);
   while (!options.output || (outputFileExists && !options.overwriteOutput)) {
-    options = await promptForOutput(options);
+    options.output = await promptForOutput();
 
     outputFileExists = await doesFileExist(options.output);
     if (outputFileExists) {
-      options = await promptForOverwrite(options);
+      options.overwriteOutput = await promptForOverwrite();
     }
   }
 
   return options;
 }
 
-const promptForInput = async (options: IArguments) => {
+const promptForInput = async () => {
+  const question = "package.json location";
   const packageJsonExists = await doesFileExist("./package.json");
+  const initialValue = packageJsonExists ? "./package.json" : "";
 
-  const answer = await prompt<IArguments>({
-    type: "input",
-    name: "input",
-    initial: packageJsonExists ? "./package.json" : "",
-    message: "package.json location:"
-  });
-
-  options.input = answer.input;
-  return options;
+  return promptForString(question, initialValue);
 };
 
-const promptForOutput = async (options: IArguments) => {
-  const outputAnswer = await prompt<IArguments>({
-    type: "input",
-    name: "output",
-    initial: "3rd-party-licenses.txt",
-    message: "Output file location:"
-  });
+const promptForOutput = async () => {
+  const question = "Output file location:";
+  const initialValue = "3rd-party-licenses.txt";
 
-  options.output = outputAnswer.output;
-  return options;
+  return promptForString(question, initialValue);
 };
 
-const promptForOverwrite = async (options: IArguments) => {
+const promptForOverwrite = async () => {
   const doesFileExistAnswer = await prompt<IArguments>({
     type: "confirm",
     name: "overwriteOutput",
     message: "The given output file already exists and will be overwritten. Is this OK?"
   });
 
-  options.overwriteOutput = doesFileExistAnswer.overwriteOutput;
-  return options;
+  return doesFileExistAnswer.overwriteOutput;
+};
+
+const promptForString = async (question: string, initialValue: string): Promise<string> => {
+  const answer = await prompt<{ value: string }>({
+    type: "input",
+    name: "value",
+    initial: initialValue,
+    message: question
+  });
+
+  return answer.value;
 };
