@@ -12,6 +12,10 @@ const UTF8 = "utf-8";
  */
 export type LineEnding = "windows" | "posix";
 
+export function isValidEol(input: string | undefined): input is LineEnding {
+  return input === "windows" || input === "posix" || input === undefined;
+}
+
 /**
  * Scans the project found at the given path and creates a license file at the given output location
  * @param pathToPackageJson A path to the package.json for the project

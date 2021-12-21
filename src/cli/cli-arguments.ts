@@ -13,7 +13,6 @@ export interface UserInputs {
 export interface CliOptions {
   input: string;
   output: string;
-  overwriteOutput: boolean;
   eol?: LineEnding;
 }
 
