@@ -1,35 +1,49 @@
-import { prompt } from "enquirer";
-import ora from "ora";
+import arg, { Result } from "arg";
 import { mocked } from "ts-jest/utils";
+import { ArgumentsWithAliases, argumentsWithAliases } from "../../src/cli/cli-arguments";
 import { cli } from "../../src/cli/index";
+import { spinner } from "../../src/cli/spinner";
 import { generateLicenseFile } from "../../src/generateLicenseFile";
-import { doesFileExist } from "../../src/utils/file.utils";
 
 jest.mock("../../src/generateLicenseFile", () => ({
   generateLicenseFile: jest.fn()
 }));
 
-jest.mock("enquirer", () => ({
-  prompt: jest.fn()
+jest.mock("arg", () => jest.fn());
+
+jest.mock("../../src/cli/spinner", () => ({
+  spinner: {
+    start: jest.fn(),
+    stop: jest.fn(),
+    fail: jest.fn()
+  }
 }));
 
-jest.mock("../../src/utils/file.utils", () => ({
-  doesFileExist: jest.fn().mockResolvedValue(false)
+const mockInputResolve = jest.fn();
+const mockOutputResolve = jest.fn();
+const mockEolResolve = jest.fn();
+
+jest.mock("../../src/cli/args/input.ts", () => ({
+  Input: function () {
+    return { resolve: mockInputResolve };
+  }
 }));
 
-const mockOra = {
-  start: jest.fn(),
-  stop: jest.fn(),
-  fail: jest.fn()
-};
-jest.mock("ora", () => () => mockOra);
+jest.mock("../../src/cli/args/output.ts", () => ({
+  Output: function () {
+    return { resolve: mockOutputResolve };
+  }
+}));
+
+jest.mock("../../src/cli/args/eol.ts", () => ({
+  Eol: function () {
+    return { resolve: mockEolResolve };
+  }
+}));
 
 describe("cli", () => {
-  const spinner = ora();
-
+  const mockedArg = mocked(arg);
   const mockedGenerateLicenseFile = mocked(generateLicenseFile);
-  const mockedPrompt = mocked(prompt);
-  const mockedDoesFileExist = mocked(doesFileExist);
   const mockedStartSpinner = mocked(spinner.start);
   const mockedStopSpinner = mocked(spinner.stop);
   const mockedFailSpinner = mocked(spinner.fail);
@@ -38,101 +52,79 @@ describe("cli", () => {
     jest.resetAllMocks();
 
     mockedGenerateLicenseFile.mockResolvedValue(undefined);
-
-    mockedPrompt.mockResolvedValue({
-      input: "defaultInput",
-      output: "defaultOutput",
-      overwriteOutput: true
-    });
   });
 
   afterAll(() => {
     jest.restoreAllMocks();
   });
 
-  describe("input", () => {
-    it("should prompt for the input arg if it's not given", async () => {
-      await cli(["", "", "--output", "any path"]);
+  describe("parseUserInputs", () => {
+    it("should pass argumentsWithAliases to the arg library", async () => {
+      const args = ["", "", "--input", "any input path", "--output", "any output path"];
 
-      const firstCallFirstArg = mockedPrompt.mock.calls[0][0] as any;
-      expect(firstCallFirstArg.name).toBe("input");
+      await cli(args);
+
+      const firstCallFirstArg = mockedArg.mock.calls[0][0];
+      expect(firstCallFirstArg).toEqual(argumentsWithAliases);
     });
 
-    it("should not prompt for the input arg if it's given", async () => {
-      await cli(["", "", "--input", "any path"]);
+    it("should pass the given user arguments to the arg library", async () => {
+      const allArgs = ["", "", "--input", "any input path", "--output", "any output path"];
+      const givenUserArgs = allArgs.slice(2);
 
-      expect(mockedPrompt).not.toHaveBeenCalledWith(expect.objectContaining({ name: "input" }));
-    });
+      await cli(allArgs);
 
-    it("should initially prompt the input with a package json if one exists", async () => {
-      mockedDoesFileExist.mockResolvedValue(true);
+      const firstCallSecondArg = mockedArg.mock.calls[0][1];
+      const givenRawArgs = firstCallSecondArg?.argv;
 
-      await cli(["", "", "--output", "any path"]);
-
-      expect(mockedPrompt).toHaveBeenCalledWith(
-        expect.objectContaining({ initial: "./package.json" })
-      );
-    });
-
-    it("should initially prompt the input with nothing if one doesn't exists", async () => {
-      mockedDoesFileExist.mockResolvedValue(false);
-
-      await cli(["", "", "--output", "any path"]);
-
-      expect(mockedPrompt).toHaveBeenCalledWith(expect.objectContaining({ initial: "" }));
+      expect(givenRawArgs).toEqual(givenUserArgs);
     });
   });
 
-  describe("output", () => {
-    it("should prompt for the output arg if it's not given", async () => {
-      await cli(["", "", "--input", "any path"]);
+  describe("promptForMissingOptions", () => {
+    it("should give the parsed user args to the input resolver", async () => {
+      const allArgs = ["", "", "--input", "any input path", "--output", "any output path"];
 
-      const firstCallFirstArg = mockedPrompt.mock.calls[0][0] as any;
-      expect(firstCallFirstArg.name).toBe("output");
+      const parsedArgResponse = {
+        "--input": "any input path",
+        "--output": "any output path"
+      } as Result<ArgumentsWithAliases>;
+
+      mockedArg.mockReturnValue(parsedArgResponse);
+
+      await cli(allArgs);
+
+      expect(mockInputResolve).toHaveBeenCalledWith(parsedArgResponse);
     });
 
-    it("should not prompt for the output arg if it's given", async () => {
-      await cli(["", "", "--output", "any path"]);
+    it("should give the parsed user args to the output resolver", async () => {
+      const allArgs = ["", "", "--input", "any input path", "--output", "any output path"];
 
-      expect(mockedPrompt).not.toHaveBeenCalledWith(expect.objectContaining({ name: "output" }));
-    });
-  });
+      const parsedArgResponse = {
+        "--input": "any input path",
+        "--output": "any output path"
+      } as Result<ArgumentsWithAliases>;
 
-  describe("overwriteOutput", () => {
-    it("should confirm overwriting is OK if the output file is given and exists", async () => {
-      mockedDoesFileExist.mockResolvedValue(true);
+      mockedArg.mockReturnValue(parsedArgResponse);
 
-      await cli(["", "", "--input", "any path", "--output", "any path"]);
+      await cli(allArgs);
 
-      expect(mockedPrompt).toHaveBeenCalledWith({
-        type: "confirm",
-        name: "overwriteOutput",
-        message: "The given output file already exists and will be overwritten. Is this OK?"
-      });
+      expect(mockOutputResolve).toHaveBeenCalledWith(parsedArgResponse);
     });
 
-    it("should not confirm overwriting is OK if the output file is given but does not exist", async () => {
-      mockedDoesFileExist.mockResolvedValue(false);
+    it("should give the parsed user args to the eol resolver", async () => {
+      const allArgs = ["", "", "--input", "any input path", "--output", "any output path"];
 
-      await cli(["", "", "--input", "any path", "--output", "any path"]);
+      const parsedArgResponse = {
+        "--input": "any input path",
+        "--output": "any output path"
+      } as Result<ArgumentsWithAliases>;
 
-      expect(mockedPrompt).not.toHaveBeenCalledWith(
-        expect.objectContaining({
-          name: "overwriteOutput"
-        })
-      );
-    });
+      mockedArg.mockReturnValue(parsedArgResponse);
 
-    it("should not confirm overwriting is OK if the output file is given, exists, and overwriting is true", async () => {
-      mockedDoesFileExist.mockResolvedValue(true);
+      await cli(allArgs);
 
-      await cli(["", "", "--input", "any path", "--output", "any path", "--overwrite"]);
-
-      expect(mockedPrompt).not.toHaveBeenCalledWith(
-        expect.objectContaining({
-          name: "overwriteOutput"
-        })
-      );
+      expect(mockEolResolve).toHaveBeenCalledWith(parsedArgResponse);
     });
   });
 
@@ -142,14 +134,31 @@ describe("cli", () => {
     expect(mockedStartSpinner).toHaveBeenCalledTimes(1);
   });
 
-  it("should call generateLicenseFile with the given input values", async () => {
+  it("should call generateLicenseFile with value from the input resolver", async () => {
+    mockInputResolve.mockResolvedValue("resolved input value");
+
     await cli(["", "", "--input", "any input path", "--output", "any output path"]);
 
-    expect(mockedGenerateLicenseFile).toHaveBeenCalledWith(
-      "any input path",
-      "any output path",
-      undefined
-    );
+    const firstCallFirstArg = mockedGenerateLicenseFile.mock.calls[0][0];
+    expect(firstCallFirstArg).toBe("resolved input value");
+  });
+
+  it("should call generateLicenseFile with value from the output resolver", async () => {
+    mockOutputResolve.mockResolvedValue("resolved output value");
+
+    await cli(["", "", "--input", "any input path", "--output", "any output path"]);
+
+    const firstCallSecondArg = mockedGenerateLicenseFile.mock.calls[0][1];
+    expect(firstCallSecondArg).toBe("resolved output value");
+  });
+
+  it("should call generateLicenseFile with value from the eol resolver", async () => {
+    mockEolResolve.mockResolvedValue("resolved eol value");
+
+    await cli(["", "", "--input", "any input path", "--output", "any output path"]);
+
+    const firstCallThirdArg = mockedGenerateLicenseFile.mock.calls[0][2];
+    expect(firstCallThirdArg).toBe("resolved eol value");
   });
 
   it("should stop the spinner if the generateLicenseFile call succeeds", async () => {
