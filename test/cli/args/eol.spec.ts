@@ -15,6 +15,12 @@ describe("Eol", () => {
 
   beforeEach(() => {
     eol = new Eol();
+
+    jest.resetAllMocks();
+  });
+
+  afterAll(() => {
+    jest.restoreAllMocks();
   });
 
   it("should return undefined if '--eol' is undefined", async () => {
@@ -47,7 +53,7 @@ describe("Eol", () => {
 
   it("should prompt the user for a valid answer if an invalid line ending value is provided", async () => {
     mockedPrompt.mockResolvedValue({
-      value: "s"
+      value: "dummy value"
     });
 
     const args = {
@@ -61,7 +67,7 @@ describe("Eol", () => {
 
   it("should prompt the user with a multiple choice prompt if an invalid line ending value is provided", async () => {
     mockedPrompt.mockResolvedValue({
-      value: "s"
+      value: "dummy value"
     });
 
     const args = {
@@ -70,12 +76,47 @@ describe("Eol", () => {
 
     await eol.resolve(args);
 
-    expect(mockedPrompt).toBeCalledWith({
-      choices: ["Windows", "POSIX", "System default"],
-      message: "Invalid line ending given. Please choose a line ending: ",
-      name: "value",
-      type: "select"
+    expect(mockedPrompt).toBeCalledWith(
+      expect.objectContaining({
+        type: "select"
+      })
+    );
+  });
+
+  it("should prompt the user with a multiple choice prompt containing valid options if an invalid line ending value is provided", async () => {
+    mockedPrompt.mockResolvedValue({
+      value: "dummy value"
     });
+
+    const args = {
+      "--eol": "test"
+    } as Result<ArgumentsWithAliases>;
+
+    await eol.resolve(args);
+
+    expect(mockedPrompt).toBeCalledWith(
+      expect.objectContaining({
+        choices: ["Windows", "POSIX", "System default"]
+      })
+    );
+  });
+
+  it("should prompt the user with a message if an invalid line ending value is provided", async () => {
+    mockedPrompt.mockResolvedValue({
+      value: "dummy value"
+    });
+
+    const args = {
+      "--eol": "test"
+    } as Result<ArgumentsWithAliases>;
+
+    await eol.resolve(args);
+
+    expect(mockedPrompt).toBeCalledWith(
+      expect.objectContaining({
+        message: "Invalid line ending given. Please choose a line ending: "
+      })
+    );
   });
 
   [
