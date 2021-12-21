@@ -5,7 +5,7 @@ import { spinner } from "../spinner";
 import { Argument } from "./argument";
 
 export class Input extends Argument<string> {
-  private question: string = "Package.json location: ";
+  private question = "Package.json location: ";
 
   public async resolve(args: Result<ArgumentsWithAliases>): Promise<string> {
     const initialValue = await this.getInitialValue();

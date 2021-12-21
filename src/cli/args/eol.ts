@@ -11,7 +11,7 @@ export class Eol extends Argument<LineEnding | undefined> {
   };
 
   public async resolve(args: Result<ArgumentsWithAliases>): Promise<LineEnding | undefined> {
-    let inputtedEol = args["--eol"];
+    const inputtedEol = args["--eol"];
 
     if (isValidEol(inputtedEol)) {
       return inputtedEol;

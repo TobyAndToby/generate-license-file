@@ -4,9 +4,9 @@ import { ArgumentsWithAliases } from "../cli-arguments";
 import { Argument } from "./argument";
 
 export class Output extends Argument<string> {
-  private question: string = "Output location: ";
+  private question = "Output location: ";
 
-  private initialValue: string = "3rd-party-licenses.txt";
+  private initialValue = "3rd-party-licenses.txt";
 
   public async resolve(args: Result<ArgumentsWithAliases>): Promise<string> {
     let output = args["--output"];
