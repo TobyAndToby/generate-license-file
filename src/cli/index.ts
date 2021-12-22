@@ -15,7 +15,7 @@ export async function cli(args: string[]): Promise<void> {
   try {
     await generateLicenseFile(cliOptions.input, cliOptions.output, cliOptions.eol);
     spinner.stop();
-  } catch (e: any) {
+  } catch (e) {
     spinner.fail(e?.message ?? e ?? "Unknown error");
   }
 }
