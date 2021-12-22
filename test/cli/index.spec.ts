@@ -22,6 +22,7 @@ jest.mock("../../src/cli/spinner", () => ({
 const mockInputResolve = jest.fn();
 const mockOutputResolve = jest.fn();
 const mockEolResolve = jest.fn();
+const mockNoSpinner = jest.fn();
 
 jest.mock("../../src/cli/args/input.ts", () => ({
   Input: function () {
@@ -38,6 +39,12 @@ jest.mock("../../src/cli/args/output.ts", () => ({
 jest.mock("../../src/cli/args/eol.ts", () => ({
   Eol: function () {
     return { resolve: mockEolResolve };
+  }
+}));
+
+jest.mock("../../src/cli/args/no-spinner.ts", () => ({
+  NoSpinner: function () {
+    return { resolve: mockNoSpinner };
   }
 }));
 
