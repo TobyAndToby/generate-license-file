@@ -107,7 +107,7 @@ describe("Input", () => {
     expect(mockedFailSpinner).toBeCalledTimes(0);
   });
 
-  it("should fail the spinner if the initial innput value doesn't exist", async () => {
+  it("should fail the spinner if the initial input value doesn't exist", async () => {
     mockedDoesFileExist.mockImplementation((path: string) => {
       return Promise.resolve(path === "./exists.json");
     });
