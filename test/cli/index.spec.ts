@@ -135,10 +135,18 @@ describe("cli", () => {
     });
   });
 
-  it("should start the spinner", async () => {
+  it("should start the spinner if noSpinner is false", async () => {
     await cli(["", "", "--input", "any input path", "--output", "any output path"]);
 
     expect(mockedStartSpinner).toHaveBeenCalledTimes(1);
+  });
+
+  it("should not start the spinner if noSpinner is true", async () => {
+    mockNoSpinner.mockReturnValue(true);
+
+    await cli(["", "", "--input", "any input path", "--output", "any output path"]);
+
+    expect(mockedStartSpinner).toHaveBeenCalledTimes(0);
   });
 
   it("should call generateLicenseFile with value from the input resolver", async () => {
