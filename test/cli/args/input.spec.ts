@@ -78,6 +78,36 @@ describe("Input", () => {
     );
   });
 
+  it("should prompt for an input value with an initial value of './package.json' if the input is undefined and a package.json was found", async () => {
+    mockedDoesFileExist.mockResolvedValueOnce(true).mockResolvedValueOnce(true);
+    mockedPrompt.mockResolvedValue({ value: "./package.json" });
+
+    const args = {} as Result<ArgumentsWithAliases>;
+
+    await input.resolve(args);
+
+    expect(mockedPrompt).toHaveBeenCalledWith(
+      expect.objectContaining({
+        initial: "./package.json"
+      })
+    );
+  });
+
+  it("should prompt for an input value with an empty initial value if the input is undefined and a package.json was not found", async () => {
+    mockedDoesFileExist.mockResolvedValueOnce(false).mockResolvedValueOnce(true);
+    mockedPrompt.mockResolvedValue({ value: "./package.json" });
+
+    const args = {} as Result<ArgumentsWithAliases>;
+
+    await input.resolve(args);
+
+    expect(mockedPrompt).toHaveBeenCalledWith(
+      expect.objectContaining({
+        initial: ""
+      })
+    );
+  });
+
   it("should prompt for a string value if the '--input' value is undefined", async () => {
     mockedDoesFileExist.mockResolvedValueOnce(true).mockResolvedValueOnce(true);
     mockedPrompt.mockResolvedValue({ value: "./package.json" });
