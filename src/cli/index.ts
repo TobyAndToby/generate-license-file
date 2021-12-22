@@ -1,94 +1,35 @@
-import arg from "arg";
-import { pong } from "cli-spinners";
-import { prompt } from "enquirer";
-import ora, { Ora } from "ora";
-import path from "path";
+import arg, { Result } from "arg";
 import { generateLicenseFile } from "../generateLicenseFile";
-import { doesFileExist } from "../utils/file.utils";
-import { IArguments } from "./arguments.interface";
-import { validArguments } from "./valid-arguments";
+import { Eol } from "./args/eol";
+import { Input } from "./args/input";
+import { Output } from "./args/output";
+import { ArgumentsWithAliases, argumentsWithAliases, CliOptions } from "./cli-arguments";
+import { spinner } from "./spinner";
 
 export async function cli(args: string[]): Promise<void> {
-  let options: IArguments = parseArgumentsIntoOptions(args);
-  options = await promptForAnswers(options);
+  const givenUserInputs = parseUserInputs(args);
+  const cliOptions: CliOptions = await promptForMissingOptions(givenUserInputs);
 
-  const spinner: Ora = ora({
-    spinner: pong,
-    text: "Resolving licenses..."
-  });
   spinner.start();
 
-  const directory: string = path.dirname(options.input);
-
-  await generateLicenseFile(directory, options.output, options.eol);
-
-  spinner.stop();
+  try {
+    await generateLicenseFile(cliOptions.input, cliOptions.output, cliOptions.eol);
+    spinner.stop();
+  } catch (e) {
+    spinner.fail(e?.message ?? e ?? "Unknown error");
+  }
 }
 
-function parseArgumentsIntoOptions(rawArgs: string[]): IArguments {
-  const args: arg.Result<any> = arg(validArguments, {
+function parseUserInputs(rawArgs: string[]): Result<ArgumentsWithAliases> {
+  return arg(argumentsWithAliases, {
     argv: rawArgs.slice(2)
   });
-
-  return {
-    input: args["--input"] || undefined,
-    output: args["--output"] || undefined,
-    overwriteOutput: args["--overwrite"] || undefined,
-    eol: args["--eol"] || undefined
-  };
 }
 
-async function promptForAnswers(options: IArguments): Promise<IArguments> {
-  if (!options.input) {
-    options = await promptForInput(options);
-  }
+async function promptForMissingOptions(options: Result<ArgumentsWithAliases>): Promise<CliOptions> {
+  const input = await new Input().resolve(options);
+  const output = await new Output().resolve(options);
+  const eol = await new Eol().resolve(options);
 
-  let outputFileExists: boolean = await doesFileExist(options.output);
-  while (!options.output || (outputFileExists && !options.overwriteOutput)) {
-    options = await promptForOutput(options);
-
-    outputFileExists = await doesFileExist(options.output);
-    if (outputFileExists) {
-      options = await promptForOverwrite(options);
-    }
-  }
-
-  return options;
+  return { input, output, eol };
 }
-
-const promptForInput = async (options: IArguments) => {
-  const packageJsonExists = await doesFileExist("./package.json");
-
-  const answer = await prompt<IArguments>({
-    type: "input",
-    name: "input",
-    initial: packageJsonExists ? "./package.json" : "",
-    message: "package.json location:"
-  });
-
-  options.input = answer.input;
-  return options;
-};
-
-const promptForOutput = async (options: IArguments) => {
-  const outputAnswer = await prompt<IArguments>({
-    type: "input",
-    name: "output",
-    initial: "3rd-party-licenses.txt",
-    message: "Output file location:"
-  });
-
-  options.output = outputAnswer.output;
-  return options;
-};
-
-const promptForOverwrite = async (options: IArguments) => {
-  const doesFileExistAnswer = await prompt<IArguments>({
-    type: "confirm",
-    name: "overwriteOutput",
-    message: "The given output file already exists and will be overwritten. Is this OK?"
-  });
-
-  options.overwriteOutput = doesFileExistAnswer.overwriteOutput;
-  return options;
-};

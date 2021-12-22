@@ -1,31 +1,35 @@
 import { ModuleInfo } from "license-checker";
+import path from "path";
 import { License } from "../models/license";
 import console from "../utils/console.utils";
 import { doesFileExist, doesFolderExist, readFileAsync } from "../utils/file.utils";
-import { getProject, Project } from "../utils/licence.utils";
+import { getProject, Project } from "../utils/license.utils";
+import { PackageJson, readPackageJson } from "../utils/packageJson.utils";
 
 const UTF8 = "utf-8";
 
-export async function getProjectLicensesInternal(path: string): Promise<License[]> {
-  try {
-    const dependencyLicenses = await getDependencyMapForProject(path);
-
-    const licences = flattenDependencyMapToLicenceArray(dependencyLicenses);
-    return licences;
-  } catch (error) {
-    console.error(error.message);
-    return Promise.reject();
+export async function getProjectLicensesInternal(pathToPackageJson: string): Promise<License[]> {
+  if (await doesFolderExist(pathToPackageJson)) {
+    console.warn(
+      "WARNING: Using directories is deprecated and will be removed in version 2.0. Please pass in the full path to the package.json."
+    );
+    pathToPackageJson = path.join(pathToPackageJson, "package.json");
   }
+
+  const dependencyLicenses = await getDependencyMapForProject(pathToPackageJson);
+
+  const licenses = flattenDependencyMapToLicenseArray(dependencyLicenses);
+  return licenses;
 }
 
-const getDependencyMapForProject = async (path: string) => {
-  if (!(await doesFolderExist(path))) {
-    throw new Error("Cannot find directory " + path);
-  }
+const getDependencyMapForProject = async (pathToPackageJson: string) => {
+  const directoryOfPackageJson: string = path.dirname(pathToPackageJson);
+  const currentProjectIdentifier = await getCurrentProjectIdentifier(pathToPackageJson);
 
   const project: Project = await getProject({
-    start: path,
-    production: true
+    start: directoryOfPackageJson,
+    production: true,
+    excludePackages: currentProjectIdentifier
   });
 
   const projectDependencies = groupProjectDependenciesByLicenseText(project);
@@ -61,20 +65,27 @@ const getLicenseType = (moduleInfo: ModuleInfo) => {
   const { licenses } = moduleInfo;
 
   if (!!licenses && licenses.length > 0) {
-    const licenceType = typeof licenses === "string" ? licenses : licenses[0];
-    return `(${licenceType})`;
+    const licenseType = typeof licenses === "string" ? licenses : licenses[0];
+    return `(${licenseType})`;
   }
 
   console.warn(`No license found for ${moduleInfo.name}!`);
-  return "Unknown Licence!";
+  return "Unknown license!";
 };
 
-const flattenDependencyMapToLicenceArray = (dependencyLicenses: Map<string, string[]>) => {
-  const licences: License[] = [];
+const flattenDependencyMapToLicenseArray = (dependencyLicenses: Map<string, string[]>) => {
+  const licenses: License[] = [];
 
   for (const [license, dependencies] of dependencyLicenses) {
-    licences.push(new License(license, dependencies));
+    licenses.push(new License(license, dependencies));
   }
 
-  return licences;
+  return licenses;
+};
+
+const getCurrentProjectIdentifier = async (pathToPackageJson: string) => {
+  const packageJson: PackageJson = await readPackageJson(pathToPackageJson);
+
+  const currentProjectIdentifier = `${packageJson.name}@${packageJson.version}`;
+  return currentProjectIdentifier;
 };

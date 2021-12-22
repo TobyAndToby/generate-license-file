@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 class ConsoleUtils {
   public log(message?: any, ...optionalParams: any[]) {
     global.console.log(message, ...optionalParams);

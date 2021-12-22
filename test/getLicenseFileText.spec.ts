@@ -36,7 +36,7 @@ describe("getLicenseFileText", () => {
     expect(mockGetProjectLicensesInternal).toHaveBeenCalledWith(path);
   });
 
-  it("should format each returned licence", async () => {
+  it("should format each returned license", async () => {
     const licenses = [getNewMockedLicense(), getNewMockedLicense(), getNewMockedLicense()];
 
     mockGetProjectLicensesInternal.mockResolvedValue(licenses);
@@ -55,7 +55,7 @@ describe("getLicenseFileText", () => {
       { name: undefined, value: os.EOL }
     ] as { name: LineEnding; value: string }[]
   ).forEach(lineEnding =>
-    it(`should format each returned licence with the appropriate line ending for ${lineEnding.name}`, async () => {
+    it(`should format each returned license with the appropriate line ending for ${lineEnding.name}`, async () => {
       const licenses = [getNewMockedLicense(), getNewMockedLicense(), getNewMockedLicense()];
 
       mockGetProjectLicensesInternal.mockResolvedValue(licenses);
