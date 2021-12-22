@@ -4,7 +4,7 @@ import { License } from "../models/license";
 import console from "../utils/console.utils";
 import { doesFileExist, doesFolderExist, readFileAsync } from "../utils/file.utils";
 import { getProject, Project } from "../utils/license.utils";
-import { PackageJson, readPackageJson } from "../utils/packageJson.utils";
+import { readPackageJson } from "../utils/packageJson.utils";
 
 const UTF8 = "utf-8";
 
@@ -84,8 +84,16 @@ const flattenDependencyMapToLicenseArray = (dependencyLicenses: Map<string, stri
 };
 
 const getCurrentProjectIdentifier = async (pathToPackageJson: string) => {
-  const packageJson: PackageJson = await readPackageJson(pathToPackageJson);
+  const { name, version } = await readPackageJson(pathToPackageJson);
 
-  const currentProjectIdentifier = `${packageJson.name}@${packageJson.version}`;
+  if (!name) {
+    throw new Error('Cannot find the "name" key in the package.json!');
+  }
+
+  if (!version) {
+    throw new Error('Cannot find the "version" key in the package.json!');
+  }
+
+  const currentProjectIdentifier = `${name}@${version}`;
   return currentProjectIdentifier;
 };
