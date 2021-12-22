@@ -1,4 +1,7 @@
 {
+  "name": "all-have-licenses",
+  "description": "All dependencies in this project have a license file",
+  "version": "1.0.0",
   "dependencies": {
     "is-string": "^1.0.7",
     "is-windows": "^1.0.2",

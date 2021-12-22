@@ -1,4 +1,7 @@
 {
+  "name": "missing-license-file",
+  "description": "A dependency in this project (casual) is missing a license file so should fallback to the readme",
+  "version": "1.0.0",
   "dependencies": {
     "casual": "^1.6.2",
     "is-string": "^1.0.7",
