@@ -26,6 +26,8 @@ If either required flag is omitted the CLI will prompt you for the inputs.
 
 If you don't supply an input file, and the CLI is able to detect a package.json in the folder you run the command from, then it will allow you to run the command using the detected file.
 
+To disable the spinner which appears in the terminal while the file is being generated you can also pass in the `--no-spinner` flag.
+
 ## Installation and Usage (Programmatic use)
 
 ```
