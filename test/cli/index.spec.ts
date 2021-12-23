@@ -22,6 +22,7 @@ jest.mock("../../src/cli/spinner", () => ({
 const mockInputResolve = jest.fn();
 const mockOutputResolve = jest.fn();
 const mockEolResolve = jest.fn();
+const mockNoSpinner = jest.fn();
 
 jest.mock("../../src/cli/args/input.ts", () => ({
   Input: function () {
@@ -38,6 +39,12 @@ jest.mock("../../src/cli/args/output.ts", () => ({
 jest.mock("../../src/cli/args/eol.ts", () => ({
   Eol: function () {
     return { resolve: mockEolResolve };
+  }
+}));
+
+jest.mock("../../src/cli/args/no-spinner.ts", () => ({
+  NoSpinner: function () {
+    return { resolve: mockNoSpinner };
   }
 }));
 
@@ -128,10 +135,18 @@ describe("cli", () => {
     });
   });
 
-  it("should start the spinner", async () => {
+  it("should start the spinner if noSpinner is false", async () => {
     await main(["", "", "--input", "any input path", "--output", "any output path"]);
 
     expect(mockedStartSpinner).toHaveBeenCalledTimes(1);
+  });
+
+  it("should not start the spinner if noSpinner is true", async () => {
+    mockNoSpinner.mockReturnValue(true);
+
+    await main(["", "", "--input", "any input path", "--output", "any output path"]);
+
+    expect(mockedStartSpinner).toHaveBeenCalledTimes(0);
   });
 
   it("should call generateLicenseFile with value from the input resolver", async () => {
