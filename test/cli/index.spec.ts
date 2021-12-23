@@ -1,7 +1,7 @@
 import arg, { Result } from "arg";
 import { mocked } from "ts-jest/utils";
 import { ArgumentsWithAliases, argumentsWithAliases } from "../../src/cli/cli-arguments";
-import { cli } from "../../src/cli/index";
+import { main } from "../../src/cli/index";
 import { spinner } from "../../src/cli/spinner";
 import { generateLicenseFile } from "../../src/generateLicenseFile";
 
@@ -69,7 +69,7 @@ describe("cli", () => {
     it("should pass argumentsWithAliases to the arg library", async () => {
       const args = ["", "", "--input", "any input path", "--output", "any output path"];
 
-      await cli(args);
+      await main(args);
 
       const firstCallFirstArg = mockedArg.mock.calls[0][0];
       expect(firstCallFirstArg).toEqual(argumentsWithAliases);
@@ -79,7 +79,7 @@ describe("cli", () => {
       const allArgs = ["", "", "--input", "any input path", "--output", "any output path"];
       const givenUserArgs = allArgs.slice(2);
 
-      await cli(allArgs);
+      await main(allArgs);
 
       const firstCallSecondArg = mockedArg.mock.calls[0][1];
       const givenRawArgs = firstCallSecondArg?.argv;
@@ -99,7 +99,7 @@ describe("cli", () => {
 
       mockedArg.mockReturnValue(parsedArgResponse);
 
-      await cli(allArgs);
+      await main(allArgs);
 
       expect(mockInputResolve).toHaveBeenCalledWith(parsedArgResponse);
     });
@@ -114,7 +114,7 @@ describe("cli", () => {
 
       mockedArg.mockReturnValue(parsedArgResponse);
 
-      await cli(allArgs);
+      await main(allArgs);
 
       expect(mockOutputResolve).toHaveBeenCalledWith(parsedArgResponse);
     });
@@ -129,14 +129,14 @@ describe("cli", () => {
 
       mockedArg.mockReturnValue(parsedArgResponse);
 
-      await cli(allArgs);
+      await main(allArgs);
 
       expect(mockEolResolve).toHaveBeenCalledWith(parsedArgResponse);
     });
   });
 
   it("should start the spinner if noSpinner is false", async () => {
-    await cli(["", "", "--input", "any input path", "--output", "any output path"]);
+    await main(["", "", "--input", "any input path", "--output", "any output path"]);
 
     expect(mockedStartSpinner).toHaveBeenCalledTimes(1);
   });
@@ -144,7 +144,7 @@ describe("cli", () => {
   it("should not start the spinner if noSpinner is true", async () => {
     mockNoSpinner.mockReturnValue(true);
 
-    await cli(["", "", "--input", "any input path", "--output", "any output path"]);
+    await main(["", "", "--input", "any input path", "--output", "any output path"]);
 
     expect(mockedStartSpinner).toHaveBeenCalledTimes(0);
   });
@@ -152,7 +152,7 @@ describe("cli", () => {
   it("should call generateLicenseFile with value from the input resolver", async () => {
     mockInputResolve.mockResolvedValue("resolved input value");
 
-    await cli(["", "", "--input", "any input path", "--output", "any output path"]);
+    await main(["", "", "--input", "any input path", "--output", "any output path"]);
 
     const firstCallFirstArg = mockedGenerateLicenseFile.mock.calls[0][0];
     expect(firstCallFirstArg).toBe("resolved input value");
@@ -161,7 +161,7 @@ describe("cli", () => {
   it("should call generateLicenseFile with value from the output resolver", async () => {
     mockOutputResolve.mockResolvedValue("resolved output value");
 
-    await cli(["", "", "--input", "any input path", "--output", "any output path"]);
+    await main(["", "", "--input", "any input path", "--output", "any output path"]);
 
     const firstCallSecondArg = mockedGenerateLicenseFile.mock.calls[0][1];
     expect(firstCallSecondArg).toBe("resolved output value");
@@ -170,20 +170,20 @@ describe("cli", () => {
   it("should call generateLicenseFile with value from the eol resolver", async () => {
     mockEolResolve.mockResolvedValue("resolved eol value");
 
-    await cli(["", "", "--input", "any input path", "--output", "any output path"]);
+    await main(["", "", "--input", "any input path", "--output", "any output path"]);
 
     const firstCallThirdArg = mockedGenerateLicenseFile.mock.calls[0][2];
     expect(firstCallThirdArg).toBe("resolved eol value");
   });
 
   it("should stop the spinner if the generateLicenseFile call succeeds", async () => {
-    await cli(["", "", "--input", "any input path", "--output", "any output path"]);
+    await main(["", "", "--input", "any input path", "--output", "any output path"]);
 
     expect(mockedStopSpinner).toHaveBeenCalledTimes(1);
   });
 
   it("should not fail the spinner if the generateLicenseFile call succeeds", async () => {
-    await cli(["", "", "--input", "any input path", "--output", "any output path"]);
+    await main(["", "", "--input", "any input path", "--output", "any output path"]);
 
     expect(mockedFailSpinner).toHaveBeenCalledTimes(0);
   });
@@ -192,7 +192,7 @@ describe("cli", () => {
     mockedGenerateLicenseFile.mockReset();
     mockedGenerateLicenseFile.mockRejectedValue(new Error("any error"));
 
-    await cli(["", "", "--input", "any input path", "--output", "any output path"]);
+    await main(["", "", "--input", "any input path", "--output", "any output path"]);
 
     expect(mockedFailSpinner).toHaveBeenCalledTimes(1);
   });
@@ -201,7 +201,7 @@ describe("cli", () => {
     mockedGenerateLicenseFile.mockReset();
     mockedGenerateLicenseFile.mockRejectedValue(new Error("any error"));
 
-    await cli(["", "", "--input", "any input path", "--output", "any output path"]);
+    await main(["", "", "--input", "any input path", "--output", "any output path"]);
 
     expect(mockedFailSpinner).toHaveBeenCalledWith("any error");
   });
@@ -210,7 +210,7 @@ describe("cli", () => {
     mockedGenerateLicenseFile.mockReset();
     mockedGenerateLicenseFile.mockRejectedValue("This string is not an error");
 
-    await cli(["", "", "--input", "any input path", "--output", "any output path"]);
+    await main(["", "", "--input", "any input path", "--output", "any output path"]);
 
     expect(mockedFailSpinner).toHaveBeenCalledWith("This string is not an error");
   });
@@ -219,7 +219,7 @@ describe("cli", () => {
     mockedGenerateLicenseFile.mockReset();
     mockedGenerateLicenseFile.mockRejectedValue(undefined);
 
-    await cli(["", "", "--input", "any input path", "--output", "any output path"]);
+    await main(["", "", "--input", "any input path", "--output", "any output path"]);
 
     expect(mockedFailSpinner).toHaveBeenCalledWith("Unknown error");
   });
@@ -227,7 +227,7 @@ describe("cli", () => {
   it("should not stop the spinner if the generateLicenseFile call throws", async () => {
     mockedGenerateLicenseFile.mockRejectedValue(new Error("any error"));
 
-    await cli(["", "", "--input", "any input path", "--output", "any output path"]);
+    await main(["", "", "--input", "any input path", "--output", "any output path"]);
 
     expect(mockedStopSpinner).toHaveBeenCalledTimes(0);
   });

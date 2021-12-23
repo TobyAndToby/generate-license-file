@@ -7,7 +7,15 @@ import { Output } from "./args/output";
 import { ArgumentsWithAliases, argumentsWithAliases, CliOptions } from "./cli-arguments";
 import { spinner } from "./spinner";
 
-export async function cli(args: string[]): Promise<void> {
+export async function main(args: string[]): Promise<void> {
+  try {
+    await cli(args);
+  } catch (e) {
+    spinner.fail(e?.message ?? e ?? "Unknown error");
+  }
+}
+
+async function cli(args: string[]) {
   const givenUserInputs = parseUserInputs(args);
   const { input, output, eol, noSpinner } = await promptForMissingOptions(givenUserInputs);
 
@@ -15,12 +23,8 @@ export async function cli(args: string[]): Promise<void> {
     spinner.start();
   }
 
-  try {
-    await generateLicenseFile(input, output, eol);
-    spinner.stop();
-  } catch (e) {
-    spinner.fail(e?.message ?? e ?? "Unknown error");
-  }
+  await generateLicenseFile(input, output, eol);
+  spinner.stop();
 }
 
 function parseUserInputs(rawArgs: string[]): Result<ArgumentsWithAliases> {
