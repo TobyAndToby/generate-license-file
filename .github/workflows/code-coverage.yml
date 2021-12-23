@@ -15,9 +15,18 @@ jobs:
       with:
         node-version: 16
         registry-url: https://registry.npmjs.org/
-    - run: npm ci
-    - run: npm run build
-    - run: npm run test:ci
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Run ESLint
+      run: npx eslint ./src --max-warnings 0
+
+    - name: Build
+      run: npm run build
+    
+    - name: Run Tests
+      run: npm run test:ci
     
     - name: Codecov
       uses: codecov/codecov-action@v2.1.0
