@@ -1,8 +1,8 @@
 import { doesFileExist, readFileAsync } from "./file.utils";
 
 export interface PackageJson {
-  name: string;
-  version: string;
+  name?: string;
+  version?: string;
 }
 
 export const readPackageJson = async (pathToPackageJson: string): Promise<PackageJson> => {

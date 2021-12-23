@@ -218,4 +218,26 @@ describe("getProjectLicensesInternal", () => {
     const firstCallFirstArg = mockReadPackageJson.mock.calls[0][0];
     expect(firstCallFirstArg).toBe(expectedPackageJsonPath);
   });
+
+  it("should throw if there's no name key in the given package.json", async () => {
+    mockReadPackageJson.mockReset();
+    mockReadPackageJson.mockResolvedValue({
+      version: "1.2.3"
+    });
+
+    await expect(getProjectLicensesInternal(packageJsonPath)).rejects.toThrow(
+      'Cannot find the "name" key in the package.json!'
+    );
+  });
+
+  it("should throw if there's no version key in the given package.json", async () => {
+    mockReadPackageJson.mockReset();
+    mockReadPackageJson.mockResolvedValue({
+      name: "test-project"
+    });
+
+    await expect(getProjectLicensesInternal(packageJsonPath)).rejects.toThrow(
+      'Cannot find the "version" key in the package.json!'
+    );
+  });
 });
