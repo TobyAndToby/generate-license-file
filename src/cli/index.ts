@@ -7,15 +7,15 @@ import { Output } from "./args/output";
 import { ArgumentsWithAliases, argumentsWithAliases, CliOptions } from "./cli-arguments";
 import { spinner } from "./spinner";
 
-export async function cli(args: string[]): Promise<void> {
+export async function main(args: string[]): Promise<void> {
   try {
-    await runCli(args);
+    await cli(args);
   } catch (e) {
     spinner.fail(e?.message ?? e ?? "Unknown error");
   }
 }
 
-async function runCli(args: string[]) {
+async function cli(args: string[]) {
   const givenUserInputs = parseUserInputs(args);
   const { input, output, eol, noSpinner } = await promptForMissingOptions(givenUserInputs);
 
