@@ -6,6 +6,7 @@ import { NoSpinner } from "./args/no-spinner";
 import { Output } from "./args/output";
 import { ArgumentsWithAliases, argumentsWithAliases, CliOptions } from "./cli-arguments";
 import { spinner } from "./spinner";
+import { printPackageVersion } from "./version";
 
 export async function main(args: string[]): Promise<void> {
   try {
@@ -17,6 +18,12 @@ export async function main(args: string[]): Promise<void> {
 
 async function cli(args: string[]) {
   const givenUserInputs = parseUserInputs(args);
+
+  if (isRequestingVersion(givenUserInputs)) {
+    printPackageVersion();
+    return;
+  }
+
   const { input, output, eol, noSpinner } = await promptForMissingOptions(givenUserInputs);
 
   if (!noSpinner) {
@@ -31,6 +38,10 @@ function parseUserInputs(rawArgs: string[]): Result<ArgumentsWithAliases> {
   return arg(argumentsWithAliases, {
     argv: rawArgs.slice(2)
   });
+}
+
+function isRequestingVersion(args: Result<ArgumentsWithAliases>) {
+  return args["--version"] || args["-v"];
 }
 
 async function promptForMissingOptions(options: Result<ArgumentsWithAliases>): Promise<CliOptions> {
