@@ -8,3 +8,7 @@ indent_style = space
 indent_size = 2
 end_of_line = crlf
 charset = utf-8
+
+# e2e snapshot files
+[expected-results/**]
+end_of_line = unset

@@ -7,5 +7,8 @@
     "is-windows": "^1.0.2",
     "lodash.isequal": "^4.5.0",
     "lodash.isfunction": "^3.0.9"
+  },
+  "devDependencies": {
+    "generate-license-file": "file:../../.."
   }
 }

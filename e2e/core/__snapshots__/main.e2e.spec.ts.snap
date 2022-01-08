@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`main getProjectLicenses should match snapshot for: ./all-have-licenses/package.json 1`] = `
+exports[`main getProjectLicenses should match snapshot for: ../test-projects/all-have-licenses/package.json 1`] = `
 Array [
   License {
     "content": "MIT License
@@ -168,7 +168,7 @@ terms above.
 ]
 `;
 
-exports[`main getProjectLicenses should match snapshot for: ./missing-license-file/package.json 1`] = `
+exports[`main getProjectLicenses should match snapshot for: ../test-projects/missing-license-file/package.json 1`] = `
 Array [
   License {
     "content": "## Fake data generator [![Build Status](https://travis-ci.org/boo1ean/casual.svg?branch=master)](https://travis-ci.org/boo1ean/casual)
