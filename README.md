@@ -37,7 +37,7 @@ module.exports = {
     new LicenseFilePlugin({
       outputFileName: "third-party-licenses.txt",
       outputFolder: "./", // Relative to your build output directory
-      projectFolder: "./", // Relative to your Webpack context directory
+      pathToPackageJson: "./package.json",
       isDev: false, // When true, uses placeholder content to reduce compilation time
       lineEnding: undefined // Can be 'windows' or 'posix'. If omitted, the system default will be used
     })
