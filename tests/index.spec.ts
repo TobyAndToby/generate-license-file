@@ -2,7 +2,7 @@ import { mocked } from "ts-jest/utils";
 import { Compiler } from "webpack";
 import { compilationTapFactory } from "../src/compilationTapFactory";
 import { defaultOptions } from "../src/defaultOptions";
-import LicenseFilePlugin from "../src/index";
+import { LicenseFilePlugin } from "../src/index";
 import { Options } from "../src/options";
 
 jest.mock("../src/compilationTapFactory", () => {
