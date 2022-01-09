@@ -1,5 +1,5 @@
 import { Compilation, Compiler } from "webpack";
-import LicenseFilePlugin from ".";
+import { LicenseFilePlugin } from ".";
 import { asyncProcessAssetTapFactory } from "./asyncProcessAssetTapFactory";
 import { Options } from "./options";
 

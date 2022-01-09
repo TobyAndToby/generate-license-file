@@ -1,7 +1,7 @@
 import { getLicenseFileText } from "generate-license-file";
 import { join } from "path/posix";
 import { Compilation, Compiler, WebpackError } from "webpack";
-import LicenseFilePlugin from ".";
+import { LicenseFilePlugin } from ".";
 import { devImplementation } from "./devImplementation";
 import { Options } from "./options";
 

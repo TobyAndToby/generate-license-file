@@ -3,7 +3,7 @@ import { compilationTapFactory } from "./compilationTapFactory";
 import { defaultOptions } from "./defaultOptions";
 import { Options } from "./options";
 
-class LicenseFilePlugin {
+export class LicenseFilePlugin {
   private pluginName = LicenseFilePlugin.name;
 
   private options: Options;
@@ -19,4 +19,4 @@ class LicenseFilePlugin {
   }
 }
 
-export = LicenseFilePlugin;
+export { LineEnding } from "generate-license-file";
