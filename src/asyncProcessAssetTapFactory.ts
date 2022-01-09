@@ -16,22 +16,14 @@ export const asyncProcessAssetTapFactory = (
 ): AssetProcessingAsyncTap => {
   const pluginName = LicenseFilePlugin.name;
 
-  const {
-    outputFileName,
-    outputFolder,
-    isDev,
-    lineEnding,
-    projectFolder: configuredProjectFolder
-  } = options;
+  const { outputFileName, outputFolder, isDev, lineEnding, pathToPackageJson } = options;
 
   const RawSource = compiler.webpack.sources.RawSource;
 
   return (_, resolve) => {
-    const projectFolder = configuredProjectFolder ?? compiler.context;
-
     const implementation = !!isDev ? devImplementation : getLicenseFileText;
 
-    implementation(projectFolder, lineEnding)
+    implementation(pathToPackageJson, lineEnding)
       .then(text => {
         const outputPath = join(outputFolder, outputFileName);
         compilation.emitAsset(outputPath, new RawSource(text));

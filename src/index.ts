@@ -3,6 +3,9 @@ import { compilationTapFactory } from "./compilationTapFactory";
 import { defaultOptions } from "./defaultOptions";
 import { Options } from "./options";
 
+/**
+ * Webpack plugin to generate a text file asset containing all of the licenses for your production third-party dependencies.
+ */
 export class LicenseFilePlugin {
   private pluginName = LicenseFilePlugin.name;
 

@@ -2,30 +2,40 @@ import { LineEnding } from "generate-license-file";
 
 export interface Options {
   /**
-   * The file name for the file containing the licenses.
+   * The name of the asset file containing the licenses.
+   *
+   * @default "third-party-licenses.txt"
    */
   outputFileName: string;
 
   /**
-   * The folder path within the project's output folder where the licenses file will be written.
+   * The path within the project's output folder where the generated file will be written.
+   *
+   * @default "./"
+   * @example "./assets"
    */
   outputFolder: string;
 
   /**
-   * The folder containing the project's package.json.
-   * Defaults to the webpack context directory which is usually sufficient for most setups.
+   * Path to the project's package.json.
+   *
+   * @default "./package.json".
    */
-  projectFolder: string;
+  pathToPackageJson: string;
 
   /**
-   * Configures the plugin to use a dev-only placeholder text value.
+   * Configures the plugin to use placeholder text in the output file.
    * Useful to help speed up dev compile times.
+   *
+   * @default false
    */
   isDev: boolean;
 
   /**
    * The line ending to use when writing the licenses file.
    * Defaults to the line ending of the operating system.
+   *
+   * @default undefined
    */
   lineEnding?: LineEnding;
 }
