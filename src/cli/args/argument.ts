@@ -7,6 +7,7 @@ export type MultipleChoiceOptions<T> = {
 };
 
 export abstract class Argument<T> {
+  abstract parse(args: Result<ArgumentsWithAliases>): Promise<T>;
   abstract resolve(args: Result<ArgumentsWithAliases>): Promise<T>;
 
   protected async promptForString(question: string, initialValue: string): Promise<string> {

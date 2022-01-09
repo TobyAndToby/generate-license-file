@@ -24,4 +24,16 @@ export class Eol extends Argument<LineEnding | undefined> {
 
     return answer;
   }
+
+  public async parse(args: Result<ArgumentsWithAliases>): Promise<LineEnding | undefined> {
+    const eol = args["--eol"];
+
+    if (!isValidEol(eol)) {
+      throw new Error(
+        `Invalid line ending given: '${eol}'. Possible values are 'windows', 'posix'. Omit the --eol flag to use the system default.`
+      );
+    }
+
+    return eol;
+  }
 }
