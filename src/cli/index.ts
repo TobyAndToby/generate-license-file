@@ -53,6 +53,5 @@ async function promptForMissingOptions(options: Result<ArgumentsWithAliases>): P
 
 async function printPackageVersion(): Promise<void> {
   const { version } = await readPackageJson(join(__dirname, "../../package.json"));
-  global.console.log(`v${version}`);
   console.log(`v${version}`);
 }
