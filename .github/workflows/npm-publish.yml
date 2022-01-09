@@ -20,6 +20,12 @@ jobs:
       - run: npm ci
       - run: npm run build
       - run: npm run test:ci
-      - run: npm publish --access public
+      
+      - uses: tobysmith568/npm-publish-latest-tag@v1
+        id: latest_tag
+        with:
+          package-json: ./package.json
+
+      - run: npm publish --access public --tag ${{ steps.latest_tag.outputs.latest-tag }}
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
