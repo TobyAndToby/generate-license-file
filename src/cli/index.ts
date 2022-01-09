@@ -1,12 +1,14 @@
 import arg, { Result } from "arg";
+import { join } from "path";
 import { generateLicenseFile } from "../generateLicenseFile";
+import console from "../utils/console.utils";
+import { readPackageJson } from "../utils/packageJson.utils";
 import { Eol } from "./args/eol";
 import { Input } from "./args/input";
 import { NoSpinner } from "./args/no-spinner";
 import { Output } from "./args/output";
 import { ArgumentsWithAliases, argumentsWithAliases, CliOptions } from "./cli-arguments";
 import { spinner } from "./spinner";
-import { printPackageVersion } from "./version";
 
 export async function main(args: string[]): Promise<void> {
   try {
@@ -19,7 +21,7 @@ export async function main(args: string[]): Promise<void> {
 async function cli(args: string[]) {
   const givenUserInputs = parseUserInputs(args);
 
-  if (isRequestingVersion(givenUserInputs)) {
+  if (givenUserInputs["--version"]) {
     printPackageVersion();
     return;
   }
@@ -40,10 +42,6 @@ function parseUserInputs(rawArgs: string[]): Result<ArgumentsWithAliases> {
   });
 }
 
-function isRequestingVersion(args: Result<ArgumentsWithAliases>) {
-  return args["--version"] || args["-v"];
-}
-
 async function promptForMissingOptions(options: Result<ArgumentsWithAliases>): Promise<CliOptions> {
   const input = await new Input().resolve(options);
   const output = await new Output().resolve(options);
@@ -51,4 +49,9 @@ async function promptForMissingOptions(options: Result<ArgumentsWithAliases>): P
   const noSpinner = await new NoSpinner().resolve(options);
 
   return { input, output, eol, noSpinner };
+}
+
+async function printPackageVersion(): Promise<void> {
+  const { version } = await readPackageJson(join(__dirname, "../../package.json"));
+  console.log(`v${version}`);
 }
