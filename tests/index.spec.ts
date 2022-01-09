@@ -96,9 +96,9 @@ describe("LicenseFilePlugin", () => {
       expect(firstCallFirstArg.outputFolder).toEqual(options.outputFolder);
     });
 
-    it("should call the compilationTapFactory with the given projectFolder", () => {
+    it("should call the compilationTapFactory with the given pathToPackageJson", () => {
       const options: Partial<Options> = {
-        projectFolder: "project folder"
+        pathToPackageJson: "./package.json"
       };
 
       const licenseFilePlugin = new LicenseFilePlugin(options);
@@ -106,7 +106,7 @@ describe("LicenseFilePlugin", () => {
       licenseFilePlugin.apply(compiler);
 
       const firstCallFirstArg = mockCompilationTapFactory.mock.calls[0][0];
-      expect(firstCallFirstArg.projectFolder).toEqual(options.projectFolder);
+      expect(firstCallFirstArg.pathToPackageJson).toEqual(options.pathToPackageJson);
     });
 
     it("should call the compilationTapFactory with the given isDev", () => {

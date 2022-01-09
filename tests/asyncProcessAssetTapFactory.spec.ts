@@ -100,14 +100,14 @@ describe("asyncProcessAssetTapFactory", () => {
       expect(mockDevImplementation).toHaveBeenCalledTimes(0);
     });
 
-    it("should call generate-license-file with the project folder", () => {
-      options.projectFolder = "project folder";
+    it("should call generate-license-file with the path to the package.json", () => {
+      options.pathToPackageJson = "./package.json";
 
       const assetProcessingAsyncTap = asyncProcessAssetTapFactory(options, compiler, compilation);
       assetProcessingAsyncTap(undefined, () => undefined);
 
       const firstCallFirstArg = mockGetLicenseFileText.mock.calls[0][0];
-      expect(firstCallFirstArg).toBe(options.projectFolder);
+      expect(firstCallFirstArg).toBe(options.pathToPackageJson);
     });
 
     (["posix", "windows"] as LineEnding[]).forEach(lineEnding =>
