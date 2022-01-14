@@ -22,7 +22,7 @@ async function cli(args: string[]) {
   const givenUserInputs = parseUserInputs(args);
 
   if (givenUserInputs && givenUserInputs["--version"]) {
-    printPackageVersion();
+    await printPackageVersion();
     return;
   }
 
