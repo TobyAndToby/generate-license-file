@@ -7,4 +7,9 @@ export class NoSpinner extends Argument<boolean> {
     const inputtedNoSpinner = args["--no-spinner"];
     return Promise.resolve(inputtedNoSpinner ?? false);
   }
+
+  public parse(args: Result<ArgumentsWithAliases>): Promise<boolean> {
+    const inputtedNoSpinner = args["--no-spinner"];
+    return Promise.resolve(inputtedNoSpinner ?? false);
+  }
 }

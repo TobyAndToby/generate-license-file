@@ -30,32 +30,37 @@ jest.mock("../../src/utils/packageJson.utils", () => ({
   readPackageJson: jest.fn()
 }));
 
+const mockInputParse = jest.fn();
+const mockOutputParse = jest.fn();
+const mockEolParse = jest.fn();
+const mockNoSpinnerParse = jest.fn();
+
 const mockInputResolve = jest.fn();
 const mockOutputResolve = jest.fn();
 const mockEolResolve = jest.fn();
-const mockNoSpinner = jest.fn();
+const mockNoSpinnerResolve = jest.fn();
 
 jest.mock("../../src/cli/args/input.ts", () => ({
   Input: function () {
-    return { resolve: mockInputResolve };
+    return { parse: mockInputParse, resolve: mockInputResolve };
   }
 }));
 
 jest.mock("../../src/cli/args/output.ts", () => ({
   Output: function () {
-    return { resolve: mockOutputResolve };
+    return { parse: mockOutputParse, resolve: mockOutputResolve };
   }
 }));
 
 jest.mock("../../src/cli/args/eol.ts", () => ({
   Eol: function () {
-    return { resolve: mockEolResolve };
+    return { parse: mockEolParse, resolve: mockEolResolve };
   }
 }));
 
 jest.mock("../../src/cli/args/no-spinner.ts", () => ({
   NoSpinner: function () {
-    return { resolve: mockNoSpinner };
+    return { parse: mockNoSpinnerParse, resolve: mockNoSpinnerResolve };
   }
 }));
 
@@ -80,9 +85,7 @@ describe("cli", () => {
 
   describe("parseUserInputs", () => {
     it("should pass argumentsWithAliases to the arg library", async () => {
-      const args = ["", "", "--input", "any input path", "--output", "any output path"];
-
-      await main(args);
+      await main([]);
 
       const firstCallFirstArg = mockedArg.mock.calls[0][0];
       expect(firstCallFirstArg).toEqual(argumentsWithAliases);
@@ -101,40 +104,195 @@ describe("cli", () => {
     });
   });
 
-  describe("promptForMissingOptions", () => {
-    it("should give the parsed user args to the input resolver", async () => {
-      const allArgs = ["", "", "--input", "any input path", "--output", "any output path"];
+  describe("when --version is true", () => {
+    it("should print the version if the --version flag is provided", async () => {
+      mockedReadPackageJson.mockResolvedValue({ name: "test", version: "1.0.3" });
 
       const parsedArgResponse = {
-        "--input": "any input path",
-        "--output": "any output path"
+        "--version": true
       } as Result<ArgumentsWithAliases>;
 
       mockedArg.mockReturnValue(parsedArgResponse);
 
-      await main(allArgs);
+      await main(["", "", "--version"]);
+
+      expect(mockedConsoleLog).toHaveBeenCalledWith("v1.0.3");
+    });
+
+    it("should parse the package.json for the version if the --version flag is provided", async () => {
+      mockedReadPackageJson.mockResolvedValue({ name: "test", version: "1.0.3" });
+
+      const parsedArgResponse = {
+        "--version": true
+      } as Result<ArgumentsWithAliases>;
+
+      mockedArg.mockReturnValue(parsedArgResponse);
+
+      await main(["", "", "--version"]);
+
+      expect(mockedReadPackageJson).toHaveBeenCalledTimes(1);
+    });
+
+    it("should not generate a license file if the --version argument is provided", async () => {
+      mockedReadPackageJson.mockResolvedValue({ name: "test", version: "1.0.3" });
+
+      const parsedArgResponse = {
+        "--version": true,
+        "--input": "any input value",
+        "--output": "any output value"
+      } as Result<ArgumentsWithAliases>;
+
+      mockedArg.mockReturnValue(parsedArgResponse);
+
+      await main([
+        "",
+        "",
+        "--input",
+        "any input value",
+        "--output",
+        "any output value",
+        "--version"
+      ]);
+
+      expect(mockedGenerateLicenseFile).toBeCalledTimes(0);
+    });
+  });
+
+  describe("when --ci is false", () => {
+    let parsedArgResponse: Result<ArgumentsWithAliases>;
+
+    beforeEach(() => {
+      parsedArgResponse = {
+        "--ci": false
+      } as Result<ArgumentsWithAliases>;
+    });
+
+    it("should give the parsed user args to the resolve method on the argument classes", async () => {
+      mockedArg.mockReturnValue(parsedArgResponse);
+
+      await main([]);
 
       expect(mockInputResolve).toHaveBeenCalledWith(parsedArgResponse);
-    });
-
-    it("should give the parsed user args to the output resolver", async () => {
-      const allArgs = ["", "", "--input", "any input path", "--output", "any output path"];
-
-      const parsedArgResponse = {
-        "--input": "any input path",
-        "--output": "any output path"
-      } as Result<ArgumentsWithAliases>;
-
-      mockedArg.mockReturnValue(parsedArgResponse);
-
-      await main(allArgs);
-
       expect(mockOutputResolve).toHaveBeenCalledWith(parsedArgResponse);
+      expect(mockEolResolve).toHaveBeenCalledWith(parsedArgResponse);
+      expect(mockNoSpinnerResolve).toHaveBeenCalledWith(parsedArgResponse);
     });
 
-    it("should give the parsed user args to the eol resolver", async () => {
-      const allArgs = ["", "", "--input", "any input path", "--output", "any output path"];
+    it("should call generateLicenseFile with the values from the resolve method on the argument classes", async () => {
+      mockedArg.mockReturnValue(parsedArgResponse);
 
+      mockInputResolve.mockResolvedValue("resolved input value");
+      mockOutputResolve.mockResolvedValue("resolved output value");
+      mockEolResolve.mockResolvedValue("resolved eol value");
+
+      await main([]);
+
+      const firstCallFirstArg = mockedGenerateLicenseFile.mock.calls[0][0];
+      expect(firstCallFirstArg).toBe("resolved input value");
+
+      const firstCallSecondArg = mockedGenerateLicenseFile.mock.calls[0][1];
+      expect(firstCallSecondArg).toBe("resolved output value");
+
+      const firstCallThirdArg = mockedGenerateLicenseFile.mock.calls[0][2];
+      expect(firstCallThirdArg).toBe("resolved eol value");
+    });
+  });
+
+  describe("when --ci is true", () => {
+    let parsedArgResponse: Result<ArgumentsWithAliases>;
+
+    beforeEach(() => {
+      parsedArgResponse = {
+        "--ci": true
+      } as Result<ArgumentsWithAliases>;
+    });
+
+    it("should set no-spinner to true", async () => {
+      const mockedArgs = {
+        "--ci": true,
+        "--no-spinner": undefined
+      } as Result<ArgumentsWithAliases>;
+      mockedArg.mockReturnValue(mockedArgs);
+
+      await main([]);
+
+      expect(mockedArgs["--no-spinner"]).toBe(true);
+    });
+
+    it("should give the parsed user args to the parse method on the argument classes", async () => {
+      mockedArg.mockReturnValue(parsedArgResponse);
+
+      await main([]);
+
+      expect(mockInputParse).toHaveBeenCalledWith(parsedArgResponse);
+      expect(mockOutputParse).toHaveBeenCalledWith(parsedArgResponse);
+      expect(mockEolParse).toHaveBeenCalledWith(parsedArgResponse);
+      expect(mockNoSpinnerParse).toHaveBeenCalledWith(parsedArgResponse);
+    });
+
+    it("should set an exit code of 1 when the parse method on an argument class throws an error", async () => {
+      const mockedArgs = {
+        "--ci": true
+      } as Result<ArgumentsWithAliases>;
+      mockedArg.mockReturnValue(mockedArgs);
+
+      mockInputParse.mockRejectedValueOnce("Some problem");
+
+      await main([]);
+
+      expect(process.exitCode).toBe(1);
+    });
+
+    it("should call generateLicenseFile with the values from the parse methods on the argument classes", async () => {
+      mockedArg.mockReturnValue(parsedArgResponse);
+
+      mockInputParse.mockResolvedValue("resolved input value");
+      mockOutputParse.mockResolvedValue("resolved output value");
+      mockEolParse.mockResolvedValue("resolved eol value");
+
+      await main([]);
+
+      const firstCallFirstArg = mockedGenerateLicenseFile.mock.calls[0][0];
+      expect(firstCallFirstArg).toBe("resolved input value");
+
+      const firstCallSecondArg = mockedGenerateLicenseFile.mock.calls[0][1];
+      expect(firstCallSecondArg).toBe("resolved output value");
+
+      const firstCallThirdArg = mockedGenerateLicenseFile.mock.calls[0][2];
+      expect(firstCallThirdArg).toBe("resolved eol value");
+    });
+  });
+
+  describe("spinner", () => {
+    it("should start the spinner if noSpinner is false", async () => {
+      const parsedArgResponse = {
+        "--input": "any input path",
+        "--output": "any output path"
+      } as Result<ArgumentsWithAliases>;
+
+      mockedArg.mockReturnValue(parsedArgResponse);
+      mockNoSpinnerResolve.mockReturnValue(false);
+
+      await main([]);
+
+      expect(mockedStartSpinner).toHaveBeenCalledTimes(1);
+    });
+
+    it("should not start the spinner if noSpinner is true", async () => {
+      const parsedArgResponse = {
+        "--input": "any input path",
+        "--output": "any output path"
+      } as Result<ArgumentsWithAliases>;
+
+      mockedArg.mockReturnValue(parsedArgResponse);
+      mockNoSpinnerResolve.mockReturnValue(true);
+
+      await main([]);
+
+      expect(mockedStartSpinner).toHaveBeenCalledTimes(0);
+    });
+
+    it("should stop the spinner if the generateLicenseFile call succeeds", async () => {
       const parsedArgResponse = {
         "--input": "any input path",
         "--output": "any output path"
@@ -142,150 +300,84 @@ describe("cli", () => {
 
       mockedArg.mockReturnValue(parsedArgResponse);
 
-      await main(allArgs);
+      await main([]);
 
-      expect(mockEolResolve).toHaveBeenCalledWith(parsedArgResponse);
+      expect(mockedStopSpinner).toHaveBeenCalledTimes(1);
     });
-  });
 
-  it("should start the spinner if noSpinner is false", async () => {
-    await main(["", "", "--input", "any input path", "--output", "any output path"]);
+    it("should not fail the spinner if the generateLicenseFile call succeeds", async () => {
+      const parsedArgResponse = {
+        "--input": "any input path",
+        "--output": "any output path"
+      } as Result<ArgumentsWithAliases>;
 
-    expect(mockedStartSpinner).toHaveBeenCalledTimes(1);
-  });
+      mockedArg.mockReturnValue(parsedArgResponse);
 
-  it("should not start the spinner if noSpinner is true", async () => {
-    mockNoSpinner.mockReturnValue(true);
+      await main([]);
 
-    await main(["", "", "--input", "any input path", "--output", "any output path"]);
+      expect(mockedFailSpinner).toHaveBeenCalledTimes(0);
+    });
 
-    expect(mockedStartSpinner).toHaveBeenCalledTimes(0);
-  });
+    it("should fail the spinner if the generateLicenseFile call throws", async () => {
+      mockedGenerateLicenseFile.mockReset();
+      mockedGenerateLicenseFile.mockRejectedValue(new Error("any error"));
 
-  it("should call generateLicenseFile with value from the input resolver", async () => {
-    mockInputResolve.mockResolvedValue("resolved input value");
+      await main([]);
 
-    await main(["", "", "--input", "any input path", "--output", "any output path"]);
+      expect(mockedFailSpinner).toHaveBeenCalledTimes(1);
+    });
 
-    const firstCallFirstArg = mockedGenerateLicenseFile.mock.calls[0][0];
-    expect(firstCallFirstArg).toBe("resolved input value");
-  });
+    it("should fail the spinner with the error message it an error is thrown", async () => {
+      const parsedArgResponse = {
+        "--input": "any input path",
+        "--output": "any output path"
+      } as Result<ArgumentsWithAliases>;
 
-  it("should call generateLicenseFile with value from the output resolver", async () => {
-    mockOutputResolve.mockResolvedValue("resolved output value");
+      mockedArg.mockReturnValue(parsedArgResponse);
+      mockedGenerateLicenseFile.mockReset();
+      mockedGenerateLicenseFile.mockRejectedValue(new Error("any error"));
 
-    await main(["", "", "--input", "any input path", "--output", "any output path"]);
+      await main([]);
 
-    const firstCallSecondArg = mockedGenerateLicenseFile.mock.calls[0][1];
-    expect(firstCallSecondArg).toBe("resolved output value");
-  });
+      expect(mockedFailSpinner).toHaveBeenCalledWith("any error");
+    });
 
-  it("should call generateLicenseFile with value from the eol resolver", async () => {
-    mockEolResolve.mockResolvedValue("resolved eol value");
+    it("should fail the spinner with the thrown object if it's not an error", async () => {
+      const parsedArgResponse = {
+        "--input": "any input path",
+        "--output": "any output path"
+      } as Result<ArgumentsWithAliases>;
 
-    await main(["", "", "--input", "any input path", "--output", "any output path"]);
+      mockedArg.mockReturnValue(parsedArgResponse);
+      mockedGenerateLicenseFile.mockReset();
+      mockedGenerateLicenseFile.mockRejectedValue("This string is not an error");
 
-    const firstCallThirdArg = mockedGenerateLicenseFile.mock.calls[0][2];
-    expect(firstCallThirdArg).toBe("resolved eol value");
-  });
+      await main([]);
 
-  it("should stop the spinner if the generateLicenseFile call succeeds", async () => {
-    await main(["", "", "--input", "any input path", "--output", "any output path"]);
+      expect(mockedFailSpinner).toHaveBeenCalledWith("This string is not an error");
+    });
 
-    expect(mockedStopSpinner).toHaveBeenCalledTimes(1);
-  });
+    it("should fail the spinner with 'Unknown error' if the value thrown is falsy (undefined)", async () => {
+      const parsedArgResponse = {
+        "--input": "any input path",
+        "--output": "any output path"
+      } as Result<ArgumentsWithAliases>;
 
-  it("should not fail the spinner if the generateLicenseFile call succeeds", async () => {
-    await main(["", "", "--input", "any input path", "--output", "any output path"]);
+      mockedArg.mockReturnValue(parsedArgResponse);
+      mockedGenerateLicenseFile.mockReset();
+      mockedGenerateLicenseFile.mockRejectedValue(undefined);
 
-    expect(mockedFailSpinner).toHaveBeenCalledTimes(0);
-  });
+      await main([]);
 
-  it("should fail the spinner if the generateLicenseFile call throws", async () => {
-    mockedGenerateLicenseFile.mockReset();
-    mockedGenerateLicenseFile.mockRejectedValue(new Error("any error"));
+      expect(mockedFailSpinner).toHaveBeenCalledWith("Unknown error");
+    });
 
-    await main(["", "", "--input", "any input path", "--output", "any output path"]);
+    it("should not stop the spinner if the generateLicenseFile call throws", async () => {
+      mockedGenerateLicenseFile.mockRejectedValue(new Error("any error"));
 
-    expect(mockedFailSpinner).toHaveBeenCalledTimes(1);
-  });
+      await main([]);
 
-  it("should fail the spinner with the error message it an error is thrown", async () => {
-    mockedGenerateLicenseFile.mockReset();
-    mockedGenerateLicenseFile.mockRejectedValue(new Error("any error"));
-
-    await main(["", "", "--input", "any input path", "--output", "any output path"]);
-
-    expect(mockedFailSpinner).toHaveBeenCalledWith("any error");
-  });
-
-  it("should fail the spinner with the thrown object if it's not an error", async () => {
-    mockedGenerateLicenseFile.mockReset();
-    mockedGenerateLicenseFile.mockRejectedValue("This string is not an error");
-
-    await main(["", "", "--input", "any input path", "--output", "any output path"]);
-
-    expect(mockedFailSpinner).toHaveBeenCalledWith("This string is not an error");
-  });
-
-  it("should fail the spinner with 'Unknown error' if the value thrown is falsy (undefined)", async () => {
-    mockedGenerateLicenseFile.mockReset();
-    mockedGenerateLicenseFile.mockRejectedValue(undefined);
-
-    await main(["", "", "--input", "any input path", "--output", "any output path"]);
-
-    expect(mockedFailSpinner).toHaveBeenCalledWith("Unknown error");
-  });
-
-  it("should not stop the spinner if the generateLicenseFile call throws", async () => {
-    mockedGenerateLicenseFile.mockRejectedValue(new Error("any error"));
-
-    await main(["", "", "--input", "any input path", "--output", "any output path"]);
-
-    expect(mockedStopSpinner).toHaveBeenCalledTimes(0);
-  });
-
-  it("should print the version if the --version flag is provided", async () => {
-    mockedReadPackageJson.mockResolvedValue({ name: "test", version: "1.0.3" });
-
-    const parsedArgResponse = {
-      "--version": true
-    } as Result<ArgumentsWithAliases>;
-
-    mockedArg.mockReturnValue(parsedArgResponse);
-
-    await main(["", "", "--version"]);
-
-    expect(mockedConsoleLog).toHaveBeenCalledWith("v1.0.3");
-  });
-
-  it("should parse the package.json for the version if the --version flag is provided", async () => {
-    mockedReadPackageJson.mockResolvedValue({ name: "test", version: "1.0.3" });
-
-    const parsedArgResponse = {
-      "--version": true
-    } as Result<ArgumentsWithAliases>;
-
-    mockedArg.mockReturnValue(parsedArgResponse);
-
-    await main(["", "", "--version"]);
-
-    expect(mockedReadPackageJson).toHaveBeenCalledTimes(1);
-  });
-
-  it("should not generate a license file if the --version argument is provided", async () => {
-    mockedReadPackageJson.mockResolvedValue({ name: "test", version: "1.0.3" });
-
-    const parsedArgResponse = {
-      "--version": true,
-      "--input": "any input value",
-      "--output": "any output value"
-    } as Result<ArgumentsWithAliases>;
-
-    mockedArg.mockReturnValue(parsedArgResponse);
-
-    await main(["", "", "--input", "any input value", "--output", "any output value", "--version"]);
-
-    expect(mockedGenerateLicenseFile).toBeCalledTimes(0);
+      expect(mockedStopSpinner).toHaveBeenCalledTimes(0);
+    });
   });
 });

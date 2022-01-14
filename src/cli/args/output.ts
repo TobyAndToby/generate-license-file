@@ -34,4 +34,23 @@ export class Output extends Argument<string> {
 
     return output;
   }
+
+  public async parse(args: Result<ArgumentsWithAliases>): Promise<string> {
+    const output = args["--output"];
+    const allowOverwrite = args["--overwrite"];
+
+    if (!output) {
+      throw new Error("No --output argument given.");
+    }
+
+    const outputExists = await doesFileExist(output);
+
+    if (outputExists && !allowOverwrite) {
+      throw new Error(
+        `Given --output file already exists at '${output}'. Use --overwrite to allow overwriting.`
+      );
+    }
+
+    return output;
+  }
 }

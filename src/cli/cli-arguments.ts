@@ -10,6 +10,7 @@ export interface UserInputs {
   eol?: string;
   noSpinner?: boolean;
   version?: boolean;
+  ci?: boolean;
 }
 
 export interface CliOptions {
@@ -26,6 +27,7 @@ export interface ArgumentsWithAliases extends Spec {
   "--eol": typeof String;
   "--no-spinner": typeof Boolean;
   "--version": typeof Boolean;
+  "--ci": typeof Boolean;
   "-i": "--input";
   "-o": "--output";
   "-v": "--version";
@@ -38,6 +40,7 @@ export const argumentsWithAliases: ArgumentsWithAliases = {
   "--eol": String,
   "--no-spinner": Boolean,
   "--version": Boolean,
+  "--ci": Boolean,
   "-i": "--input",
   "-o": "--output",
   "-v": "--version"
