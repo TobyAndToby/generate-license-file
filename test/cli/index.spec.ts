@@ -4,6 +4,8 @@ import { ArgumentsWithAliases, argumentsWithAliases } from "../../src/cli/cli-ar
 import { main } from "../../src/cli/index";
 import { spinner } from "../../src/cli/spinner";
 import { generateLicenseFile } from "../../src/generateLicenseFile";
+import console from "../../src/utils/console.utils";
+import { readPackageJson } from "../../src/utils/packageJson.utils";
 
 jest.mock("../../src/generateLicenseFile", () => ({
   generateLicenseFile: jest.fn()
@@ -17,6 +19,15 @@ jest.mock("../../src/cli/spinner", () => ({
     stop: jest.fn(),
     fail: jest.fn()
   }
+}));
+
+jest.mock("../../src/utils/console.utils", () => ({
+  log: jest.fn(),
+  warn: jest.fn()
+}));
+
+jest.mock("../../src/utils/packageJson.utils", () => ({
+  readPackageJson: jest.fn()
 }));
 
 const mockInputParse = jest.fn();
@@ -59,6 +70,8 @@ describe("cli", () => {
   const mockedStartSpinner = mocked(spinner.start);
   const mockedStopSpinner = mocked(spinner.stop);
   const mockedFailSpinner = mocked(spinner.fail);
+  const mockedConsoleLog = mocked(console.log);
+  const mockedReadPackageJson = mocked(readPackageJson);
 
   beforeEach(() => {
     jest.resetAllMocks();
@@ -88,6 +101,60 @@ describe("cli", () => {
       const givenRawArgs = firstCallSecondArg?.argv;
 
       expect(givenRawArgs).toEqual(givenUserArgs);
+    });
+  });
+
+  describe("when --version is true", () => {
+    it("should print the version if the --version flag is provided", async () => {
+      mockedReadPackageJson.mockResolvedValue({ name: "test", version: "1.0.3" });
+
+      const parsedArgResponse = {
+        "--version": true
+      } as Result<ArgumentsWithAliases>;
+
+      mockedArg.mockReturnValue(parsedArgResponse);
+
+      await main(["", "", "--version"]);
+
+      expect(mockedConsoleLog).toHaveBeenCalledWith("v1.0.3");
+    });
+
+    it("should parse the package.json for the version if the --version flag is provided", async () => {
+      mockedReadPackageJson.mockResolvedValue({ name: "test", version: "1.0.3" });
+
+      const parsedArgResponse = {
+        "--version": true
+      } as Result<ArgumentsWithAliases>;
+
+      mockedArg.mockReturnValue(parsedArgResponse);
+
+      await main(["", "", "--version"]);
+
+      expect(mockedReadPackageJson).toHaveBeenCalledTimes(1);
+    });
+
+    it("should not generate a license file if the --version argument is provided", async () => {
+      mockedReadPackageJson.mockResolvedValue({ name: "test", version: "1.0.3" });
+
+      const parsedArgResponse = {
+        "--version": true,
+        "--input": "any input value",
+        "--output": "any output value"
+      } as Result<ArgumentsWithAliases>;
+
+      mockedArg.mockReturnValue(parsedArgResponse);
+
+      await main([
+        "",
+        "",
+        "--input",
+        "any input value",
+        "--output",
+        "any output value",
+        "--version"
+      ]);
+
+      expect(mockedGenerateLicenseFile).toBeCalledTimes(0);
     });
   });
 

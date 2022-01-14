@@ -1,5 +1,8 @@
 import arg, { Result } from "arg";
+import { join } from "path";
 import { generateLicenseFile } from "../generateLicenseFile";
+import console from "../utils/console.utils";
+import { readPackageJson } from "../utils/packageJson.utils";
 import { Eol } from "./args/eol";
 import { Input } from "./args/input";
 import { NoSpinner } from "./args/no-spinner";
@@ -18,6 +21,11 @@ export async function main(args: string[]): Promise<void> {
 
 async function cli(args: string[]) {
   const givenUserInputs = parseUserInputs(args);
+
+  if (givenUserInputs && givenUserInputs["--version"]) {
+    await printPackageVersion();
+    return;
+  }
 
   const { input, output, eol, noSpinner } = await parseArgumentsIntoOptions(givenUserInputs);
 
@@ -67,4 +75,9 @@ async function promptForMissingOptions(options: Result<ArgumentsWithAliases>): P
   const noSpinner = await new NoSpinner().resolve(options);
 
   return { input, output, eol, noSpinner };
+}
+
+async function printPackageVersion(): Promise<void> {
+  const { version } = await readPackageJson(join(__dirname, "../../package.json"));
+  console.log(`v${version}`);
 }
