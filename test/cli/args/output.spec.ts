@@ -147,4 +147,51 @@ describe("Output", () => {
       expect(mockPrompt).not.toBeCalledWith(expect.objectContaining({ type: "confirm" }));
     });
   });
+
+  describe("parse", () => {
+    it("should throw if the given output is undefined", async () => {
+      const args = {
+        "--output": undefined
+      } as Result<ArgumentsWithAliases>;
+
+      await expect(output.parse(args)).rejects.toThrowError("No --output argument given.");
+    });
+
+    it("should throw if the given output file exists and overwrite is false", async () => {
+      mockDoesFileExist.mockResolvedValue(true);
+
+      const args = {
+        "--output": "any output value"
+      } as Result<ArgumentsWithAliases>;
+
+      await expect(output.parse(args)).rejects.toThrowError(
+        "Given --output file already exists at 'any output value'. Use --overwrite to allow overwriting."
+      );
+    });
+
+    it("should return the given output file if it exists but overwrite is true", async () => {
+      mockDoesFileExist.mockResolvedValue(true);
+
+      const args = {
+        "--output": "any output value",
+        "--overwrite": true
+      } as Result<ArgumentsWithAliases>;
+
+      const result = await output.parse(args);
+
+      expect(result).toEqual("any output value");
+    });
+
+    it("should return the given output file if it does not exist", async () => {
+      mockDoesFileExist.mockResolvedValue(false);
+
+      const args = {
+        "--output": "any output value"
+      } as Result<ArgumentsWithAliases>;
+
+      const result = await output.parse(args);
+
+      expect(result).toEqual("any output value");
+    });
+  });
 });
