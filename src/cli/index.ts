@@ -44,7 +44,7 @@ async function parseArgumentsIntoOptions(args: Result<ArgumentsWithAliases>): Pr
     try {
       return await getOptionsOrThrow(args);
     } catch (e) {
-      throw new Error(`Error parsing arguments in --ci mode: ${e?.message ?? e}`);
+      throw new Error(`Error parsing arguments in --ci mode: ${e.message}`);
     }
   }
 

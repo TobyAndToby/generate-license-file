@@ -23,119 +23,161 @@ describe("Eol", () => {
     jest.restoreAllMocks();
   });
 
-  it("should return undefined if '--eol' is undefined", async () => {
-    const args = {} as Result<ArgumentsWithAliases>;
+  describe("resolve", () => {
+    it("should return undefined if '--eol' is undefined", async () => {
+      const args = {} as Result<ArgumentsWithAliases>;
 
-    const answer = await eol.resolve(args);
+      const answer = await eol.resolve(args);
 
-    expect(answer).toBeUndefined();
-  });
-
-  it("should return 'windows' if '--eol' is 'windows'", async () => {
-    const args = {
-      "--eol": "windows"
-    } as Result<ArgumentsWithAliases>;
-
-    const answer = await eol.resolve(args);
-
-    expect(answer).toBe("windows");
-  });
-
-  it("should return 'posix' if '--eol' is 'posix'", async () => {
-    const args = {
-      "--eol": "posix"
-    } as Result<ArgumentsWithAliases>;
-
-    const answer = await eol.resolve(args);
-
-    expect(answer).toBe("posix");
-  });
-
-  it("should prompt the user for a valid answer if an invalid line ending value is provided", async () => {
-    mockedPrompt.mockResolvedValue({
-      value: "dummy value"
+      expect(answer).toBeUndefined();
     });
 
-    const args = {
-      "--eol": "test"
-    } as Result<ArgumentsWithAliases>;
-
-    await eol.resolve(args);
-
-    expect(mockedPrompt).toBeCalledTimes(1);
-  });
-
-  it("should prompt the user with a multiple choice prompt if an invalid line ending value is provided", async () => {
-    mockedPrompt.mockResolvedValue({
-      value: "dummy value"
-    });
-
-    const args = {
-      "--eol": "test"
-    } as Result<ArgumentsWithAliases>;
-
-    await eol.resolve(args);
-
-    expect(mockedPrompt).toBeCalledWith(
-      expect.objectContaining({
-        type: "select"
-      })
-    );
-  });
-
-  it("should prompt the user with a multiple choice prompt containing valid options if an invalid line ending value is provided", async () => {
-    mockedPrompt.mockResolvedValue({
-      value: "dummy value"
-    });
-
-    const args = {
-      "--eol": "test"
-    } as Result<ArgumentsWithAliases>;
-
-    await eol.resolve(args);
-
-    expect(mockedPrompt).toBeCalledWith(
-      expect.objectContaining({
-        choices: ["Windows", "POSIX", "System default"]
-      })
-    );
-  });
-
-  it("should prompt the user with a message if an invalid line ending value is provided", async () => {
-    mockedPrompt.mockResolvedValue({
-      value: "dummy value"
-    });
-
-    const args = {
-      "--eol": "test"
-    } as Result<ArgumentsWithAliases>;
-
-    await eol.resolve(args);
-
-    expect(mockedPrompt).toBeCalledWith(
-      expect.objectContaining({
-        message: "Invalid line ending given. Please choose a line ending: "
-      })
-    );
-  });
-
-  [
-    { key: "Windows", value: "windows" },
-    { key: "POSIX", value: "posix" },
-    { key: "System default", value: undefined }
-  ].forEach(testCase =>
-    it(`should return ${testCase.value} if the user selects ${testCase.key} from the multiple choice prompt`, async () => {
-      mockedPrompt.mockResolvedValue({
-        value: testCase.key
-      });
-
+    it("should return 'windows' if '--eol' is 'windows'", async () => {
       const args = {
-        "--eol": testCase.key
+        "--eol": "windows"
       } as Result<ArgumentsWithAliases>;
 
       const answer = await eol.resolve(args);
 
-      expect(answer).toBe(testCase.value);
-    })
-  );
+      expect(answer).toBe("windows");
+    });
+
+    it("should return 'posix' if '--eol' is 'posix'", async () => {
+      const args = {
+        "--eol": "posix"
+      } as Result<ArgumentsWithAliases>;
+
+      const answer = await eol.resolve(args);
+
+      expect(answer).toBe("posix");
+    });
+
+    it("should prompt the user for a valid answer if an invalid line ending value is provided", async () => {
+      mockedPrompt.mockResolvedValue({
+        value: "dummy value"
+      });
+
+      const args = {
+        "--eol": "test"
+      } as Result<ArgumentsWithAliases>;
+
+      await eol.resolve(args);
+
+      expect(mockedPrompt).toBeCalledTimes(1);
+    });
+
+    it("should prompt the user with a multiple choice prompt if an invalid line ending value is provided", async () => {
+      mockedPrompt.mockResolvedValue({
+        value: "dummy value"
+      });
+
+      const args = {
+        "--eol": "test"
+      } as Result<ArgumentsWithAliases>;
+
+      await eol.resolve(args);
+
+      expect(mockedPrompt).toBeCalledWith(
+        expect.objectContaining({
+          type: "select"
+        })
+      );
+    });
+
+    it("should prompt the user with a multiple choice prompt containing valid options if an invalid line ending value is provided", async () => {
+      mockedPrompt.mockResolvedValue({
+        value: "dummy value"
+      });
+
+      const args = {
+        "--eol": "test"
+      } as Result<ArgumentsWithAliases>;
+
+      await eol.resolve(args);
+
+      expect(mockedPrompt).toBeCalledWith(
+        expect.objectContaining({
+          choices: ["Windows", "POSIX", "System default"]
+        })
+      );
+    });
+
+    it("should prompt the user with a message if an invalid line ending value is provided", async () => {
+      mockedPrompt.mockResolvedValue({
+        value: "dummy value"
+      });
+
+      const args = {
+        "--eol": "test"
+      } as Result<ArgumentsWithAliases>;
+
+      await eol.resolve(args);
+
+      expect(mockedPrompt).toBeCalledWith(
+        expect.objectContaining({
+          message: "Invalid line ending given. Please choose a line ending: "
+        })
+      );
+    });
+
+    [
+      { key: "Windows", value: "windows" },
+      { key: "POSIX", value: "posix" },
+      { key: "System default", value: undefined }
+    ].forEach(testCase =>
+      it(`should return ${testCase.value} if the user selects ${testCase.key} from the multiple choice prompt`, async () => {
+        mockedPrompt.mockResolvedValue({
+          value: testCase.key
+        });
+
+        const args = {
+          "--eol": testCase.key
+        } as Result<ArgumentsWithAliases>;
+
+        const answer = await eol.resolve(args);
+
+        expect(answer).toBe(testCase.value);
+      })
+    );
+  });
+
+  describe("parse", () => {
+    it("should return undefined if '--eol' is undefined", async () => {
+      const args = {} as Result<ArgumentsWithAliases>;
+
+      const answer = await eol.parse(args);
+
+      expect(answer).toBeUndefined();
+    });
+
+    it("should return 'windows' if '--eol' is 'windows'", async () => {
+      const args = {
+        "--eol": "windows"
+      } as Result<ArgumentsWithAliases>;
+
+      const answer = await eol.parse(args);
+
+      expect(answer).toBe("windows");
+    });
+
+    it("should return 'posix' if '--eol' is 'posix'", async () => {
+      const args = {
+        "--eol": "posix"
+      } as Result<ArgumentsWithAliases>;
+
+      const answer = await eol.parse(args);
+
+      expect(answer).toBe("posix");
+    });
+
+    it("should throw if '--eol' is invalid", async () => {
+      const args = {
+        "--eol": "this is invalid"
+      } as Result<ArgumentsWithAliases>;
+
+      await expect(eol.parse(args)).rejects.toThrow(
+        "Invalid line ending given: 'this is invalid'. Possible values are 'windows', 'posix'. Omit the --eol flag to use the system default."
+      );
+    });
+  });
 });
