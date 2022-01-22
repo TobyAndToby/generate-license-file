@@ -27,7 +27,7 @@ describe("Package.json Utils", () => {
     it("should throw if the given path doesn't exist", async () => {
       mockedDoesFileExist.mockResolvedValue(false);
 
-      const expectedThrownMessage = `Cannot find the package.json: ${pathToPackageJson}`;
+      const expectedThrownMessage = `Cannot find the file: '${pathToPackageJson}'`;
       await expect(readPackageJson(pathToPackageJson)).rejects.toThrow(expectedThrownMessage);
     });
 

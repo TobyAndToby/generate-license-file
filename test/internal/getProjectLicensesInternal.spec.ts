@@ -1,9 +1,8 @@
 import { ModuleInfo } from "license-checker";
-import path from "path";
 import { mocked } from "ts-jest/utils";
 import { getProjectLicensesInternal } from "../../src/internal/getProjectLicensesInternal";
 import console from "../../src/utils/console.utils";
-import { doesFileExist, doesFolderExist, readFileAsync } from "../../src/utils/file.utils";
+import { doesFileExist, readFileAsync } from "../../src/utils/file.utils";
 import { getProject, Project } from "../../src/utils/license.utils";
 import { readPackageJson } from "../../src/utils/packageJson.utils";
 
@@ -28,7 +27,6 @@ jest.mock("../../src/utils/packageJson.utils", () => ({
 
 describe("getProjectLicensesInternal", () => {
   const mockDoesFileExist = mocked(doesFileExist);
-  const mockDoesFolderExist = mocked(doesFolderExist);
   const mockReadFileAsync = mocked(readFileAsync);
   const mockConsoleWarn = mocked(console.warn);
   const mockGetProject = mocked(getProject);
@@ -197,26 +195,6 @@ describe("getProjectLicensesInternal", () => {
     const result = await getProjectLicensesInternal(packageJsonPath);
 
     expect(result[0].content).toBe("Unknown license!");
-  });
-
-  it("should log a warning if a directory is used", async () => {
-    mockDoesFolderExist.mockResolvedValue(true);
-
-    await getProjectLicensesInternal("./a/directory");
-
-    expect(mockConsoleWarn).toBeCalledTimes(1);
-  });
-
-  it("should append 'package.json' if a directory is used", async () => {
-    mockDoesFolderExist.mockResolvedValue(true);
-
-    const directory = "./a/directory";
-    const expectedPackageJsonPath = path.join(directory, "package.json");
-
-    await getProjectLicensesInternal(directory);
-
-    const firstCallFirstArg = mockReadPackageJson.mock.calls[0][0];
-    expect(firstCallFirstArg).toBe(expectedPackageJsonPath);
   });
 
   it("should throw if there's no name key in the given package.json", async () => {

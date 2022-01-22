@@ -2,20 +2,13 @@ import { ModuleInfo } from "license-checker";
 import path from "path";
 import { License } from "../models/license";
 import console from "../utils/console.utils";
-import { doesFileExist, doesFolderExist, readFileAsync } from "../utils/file.utils";
+import { doesFileExist, readFileAsync } from "../utils/file.utils";
 import { getProject, Project } from "../utils/license.utils";
 import { readPackageJson } from "../utils/packageJson.utils";
 
 const UTF8 = "utf-8";
 
 export async function getProjectLicensesInternal(pathToPackageJson: string): Promise<License[]> {
-  if (await doesFolderExist(pathToPackageJson)) {
-    console.warn(
-      "WARNING: Using directories is deprecated and will be removed in version 2.0. Please pass in the full path to the package.json."
-    );
-    pathToPackageJson = path.join(pathToPackageJson, "package.json");
-  }
-
   const dependencyLicenses = await getDependencyMapForProject(pathToPackageJson);
 
   const licenses = flattenDependencyMapToLicenseArray(dependencyLicenses);
