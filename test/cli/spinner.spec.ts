@@ -1,9 +1,9 @@
 import ora, { Options } from "ora";
 import { mocked } from "ts-jest/utils";
 
-const mockPongSpinner = {};
+const mockDotsSpinner = {};
 jest.mock("cli-spinners", () => ({
-  pong: mockPongSpinner
+  dots: mockDotsSpinner
 }));
 
 jest.mock("ora", () => jest.fn());
@@ -19,7 +19,7 @@ describe("spinner", () => {
     jest.restoreAllMocks();
   });
 
-  it("should use the pong spinner", () => {
+  it("should use the dots spinner", () => {
     jest.isolateModules(() => {
       require("../../src/cli/spinner");
     });
@@ -27,7 +27,7 @@ describe("spinner", () => {
     expect(mockedOra).toHaveBeenCalledTimes(1);
 
     const firstCallFirstArg = mockedOra.mock.calls[0][0] as Options;
-    expect(firstCallFirstArg.spinner).toBe(mockPongSpinner);
+    expect(firstCallFirstArg.spinner).toBe(mockDotsSpinner);
   });
 
   it("should use the text 'Resolving licenses...'", () => {
