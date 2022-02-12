@@ -9,6 +9,9 @@ indent_size = 2
 end_of_line = crlf
 charset = utf-8
 
+[*.md]
+trim_trailing_whitespace = false
+
 # e2e snapshot files
 [expected-results/**]
 end_of_line = unset

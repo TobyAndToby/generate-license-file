@@ -1,6 +1,6 @@
 const BULLET = " - ";
-const PREFIX = "The following NPM package may be included in this product:";
-const PREFIX_PLURAL = "The following NPM packages may be included in this product:";
+const PREFIX = "The following npm package may be included in this product:";
+const PREFIX_PLURAL = "The following npm packages may be included in this product:";
 const MIDFIX = "This package contains the following license and notice below:";
 const MIDFIX_PLURAL = "These packages each contain the following license and notice below:";
 
@@ -17,8 +17,10 @@ export interface ILicense {
 }
 
 export class License implements ILicense {
-  content: string;
-  dependencies: string[];
+  private static readonly lineEndingRegex = /\r\n|\r|\n/g;
+
+  public content: string;
+  public dependencies: string[];
 
   public constructor(content: string, dependencies: string[]) {
     this.content = content;
@@ -27,7 +29,10 @@ export class License implements ILicense {
 
   public format(EOL: string): string {
     const formattedText =
-      this.prefix(EOL) + this.formatDependencies(EOL) + this.midfix(EOL) + this.content.trim();
+      this.prefix(EOL) +
+      this.formatDependencies(EOL) +
+      this.midfix(EOL) +
+      this.normalizeLineEndings(this.content.trim(), EOL);
 
     return formattedText;
   }
@@ -54,5 +59,9 @@ export class License implements ILicense {
     }
 
     return EOL + MIDFIX_PLURAL + EOL + EOL;
+  }
+
+  private normalizeLineEndings(text: string, EOL: string): string {
+    return text.replace(License.lineEndingRegex, EOL);
   }
 }

@@ -9,7 +9,7 @@ describe("License", () => {
   const dependencies = [dependency1, dependency2, dependency3, dependency4];
 
   describe("format", () => {
-    const prefix = "The following NPM packages may be included in this product:";
+    const prefix = "The following npm packages may be included in this product:";
 
     it("should prefix the license", () => {
       const license = new License("", []);
@@ -19,14 +19,19 @@ describe("License", () => {
       expect(result.startsWith(prefix)).toBeTruthy();
     });
 
-    ["lf", "clrf"].forEach(lineBreak =>
-      it(`should use the line break twice after the prefix (${lineBreak})`, () => {
+    [
+      { eol: "\n", eolName: "lf" },
+      { eol: "\r\n", eolName: "crlf" }
+    ].forEach(lineBreak =>
+      it(`should use the line break '${lineBreak.eolName}' twice after the prefix`, () => {
+        const { eol } = lineBreak;
+
         const license = new License("", []);
 
-        const result = license.format(lineBreak);
+        const result = license.format(eol);
         const resultWithoutPrefix = result.substr(prefix.length);
 
-        expect(resultWithoutPrefix.startsWith(lineBreak + lineBreak)).toBeTruthy();
+        expect(resultWithoutPrefix.startsWith(eol + eol)).toBeTruthy();
       })
     );
 
@@ -42,17 +47,22 @@ describe("License", () => {
       expect(resultLines[5]).toEqual(" - " + dependency4);
     });
 
-    ["lf", "clrf"].forEach(lineBreak =>
-      it(`should use the line break twice after the dependencies (${lineBreak})`, () => {
+    [
+      { eol: "\n", eolName: "lf" },
+      { eol: "\r\n", eolName: "crlf" }
+    ].forEach(lineBreak =>
+      it(`should use the line break '${lineBreak.eolName}' twice after the dependencies`, () => {
+        const { eol } = lineBreak;
+
         const lastDep = "last dep";
         const lastDepOnly = [lastDep];
         const license = new License("", lastDepOnly);
 
-        const result = license.format(lineBreak);
+        const result = license.format(eol);
         const indexOfLastDependency = result.lastIndexOf(lastDep);
 
         const resultWithoutDependencies = result.substr(indexOfLastDependency + lastDep.length);
-        expect(resultWithoutDependencies.startsWith(lineBreak + lineBreak)).toBeTruthy();
+        expect(resultWithoutDependencies.startsWith(eol + eol)).toBeTruthy();
       })
     );
 
@@ -65,5 +75,24 @@ describe("License", () => {
 
       expect(result.endsWith(theLicenseContent)).toBeTruthy();
     });
+
+    [
+      { eol: "\n", eolName: "lf" },
+      { eol: "\r", eolName: "cr" },
+      { eol: "\r\n", eolName: "crlf" }
+    ].forEach(lineBreak =>
+      it(`should normalise the line endings in the license content to '${lineBreak.eolName}'`, () => {
+        const { eol } = lineBreak;
+
+        const originalLicenseContent = `The\rlicense\nfile\r\ncontent`;
+        const expectedLicenseContent = `The${eol}license${eol}file${eol}content`;
+
+        const license = new License(originalLicenseContent, dependencies);
+
+        const result = license.format(eol);
+
+        expect(result.endsWith(expectedLicenseContent)).toBeTruthy();
+      })
+    );
   });
 });

@@ -1,6 +1,6 @@
 # Generate License File
 
-A CLI to generate a text file containing all the licenses for your production 3rd-party dependencies.
+A CLI and code library to generate a text file containing all the licenses for your production third-party dependencies.
 
 <a href="https://www.npmjs.com/package/generate-license-file">
   <img alt="npm" src="https://img.shields.io/npm/v/generate-license-file?logo=npm">
@@ -15,29 +15,41 @@ A CLI to generate a text file containing all the licenses for your production 3r
 ```
 $ npm install generate-license-file -g
 
-$ generate-license-file --input package.json --output 3rd-party-licenses.txt --eol posix
+$ generate-license-file --input package.json --output third-party-licenses.txt --overwrite
 ```
 
-- Input: The package.json for the project you want to target
-- Output: The file to be created
-- Eol: Which line endings to use (optional)
+| Argument       | Description                                                                                                                                                              |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `--input`      | Absolute or relative path to the package.json for the project.                                                                                                           |
+| `--output`     | Absolute or relative location for the output licenses file.                                                                                                              |
+| `--overwrite`  | (optional) Allow the overwriting of existing output files.<br> If this option is not provided and the output file already exists, you will be prompted to confirm.       |
+| `--eol`        | (optional) Specify the line endings used in the output file.<br> Accepted values are `windows` or `posix`.<br> If no value is provided your system default will be used. |
+| `--no-spinner` | (optional) Disable the CLI spinner while the output file is being generated.                                                                                             |
+| `--version`    | (optional) Print the installed generate-license-file version.                                                                                                            |
 
-If either required flag is omitted the CLI will prompt you for the inputs.
+If either the `--input` or `--output` are omitted the CLI will prompt you for their values.
 
-If you don't supply an input file, and the CLI is able to detect a package.json in the folder you run the command from, then it will allow you to run the command using the detected file.
-
-To disable the spinner which appears in the terminal while the file is being generated you can also pass in the `--no-spinner` flag.
-
-## Installation and Usage (Programmatic use)
+## Installation and Usage (programmatic use)
 
 ```
 $ npm install generate-license-file
 ```
 
+#### TypeScript
+
+```ts
+import { getProjectLicenses } from "generate-license-file";
+
+// Get an array of licenses for the current project's production dependencies.
+const licenses: ILicense[] = await getProjectLicenses("./package.json");
+```
+
+#### JavaScript
+
 ```js
 const generateLicenseFile = require("generate-license-file");
 
-// Get licenses for the current project (assuming this file is on the same level as the package.json)
+// Get an array of licenses for the current project's production dependencies.
 generateLicenseFile
   .getProjectLicenses("./package.json")
   .then(licenses => {
@@ -48,8 +60,6 @@ generateLicenseFile
   });
 ```
 
-```ts
-import * as generateLicenseFile from "generate-license-file";
+# License
 
-const licenses = await generateLicenseFile.getProjectLicenses("./package.json");
-```
+generate-license-file is licensed under the [ISC License](./LICENSE.md).

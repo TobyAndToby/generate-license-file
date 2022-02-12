@@ -8,7 +8,7 @@ export interface PackageJson {
 export const readPackageJson = async (pathToPackageJson: string): Promise<PackageJson> => {
   const doesPackageJsonExist = await doesFileExist(pathToPackageJson);
   if (!doesPackageJsonExist) {
-    throw new Error("Cannot find the package.json: " + pathToPackageJson);
+    throw new Error(`Cannot find the file: '${pathToPackageJson}'`);
   }
 
   const packageJsonAsString: string = await readFileAsync(pathToPackageJson, { encoding: "utf8" });

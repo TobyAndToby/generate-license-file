@@ -25,6 +25,22 @@ export class Input extends Argument<string> {
     return input;
   }
 
+  public async parse(args: Result<ArgumentsWithAliases>): Promise<string> {
+    const input = args["--input"];
+
+    if (!input) {
+      throw new Error("No --input argument given.");
+    }
+
+    const inputExists = await doesFileExist(input);
+
+    if (!inputExists) {
+      throw new Error(`Given --input file not found. Cannot find '${input}'.`);
+    }
+
+    return input;
+  }
+
   private async getInitialValue(): Promise<string> {
     const packageJsonExists = await doesFileExist("./package.json");
     return packageJsonExists ? "./package.json" : "";

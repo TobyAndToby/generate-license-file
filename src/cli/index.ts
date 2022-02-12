@@ -1,5 +1,8 @@
 import arg, { Result } from "arg";
+import { join } from "path";
 import { generateLicenseFile } from "../generateLicenseFile";
+import console from "../utils/console.utils";
+import { readPackageJson } from "../utils/packageJson.utils";
 import { Eol } from "./args/eol";
 import { Input } from "./args/input";
 import { NoSpinner } from "./args/no-spinner";
@@ -12,12 +15,19 @@ export async function main(args: string[]): Promise<void> {
     await cli(args);
   } catch (e) {
     spinner.fail(e?.message ?? e ?? "Unknown error");
+    process.exitCode = 1;
   }
 }
 
 async function cli(args: string[]) {
   const givenUserInputs = parseUserInputs(args);
-  const { input, output, eol, noSpinner } = await promptForMissingOptions(givenUserInputs);
+
+  if (givenUserInputs && givenUserInputs["--version"]) {
+    await printPackageVersion();
+    return;
+  }
+
+  const { input, output, eol, noSpinner } = await parseArgumentsIntoOptions(givenUserInputs);
 
   if (!noSpinner) {
     spinner.start();
@@ -33,6 +43,31 @@ function parseUserInputs(rawArgs: string[]): Result<ArgumentsWithAliases> {
   });
 }
 
+async function parseArgumentsIntoOptions(args: Result<ArgumentsWithAliases>): Promise<CliOptions> {
+  const isCi = args["--ci"];
+
+  if (isCi) {
+    args["--no-spinner"] = true;
+
+    try {
+      return await getOptionsOrThrow(args);
+    } catch (e) {
+      throw new Error(`Error parsing arguments in --ci mode: ${e.message}`);
+    }
+  }
+
+  return await promptForMissingOptions(args);
+}
+
+async function getOptionsOrThrow(options: Result<ArgumentsWithAliases>): Promise<CliOptions> {
+  const input = await new Input().parse(options);
+  const output = await new Output().parse(options);
+  const eol = await new Eol().parse(options);
+  const noSpinner = await new NoSpinner().parse(options);
+
+  return { input, output, eol, noSpinner };
+}
+
 async function promptForMissingOptions(options: Result<ArgumentsWithAliases>): Promise<CliOptions> {
   const input = await new Input().resolve(options);
   const output = await new Output().resolve(options);
@@ -40,4 +75,9 @@ async function promptForMissingOptions(options: Result<ArgumentsWithAliases>): P
   const noSpinner = await new NoSpinner().resolve(options);
 
   return { input, output, eol, noSpinner };
+}
+
+async function printPackageVersion(): Promise<void> {
+  const { version } = await readPackageJson(join(__dirname, "../../package.json"));
+  console.log(`v${version}`);
 }

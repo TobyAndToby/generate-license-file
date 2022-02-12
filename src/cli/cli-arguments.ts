@@ -9,6 +9,8 @@ export interface UserInputs {
   overwriteOutput?: boolean;
   eol?: string;
   noSpinner?: boolean;
+  version?: boolean;
+  ci?: boolean;
 }
 
 export interface CliOptions {
@@ -24,8 +26,11 @@ export interface ArgumentsWithAliases extends Spec {
   "--overwrite": typeof Boolean;
   "--eol": typeof String;
   "--no-spinner": typeof Boolean;
+  "--version": typeof Boolean;
+  "--ci": typeof Boolean;
   "-i": "--input";
   "-o": "--output";
+  "-v": "--version";
 }
 
 export const argumentsWithAliases: ArgumentsWithAliases = {
@@ -34,6 +39,9 @@ export const argumentsWithAliases: ArgumentsWithAliases = {
   "--overwrite": Boolean,
   "--eol": String,
   "--no-spinner": Boolean,
+  "--version": Boolean,
+  "--ci": Boolean,
   "-i": "--input",
-  "-o": "--output"
+  "-o": "--output",
+  "-v": "--version"
 };
