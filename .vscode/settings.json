@@ -1,4 +1,4 @@
 {
   "typescript.tsdk": "node_modules/typescript/lib",
-  "cSpell.words": ["clrf", "MIDFIX"]
+  "cSpell.words": ["clrf", "Jsons", "MIDFIX"]
 }
