@@ -49,7 +49,7 @@
   },
   "homepage": "https://github.com/TobyAndToby/generate-license-file#readme",
   "dependencies": {
-    "arg": "^4.1.3",
+    "arg": "^5.0.0",
     "cli-spinners": "^2.6.0",
     "enquirer": "^2.3.6",
     "eslint-config-prettier": "^8.3.0",
