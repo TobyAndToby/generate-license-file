@@ -1,4 +1,4 @@
-The following NPM package may be included in this product:
+The following npm package may be included in this product:
 
  - casual@1.6.2
 
@@ -376,7 +376,7 @@ OR OTHER DEALINGS IN THE SOFTWARE.
 
 -----------
 
-The following NPM package may be included in this product:
+The following npm package may be included in this product:
 
  - has-symbols@1.0.2
 
@@ -406,7 +406,7 @@ SOFTWARE.
 
 -----------
 
-The following NPM package may be included in this product:
+The following npm package may be included in this product:
 
  - has-tostringtag@1.0.0
 
@@ -436,7 +436,7 @@ SOFTWARE.
 
 -----------
 
-The following NPM package may be included in this product:
+The following npm package may be included in this product:
 
  - is-string@1.0.7
 
@@ -466,7 +466,7 @@ SOFTWARE.
 
 -----------
 
-The following NPM package may be included in this product:
+The following npm package may be included in this product:
 
  - lodash.isfunction@3.0.9
 
@@ -522,7 +522,7 @@ terms above.
 
 -----------
 
-The following NPM package may be included in this product:
+The following npm package may be included in this product:
 
  - mersenne-twister@1.1.0
 
@@ -587,7 +587,7 @@ See source
 
 -----------
 
-The following NPM package may be included in this product:
+The following npm package may be included in this product:
 
  - moment@2.29.1
 

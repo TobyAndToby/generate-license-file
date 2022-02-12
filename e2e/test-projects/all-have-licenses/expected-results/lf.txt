@@ -1,4 +1,4 @@
-The following NPM package may be included in this product:
+The following npm package may be included in this product:
 
  - has-symbols@1.0.2
 
@@ -28,7 +28,7 @@ SOFTWARE.
 
 -----------
 
-The following NPM package may be included in this product:
+The following npm package may be included in this product:
 
  - has-tostringtag@1.0.0
 
@@ -58,7 +58,7 @@ SOFTWARE.
 
 -----------
 
-The following NPM package may be included in this product:
+The following npm package may be included in this product:
 
  - is-string@1.0.7
 
@@ -88,7 +88,7 @@ SOFTWARE.
 
 -----------
 
-The following NPM package may be included in this product:
+The following npm package may be included in this product:
 
  - is-windows@1.0.2
 
@@ -118,7 +118,7 @@ THE SOFTWARE.
 
 -----------
 
-The following NPM packages may be included in this product:
+The following npm packages may be included in this product:
 
  - lodash.isequal@4.5.0
  - lodash.isfunction@3.0.9
