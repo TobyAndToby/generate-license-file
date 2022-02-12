@@ -1,6 +1,7 @@
 import { exec } from "child_process";
 import { readFile, rm, writeFile } from "fs";
 import path, { join } from "path";
+import { platform } from "process";
 import { promisify } from "util";
 
 const rmAsync = promisify(rm);
@@ -29,7 +30,12 @@ export function getProjectDirectoryUnderTest(packageJson: string): string {
 }
 
 export async function assertFile(directoryUnderTest: string, fileName: string): Promise<void> {
-  const expected = await readFileAsync(fileName, path.join(directoryUnderTest, "expected-results"));
+  const expectedOsFolder = getOsLineEnding();
+
+  const expected = await readFileAsync(
+    `${expectedOsFolder}.txt`,
+    path.join(directoryUnderTest, "expected-results")
+  );
   const actual = await readFileAsync(fileName, directoryUnderTest);
 
   expect(actual).toBe(expected);
@@ -38,4 +44,12 @@ export async function assertFile(directoryUnderTest: string, fileName: string): 
 export async function readFileAsync(filePath: string, cwd: string): Promise<string> {
   const fullPath = join(cwd, filePath);
   return await readFilePromisify(fullPath, "utf-8");
+}
+
+function getOsLineEnding() {
+  if (platform === "win32") {
+    return "crlf";
+  }
+
+  return "lf";
 }
