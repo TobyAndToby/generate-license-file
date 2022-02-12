@@ -24,6 +24,14 @@ jobs:
 
     - name: Build
       run: npm run build
+      
+    - name: Install dependencies for test project all-have-licenses
+      run: npm ci
+      working-directory: ./e2e/test-projects/all-have-licenses
+
+    - name: Install dependencies for test project missing-license-file
+      run: npm ci
+      working-directory: ./e2e/test-projects/missing-license-file
     
     - name: Run Tests
       run: npm run test:ci

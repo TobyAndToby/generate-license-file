@@ -1,4 +1,4 @@
 export const testPackageJsons = [
-  "../test-projects/all-have-licenses/package.json",
-  "../test-projects/missing-license-file/package.json"
+  "all-have-licenses/package.json",
+  "missing-license-file/package.json"
 ];

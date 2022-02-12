@@ -17,9 +17,26 @@ jobs:
         uses: battila7/get-version-action@v2
 
       - run: npm --no-git-tag-version version ${{ steps.get_version.outputs.version-without-v }}
-      - run: npm ci
-      - run: npm run build
-      - run: npm run test:ci
+      
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run ESLint
+        run: npx eslint ./src --max-warnings 0
+
+      - name: Build
+        run: npm run build
+        
+      - name: Install dependencies for test project all-have-licenses
+        run: npm ci
+        working-directory: ./e2e/test-projects/all-have-licenses
+
+      - name: Install dependencies for test project missing-license-file
+        run: npm ci
+        working-directory: ./e2e/test-projects/missing-license-file
+      
+      - name: Run Tests
+        run: npm run test:ci
       
       - uses: tobysmith568/npm-publish-latest-tag@v1
         id: latest_tag

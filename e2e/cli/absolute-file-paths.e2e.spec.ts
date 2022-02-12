@@ -4,16 +4,16 @@ import {
   assertFile,
   deleteIfExists,
   ensureExists,
-  getProjectDirectoryUnderTest,
-  installAndRun
+  execAsync,
+  getProjectDirectoryUnderTest
 } from "./utils";
 
-describe("cli", () => {
+describe("cli for absolute file paths", () => {
   testPackageJsons.forEach(packageJsonUnderTest =>
-    describe("absolute file paths", () => {
-      const directoryUnderTest = getProjectDirectoryUnderTest(__dirname, packageJsonUnderTest);
+    describe(`for: ${packageJsonUnderTest}`, () => {
+      const directoryUnderTest = getProjectDirectoryUnderTest(packageJsonUnderTest);
 
-      it(`should equal expected when output doesn't exist for ${packageJsonUnderTest}`, async () => {
+      it(`should equal expected when output doesn't exist`, async () => {
         const outputFileName = "output-doesnt-exist-result-absolute.txt";
 
         const absoluteInput = path.join(directoryUnderTest, "package.json");
@@ -21,15 +21,15 @@ describe("cli", () => {
 
         await deleteIfExists(outputFileName, directoryUnderTest);
 
-        await installAndRun(
-          directoryUnderTest,
-          `npx generate-license-file --input ${absoluteInput} --output ${absoluteOutput}`
+        await execAsync(
+          `npx generate-license-file --input ${absoluteInput} --output ${absoluteOutput}`,
+          { cwd: directoryUnderTest }
         );
 
         await assertFile(directoryUnderTest, outputFileName);
       });
 
-      it(`should equal expected when output exists and overwrite is true for ${packageJsonUnderTest}`, async () => {
+      it(`should equal expected when output exists and overwrite is true`, async () => {
         const outputFileName = "output-exists-with-overwrite-result-absolute.txt";
 
         const absoluteInput = path.join(directoryUnderTest, "package.json");
@@ -37,9 +37,9 @@ describe("cli", () => {
 
         await ensureExists(outputFileName, directoryUnderTest);
 
-        await installAndRun(
-          directoryUnderTest,
-          `npx generate-license-file --input ${absoluteInput} --output ${absoluteOutput} --overwrite`
+        await execAsync(
+          `npx generate-license-file --input ${absoluteInput} --output ${absoluteOutput} --overwrite`,
+          { cwd: directoryUnderTest }
         );
 
         await assertFile(directoryUnderTest, outputFileName);

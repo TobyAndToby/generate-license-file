@@ -4,7 +4,7 @@ import path, { join } from "path";
 import { promisify } from "util";
 
 const rmAsync = promisify(rm);
-const execAsync = promisify(exec);
+export const execAsync = promisify(exec);
 const writeFileAsync = promisify(writeFile);
 const readFilePromisify = promisify(readFile);
 
@@ -19,17 +19,13 @@ export async function ensureExists(filePath: string, cwd: string): Promise<void>
   await writeFileAsync(fullPath, "File exists!");
 }
 
-export function getProjectDirectoryUnderTest(
-  specFileDirectory: string,
-  packageJson: string
-): string {
-  const fullPath = path.join(specFileDirectory, packageJson);
-  return path.dirname(fullPath);
+export function getAbsoluteTestPackageJson(packageJson: string): string {
+  return path.join(__dirname, "../test-projects", packageJson);
 }
 
-export async function installAndRun(specFileDirectory: string, cmd: string): Promise<void> {
-  await execAsync("npm ci", { cwd: specFileDirectory });
-  await execAsync(cmd, { cwd: specFileDirectory });
+export function getProjectDirectoryUnderTest(packageJson: string): string {
+  const fullPath = getAbsoluteTestPackageJson(packageJson);
+  return path.dirname(fullPath);
 }
 
 export async function assertFile(directoryUnderTest: string, fileName: string): Promise<void> {
@@ -39,7 +35,7 @@ export async function assertFile(directoryUnderTest: string, fileName: string): 
   expect(actual).toBe(expected);
 }
 
-async function readFileAsync(filePath: string, cwd: string): Promise<string> {
+export async function readFileAsync(filePath: string, cwd: string): Promise<string> {
   const fullPath = join(cwd, filePath);
   return await readFilePromisify(fullPath, "utf-8");
 }
