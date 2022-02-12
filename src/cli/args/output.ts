@@ -6,7 +6,7 @@ import { Argument } from "./argument";
 export class Output extends Argument<string> {
   private question = "Output location: ";
 
-  private initialValue = "3rd-party-licenses.txt";
+  private initialValue = "third-party-licenses.txt";
 
   public async resolve(args: Result<ArgumentsWithAliases>): Promise<string> {
     let output = args["--output"];

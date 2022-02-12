@@ -1,7 +1,7 @@
-import { pong } from "cli-spinners";
+import { dots } from "cli-spinners";
 import ora, { Ora } from "ora";
 
 export const spinner: Ora = ora({
-  spinner: pong,
+  spinner: dots,
   text: "Resolving licenses..."
 });
