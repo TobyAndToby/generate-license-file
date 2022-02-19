@@ -13,8 +13,9 @@ import { spinner } from "./spinner";
 export async function main(args: string[]): Promise<void> {
   try {
     await cli(args);
-  } catch (e) {
-    spinner.fail(e?.message ?? e ?? "Unknown error");
+  } catch (e: unknown) {
+    const errorMessage = getMessageFromCaughtUnknown(e);
+    spinner.fail(errorMessage);
     process.exitCode = 1;
   }
 }
@@ -51,8 +52,9 @@ async function parseArgumentsIntoOptions(args: Result<ArgumentsWithAliases>): Pr
 
     try {
       return await getOptionsOrThrow(args);
-    } catch (e) {
-      throw new Error(`Error parsing arguments in --ci mode: ${e.message}`);
+    } catch (e: unknown) {
+      const errorMessage = getMessageFromCaughtUnknown(e);
+      throw new Error(`Error parsing arguments in --ci mode: ${errorMessage}`);
     }
   }
 
@@ -80,4 +82,16 @@ async function promptForMissingOptions(options: Result<ArgumentsWithAliases>): P
 async function printPackageVersion(): Promise<void> {
   const { version } = await readPackageJson(join(__dirname, "../../package.json"));
   console.log(`v${version}`);
+}
+
+function getMessageFromCaughtUnknown(e: unknown): string {
+  if (e instanceof Error) {
+    return e.message;
+  }
+
+  if (typeof e === "string") {
+    return e;
+  }
+
+  return "Unknown error";
 }
