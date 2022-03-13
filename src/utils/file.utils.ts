@@ -31,6 +31,7 @@ export async function writeFileAsync(filePath: string, content: string) {
   const directory = dirname(filePath);
 
   const directoryExists = await doesFolderExist(directory);
+
   if (!directoryExists) {
     await fsMkDir(directory, { recursive: true });
   }

@@ -71,11 +71,4 @@ describe("generateLicenseFile", () => {
     const firstCallSecondArg = mockWriteFileAsync.mock.calls[0][1];
     expect(firstCallSecondArg).toBe(fakeLicenseFileText);
   });
-
-  it("should call writeFileAsync with the a utf8 encoding", async () => {
-    await generateLicenseFile("path", "outputPath");
-
-    const firstCallThirdArg = mockWriteFileAsync.mock.calls[0][2] as any;
-    expect(firstCallThirdArg.encoding).toBe("utf-8");
-  });
 });
