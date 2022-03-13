@@ -1,8 +1,6 @@
 import { getLicenseFileText } from "./getLicenseFileText";
 import { writeFileAsync } from "./utils/file.utils";
 
-const UTF8 = "utf-8";
-
 /**
  * Used to specify which line endings to use in the generated file
  *
@@ -28,5 +26,5 @@ export async function generateLicenseFile(
   lineEnding?: LineEnding
 ): Promise<void> {
   const licenseFileText: string = await getLicenseFileText(pathToPackageJson, lineEnding);
-  await writeFileAsync(outputPath, licenseFileText, { encoding: UTF8 });
+  await writeFileAsync(outputPath, licenseFileText);
 }
