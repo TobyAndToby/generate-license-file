@@ -213,7 +213,7 @@ describe("File Utils", () => {
 
       await writeFileAsync("path", "file content");
 
-      mockedFs.mkdir.mock.calls.length === 1;
+      expect(mockedFs.mkdir).toHaveBeenCalledTimes(1);
     });
 
     it("should call fs.mkdir with the directory path", async () => {
