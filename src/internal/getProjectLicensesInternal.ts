@@ -8,37 +8,47 @@ import { readPackageJson } from "../utils/packageJson.utils";
 
 const UTF8 = "utf-8";
 
-export async function getProjectLicensesInternal(pathToPackageJson: string): Promise<License[]> {
-  const dependencyLicenses = await getDependencyMapForProject(pathToPackageJson);
+export async function getLicensesInternal(pathsToPackageJson: string[]): Promise<License[]> {
+  const dependencyLicenses = await getDependencyMapForProjects(pathsToPackageJson);
 
   const licenses = flattenDependencyMapToLicenseArray(dependencyLicenses);
   return licenses;
 }
 
-const getDependencyMapForProject = async (pathToPackageJson: string) => {
-  const directoryOfPackageJson: string = path.dirname(pathToPackageJson);
-  const currentProjectIdentifier = await getCurrentProjectIdentifier(pathToPackageJson);
+const getDependencyMapForProjects = async (
+  pathsToPackageJson: string[]
+): Promise<Map<string, string[]>> => {
+  let projects: Project[] = [];
 
-  const project: Project = await getProject({
-    start: directoryOfPackageJson,
-    production: true,
-    excludePackages: currentProjectIdentifier
-  });
+  for (const pathToPackageJson of pathsToPackageJson) {
+    const directoryOfPackageJson: string = path.dirname(pathToPackageJson);
+    const currentProjectIdentifier = await getCurrentProjectIdentifier(pathToPackageJson);
 
-  const projectDependencies = groupProjectDependenciesByLicenseText(project);
-  return projectDependencies;
+    const project: Project = await getProject({
+      start: directoryOfPackageJson,
+      production: true,
+      excludePackages: currentProjectIdentifier
+    });
+
+    projects.push(project);
+  }
+
+  const dependencyMap = groupProjectDependenciesByLicenseText(projects);
+  return dependencyMap;
 };
 
-const groupProjectDependenciesByLicenseText = async (project: Project) => {
+const groupProjectDependenciesByLicenseText = async (projects: Project[]) => {
   const dependencyLicenses: Map<string, string[]> = new Map<string, string[]>();
 
-  for (const [dependencyName, dependencyValue] of Object.entries(project)) {
-    const license: string = await getLicenseContent(dependencyValue);
+  for (const project of projects) {
+    for (const [dependencyName, dependencyValue] of Object.entries(project)) {
+      const license: string = await getLicenseContent(dependencyValue);
 
-    const listForLicense = dependencyLicenses.get(license) ?? [];
-    listForLicense.push(dependencyName);
+      const listForLicense = dependencyLicenses.get(license) ?? [];
+      listForLicense.push(dependencyName);
 
-    dependencyLicenses.set(license, listForLicense);
+      dependencyLicenses.set(license, listForLicense);
+    }
   }
 
   return dependencyLicenses;

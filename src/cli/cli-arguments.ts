@@ -4,7 +4,7 @@ import { Spec } from "arg";
 import { LineEnding } from "../generateLicenseFile";
 
 export interface UserInputs {
-  input?: string;
+  inputs?: string[];
   output?: string;
   overwriteOutput?: boolean;
   eol?: string;
@@ -14,14 +14,14 @@ export interface UserInputs {
 }
 
 export interface CliOptions {
-  input: string;
+  inputs: string[];
   output: string;
   eol?: LineEnding;
   noSpinner: boolean;
 }
 
 export interface ArgumentsWithAliases extends Spec {
-  "--input": typeof String;
+  "--input": [typeof String];
   "--output": typeof String;
   "--overwrite": typeof Boolean;
   "--eol": typeof String;
@@ -34,7 +34,7 @@ export interface ArgumentsWithAliases extends Spec {
 }
 
 export const argumentsWithAliases: ArgumentsWithAliases = {
-  "--input": String,
+  "--input": [String],
   "--output": String,
   "--overwrite": Boolean,
   "--eol": String,

@@ -1,6 +1,6 @@
 import * as os from "os";
 import { LineEnding } from "./generateLicenseFile";
-import { getProjectLicensesInternal } from "./internal/getProjectLicensesInternal";
+import { getLicensesInternal } from "./internal/getProjectLicensesInternal";
 import { License } from "./models/license";
 
 const SUFFIX = "-----------";
@@ -9,16 +9,37 @@ const FOOTER =
 
 /**
  * Scans the project found at the given path and returns a string containing the licenses for all the dependencies
- * @param pathToPackageJson A path to the package.json for the project
- * @optional @param lineEnding "windows" or "posix". Will use the system default if omitted
+ * @param pathToPackageJson A path to the package.json
+ * @optional @param lineEnding `"windows"` or `"posix"`. Will use the system default if omitted
  * @returns A promise that resolves to the license file text
  */
 export async function getLicenseFileText(
   pathToPackageJson: string,
   lineEnding?: LineEnding
+): Promise<string>;
+
+/**
+ * Scans the projects found at the given paths and returns a string containing the licenses for all the dependencies
+ * @param pathsToPackageJsons Paths to the `package.json`s
+ * @optional @param lineEnding `"windows"` or `"posix"`. Will use the system default if omitted
+ * @returns A promise that resolves to the license file text
+ */
+export async function getLicenseFileText(
+  pathsToPackageJsons: string[],
+  lineEnding?: LineEnding
+): Promise<string>;
+
+export async function getLicenseFileText(
+  pathToPackageJson: string | string[],
+  lineEnding?: LineEnding
 ): Promise<string> {
   const EOL = getLineEnding(lineEnding);
-  const licenses: License[] = await getProjectLicensesInternal(pathToPackageJson);
+
+  if (typeof pathToPackageJson === "string") {
+    pathToPackageJson = [pathToPackageJson];
+  }
+
+  const licenses: License[] = await getLicensesInternal(pathToPackageJson);
   let licenseFile = "";
 
   for (const license of licenses) {
