@@ -118,5 +118,5 @@ describe("getLicenseFileText", () => {
 const getNewMockedLicense = () => {
   return {
     format: jest.fn()
-  } as any as License;
+  } as unknown as License;
 };

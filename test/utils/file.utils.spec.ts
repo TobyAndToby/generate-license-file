@@ -1,8 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import * as fs from "fs";
 import { mocked } from "ts-jest/utils";
 import { doesFileExist, doesFolderExist, writeFileAsync } from "../../src/utils/file.utils";
-
-// tslint:disable: no-null-keyword
 
 jest.mock("fs", () => ({
   stat: jest.fn(),
@@ -14,13 +14,8 @@ jest.mock("fs", () => ({
 describe("File Utils", () => {
   const mockedFs = mocked(fs);
 
-  beforeEach(() => {
-    jest.resetAllMocks();
-  });
-
-  afterAll(() => {
-    jest.restoreAllMocks();
-  });
+  beforeEach(() => jest.resetAllMocks());
+  afterAll(() => jest.restoreAllMocks());
 
   describe("doesFileExist", () => {
     it("should return true when the given item exists and is a file", async () => {
