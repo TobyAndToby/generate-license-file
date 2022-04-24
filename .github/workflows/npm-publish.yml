@@ -17,7 +17,7 @@ jobs:
         uses: battila7/get-version-action@v2
 
       - run: npm --no-git-tag-version version ${{ steps.get_version.outputs.version-without-v }}
-      
+
       - name: Install dependencies
         run: npm ci
 
@@ -26,15 +26,15 @@ jobs:
 
       - name: Build
         run: npm run build
-              
+
       - name: Run Tests
         run: npm run test:ci
-      
+
       - uses: tobysmith568/npm-publish-latest-tag@v1
         id: latest_tag
         with:
           package-json: ./package.json
-      
+
       - run: npm publish --access public --tag ${{ steps.latest_tag.outputs.latest-tag }}
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
