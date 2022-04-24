@@ -1,43 +1,87 @@
 import { exec } from "child_process";
-import { stat } from "fs";
+import { stat } from "fs/promises";
 import path from "path";
 import { testPackageJsons } from "../e2e/test-projects";
 
-const npmCiTestProjects = () => {
-  console.log("-----\nInstalling npm packages for e2e projects\n-----");
+const npmCiPackageJson = (absolutePathToPackageJson: string) =>
+  new Promise<void>(async (resolve, reject) => {
+    const projectDir = path.dirname(absolutePathToPackageJson);
+    const projectNodeModulesDir = path.join(projectDir, "node_modules");
 
-  for (const testProject of testPackageJsons) {
-    const projectPackageJson = path.join(__dirname, "../e2e/test-projects", testProject);
-    const projectDir = path.dirname(projectPackageJson);
-    const projectNodeModules = path.join(projectDir, "node_modules");
+    console.log(`Checking for node_modules dir in ${absolutePathToPackageJson}`);
 
-    let stdOut = `Installing dependencies for ${testProject}\n`;
+    const isDir = await isDirectory(projectNodeModulesDir);
+    if (isDir) {
+      console.log(`node_modules dir in ${projectDir} already exists. Skipping`);
+      resolve();
+      return;
+    }
 
-    isDirectory(projectNodeModules, (isDir: boolean) => {
-      if (!!isDir) {
-        stdOut += `Node modules for ${testProject} already exist.\n-----`;
-        console.log(stdOut);
-        return;
-      }
-      stdOut += `Node modules for ${testProject} do not exist. Installing\n`;
+    console.log(`node_modules dir in ${projectDir} does not exist. Installing`);
 
-      exec("npm ci", { cwd: projectDir }, (err, stdout, stderr) => {
-        stdOut += !!err ? stderr : stdout;
-        console.log(stdOut + "-----");
-      });
+    exec("npm ci", { cwd: projectDir }, (err, stdout, stderr) => {
+      console.log(!!err ? stderr : stdout);
+      !!err ? reject(err) : resolve();
     });
+  });
+
+const npmBuildPackageJson = (absolutePathToPackageJson: string) =>
+  new Promise<void>(async (resolve, reject) => {
+    const projectDir = path.dirname(absolutePathToPackageJson);
+    const projectDistDir = path.join(projectDir, "dist");
+
+    console.log(`Checking for dist dir in ${absolutePathToPackageJson}`);
+
+    const isDir = await isDirectory(projectDistDir);
+    if (isDir) {
+      console.log(`dist dir in ${projectDir} already exists. Skipping`);
+      resolve();
+      return;
+    }
+
+    console.log(`dist dir in ${projectDir} does not exist. Building`);
+
+    exec("npm run build", { cwd: projectDir }, (err, stdout, stderr) => {
+      console.log(!!err ? stderr : stdout);
+      !!err ? reject(err) : resolve();
+    });
+  });
+
+const npmCiMainProject = async () => {
+  console.log("\n-----\nInstalling npm packages for main project\n-----");
+
+  const mainPackageJson = path.join(__dirname, "..", "package.json");
+  await npmCiPackageJson(mainPackageJson);
+};
+
+const npmBuildMainProject = async () => {
+  console.log("\n-----\nBuilding main project\n-----");
+
+  const mainPackageJson = path.join(__dirname, "..", "package.json");
+  await npmBuildPackageJson(mainPackageJson);
+};
+
+const npmCiTestProjects = async () => {
+  for (const testProject of testPackageJsons) {
+    console.log(`\n-----\nInstalling npm packages for e2e project ${testProject}\n-----`);
+    const projectPackageJson = path.join(__dirname, "../e2e/test-projects", testProject);
+    await npmCiPackageJson(projectPackageJson);
   }
 };
 
-const isDirectory = (dir: string, callback: (isDir: boolean) => void) => {
-  stat(dir, (err, stats) => {
-    if (!!err) {
-      return callback(false);
-    }
-
-    callback(stats.isDirectory());
-  });
+const isDirectory = async (dir: string): Promise<boolean> => {
+  try {
+    const statResult = await stat(dir);
+    return statResult.isDirectory();
+  } catch {
+    return false;
+  }
 };
 
-console.log("Running Post-Install");
-npmCiTestProjects();
+(async () => {
+  console.log("Running pre-e2e script");
+  await npmCiMainProject();
+  await npmBuildMainProject();
+  await npmCiTestProjects();
+  console.log("Finished running pre-e2e script");
+})();
