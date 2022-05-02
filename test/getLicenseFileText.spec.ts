@@ -2,20 +2,20 @@ import * as os from "os";
 import { mocked } from "ts-jest/utils";
 import { LineEnding } from "../src/generateLicenseFile";
 import { getLicenseFileText } from "../src/getLicenseFileText";
-import { getProjectLicensesInternal } from "../src/internal/getProjectLicensesInternal";
+import { getLicencesForProjects } from "../src/internal/getProjectLicensesInternal";
 import { License } from "../src/models/license";
 
 jest.mock("../src/internal/getProjectLicensesInternal", () => ({
-  getProjectLicensesInternal: jest.fn()
+  getLicencesForProjects: jest.fn()
 }));
 
 describe("getLicenseFileText", () => {
-  const mockGetProjectLicensesInternal = mocked(getProjectLicensesInternal);
+  const mockGetLicencesForProjects = mocked(getLicencesForProjects);
 
   beforeEach(() => {
     jest.resetAllMocks();
 
-    mockGetProjectLicensesInternal.mockResolvedValue([]);
+    mockGetLicencesForProjects.mockResolvedValue([]);
   });
 
   afterAll(() => {
@@ -25,7 +25,7 @@ describe("getLicenseFileText", () => {
   it("should call the internal getProjectLicenses", async () => {
     await getLicenseFileText("path");
 
-    expect(mockGetProjectLicensesInternal).toHaveBeenCalledTimes(1);
+    expect(mockGetLicencesForProjects).toHaveBeenCalledTimes(1);
   });
 
   it("should call the internal getProjectLicenses with the given path", async () => {
@@ -33,13 +33,13 @@ describe("getLicenseFileText", () => {
 
     await getLicenseFileText(path);
 
-    expect(mockGetProjectLicensesInternal).toHaveBeenCalledWith(path);
+    expect(mockGetLicencesForProjects).toHaveBeenCalledWith([path]);
   });
 
   it("should format each returned license", async () => {
     const licenses = [getNewMockedLicense(), getNewMockedLicense(), getNewMockedLicense()];
 
-    mockGetProjectLicensesInternal.mockResolvedValue(licenses);
+    mockGetLicencesForProjects.mockResolvedValue(licenses);
 
     await getLicenseFileText("path");
 
@@ -58,7 +58,7 @@ describe("getLicenseFileText", () => {
     it(`should format each returned license with the appropriate line ending for ${lineEnding.name}`, async () => {
       const licenses = [getNewMockedLicense(), getNewMockedLicense(), getNewMockedLicense()];
 
-      mockGetProjectLicensesInternal.mockResolvedValue(licenses);
+      mockGetLicencesForProjects.mockResolvedValue(licenses);
 
       await getLicenseFileText("path", lineEnding.name);
 
@@ -75,7 +75,7 @@ describe("getLicenseFileText", () => {
     mocked(licenses[1].format).mockReturnValue("second");
     mocked(licenses[2].format).mockReturnValue("third");
 
-    mockGetProjectLicensesInternal.mockResolvedValue(licenses);
+    mockGetLicencesForProjects.mockResolvedValue(licenses);
 
     const result = await getLicenseFileText("path");
 
@@ -88,7 +88,7 @@ describe("getLicenseFileText", () => {
     mocked(licenses[1].format).mockReturnValue("second");
     mocked(licenses[2].format).mockReturnValue("third");
 
-    mockGetProjectLicensesInternal.mockResolvedValue(licenses);
+    mockGetLicencesForProjects.mockResolvedValue(licenses);
 
     const result = await getLicenseFileText("path", "posix");
 
@@ -103,7 +103,7 @@ describe("getLicenseFileText", () => {
     mocked(licenses[1].format).mockReturnValue("second");
     mocked(licenses[2].format).mockReturnValue("third");
 
-    mockGetProjectLicensesInternal.mockResolvedValue(licenses);
+    mockGetLicencesForProjects.mockResolvedValue(licenses);
 
     const result = await getLicenseFileText("path", "posix");
 

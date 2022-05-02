@@ -1,6 +1,6 @@
 import * as os from "os";
 import { LineEnding } from "./generateLicenseFile";
-import { getProjectLicensesInternal } from "./internal/getProjectLicensesInternal";
+import { getLicencesForProjects } from "./internal/getProjectLicensesInternal";
 import { License } from "./models/license";
 
 const SUFFIX = "-----------";
@@ -18,7 +18,7 @@ export async function getLicenseFileText(
   lineEnding?: LineEnding
 ): Promise<string> {
   const EOL = getLineEnding(lineEnding);
-  const licenses: License[] = await getProjectLicensesInternal(pathToPackageJson);
+  const licenses: License[] = await getLicencesForProjects([pathToPackageJson]);
   let licenseFile = "";
 
   for (const license of licenses) {

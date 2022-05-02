@@ -1,6 +1,6 @@
 import { ModuleInfo } from "license-checker";
 import { mocked } from "ts-jest/utils";
-import { getProjectLicensesInternal } from "../../src/internal/getProjectLicensesInternal";
+import { getLicencesForProjects } from "../../src/internal/getProjectLicensesInternal";
 import console from "../../src/utils/console.utils";
 import { doesFileExist, readFileAsync } from "../../src/utils/file.utils";
 import { getProject, Project } from "../../src/utils/license.utils";
@@ -25,7 +25,7 @@ jest.mock("../../src/utils/packageJson.utils", () => ({
   readPackageJson: jest.fn()
 }));
 
-describe("getProjectLicensesInternal", () => {
+describe("getLicencesForProjects", () => {
   const mockDoesFileExist = mocked(doesFileExist);
   const mockReadFileAsync = mocked(readFileAsync);
   const mockConsoleWarn = mocked(console.warn);
@@ -63,41 +63,41 @@ describe("getProjectLicensesInternal", () => {
   });
 
   it("should get the project from license-checker", async () => {
-    await getProjectLicensesInternal(packageJsonPath);
+    await getLicencesForProjects([packageJsonPath]);
 
     expect(mockGetProject).toBeCalledTimes(1);
   });
 
   it("should use the directory of the path to get the project from license-checker", async () => {
-    await getProjectLicensesInternal(packageJsonPath);
+    await getLicencesForProjects([packageJsonPath]);
 
     const firstCallFirstArg = mockGetProject.mock.calls[0][0];
     expect(firstCallFirstArg.start).toBe("./path/to");
   });
 
   it("should only ask for production dependencies for the project from license-checker", async () => {
-    await getProjectLicensesInternal(packageJsonPath);
+    await getLicencesForProjects([packageJsonPath]);
 
     const firstCallFirstArg = mockGetProject.mock.calls[0][0];
     expect(firstCallFirstArg.production).toBeTruthy();
   });
 
   it("should exclude the current package.json project from license-checker", async () => {
-    await getProjectLicensesInternal(packageJsonPath);
+    await getLicencesForProjects([packageJsonPath]);
 
     const firstCallFirstArg = mockGetProject.mock.calls[0][0];
     expect(firstCallFirstArg.excludePackages).toEqual("test-project@1.2.3");
   });
 
   it("should get the license file for all returned dependencies", async () => {
-    await getProjectLicensesInternal(packageJsonPath);
+    await getLicencesForProjects([packageJsonPath]);
 
     expect(mockDoesFileExist).toBeCalledTimes(dependencies.length);
     expect(mockReadFileAsync).toBeCalledTimes(dependencies.length);
   });
 
   it("should return all license contents for returned dependencies", async () => {
-    const result = await getProjectLicensesInternal(packageJsonPath);
+    const result = await getLicencesForProjects([packageJsonPath]);
 
     expect(result.length).toBe(dependencies.length);
 
@@ -120,7 +120,7 @@ describe("getProjectLicensesInternal", () => {
     mockGetProject.mockReset();
     mockGetProject.mockResolvedValue(projectWithSharedLicenses);
 
-    const result = await getProjectLicensesInternal(packageJsonPath);
+    const result = await getLicencesForProjects([packageJsonPath]);
 
     expect(result.length).toBe(2);
 
@@ -142,7 +142,7 @@ describe("getProjectLicensesInternal", () => {
     mockGetProject.mockReset();
     mockGetProject.mockResolvedValue(projectWithSharedLicenses);
 
-    const result = await getProjectLicensesInternal(packageJsonPath);
+    const result = await getLicencesForProjects([packageJsonPath]);
 
     expect(result.length).toBe(1);
     expect(result[0].content).toBe("(license1)");
@@ -158,7 +158,7 @@ describe("getProjectLicensesInternal", () => {
     mockGetProject.mockReset();
     mockGetProject.mockResolvedValue(projectWithSharedLicenses);
 
-    const result = await getProjectLicensesInternal(packageJsonPath);
+    const result = await getLicencesForProjects([packageJsonPath]);
 
     expect(result.length).toBe(1);
     expect(result[0].content).toBe("(license1)");
@@ -174,7 +174,7 @@ describe("getProjectLicensesInternal", () => {
     mockGetProject.mockReset();
     mockGetProject.mockResolvedValue(projectWithSharedLicenses);
 
-    await getProjectLicensesInternal(packageJsonPath);
+    await getLicencesForProjects([packageJsonPath]);
 
     expect(mockConsoleWarn).toBeCalledTimes(1);
 
@@ -192,7 +192,7 @@ describe("getProjectLicensesInternal", () => {
     mockGetProject.mockReset();
     mockGetProject.mockResolvedValue(projectWithSharedLicenses);
 
-    const result = await getProjectLicensesInternal(packageJsonPath);
+    const result = await getLicencesForProjects([packageJsonPath]);
 
     expect(result[0].content).toBe("Unknown license!");
   });
@@ -203,7 +203,7 @@ describe("getProjectLicensesInternal", () => {
       version: "1.2.3"
     });
 
-    await expect(getProjectLicensesInternal(packageJsonPath)).rejects.toThrow(
+    await expect(getLicencesForProjects([packageJsonPath])).rejects.toThrow(
       'Cannot find the "name" key in the package.json!'
     );
   });
@@ -214,7 +214,7 @@ describe("getProjectLicensesInternal", () => {
       name: "test-project"
     });
 
-    await expect(getProjectLicensesInternal(packageJsonPath)).rejects.toThrow(
+    await expect(getLicencesForProjects([packageJsonPath])).rejects.toThrow(
       'Cannot find the "version" key in the package.json!'
     );
   });

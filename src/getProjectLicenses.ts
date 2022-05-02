@@ -1,4 +1,4 @@
-import { getProjectLicensesInternal } from "./internal/getProjectLicensesInternal";
+import { getLicencesForProjects } from "./internal/getProjectLicensesInternal";
 import { ILicense } from "./models/license";
 
 /**
@@ -6,5 +6,5 @@ import { ILicense } from "./models/license";
  * @returns Array of `ILicense`s each containing the license content and respective dependencies
  */
 export async function getProjectLicenses(pathToPackageJson: string): Promise<ILicense[]> {
-  return getProjectLicensesInternal(pathToPackageJson);
+  return getLicencesForProjects([pathToPackageJson]);
 }
