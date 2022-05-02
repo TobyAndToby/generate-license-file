@@ -1,4 +1,4 @@
-import { getLicencesForProjects } from "./internal/getProjectLicensesInternal";
+import { getLicencesForProjects } from "./internal/getLicencesForProjects";
 import { ILicense } from "./models/license";
 
 /**

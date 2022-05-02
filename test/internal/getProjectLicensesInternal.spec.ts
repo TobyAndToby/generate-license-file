@@ -1,6 +1,6 @@
 import { ModuleInfo } from "license-checker";
 import { mocked } from "ts-jest/utils";
-import { getLicencesForProjects } from "../../src/internal/getProjectLicensesInternal";
+import { getLicencesForProjects } from "../../src/internal/getLicencesForProjects";
 import console from "../../src/utils/console.utils";
 import { doesFileExist, readFileAsync } from "../../src/utils/file.utils";
 import { getProject, Project } from "../../src/utils/license.utils";

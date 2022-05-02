@@ -1,6 +1,6 @@
 import * as os from "os";
 import { LineEnding } from "./generateLicenseFile";
-import { getLicencesForProjects } from "./internal/getProjectLicensesInternal";
+import { getLicencesForProjects } from "./internal/getLicencesForProjects";
 import { License } from "./models/license";
 
 const SUFFIX = "-----------";

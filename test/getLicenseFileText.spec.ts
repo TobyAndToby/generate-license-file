@@ -2,10 +2,10 @@ import * as os from "os";
 import { mocked } from "ts-jest/utils";
 import { LineEnding } from "../src/generateLicenseFile";
 import { getLicenseFileText } from "../src/getLicenseFileText";
-import { getLicencesForProjects } from "../src/internal/getProjectLicensesInternal";
+import { getLicencesForProjects } from "../src/internal/getLicencesForProjects";
 import { License } from "../src/models/license";
 
-jest.mock("../src/internal/getProjectLicensesInternal", () => ({
+jest.mock("../src/internal/getLicencesForProjects", () => ({
   getLicencesForProjects: jest.fn()
 }));
 
