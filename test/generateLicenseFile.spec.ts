@@ -38,7 +38,7 @@ describe("generateLicenseFile", () => {
     await generateLicenseFile(path, "outputPath");
 
     const firstCallFirstArg = mockGetLicenseFileText.mock.calls[0][0];
-    expect(firstCallFirstArg).toBe(path);
+    expect(firstCallFirstArg).toEqual([path]);
   });
 
   (["posix", "windows", undefined] as LineEnding[]).forEach(lineEnding =>
