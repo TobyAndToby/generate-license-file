@@ -26,19 +26,26 @@ describe("generateLicenseFile", () => {
     jest.restoreAllMocks();
   });
 
-  it("should call getLicenseFileText", async () => {
-    await generateLicenseFile("path", "outputPath");
+  describe("when one path is given", () => {
+    it("should call getLicenseFileText with the given path in an array", async () => {
+      const path = "given path value";
 
-    expect(mockGetLicenseFileText).toHaveBeenCalledTimes(1);
+      await generateLicenseFile(path, "outputPath");
+
+      const firstCallFirstArg = mockGetLicenseFileText.mock.calls[0][0];
+      expect(firstCallFirstArg).toEqual([path]);
+    });
   });
 
-  it("should call getLicenseFileText with the given path", async () => {
-    const path = "given path value";
+  describe("when an array of paths are given", () => {
+    it("should call getLicenseFileText with the given array of paths", async () => {
+      const paths = ["the first path", "the second path"];
 
-    await generateLicenseFile(path, "outputPath");
+      await generateLicenseFile(paths, "outputPath");
 
-    const firstCallFirstArg = mockGetLicenseFileText.mock.calls[0][0];
-    expect(firstCallFirstArg).toEqual([path]);
+      const firstCallFirstArg = mockGetLicenseFileText.mock.calls[0][0];
+      expect(firstCallFirstArg).toEqual(paths);
+    });
   });
 
   (["posix", "windows", undefined] as LineEnding[]).forEach(lineEnding =>
