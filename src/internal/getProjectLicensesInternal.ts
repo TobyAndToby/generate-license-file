@@ -9,28 +9,9 @@ import { readPackageJson } from "../utils/packageJson.utils";
 const UTF8 = "utf-8";
 
 export async function getProjectLicensesInternal(pathToPackageJson: string): Promise<License[]> {
-  const dependencyLicenses = await getDependencyMapForProject(pathToPackageJson);
-
-  const licenses = flattenDependencyMapToLicenseArray(dependencyLicenses);
-  return licenses;
-}
-
-const getDependencyMapForProject = async (pathToPackageJson: string) => {
-  const directoryOfPackageJson: string = path.dirname(pathToPackageJson);
-  const currentProjectIdentifier = await getCurrentProjectIdentifier(pathToPackageJson);
-
-  const project: Project = await getProject({
-    start: directoryOfPackageJson,
-    production: true,
-    excludePackages: currentProjectIdentifier
-  });
-
-  const projectDependencies = groupProjectDependenciesByLicenseText(project);
-  return projectDependencies;
-};
-
-const groupProjectDependenciesByLicenseText = async (project: Project) => {
   const dependencyLicenses: Map<string, string[]> = new Map<string, string[]>();
+
+  const project: Project = await getProjectForPackageJson(pathToPackageJson);
 
   for (const [dependencyName, dependencyValue] of Object.entries(project)) {
     const license: string = await getLicenseContent(dependencyValue);
@@ -41,7 +22,19 @@ const groupProjectDependenciesByLicenseText = async (project: Project) => {
     dependencyLicenses.set(license, listForLicense);
   }
 
-  return dependencyLicenses;
+  return flattenDependencyMapToLicenseArray(dependencyLicenses);
+}
+
+const getProjectForPackageJson = async (pathToPackageJson: string) => {
+  const directoryOfPackageJson: string = path.dirname(pathToPackageJson);
+  const currentProjectIdentifier = await getCurrentProjectIdentifier(pathToPackageJson);
+
+  const project: Project = await getProject({
+    start: directoryOfPackageJson,
+    production: true,
+    excludePackages: currentProjectIdentifier
+  });
+  return project;
 };
 
 const getLicenseContent = async (moduleInfo: ModuleInfo) => {
