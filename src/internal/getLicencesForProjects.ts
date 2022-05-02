@@ -9,36 +9,36 @@ import { readPackageJson } from "../utils/packageJson.utils";
 const UTF8 = "utf-8";
 
 export async function getLicencesForProjects(pathsToPackageJsons: string[]): Promise<License[]> {
-  const dependencyLicenses: Map<string, string[]> = new Map<string, string[]>();
+  const licensesMap: Map<string, string[]> = new Map<string, string[]>();
 
   const projects: Project[] = await getProjectsForPackageJsons(pathsToPackageJsons);
 
   for (const project of projects) {
-    for (const [dependencyName, dependencyValue] of Object.entries(project)) {
-      const license: string = await getLicenseContent(dependencyValue);
+    for (const [dependencyName, dependencyInfo] of Object.entries(project)) {
+      const licenseContent: string = await getLicenseContent(dependencyInfo);
 
-      const listForLicense = dependencyLicenses.get(license) ?? [];
-      listForLicense.push(dependencyName);
+      const dependenciesUsingLicense = licensesMap.get(licenseContent) ?? [];
+      dependenciesUsingLicense.push(dependencyName);
 
-      dependencyLicenses.set(license, listForLicense);
+      licensesMap.set(licenseContent, dependenciesUsingLicense);
     }
   }
 
-  return flattenDependencyMapToLicenseArray(dependencyLicenses);
+  return flattenDependencyMapToLicenseArray(licensesMap);
 }
 
 const getProjectsForPackageJsons = async (pathsToPackageJsons: string[]): Promise<Project[]> => {
   const projects: Project[] = [];
 
   for (const pathToPackageJson of pathsToPackageJsons) {
-    const project = await getProjectForPackageJson(pathToPackageJson);
+    const project = await getProjectFromPackageJsonPath(pathToPackageJson);
     projects.push(project);
   }
 
   return projects;
 };
 
-const getProjectForPackageJson = async (pathToPackageJson: string): Promise<Project> => {
+const getProjectFromPackageJsonPath = async (pathToPackageJson: string): Promise<Project> => {
   const directoryOfPackageJson: string = path.dirname(pathToPackageJson);
   const currentProjectIdentifier = await getCurrentProjectIdentifier(pathToPackageJson);
 
@@ -47,6 +47,7 @@ const getProjectForPackageJson = async (pathToPackageJson: string): Promise<Proj
     production: true,
     excludePackages: currentProjectIdentifier
   });
+
   return project;
 };
 
