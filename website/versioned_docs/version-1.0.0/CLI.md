@@ -5,7 +5,7 @@ slug: /cli
 
 # CLI
 
-2.0.0
+Version 1.0.0
 
 ## Getting Started
 

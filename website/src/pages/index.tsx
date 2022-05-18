@@ -27,8 +27,8 @@ export default function Home(): JSX.Element {
   const { siteConfig } = useDocusaurusContext();
   return (
     <Layout
-      title={`Hello from ${siteConfig.title}`}
-      description="Description will go into a meta tag in <head />"
+      title={`Generate License File | Docs`}
+      description="Docs website for the generate-license-file NPM package."
     >
       <HomepageHeader />
       <main>

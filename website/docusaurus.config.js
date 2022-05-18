@@ -3,6 +3,7 @@
 
 const lightCodeTheme = require("prism-react-renderer/themes/github");
 const darkCodeTheme = require("prism-react-renderer/themes/dracula");
+const path = require("path");
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
@@ -35,14 +36,8 @@ const config = {
       /** @type {import('@docusaurus/preset-classic').Options} */
       ({
         docs: {
+          includeCurrentVersion: false,
           sidebarPath: require.resolve("./sidebars.js"),
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          editUrl:
-            "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/"
-        },
-        blog: {
-          showReadingTime: true,
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
@@ -72,6 +67,11 @@ const config = {
             label: "Docs"
           },
           {
+            type: "docsVersionDropdown",
+            position: "left",
+            dropdownActiveClassDisabled: true
+          },
+          {
             href: "https://github.com/TobyAndToby/generate-license-file",
             label: "GitHub",
             position: "right"
@@ -87,23 +87,6 @@ const config = {
               {
                 label: "Docs",
                 to: "/docs/cli"
-              }
-            ]
-          },
-          {
-            title: "Community",
-            items: [
-              {
-                label: "Stack Overflow",
-                href: "https://stackoverflow.com/questions/tagged/docusaurus"
-              },
-              {
-                label: "Discord",
-                href: "https://discordapp.com/invite/docusaurus"
-              },
-              {
-                label: "Twitter",
-                href: "https://twitter.com/docusaurus"
               }
             ]
           },
