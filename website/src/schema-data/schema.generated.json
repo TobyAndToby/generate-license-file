@@ -1,0 +1,948 @@
+{
+	"id": 0,
+	"name": "Generate License File",
+	"kind": 1,
+	"flags": {},
+	"children": [
+		{
+			"id": 2,
+			"name": "cli/cli-arguments",
+			"kind": 2,
+			"kindString": "Module",
+			"flags": {},
+			"children": [
+				{
+					"id": 3,
+					"name": "UserInputs",
+					"kind": 256,
+					"kindString": "Interface",
+					"flags": {},
+					"children": [
+						{
+							"id": 4,
+							"name": "input",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {
+								"isOptional": true
+							},
+							"sources": [
+								{
+									"fileName": "cli/cli-arguments.ts",
+									"line": 7,
+									"character": 2
+								}
+							],
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						},
+						{
+							"id": 5,
+							"name": "output",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {
+								"isOptional": true
+							},
+							"sources": [
+								{
+									"fileName": "cli/cli-arguments.ts",
+									"line": 8,
+									"character": 2
+								}
+							],
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						},
+						{
+							"id": 6,
+							"name": "overwriteOutput",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {
+								"isOptional": true
+							},
+							"sources": [
+								{
+									"fileName": "cli/cli-arguments.ts",
+									"line": 9,
+									"character": 2
+								}
+							],
+							"type": {
+								"type": "intrinsic",
+								"name": "boolean"
+							}
+						},
+						{
+							"id": 7,
+							"name": "eol",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {
+								"isOptional": true
+							},
+							"sources": [
+								{
+									"fileName": "cli/cli-arguments.ts",
+									"line": 10,
+									"character": 2
+								}
+							],
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						},
+						{
+							"id": 8,
+							"name": "noSpinner",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {
+								"isOptional": true
+							},
+							"sources": [
+								{
+									"fileName": "cli/cli-arguments.ts",
+									"line": 11,
+									"character": 2
+								}
+							],
+							"type": {
+								"type": "intrinsic",
+								"name": "boolean"
+							}
+						},
+						{
+							"id": 9,
+							"name": "version",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {
+								"isOptional": true
+							},
+							"sources": [
+								{
+									"fileName": "cli/cli-arguments.ts",
+									"line": 12,
+									"character": 2
+								}
+							],
+							"type": {
+								"type": "intrinsic",
+								"name": "boolean"
+							}
+						},
+						{
+							"id": 10,
+							"name": "ci",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {
+								"isOptional": true
+							},
+							"sources": [
+								{
+									"fileName": "cli/cli-arguments.ts",
+									"line": 13,
+									"character": 2
+								}
+							],
+							"type": {
+								"type": "intrinsic",
+								"name": "boolean"
+							}
+						}
+					],
+					"groups": [
+						{
+							"title": "Properties",
+							"kind": 1024,
+							"children": [
+								4,
+								5,
+								6,
+								7,
+								8,
+								9,
+								10
+							]
+						}
+					],
+					"sources": [
+						{
+							"fileName": "cli/cli-arguments.ts",
+							"line": 6,
+							"character": 17
+						}
+					]
+				},
+				{
+					"id": 11,
+					"name": "CliOptions",
+					"kind": 256,
+					"kindString": "Interface",
+					"flags": {},
+					"children": [
+						{
+							"id": 12,
+							"name": "input",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"sources": [
+								{
+									"fileName": "cli/cli-arguments.ts",
+									"line": 17,
+									"character": 2
+								}
+							],
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						},
+						{
+							"id": 13,
+							"name": "output",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"sources": [
+								{
+									"fileName": "cli/cli-arguments.ts",
+									"line": 18,
+									"character": 2
+								}
+							],
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						},
+						{
+							"id": 14,
+							"name": "eol",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {
+								"isOptional": true
+							},
+							"sources": [
+								{
+									"fileName": "cli/cli-arguments.ts",
+									"line": 19,
+									"character": 2
+								}
+							],
+							"type": {
+								"type": "reference",
+								"id": 33,
+								"name": "LineEnding"
+							}
+						},
+						{
+							"id": 15,
+							"name": "noSpinner",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"sources": [
+								{
+									"fileName": "cli/cli-arguments.ts",
+									"line": 20,
+									"character": 2
+								}
+							],
+							"type": {
+								"type": "intrinsic",
+								"name": "boolean"
+							}
+						}
+					],
+					"groups": [
+						{
+							"title": "Properties",
+							"kind": 1024,
+							"children": [
+								12,
+								13,
+								14,
+								15
+							]
+						}
+					],
+					"sources": [
+						{
+							"fileName": "cli/cli-arguments.ts",
+							"line": 16,
+							"character": 17
+						}
+					]
+				},
+				{
+					"id": 16,
+					"name": "ArgumentsWithAliases",
+					"kind": 256,
+					"kindString": "Interface",
+					"flags": {},
+					"children": [
+						{
+							"id": 17,
+							"name": "--input",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"sources": [
+								{
+									"fileName": "cli/cli-arguments.ts",
+									"line": 24,
+									"character": 2
+								}
+							],
+							"type": {
+								"type": "reference",
+								"qualifiedName": "StringConstructor",
+								"package": "typescript",
+								"name": "StringConstructor"
+							}
+						},
+						{
+							"id": 18,
+							"name": "--output",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"sources": [
+								{
+									"fileName": "cli/cli-arguments.ts",
+									"line": 25,
+									"character": 2
+								}
+							],
+							"type": {
+								"type": "reference",
+								"qualifiedName": "StringConstructor",
+								"package": "typescript",
+								"name": "StringConstructor"
+							}
+						},
+						{
+							"id": 19,
+							"name": "--overwrite",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"sources": [
+								{
+									"fileName": "cli/cli-arguments.ts",
+									"line": 26,
+									"character": 2
+								}
+							],
+							"type": {
+								"type": "reference",
+								"qualifiedName": "BooleanConstructor",
+								"package": "typescript",
+								"name": "BooleanConstructor"
+							}
+						},
+						{
+							"id": 20,
+							"name": "--eol",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"sources": [
+								{
+									"fileName": "cli/cli-arguments.ts",
+									"line": 27,
+									"character": 2
+								}
+							],
+							"type": {
+								"type": "reference",
+								"qualifiedName": "StringConstructor",
+								"package": "typescript",
+								"name": "StringConstructor"
+							}
+						},
+						{
+							"id": 21,
+							"name": "--no-spinner",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"sources": [
+								{
+									"fileName": "cli/cli-arguments.ts",
+									"line": 28,
+									"character": 2
+								}
+							],
+							"type": {
+								"type": "reference",
+								"qualifiedName": "BooleanConstructor",
+								"package": "typescript",
+								"name": "BooleanConstructor"
+							}
+						},
+						{
+							"id": 22,
+							"name": "--version",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"sources": [
+								{
+									"fileName": "cli/cli-arguments.ts",
+									"line": 29,
+									"character": 2
+								}
+							],
+							"type": {
+								"type": "reference",
+								"qualifiedName": "BooleanConstructor",
+								"package": "typescript",
+								"name": "BooleanConstructor"
+							}
+						},
+						{
+							"id": 23,
+							"name": "--ci",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"sources": [
+								{
+									"fileName": "cli/cli-arguments.ts",
+									"line": 30,
+									"character": 2
+								}
+							],
+							"type": {
+								"type": "reference",
+								"qualifiedName": "BooleanConstructor",
+								"package": "typescript",
+								"name": "BooleanConstructor"
+							}
+						},
+						{
+							"id": 24,
+							"name": "-i",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"sources": [
+								{
+									"fileName": "cli/cli-arguments.ts",
+									"line": 31,
+									"character": 2
+								}
+							],
+							"type": {
+								"type": "literal",
+								"value": "--input"
+							}
+						},
+						{
+							"id": 25,
+							"name": "-o",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"sources": [
+								{
+									"fileName": "cli/cli-arguments.ts",
+									"line": 32,
+									"character": 2
+								}
+							],
+							"type": {
+								"type": "literal",
+								"value": "--output"
+							}
+						},
+						{
+							"id": 26,
+							"name": "-v",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"sources": [
+								{
+									"fileName": "cli/cli-arguments.ts",
+									"line": 33,
+									"character": 2
+								}
+							],
+							"type": {
+								"type": "literal",
+								"value": "--version"
+							}
+						}
+					],
+					"groups": [
+						{
+							"title": "Properties",
+							"kind": 1024,
+							"children": [
+								17,
+								18,
+								19,
+								20,
+								21,
+								22,
+								23,
+								24,
+								25,
+								26
+							]
+						}
+					],
+					"sources": [
+						{
+							"fileName": "cli/cli-arguments.ts",
+							"line": 23,
+							"character": 17
+						}
+					],
+					"extendedTypes": [
+						{
+							"type": "reference",
+							"qualifiedName": "arg.Spec",
+							"package": "arg",
+							"name": "Spec"
+						}
+					]
+				},
+				{
+					"id": 27,
+					"name": "argumentsWithAliases",
+					"kind": 32,
+					"kindString": "Variable",
+					"flags": {
+						"isConst": true
+					},
+					"sources": [
+						{
+							"fileName": "cli/cli-arguments.ts",
+							"line": 36,
+							"character": 13
+						}
+					],
+					"type": {
+						"type": "reference",
+						"id": 16,
+						"name": "ArgumentsWithAliases"
+					},
+					"defaultValue": "..."
+				}
+			],
+			"groups": [
+				{
+					"title": "Interfaces",
+					"kind": 256,
+					"children": [
+						3,
+						11,
+						16
+					]
+				},
+				{
+					"title": "Variables",
+					"kind": 32,
+					"children": [
+						27
+					]
+				}
+			],
+			"sources": [
+				{
+					"fileName": "cli/cli-arguments.ts",
+					"line": 3,
+					"character": 0
+				}
+			]
+		},
+		{
+			"id": 1,
+			"name": "main",
+			"kind": 2,
+			"kindString": "Module",
+			"flags": {},
+			"children": [
+				{
+					"id": 33,
+					"name": "LineEnding",
+					"kind": 4194304,
+					"kindString": "Type alias",
+					"flags": {},
+					"comment": {
+						"shortText": "Used to specify which line endings to use in the generated file",
+						"text": "`windows` = \"\\r\\n\"\n\n`posix` = \"\\n\"\n"
+					},
+					"sources": [
+						{
+							"fileName": "generateLicenseFile.ts",
+							"line": 11,
+							"character": 12
+						}
+					],
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": "windows"
+							},
+							{
+								"type": "literal",
+								"value": "posix"
+							}
+						]
+					}
+				},
+				{
+					"id": 28,
+					"name": "generateLicenseFile",
+					"kind": 64,
+					"kindString": "Function",
+					"flags": {},
+					"sources": [
+						{
+							"fileName": "generateLicenseFile.ts",
+							"line": 23,
+							"character": 22
+						}
+					],
+					"signatures": [
+						{
+							"id": 29,
+							"name": "generateLicenseFile",
+							"kind": 4096,
+							"kindString": "Call signature",
+							"flags": {},
+							"comment": {
+								"shortText": "Scans the project found at the given path and creates a license file at the given output location",
+								"tags": [
+									{
+										"tag": "optional",
+										"text": "@param lineEnding \"windows\" or \"posix\". Will use the system default if omitted\n"
+									}
+								]
+							},
+							"parameters": [
+								{
+									"id": 30,
+									"name": "pathToPackageJson",
+									"kind": 32768,
+									"kindString": "Parameter",
+									"flags": {},
+									"comment": {
+										"shortText": "A path to the package.json for the project"
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									}
+								},
+								{
+									"id": 31,
+									"name": "outputPath",
+									"kind": 32768,
+									"kindString": "Parameter",
+									"flags": {},
+									"comment": {
+										"shortText": "A file path for the resulting license file"
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									}
+								},
+								{
+									"id": 32,
+									"name": "lineEnding",
+									"kind": 32768,
+									"kindString": "Parameter",
+									"flags": {
+										"isOptional": true
+									},
+									"type": {
+										"type": "reference",
+										"id": 33,
+										"name": "LineEnding"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "void"
+									}
+								],
+								"qualifiedName": "Promise",
+								"package": "typescript",
+								"name": "Promise"
+							}
+						}
+					]
+				},
+				{
+					"id": 34,
+					"name": "getLicenseFileText",
+					"kind": 64,
+					"kindString": "Function",
+					"flags": {},
+					"sources": [
+						{
+							"fileName": "getLicenseFileText.ts",
+							"line": 16,
+							"character": 22
+						}
+					],
+					"signatures": [
+						{
+							"id": 35,
+							"name": "getLicenseFileText",
+							"kind": 4096,
+							"kindString": "Call signature",
+							"flags": {},
+							"comment": {
+								"shortText": "Scans the project found at the given path and returns a string containing the licenses for all the dependencies",
+								"returns": "A promise that resolves to the license file text\n",
+								"tags": [
+									{
+										"tag": "optional",
+										"text": "@param lineEnding \"windows\" or \"posix\". Will use the system default if omitted"
+									}
+								]
+							},
+							"parameters": [
+								{
+									"id": 36,
+									"name": "pathToPackageJson",
+									"kind": 32768,
+									"kindString": "Parameter",
+									"flags": {},
+									"comment": {
+										"shortText": "A path to the package.json for the project"
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									}
+								},
+								{
+									"id": 37,
+									"name": "lineEnding",
+									"kind": 32768,
+									"kindString": "Parameter",
+									"flags": {
+										"isOptional": true
+									},
+									"type": {
+										"type": "reference",
+										"id": 33,
+										"name": "LineEnding"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									}
+								],
+								"qualifiedName": "Promise",
+								"package": "typescript",
+								"name": "Promise"
+							}
+						}
+					]
+				},
+				{
+					"id": 38,
+					"name": "getProjectLicenses",
+					"kind": 64,
+					"kindString": "Function",
+					"flags": {},
+					"sources": [
+						{
+							"fileName": "getProjectLicenses.ts",
+							"line": 8,
+							"character": 22
+						}
+					],
+					"signatures": [
+						{
+							"id": 39,
+							"name": "getProjectLicenses",
+							"kind": 4096,
+							"kindString": "Call signature",
+							"flags": {},
+							"comment": {
+								"returns": "Array of `ILicense`s each containing the license content and respective dependencies\n"
+							},
+							"parameters": [
+								{
+									"id": 40,
+									"name": "pathToPackageJson",
+									"kind": 32768,
+									"kindString": "Parameter",
+									"flags": {},
+									"comment": {
+										"shortText": "A path to the package.json for the project"
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"typeArguments": [
+									{
+										"type": "array",
+										"elementType": {
+											"type": "reference",
+											"id": 41,
+											"name": "ILicense"
+										}
+									}
+								],
+								"qualifiedName": "Promise",
+								"package": "typescript",
+								"name": "Promise"
+							}
+						}
+					]
+				},
+				{
+					"id": 41,
+					"name": "ILicense",
+					"kind": 256,
+					"kindString": "Interface",
+					"flags": {},
+					"children": [
+						{
+							"id": 42,
+							"name": "content",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"comment": {
+								"shortText": "Body of the license."
+							},
+							"sources": [
+								{
+									"fileName": "models/license.ts",
+									"line": 11,
+									"character": 2
+								}
+							],
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						},
+						{
+							"id": 43,
+							"name": "dependencies",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"comment": {
+								"shortText": "List of node packages that this license applies to."
+							},
+							"sources": [
+								{
+									"fileName": "models/license.ts",
+									"line": 16,
+									"character": 2
+								}
+							],
+							"type": {
+								"type": "array",
+								"elementType": {
+									"type": "intrinsic",
+									"name": "string"
+								}
+							}
+						}
+					],
+					"groups": [
+						{
+							"title": "Properties",
+							"kind": 1024,
+							"children": [
+								42,
+								43
+							]
+						}
+					],
+					"sources": [
+						{
+							"fileName": "models/license.ts",
+							"line": 7,
+							"character": 17
+						}
+					]
+				}
+			],
+			"groups": [
+				{
+					"title": "Type aliases",
+					"kind": 4194304,
+					"children": [
+						33
+					]
+				},
+				{
+					"title": "Functions",
+					"kind": 64,
+					"children": [
+						28,
+						34,
+						38
+					]
+				},
+				{
+					"title": "Interfaces",
+					"kind": 256,
+					"children": [
+						41
+					]
+				}
+			],
+			"sources": [
+				{
+					"fileName": "main.ts",
+					"line": 2,
+					"character": 0
+				}
+			]
+		}
+	],
+	"groups": [
+		{
+			"title": "Modules",
+			"kind": 2,
+			"children": [
+				2,
+				1
+			]
+		}
+	]
+}

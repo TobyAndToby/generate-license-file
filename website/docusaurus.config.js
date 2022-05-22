@@ -68,6 +68,12 @@ const config = {
             label: "Docs"
           },
           {
+            type: "doc",
+            docId: "api",
+            position: "left",
+            label: "API"
+          },
+          {
             type: "docsVersionDropdown",
             position: "left",
             dropdownActiveClassDisabled: true
