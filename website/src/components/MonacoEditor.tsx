@@ -94,7 +94,6 @@ const Tab = styled.div`
 `;
 
 const Editor = styled.div`
-  /* flex: 1; */
   background-color: #1e1e1e;
   margin-left: 20px;
   padding-left: 10px;
@@ -103,6 +102,13 @@ const Editor = styled.div`
 
 const Code = styled.div`
   font-size: 14px;
+  white-space: pre;
+`;
+
+const libraryDemo = `import { getProjectLicenses } from "generate-license-file";
+// Get an array of licenses for the current project's production dependencies.
+
+const licenses: ILicense[] = await getProjectLicenses("./package.json");
 `;
 
 export const MonacoEditor: FC = () => {
@@ -120,14 +126,7 @@ export const MonacoEditor: FC = () => {
             <Tab>library-demo.ts</Tab>
           </TabsContainer>
           <Editor>
-            <Code>
-              import {"{"} getProjectLicenses {"}"} from "generate-license-file";
-            </Code>
-            <br />
-            <Code>
-              // Get an array of licenses for the current project's production dependencies.
-            </Code>
-            <Code>const licenses: ILicense[] = await getProjectLicenses("./package.json");</Code>
+            <Code>{libraryDemo}</Code>
           </Editor>
         </ViewContainer>
       </Screen>
