@@ -50,7 +50,7 @@ export const Tabs: FC<PropsWithChildren<{}>> = ({ children }) => {
 
 export const TabsContainer = styled.div`
   display: flex;
-  margin-bottom: 20px;
+  margin-bottom: 36px;
 
   div {
     border: 1px solid black;

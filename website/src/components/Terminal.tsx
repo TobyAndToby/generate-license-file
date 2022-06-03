@@ -28,7 +28,6 @@ const MenuButton = styled.div<MenuButtonProps>`
   width: 10px;
   border-radius: 50%;
   position: relative;
-  top: 3px;
   margin: 0 4px;
   background-color: ${({ type }) => menuButtonType[type]};
   display: inline-block;

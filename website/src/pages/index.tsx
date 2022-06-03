@@ -2,6 +2,7 @@ import styled from "@emotion/styled";
 import HomepageFeatures from "@site/src/components/HomepageFeatures";
 import Layout from "@theme/Layout";
 import React from "react";
+import { MonacoEditor } from "../components/MonacoEditor";
 import { Tab } from "../components/Tabs/Tab";
 import { Tabs } from "../components/Tabs/Tabs";
 import { Terminal } from "../components/Terminal";
@@ -63,11 +64,11 @@ export default function Home(): JSX.Element {
           </Intro>
           <Examples>
             <Tabs>
+              <Tab label="Library">
+                <MonacoEditor />
+              </Tab>
               <Tab label="CLI">
                 <Terminal />
-              </Tab>
-              <Tab label="Library">
-                <div>library</div>
               </Tab>
             </Tabs>
           </Examples>
