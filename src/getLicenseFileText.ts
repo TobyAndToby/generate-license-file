@@ -1,6 +1,5 @@
-import * as os from "os";
-import { LineEnding } from "./generateLicenseFile";
 import { getLicencesForProjects } from "./internal/getLicencesForProjects";
+import { getLineEndingValue, LineEnding } from "./lineEndings";
 import { License } from "./models/license";
 
 const SUFFIX = "-----------";
@@ -10,7 +9,7 @@ const FOOTER =
 /**
  * Scans the project found at the given path and returns a string containing the licenses for all the dependencies
  * @param pathToPackageJson A path to the package.json for the project
- * @optional @param lineEnding "windows" or "posix". Will use the system default if omitted
+ * @optional @param lineEnding "crlf" or "lf". Will use the system default if omitted
  * @returns A promise that resolves to the license file text
  */
 export async function getLicenseFileText(
@@ -21,7 +20,7 @@ export async function getLicenseFileText(
 /**
  * Scans the projects found at the given paths and returns a string containing the licenses for all the dependencies across all the projects
  * @param pathsToPackageJsons A path to the package.json for the project
- * @optional @param lineEnding "windows" or "posix". Will use the system default if omitted
+ * @optional @param lineEnding "crlf" or "lf". Will use the system default if omitted
  * @returns A promise that resolves to the license file text
  */
 export async function getLicenseFileText(
@@ -37,7 +36,7 @@ export async function getLicenseFileText(
     pathsToPackageJsons = [pathsToPackageJsons];
   }
 
-  const EOL = getLineEnding(lineEnding);
+  const EOL = getLineEndingValue(lineEnding);
   const licenses: License[] = await getLicencesForProjects(pathsToPackageJsons);
   let licenseFile = "";
 
@@ -47,15 +46,4 @@ export async function getLicenseFileText(
 
   licenseFile += FOOTER + EOL;
   return licenseFile;
-}
-
-function getLineEnding(lineEndings?: LineEnding): string {
-  switch (lineEndings) {
-    case "windows":
-      return "\r\n";
-    case "posix":
-      return "\n";
-    default:
-      return os.EOL;
-  }
 }

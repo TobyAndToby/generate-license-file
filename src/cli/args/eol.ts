@@ -1,19 +1,19 @@
 import { Result } from "arg";
-import { isValidEol, LineEnding } from "../../generateLicenseFile";
+import { isLineEnding, LineEnding } from "../../lineEndings";
 import { ArgumentsWithAliases } from "../cli-arguments";
 import { Argument, MultipleChoiceOptions } from "./argument";
 
 export class Eol extends Argument<LineEnding | undefined> {
   private readonly choices: MultipleChoiceOptions<LineEnding | undefined> = {
-    Windows: "windows",
-    POSIX: "posix",
+    CRLF: "crlf",
+    LF: "lf",
     "System default": undefined
   };
 
   public async resolve(args: Result<ArgumentsWithAliases>): Promise<LineEnding | undefined> {
     const inputtedEol = args["--eol"];
 
-    if (isValidEol(inputtedEol)) {
+    if (isLineEnding(inputtedEol)) {
       return inputtedEol;
     }
 
@@ -28,9 +28,9 @@ export class Eol extends Argument<LineEnding | undefined> {
   public async parse(args: Result<ArgumentsWithAliases>): Promise<LineEnding | undefined> {
     const eol = args["--eol"];
 
-    if (!isValidEol(eol)) {
+    if (!isLineEnding(eol)) {
       throw new Error(
-        `Invalid line ending given: '${eol}'. Possible values are 'windows', 'posix'. Omit the --eol flag to use the system default.`
+        `Invalid line ending given: '${eol}'. Possible values are 'crlf' or 'lf'. Omit the --eol flag to use the system default.`
       );
     }
 
