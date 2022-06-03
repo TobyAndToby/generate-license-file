@@ -14,6 +14,7 @@ const config = {
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
   favicon: "img/favicon.ico",
+  noIndex: true,
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
@@ -36,7 +37,7 @@ const config = {
       /** @type {import('@docusaurus/preset-classic').Options} */
       ({
         docs: {
-          includeCurrentVersion: false,
+          includeCurrentVersion: true,
           sidebarPath: require.resolve("./sidebars.js"),
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
@@ -62,7 +63,7 @@ const config = {
         items: [
           {
             type: "doc",
-            docId: "CLI",
+            docId: "Intro",
             position: "left",
             label: "Docs"
           },
@@ -73,8 +74,9 @@ const config = {
           },
           {
             href: "https://github.com/TobyAndToby/generate-license-file",
-            label: "GitHub",
-            position: "right"
+            position: "right",
+            className: "header-github-link",
+            "aria-label": "GitHub repository"
           }
         ]
       },
@@ -96,11 +98,19 @@ const config = {
               {
                 label: "GitHub",
                 href: "https://github.com/TobyAndToby/generate-license-file"
+              },
+              {
+                label: "Toby Smith",
+                href: "https://tobysmith.uk"
+              },
+              {
+                label: "Toby Bessant",
+                href: "https://tobybessant.co.uk"
               }
             ]
           }
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} Generate License File, Inc. Built with Docusaurus.`
+        copyright: `Copyright © ${new Date().getFullYear()} Generate License File. Built with Docusaurus.`
       },
       prism: {
         theme: lightCodeTheme,
