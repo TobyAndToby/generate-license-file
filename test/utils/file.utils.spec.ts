@@ -1,10 +1,14 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
-import * as fs from "fs";
+import { Stats } from "fs";
+import * as fs from "fs/promises";
 import { mocked } from "ts-jest/utils";
-import { doesFileExist, doesFolderExist, writeFileAsync } from "../../src/utils/file.utils";
+import {
+  doesFileExist,
+  doesFolderExist,
+  readFile,
+  writeFileAsync
+} from "../../src/utils/file.utils";
 
-jest.mock("fs", () => ({
+jest.mock("fs/promises", () => ({
   stat: jest.fn(),
   readFile: jest.fn(),
   writeFile: jest.fn(),
@@ -19,14 +23,9 @@ describe("File Utils", () => {
 
   describe("doesFileExist", () => {
     it("should return true when the given item exists and is a file", async () => {
-      const mockFsStatResult: fs.Stats = {
+      mockedFs.stat.mockResolvedValue({
         isFile: () => true
-      } as any;
-
-      mockedFs.stat.mockImplementation((path, callback) => {
-        // The types are a little off. The callback is the second arg but it thinks it's the third
-        (callback as any)(null, mockFsStatResult);
-      });
+      } as Stats);
 
       const result = await doesFileExist("/some/path/to/file.txt");
 
@@ -34,14 +33,9 @@ describe("File Utils", () => {
     });
 
     it("should return false when the given item exists but isn't a file", async () => {
-      const mockFsStatResult: fs.Stats = {
+      mockedFs.stat.mockResolvedValue({
         isFile: () => false
-      } as any;
-
-      mockedFs.stat.mockImplementation((path, callback) => {
-        // The types are a little off. The callback is the second arg but it thinks it's the third
-        (callback as any)(null, mockFsStatResult);
-      });
+      } as Stats);
 
       const result = await doesFileExist("/some/path/to/file.txt");
 
@@ -49,10 +43,7 @@ describe("File Utils", () => {
     });
 
     it("should return false if stat throws", async () => {
-      mockedFs.stat.mockImplementation((path, callback) => {
-        // The types are a little off. The callback is the second arg but it thinks it's the third
-        (callback as any)(new Error("some error"), null);
-      });
+      mockedFs.stat.mockRejectedValue("anything");
 
       const result = await doesFileExist("/some/path/to/file.txt");
 
@@ -62,40 +53,27 @@ describe("File Utils", () => {
 
   describe("doesFolderExist", () => {
     it("should return true when the given item exists and is a directory", async () => {
-      const mockFsStatResult: fs.Stats = {
+      mockedFs.stat.mockResolvedValue({
         isDirectory: () => true
-      } as any;
+      } as Stats);
 
-      mockedFs.stat.mockImplementation((path, callback) => {
-        // The types are a little off. The callback is the second arg but it thinks it's the third
-        (callback as any)(null, mockFsStatResult);
-      });
-
-      const result = await doesFolderExist("/some/path/to/file.txt");
+      const result = await doesFolderExist("/some/path/to/a/directory");
 
       expect(result).toBeTruthy();
     });
 
     it("should return false when the given item exists but isn't a directory", async () => {
-      const mockFsStatResult: fs.Stats = {
+      mockedFs.stat.mockResolvedValue({
         isDirectory: () => false
-      } as any;
+      } as Stats);
 
-      mockedFs.stat.mockImplementation((path, callback) => {
-        // The types are a little off. The callback is the second arg but it thinks it's the third
-        (callback as any)(null, mockFsStatResult);
-      });
-
-      const result = await doesFolderExist("/some/path/to/file.txt");
+      const result = await doesFolderExist("/some/path/to/a/directory");
 
       expect(result).toBeFalsy();
     });
 
     it("should return false if stat throws", async () => {
-      mockedFs.stat.mockImplementation((path, callback) => {
-        // The types are a little off. The callback is the second arg but it thinks it's the third
-        (callback as any)(new Error("some error"), null);
-      });
+      mockedFs.stat.mockRejectedValue("anything");
 
       const result = await doesFolderExist("/some/path/to/file.txt");
 
@@ -105,173 +83,93 @@ describe("File Utils", () => {
 
   describe("writeFileAsync", () => {
     it("should call fs.writeFile with the file path", async () => {
-      const mockFsStatResult: fs.Stats = {
+      const filePath = "/some/path/to/file.txt";
+
+      mockedFs.stat.mockResolvedValue({
         isDirectory: () => true
-      } as any;
+      } as Stats);
 
-      mockedFs.stat.mockImplementation((path, callback) => {
-        // The types are a little off. The callback is the second arg but it thinks it's the third
-        (callback as any)(null, mockFsStatResult);
-      });
+      await writeFileAsync(filePath, "any file content");
 
-      // The types are a little off. The callback is the fourth arg but it thinks it's the third
-      mockedFs.writeFile.mockImplementation(((
-        path: string,
-        content: string,
-        options: any,
-        callback: any
-      ) => {
-        callback(null);
-      }) as any);
-
-      await writeFileAsync("path", "file content");
-
-      const firstCallFirstArg = mockedFs.writeFile.mock.calls[0][0];
-      expect(firstCallFirstArg).toBe("path");
+      expect(mockedFs.writeFile).toBeCalledTimes(1);
+      expect(mockedFs.writeFile).toHaveBeenCalledWith(
+        filePath,
+        expect.anything(),
+        expect.anything()
+      );
     });
 
     it("should call fs.writeFile with the content", async () => {
-      const mockFsStatResult: fs.Stats = {
+      const fileContent = "any file content";
+
+      mockedFs.stat.mockResolvedValue({
         isDirectory: () => true
-      } as any;
+      } as Stats);
 
-      mockedFs.stat.mockImplementation((path, callback) => {
-        // The types are a little off. The callback is the second arg but it thinks it's the third
-        (callback as any)(null, mockFsStatResult);
-      });
+      await writeFileAsync("path", fileContent);
 
-      // The types are a little off. The callback is the fourth arg but it thinks it's the third
-      mockedFs.writeFile.mockImplementation(((
-        path: string,
-        content: string,
-        options: any,
-        callback: any
-      ) => {
-        callback(null);
-      }) as any);
-
-      await writeFileAsync("path", "file content");
-
-      const firstCallSecondArg = mockedFs.writeFile.mock.calls[0][1];
-      expect(firstCallSecondArg).toBe("file content");
+      expect(mockedFs.writeFile).toBeCalledTimes(1);
+      expect(mockedFs.writeFile).toHaveBeenCalledWith(
+        expect.anything(),
+        fileContent,
+        expect.anything()
+      );
     });
 
     it("should call fs.writeFileAsync with the utf8 encoding", async () => {
-      const mockFsStatResult: fs.Stats = {
+      mockedFs.stat.mockResolvedValue({
         isDirectory: () => true
-      } as any;
-
-      mockedFs.stat.mockImplementation((path, callback) => {
-        // The types are a little off. The callback is the second arg but it thinks it's the third
-        (callback as any)(null, mockFsStatResult);
-      });
-
-      // The types are a little off. The callback is the fourth arg but it thinks it's the third
-      mockedFs.writeFile.mockImplementation(((
-        path: string,
-        content: string,
-        options: any,
-        callback: any
-      ) => {
-        callback(null);
-      }) as any);
+      } as Stats);
 
       await writeFileAsync("path", "file content");
 
-      const firstCallThirdArg = mockedFs.writeFile.mock.calls[0][2] as any;
-      expect(firstCallThirdArg.encoding).toBe("utf-8");
+      expect(mockedFs.writeFile).toBeCalledTimes(1);
+      expect(mockedFs.writeFile).toHaveBeenCalledWith(
+        expect.anything(),
+        expect.anything(),
+        expect.objectContaining({ encoding: "utf-8" })
+      );
     });
 
     it("should call fs.mkdir if the directory does not exist", async () => {
-      const mockFsStatResult: fs.Stats = {
-        isDirectory: () => false
-      } as any;
-
-      mockedFs.stat.mockImplementation((path, callback) => {
-        // The types are a little off. The callback is the second arg but it thinks it's the third
-        (callback as any)(null, mockFsStatResult);
-      });
-
-      mockedFs.mkdir.mockImplementation(((path: any, options: any, callback: any) => {
-        callback(null, path);
-      }) as any);
-
-      // The types are a little off. The callback is the fourth arg but it thinks it's the third
-      mockedFs.writeFile.mockImplementation(((
-        path: string,
-        content: string,
-        options: any,
-        callback: any
-      ) => {
-        callback(null);
-      }) as any);
+      mockedFs.stat.mockRejectedValue("anything");
 
       await writeFileAsync("path", "file content");
 
       expect(mockedFs.mkdir).toHaveBeenCalledTimes(1);
     });
 
-    it("should call fs.mkdir with the directory path", async () => {
-      const directory = "C:/folder/tree/that/does/not/exist";
+    it("should call fs.mkdir with the directory path if the directory does not exist", async () => {
+      const directory = "/directory/that/does/not/exist";
       const filePath = directory + "/third-party-licenses.txt";
 
-      const mockFsStatResult: fs.Stats = {
-        isDirectory: () => false
-      } as any;
+      mockedFs.stat.mockRejectedValue("anything");
 
-      mockedFs.stat.mockImplementation((path, callback) => {
-        // The types are a little off. The callback is the second arg but it thinks it's the third
-        (callback as any)(null, mockFsStatResult);
-      });
+      await writeFileAsync(filePath, "any file content");
 
-      mockedFs.mkdir.mockImplementation(((path: any, options: any, callback: any) => {
-        callback(null, path);
-      }) as any);
-
-      // The types are a little off. The callback is the fourth arg but it thinks it's the third
-      mockedFs.writeFile.mockImplementation(((
-        path: string,
-        content: string,
-        options: any,
-        callback: any
-      ) => {
-        callback(null);
-      }) as any);
-
-      await writeFileAsync(filePath, "file content");
-
-      const firstCallFirstArg = mockedFs.mkdir.mock.calls[0][0] as any;
-      expect(firstCallFirstArg).toBe(directory);
+      expect(mockedFs.mkdir).toHaveBeenCalledTimes(1);
+      expect(mockedFs.mkdir).toHaveBeenCalledWith(directory, expect.anything());
     });
 
-    it("should call fs.mkdir with recursive true", async () => {
-      const mockFsStatResult: fs.Stats = {
-        isDirectory: () => false
-      } as any;
+    it("should call fs.mkdir with recursive true if the directory does not exist", async () => {
+      const directory = "/directory/that/does/not/exist";
+      const filePath = directory + "/third-party-licenses.txt";
 
-      mockedFs.stat.mockImplementation((path, callback) => {
-        // The types are a little off. The callback is the second arg but it thinks it's the third
-        (callback as any)(null, mockFsStatResult);
-      });
+      mockedFs.stat.mockRejectedValue("anything");
 
-      mockedFs.mkdir.mockImplementation(((path: any, options: any, callback: any) => {
-        callback(null, path);
-      }) as any);
+      await writeFileAsync(filePath, "any file content");
 
-      // The types are a little off. The callback is the fourth arg but it thinks it's the third
-      mockedFs.writeFile.mockImplementation(((
-        path: string,
-        content: string,
-        options: any,
-        callback: any
-      ) => {
-        callback(null);
-      }) as any);
+      expect(mockedFs.mkdir).toHaveBeenCalledTimes(1);
+      expect(mockedFs.mkdir).toHaveBeenCalledWith(
+        expect.anything(),
+        expect.objectContaining({ recursive: true })
+      );
+    });
+  });
 
-      await writeFileAsync("path", "file content");
-
-      const firstCallSecondArg = mockedFs.mkdir.mock.calls[0][1] as any;
-      expect(firstCallSecondArg.recursive).toBe(true);
+  describe("readFile", () => {
+    it("should return fs.readFile", () => {
+      expect(readFile).toBe(mockedFs.readFile);
     });
   });
 });
