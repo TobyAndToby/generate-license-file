@@ -18,14 +18,14 @@ $ npm install generate-license-file -g
 $ generate-license-file --input package.json --output third-party-licenses.txt --overwrite
 ```
 
-| Argument       | Description                                                                                                                                                              |
-| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `--input`      | Absolute or relative path to the package.json for the project.                                                                                                           |
-| `--output`     | Absolute or relative location for the output licenses file.                                                                                                              |
-| `--overwrite`  | (optional) Allow the overwriting of existing output files.<br> If this option is not provided and the output file already exists, you will be prompted to confirm.       |
-| `--eol`        | (optional) Specify the line endings used in the output file.<br> Accepted values are `windows` or `posix`.<br> If no value is provided your system default will be used. |
-| `--no-spinner` | (optional) Disable the CLI spinner while the output file is being generated.                                                                                             |
-| `--version`    | (optional) Print the installed generate-license-file version.                                                                                                            |
+| Argument       | Description                                                                                                                                                        |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `--input`      | Absolute or relative path to the package.json for the project.                                                                                                     |
+| `--output`     | Absolute or relative location for the output licenses file.                                                                                                        |
+| `--overwrite`  | (optional) Allow the overwriting of existing output files.<br> If this option is not provided and the output file already exists, you will be prompted to confirm. |
+| `--eol`        | (optional) Specify the line endings used in the output file.<br> Accepted values are `crlf` or `lf`.<br> If no value is provided your system default will be used. |
+| `--no-spinner` | (optional) Disable the CLI spinner while the output file is being generated.                                                                                       |
+| `--version`    | (optional) Print the installed generate-license-file version.                                                                                                      |
 
 If either the `--input` or `--output` are omitted the CLI will prompt you for their values.
 

@@ -1,7 +1,7 @@
 /* istanbul ignore file */
 
 import { Spec } from "arg";
-import { LineEnding } from "../generateLicenseFile";
+import { LineEnding } from "../lineEndings";
 
 export interface UserInputs {
   input?: string;

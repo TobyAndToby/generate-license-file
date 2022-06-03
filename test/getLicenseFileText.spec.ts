@@ -1,19 +1,12 @@
-import * as os from "os";
 import { mocked } from "ts-jest/utils";
-import { LineEnding } from "../src/generateLicenseFile";
 import { getLicenseFileText } from "../src/getLicenseFileText";
 import { getLicencesForProjects } from "../src/internal/getLicencesForProjects";
+import { allLineEndings, getLineEndingValue } from "../src/lineEndings";
 import { License } from "../src/models/license";
 
 jest.mock("../src/internal/getLicencesForProjects", () => ({
   getLicencesForProjects: jest.fn()
 }));
-
-const lineEndings = [
-  { name: "windows", value: "\r\n" },
-  { name: "posix", value: "\n" },
-  { name: undefined, value: os.EOL }
-] as { name: LineEnding; value: string }[];
 
 describe("getLicenseFileText", () => {
   const mockGetLicencesForProjects = mocked(getLicencesForProjects);
@@ -56,17 +49,18 @@ describe("getLicenseFileText", () => {
     licenses.forEach(license => expect(license.format).toHaveBeenCalledTimes(1));
   });
 
-  lineEndings.forEach(lineEnding =>
-    it(`should format each returned license with the appropriate line ending for ${lineEnding.name}`, async () => {
+  [...allLineEndings, undefined].forEach(lineEnding =>
+    it(`should format each returned license with the appropriate line ending for ${lineEnding}`, async () => {
+      const expectedLineEndingValue = getLineEndingValue(lineEnding);
       const licenses = [getNewMockedLicense(), getNewMockedLicense(), getNewMockedLicense()];
 
       mockGetLicencesForProjects.mockResolvedValue(licenses);
 
-      await getLicenseFileText("path", lineEnding.name);
+      await getLicenseFileText("path", lineEnding);
 
       for (const license of licenses) {
         const firstCallFirstArg = mocked(license.format).mock.calls[0][0];
-        expect(firstCallFirstArg).toBe(lineEnding.value);
+        expect(firstCallFirstArg).toBe(expectedLineEndingValue);
       }
     })
   );
@@ -92,7 +86,7 @@ describe("getLicenseFileText", () => {
 
     mockGetLicencesForProjects.mockResolvedValue(licenses);
 
-    const result = await getLicenseFileText("path", "posix");
+    const result = await getLicenseFileText("path", "lf");
 
     expect(
       /.*?first\n\n-----------\n\nsecond\n\n-----------\n\nthird\n\n-----------\n\n.*/s.test(result)
@@ -107,7 +101,7 @@ describe("getLicenseFileText", () => {
 
     mockGetLicencesForProjects.mockResolvedValue(licenses);
 
-    const result = await getLicenseFileText("path", "posix");
+    const result = await getLicenseFileText("path", "lf");
 
     expect(
       result.endsWith(

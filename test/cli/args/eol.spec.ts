@@ -3,6 +3,7 @@ import { prompt } from "enquirer";
 import { mocked } from "ts-jest/utils";
 import { Eol } from "../../../src/cli/args/eol";
 import { ArgumentsWithAliases } from "../../../src/cli/cli-arguments";
+import { allLineEndings } from "../../../src/lineEndings";
 
 jest.mock("enquirer", () => ({
   prompt: jest.fn()
@@ -32,25 +33,17 @@ describe("Eol", () => {
       expect(answer).toBeUndefined();
     });
 
-    it("should return 'windows' if '--eol' is 'windows'", async () => {
-      const args = {
-        "--eol": "windows"
-      } as Result<ArgumentsWithAliases>;
+    allLineEndings.forEach(lineEnding =>
+      it(`should return '${lineEnding}' if '--eol' is '${lineEnding}'`, async () => {
+        const args = {
+          "--eol": lineEnding
+        } as Result<ArgumentsWithAliases>;
 
-      const answer = await eol.resolve(args);
+        const answer = await eol.resolve(args);
 
-      expect(answer).toBe("windows");
-    });
-
-    it("should return 'posix' if '--eol' is 'posix'", async () => {
-      const args = {
-        "--eol": "posix"
-      } as Result<ArgumentsWithAliases>;
-
-      const answer = await eol.resolve(args);
-
-      expect(answer).toBe("posix");
-    });
+        expect(answer).toBe(lineEnding);
+      })
+    );
 
     it("should prompt the user for a valid answer if an invalid line ending value is provided", async () => {
       mockedPrompt.mockResolvedValue({
@@ -97,7 +90,7 @@ describe("Eol", () => {
 
       expect(mockedPrompt).toBeCalledWith(
         expect.objectContaining({
-          choices: ["Windows", "POSIX", "System default"]
+          choices: ["CRLF", "LF", "System default"]
         })
       );
     });
@@ -121,8 +114,8 @@ describe("Eol", () => {
     });
 
     [
-      { key: "Windows", value: "windows" },
-      { key: "POSIX", value: "posix" },
+      { key: "CRLF", value: "crlf" },
+      { key: "LF", value: "lf" },
       { key: "System default", value: undefined }
     ].forEach(testCase =>
       it(`should return ${testCase.value} if the user selects ${testCase.key} from the multiple choice prompt`, async () => {
@@ -150,25 +143,17 @@ describe("Eol", () => {
       expect(answer).toBeUndefined();
     });
 
-    it("should return 'windows' if '--eol' is 'windows'", async () => {
-      const args = {
-        "--eol": "windows"
-      } as Result<ArgumentsWithAliases>;
+    allLineEndings.forEach(lineEnding =>
+      it(`should return '${lineEnding}' if '--eol' is '${lineEnding}'`, async () => {
+        const args = {
+          "--eol": lineEnding
+        } as Result<ArgumentsWithAliases>;
 
-      const answer = await eol.parse(args);
+        const answer = await eol.parse(args);
 
-      expect(answer).toBe("windows");
-    });
-
-    it("should return 'posix' if '--eol' is 'posix'", async () => {
-      const args = {
-        "--eol": "posix"
-      } as Result<ArgumentsWithAliases>;
-
-      const answer = await eol.parse(args);
-
-      expect(answer).toBe("posix");
-    });
+        expect(answer).toBe(lineEnding);
+      })
+    );
 
     it("should throw if '--eol' is invalid", async () => {
       const args = {
@@ -176,7 +161,7 @@ describe("Eol", () => {
       } as Result<ArgumentsWithAliases>;
 
       await expect(eol.parse(args)).rejects.toThrow(
-        "Invalid line ending given: 'this is invalid'. Possible values are 'windows', 'posix'. Omit the --eol flag to use the system default."
+        "Invalid line ending given: 'this is invalid'. Possible values are 'crlf' or 'lf'. Omit the --eol flag to use the system default."
       );
     });
   });
