@@ -2,13 +2,13 @@ import { ModuleInfo } from "license-checker";
 import { mocked } from "ts-jest/utils";
 import { getLicencesForProjects } from "../../src/internal/getLicencesForProjects";
 import console from "../../src/utils/console.utils";
-import { doesFileExist, readFileAsync } from "../../src/utils/file.utils";
+import { doesFileExist, readFile } from "../../src/utils/file.utils";
 import { getProject, Project } from "../../src/utils/license.utils";
 import { readPackageJson } from "../../src/utils/packageJson.utils";
 
 jest.mock("../../src/utils/file.utils", () => ({
   doesFileExist: jest.fn(),
-  readFileAsync: jest.fn(),
+  readFile: jest.fn(),
   doesFolderExist: jest.fn()
 }));
 
@@ -27,7 +27,7 @@ jest.mock("../../src/utils/packageJson.utils", () => ({
 
 describe("getLicencesForProjects", () => {
   const mockDoesFileExist = mocked(doesFileExist);
-  const mockReadFileAsync = mocked(readFileAsync);
+  const mockReadFile = mocked(readFile);
   const mockConsoleWarn = mocked(console.warn);
   const mockGetProject = mocked(getProject);
   const mockReadPackageJson = mocked(readPackageJson);
@@ -51,7 +51,7 @@ describe("getLicencesForProjects", () => {
 
     mockGetProject.mockResolvedValue(project);
     mockDoesFileExist.mockResolvedValue(true);
-    mockReadFileAsync.mockImplementation(path => Promise.resolve(`Content for: ${path}`));
+    mockReadFile.mockImplementation(path => Promise.resolve(`Content for: ${path}`));
     mockReadPackageJson.mockResolvedValue({
       name: "test-project",
       version: "1.2.3"
@@ -93,7 +93,7 @@ describe("getLicencesForProjects", () => {
     await getLicencesForProjects([packageJsonPath]);
 
     expect(mockDoesFileExist).toBeCalledTimes(dependencies.length);
-    expect(mockReadFileAsync).toBeCalledTimes(dependencies.length);
+    expect(mockReadFile).toBeCalledTimes(dependencies.length);
   });
 
   it("should return all license contents for returned dependencies", async () => {

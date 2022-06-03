@@ -2,7 +2,7 @@ import { ModuleInfo } from "license-checker";
 import path from "path";
 import { License } from "../models/license";
 import console from "../utils/console.utils";
-import { doesFileExist, readFileAsync } from "../utils/file.utils";
+import { doesFileExist, readFile } from "../utils/file.utils";
 import { getProject, Project } from "../utils/license.utils";
 import { readPackageJson } from "../utils/packageJson.utils";
 
@@ -55,7 +55,7 @@ const getLicenseContent = async (moduleInfo: ModuleInfo) => {
   const licenseFilePath: string | undefined = moduleInfo.licenseFile;
 
   if (!!licenseFilePath && (await doesFileExist(licenseFilePath))) {
-    return await readFileAsync(licenseFilePath, { encoding: UTF8 });
+    return await readFile(licenseFilePath, { encoding: UTF8 });
   }
 
   return getLicenseType(moduleInfo);

@@ -1,22 +1,22 @@
 import { mocked } from "ts-jest/utils";
-import { doesFileExist, readFileAsync } from "../../src/utils/file.utils";
+import { doesFileExist, readFile } from "../../src/utils/file.utils";
 import { readPackageJson } from "../../src/utils/packageJson.utils";
 
 jest.mock("../../src/utils/file.utils", () => ({
   doesFileExist: jest.fn(),
-  readFileAsync: jest.fn()
+  readFile: jest.fn()
 }));
 
 describe("Package.json Utils", () => {
   const mockedDoesFileExist = mocked(doesFileExist);
-  const mockedReadFileAsync = mocked(readFileAsync);
+  const mockedReadFile = mocked(readFile);
 
   const pathToPackageJson = "./path/to/package.json";
 
   beforeEach(() => {
     jest.resetAllMocks();
 
-    mockedReadFileAsync.mockResolvedValue(`{ "name": "test-project", "version": "1.2.3" }`);
+    mockedReadFile.mockResolvedValue(`{ "name": "test-project", "version": "1.2.3" }`);
   });
 
   afterAll(() => {
@@ -31,16 +31,16 @@ describe("Package.json Utils", () => {
       await expect(readPackageJson(pathToPackageJson)).rejects.toThrow(expectedThrownMessage);
     });
 
-    it("should call readFileAsync with the package.json path if the given path does exist", async () => {
+    it("should call readFile with the package.json path if the given path does exist", async () => {
       mockedDoesFileExist.mockResolvedValue(true);
 
       await readPackageJson(pathToPackageJson);
 
-      expect(mockedReadFileAsync).toBeCalledTimes(1);
-      expect(mockedReadFileAsync).toHaveBeenCalledWith(pathToPackageJson, { encoding: "utf8" });
+      expect(mockedReadFile).toBeCalledTimes(1);
+      expect(mockedReadFile).toHaveBeenCalledWith(pathToPackageJson, { encoding: "utf8" });
     });
 
-    it("should return the json parsed result from readFileAsync", async () => {
+    it("should return the json parsed result from readFile", async () => {
       mockedDoesFileExist.mockResolvedValue(true);
 
       const result = await readPackageJson(pathToPackageJson);
