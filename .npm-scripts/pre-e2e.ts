@@ -1,7 +1,7 @@
 import { exec } from "child_process";
 import { stat } from "fs/promises";
 import path from "path";
-import { testPackageJsons } from "../e2e/test-projects";
+import { testPackageJsons } from "../e2e/describes/testPackages";
 
 const npmCiPackageJson = (absolutePathToPackageJson: string) =>
   new Promise<void>(async (resolve, reject) => {
@@ -64,7 +64,7 @@ const npmBuildMainProject = async () => {
 const npmCiTestProjects = async () => {
   for (const testProject of testPackageJsons) {
     console.log(`\n-----\nInstalling npm packages for e2e project ${testProject}\n-----`);
-    const projectPackageJson = path.join(__dirname, "../e2e/test-projects", testProject);
+    const projectPackageJson = path.join(__dirname, "../e2e/testProjects", testProject);
     await npmCiPackageJson(projectPackageJson);
   }
 };

@@ -1,7 +1,3 @@
-# Ignore test output files except the expected snapshots
-e2e/**/*result*.txt
-!e2e/**/expected-results/*result*.txt
-
 # Created by https://www.gitignore.io/api/node,code,linux,macos,windows,visualstudiocode
 # Edit at https://www.gitignore.io/?templates=node,code,linux,macos,windows,visualstudiocode
 
