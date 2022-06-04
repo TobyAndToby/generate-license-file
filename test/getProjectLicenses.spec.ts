@@ -20,18 +20,24 @@ describe("getProjectLicenses", () => {
     jest.restoreAllMocks();
   });
 
-  it("should call the internal getProjectLicenses", async () => {
-    await getProjectLicenses("path");
+  describe("when one path is given", () => {
+    it("should call the internal getProjectLicenses with the given path", async () => {
+      const path = "given path value";
 
-    expect(mockGetLicencesForProjects).toHaveBeenCalledTimes(1);
+      await getProjectLicenses(path);
+
+      expect(mockGetLicencesForProjects).toHaveBeenCalledWith([path]);
+    });
   });
 
-  it("should call the internal getProjectLicenses with the given path", async () => {
-    const path = "the given path";
+  describe("when an array of paths are given", () => {
+    it("should call the internal getProjectLicenses with the given array of paths", async () => {
+      const paths = ["the first path", "the second path"];
 
-    await getProjectLicenses(path);
+      await getProjectLicenses(paths);
 
-    expect(mockGetLicencesForProjects).toHaveBeenCalledWith([path]);
+      expect(mockGetLicencesForProjects).toHaveBeenCalledWith(paths);
+    });
   });
 
   it("should return the response from the internal getProjectLicenses", async () => {

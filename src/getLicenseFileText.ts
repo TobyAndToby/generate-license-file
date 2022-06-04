@@ -9,7 +9,7 @@ const FOOTER =
 /**
  * Scans the project found at the given path and returns a string containing the licenses for all the dependencies
  * @param pathToPackageJson A path to the package.json for the project
- * @optional @param lineEnding "crlf" or "lf". Will use the system default if omitted
+ * @optional @param lineEnding `"crlf"` or `"lf"`. Will use the system default if omitted
  * @returns A promise that resolves to the license file text
  */
 export async function getLicenseFileText(
@@ -19,8 +19,8 @@ export async function getLicenseFileText(
 
 /**
  * Scans the projects found at the given paths and returns a string containing the licenses for all the dependencies across all the projects
- * @param pathsToPackageJsons A path to the package.json for the project
- * @optional @param lineEnding "crlf" or "lf". Will use the system default if omitted
+ * @param pathsToPackageJsons An array of paths to the package.json files for the projects
+ * @optional @param lineEnding `"crlf"` or `"lf"`. Will use the system default if omitted
  * @returns A promise that resolves to the license file text
  */
 export async function getLicenseFileText(
