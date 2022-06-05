@@ -6,8 +6,6 @@ import { doesFileExist, readFile } from "../utils/file.utils";
 import { getProject, Project } from "../utils/license.utils";
 import { readPackageJson } from "../utils/packageJson.utils";
 
-const UTF8 = "utf-8";
-
 export async function getLicencesForProjects(pathsToPackageJsons: string[]): Promise<License[]> {
   const licensesMap: Map<string, string[]> = new Map<string, string[]>();
 
@@ -55,7 +53,7 @@ const getLicenseContent = async (moduleInfo: ModuleInfo) => {
   const licenseFilePath: string | undefined = moduleInfo.licenseFile;
 
   if (!!licenseFilePath && (await doesFileExist(licenseFilePath))) {
-    return await readFile(licenseFilePath, { encoding: UTF8 });
+    return await readFile(licenseFilePath);
   }
 
   return getLicenseType(moduleInfo);

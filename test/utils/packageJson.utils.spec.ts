@@ -37,7 +37,7 @@ describe("Package.json Utils", () => {
       await readPackageJson(pathToPackageJson);
 
       expect(mockedReadFile).toBeCalledTimes(1);
-      expect(mockedReadFile).toHaveBeenCalledWith(pathToPackageJson, { encoding: "utf8" });
+      expect(mockedReadFile).toHaveBeenCalledWith(pathToPackageJson);
     });
 
     it("should return the json parsed result from readFile", async () => {

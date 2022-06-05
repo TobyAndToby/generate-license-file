@@ -2,8 +2,6 @@ import { Stats } from "fs";
 import fs from "fs/promises";
 import { dirname } from "path";
 
-export { readFile } from "fs/promises";
-
 const UTF8 = "utf-8";
 
 export async function doesFileExist(path: string): Promise<boolean> {
@@ -34,4 +32,8 @@ export async function writeFileAsync(filePath: string, content: string) {
   }
 
   return await fs.writeFile(filePath, content, { encoding: UTF8 });
+}
+
+export async function readFile(filePath: string): Promise<string> {
+  return await fs.readFile(filePath, { encoding: UTF8 });
 }

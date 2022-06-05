@@ -168,8 +168,36 @@ describe("File Utils", () => {
   });
 
   describe("readFile", () => {
-    it("should return fs.readFile", () => {
-      expect(readFile).toBe(mockedFs.readFile);
+    it("should call fs.readFile with the given file path", async () => {
+      const filePath = "/some/path/to/file.txt";
+
+      await readFile(filePath);
+
+      expect(mockedFs.readFile).toBeCalledTimes(1);
+      expect(mockedFs.readFile).toHaveBeenCalledWith(filePath, expect.anything());
+    });
+
+    it("should call fs.readFile with the utf8 encoding", async () => {
+      const filePath = "/some/path/to/file.txt";
+
+      await readFile(filePath);
+
+      expect(mockedFs.readFile).toBeCalledTimes(1);
+      expect(mockedFs.readFile).toHaveBeenCalledWith(
+        expect.anything(),
+        expect.objectContaining({ encoding: "utf-8" })
+      );
+    });
+
+    it("should return the response from fs.readFile", async () => {
+      const filePath = "/some/path/to/file.txt";
+      const fileContent = "any file content";
+
+      mockedFs.readFile.mockResolvedValue(fileContent);
+
+      const result = await readFile(filePath);
+
+      expect(result).toBe(fileContent);
     });
   });
 });
