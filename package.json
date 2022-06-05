@@ -11,8 +11,8 @@
     "build": "del-cli ./dist&&tsc",
     "build:watch": "del-cli ./dist&&tsc --watch",
     "test": "jest ./test",
-    "test:e2e": "jest ./e2e --runInBand",
-    "test:ci": "jest --ci --coverage ./test && jest --ci ./e2e --runInBand",
+    "test:e2e": "jest ./e2e",
+    "test:ci": "jest --ci --coverage ./test && jest --ci ./e2e",
     "pretest:e2e": "ts-node ./.npm-scripts/pre-e2e.ts",
     "pretest:ci": "ts-node ./.npm-scripts/pre-e2e.ts"
   },
