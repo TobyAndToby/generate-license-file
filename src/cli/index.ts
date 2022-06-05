@@ -4,7 +4,7 @@ import { generateLicenseFile } from "../generateLicenseFile";
 import console from "../utils/console.utils";
 import { readPackageJson } from "../utils/packageJson.utils";
 import { Eol } from "./args/eol";
-import { Input } from "./args/input";
+import { Inputs } from "./args/inputs";
 import { NoSpinner } from "./args/no-spinner";
 import { Output } from "./args/output";
 import { ArgumentsWithAliases, argumentsWithAliases, CliOptions } from "./cli-arguments";
@@ -28,13 +28,13 @@ async function cli(args: string[]) {
     return;
   }
 
-  const { input, output, eol, noSpinner } = await parseArgumentsIntoOptions(givenUserInputs);
+  const { inputs, output, eol, noSpinner } = await parseArgumentsIntoOptions(givenUserInputs);
 
   if (!noSpinner) {
     spinner.start();
   }
 
-  await generateLicenseFile(input, output, eol);
+  await generateLicenseFile(inputs, output, eol);
   spinner.stop();
 }
 
@@ -62,21 +62,21 @@ async function parseArgumentsIntoOptions(args: Result<ArgumentsWithAliases>): Pr
 }
 
 async function getOptionsOrThrow(options: Result<ArgumentsWithAliases>): Promise<CliOptions> {
-  const input = await new Input().parse(options);
+  const inputs = await new Inputs().parse(options);
   const output = await new Output().parse(options);
   const eol = await new Eol().parse(options);
   const noSpinner = await new NoSpinner().parse(options);
 
-  return { input, output, eol, noSpinner };
+  return { inputs, output, eol, noSpinner };
 }
 
 async function promptForMissingOptions(options: Result<ArgumentsWithAliases>): Promise<CliOptions> {
-  const input = await new Input().resolve(options);
+  const inputs = await new Inputs().resolve(options);
   const output = await new Output().resolve(options);
   const eol = await new Eol().resolve(options);
   const noSpinner = await new NoSpinner().resolve(options);
 
-  return { input, output, eol, noSpinner };
+  return { inputs, output, eol, noSpinner };
 }
 
 async function printPackageVersion(): Promise<void> {

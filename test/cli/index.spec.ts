@@ -40,25 +40,25 @@ const mockOutputResolve = jest.fn();
 const mockEolResolve = jest.fn();
 const mockNoSpinnerResolve = jest.fn();
 
-jest.mock("../../src/cli/args/input.ts", () => ({
-  Input: function () {
+jest.mock("../../src/cli/args/inputs", () => ({
+  Inputs: function () {
     return { parse: mockInputParse, resolve: mockInputResolve };
   }
 }));
 
-jest.mock("../../src/cli/args/output.ts", () => ({
+jest.mock("../../src/cli/args/output", () => ({
   Output: function () {
     return { parse: mockOutputParse, resolve: mockOutputResolve };
   }
 }));
 
-jest.mock("../../src/cli/args/eol.ts", () => ({
+jest.mock("../../src/cli/args/eol", () => ({
   Eol: function () {
     return { parse: mockEolParse, resolve: mockEolResolve };
   }
 }));
 
-jest.mock("../../src/cli/args/no-spinner.ts", () => ({
+jest.mock("../../src/cli/args/no-spinner", () => ({
   NoSpinner: function () {
     return { parse: mockNoSpinnerParse, resolve: mockNoSpinnerResolve };
   }
@@ -138,7 +138,7 @@ describe("cli", () => {
 
       const parsedArgResponse = {
         "--version": true,
-        "--input": "any input value",
+        "--input": ["any input value"],
         "--output": "any output value"
       } as Result<ArgumentsWithAliases>;
 
@@ -266,7 +266,7 @@ describe("cli", () => {
   describe("spinner", () => {
     it("should start the spinner if noSpinner is false", async () => {
       const parsedArgResponse = {
-        "--input": "any input path",
+        "--input": ["any input path"],
         "--output": "any output path"
       } as Result<ArgumentsWithAliases>;
 
@@ -280,7 +280,7 @@ describe("cli", () => {
 
     it("should not start the spinner if noSpinner is true", async () => {
       const parsedArgResponse = {
-        "--input": "any input path",
+        "--input": ["any input path"],
         "--output": "any output path"
       } as Result<ArgumentsWithAliases>;
 
@@ -294,7 +294,7 @@ describe("cli", () => {
 
     it("should stop the spinner if the generateLicenseFile call succeeds", async () => {
       const parsedArgResponse = {
-        "--input": "any input path",
+        "--input": ["any input path"],
         "--output": "any output path"
       } as Result<ArgumentsWithAliases>;
 
@@ -307,7 +307,7 @@ describe("cli", () => {
 
     it("should not fail the spinner if the generateLicenseFile call succeeds", async () => {
       const parsedArgResponse = {
-        "--input": "any input path",
+        "--input": ["any input path"],
         "--output": "any output path"
       } as Result<ArgumentsWithAliases>;
 
@@ -329,7 +329,7 @@ describe("cli", () => {
 
     it("should fail the spinner with the error message it an error is thrown", async () => {
       const parsedArgResponse = {
-        "--input": "any input path",
+        "--input": ["any input path"],
         "--output": "any output path"
       } as Result<ArgumentsWithAliases>;
 
@@ -344,7 +344,7 @@ describe("cli", () => {
 
     it("should fail the spinner with the thrown object if it's not an error", async () => {
       const parsedArgResponse = {
-        "--input": "any input path",
+        "--input": ["any input path"],
         "--output": "any output path"
       } as Result<ArgumentsWithAliases>;
 
@@ -359,7 +359,7 @@ describe("cli", () => {
 
     it("should fail the spinner with 'Unknown error' if the value thrown is falsy (undefined)", async () => {
       const parsedArgResponse = {
-        "--input": "any input path",
+        "--input": ["any input path"],
         "--output": "any output path"
       } as Result<ArgumentsWithAliases>;
 
