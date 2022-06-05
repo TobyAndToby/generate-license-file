@@ -20,3 +20,26 @@ export const describeEachTestPackage = (callback: DescribeEachTestPackageCallbac
     });
   });
 };
+
+type DescribeAllTestPackagesAtOnceCallback = (
+  packageJsonPaths: string[],
+  areAbsolute: boolean
+) => void;
+
+export const describeAllTestPackagesAtOnce = (callback: DescribeAllTestPackagesAtOnceCallback) => {
+  const absolutePackageJsons = testPackageJsons.map(testPackage =>
+    path.join(__dirname, "../testProjects", testPackage)
+  );
+
+  describe(`for all test packages with absolute paths`, () => {
+    callback(absolutePackageJsons, true);
+  });
+
+  const relativePackageJsons = testPackageJsons.map(testPackage =>
+    path.join("./e2e/testProjects", testPackage)
+  );
+
+  describe(`for all test packages with relative paths`, () => {
+    callback(relativePackageJsons, false);
+  });
+};

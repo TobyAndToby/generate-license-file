@@ -1,7 +1,7 @@
 import { allLineEndings, getLineEndingValue, LineEnding } from "../../src/lineEndings";
 import { getLicenseFileText } from "../../src/main";
 import { describeEachLineEnding } from "../describes/lineEndings";
-import { describeEachTestPackage } from "../describes/testPackages";
+import { describeAllTestPackagesAtOnce, describeEachTestPackage } from "../describes/testPackages";
 
 describe("getLicenseFileText", () => {
   describeEachTestPackage(packageJsonUnderTest =>
@@ -37,4 +37,12 @@ describe("getLicenseFileText", () => {
       );
     })
   );
+
+  describeAllTestPackagesAtOnce(packageJsonsUnderTest => {
+    it("should match snapshot", async () => {
+      const result = await getLicenseFileText(packageJsonsUnderTest);
+
+      expect(result).toMatchSnapshot();
+    });
+  });
 });

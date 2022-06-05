@@ -3,7 +3,7 @@ import { mocked } from "ts-jest/utils";
 import { allLineEndings, getLineEndingValue } from "../../src/lineEndings";
 import { generateLicenseFile, LineEnding } from "../../src/main";
 import { describeEachLineEnding } from "../describes/lineEndings";
-import { describeEachTestPackage } from "../describes/testPackages";
+import { describeAllTestPackagesAtOnce, describeEachTestPackage } from "../describes/testPackages";
 
 jest.mock("fs/promises", () => ({
   ...jest.requireActual<typeof fs>("fs/promises"),
@@ -77,4 +77,15 @@ describe("generateLicenseFile", () => {
       });
     })
   );
+
+  describeAllTestPackagesAtOnce(packageJsonsUnderTest => {
+    it("should match snapshot", async () => {
+      const outputPath = "/output/path.txt";
+
+      await generateLicenseFile(packageJsonsUnderTest, outputPath);
+
+      const fileContent = mockedWriteFile.mock.calls[0][1];
+      expect(fileContent).toMatchSnapshot();
+    });
+  });
 });

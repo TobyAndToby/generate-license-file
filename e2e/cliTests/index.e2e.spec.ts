@@ -5,7 +5,7 @@ import { promisify } from "util";
 import { allLineEndings, getLineEndingValue } from "../../src/lineEndings";
 import { LineEnding } from "../../src/main";
 import { describeEachLineEnding } from "../describes/lineEndings";
-import { describeEachTestPackage } from "../describes/testPackages";
+import { describeAllTestPackagesAtOnce, describeEachTestPackage } from "../describes/testPackages";
 
 const execAsync = promisify(exec);
 
@@ -186,6 +186,36 @@ describe("cli", () => {
 
         expect(stdout.trim()).toBe("v0.0.0");
       });
+    });
+  });
+
+  describeAllTestPackagesAtOnce((packageJsonsUnderTest, isAbsolute) => {
+    const directoryUnderTest = __dirname;
+    let outputFileName = "";
+    let outputFilePath = "";
+
+    let inputs = "";
+    let output = "";
+
+    beforeEach(async () => {
+      outputFileName = `test-${Math.floor(Math.random() * 1000)}.txt`;
+      outputFilePath = path.join(directoryUnderTest, outputFileName);
+
+      inputs = "--input " + packageJsonsUnderTest.join(" --input ");
+      output = isAbsolute ? path.join(directoryUnderTest, outputFileName) : outputFileName;
+    });
+
+    fit("should match snapshot using --input", async () => {
+      // await execAsync(`npx generate-license-file ${inputs} --output ${output}`, {
+      //   cwd: directoryUnderTest
+      // });
+
+      const command = `npx generate-license-file ${inputs} --output ${output}`;
+
+      console.log({ command, cwd: directoryUnderTest });
+
+      // const result = await fs.readFile(outputFilePath, "utf8");
+      // expect(result).toMatchSnapshot();
     });
   });
 });
