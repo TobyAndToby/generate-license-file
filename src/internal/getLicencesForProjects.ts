@@ -1,13 +1,12 @@
-import { ModuleInfo } from "license-checker";
 import path from "path";
 import { License } from "../models/license";
 import console from "../utils/console.utils";
 import { doesFileExist, readFile } from "../utils/file.utils";
-import { getProject, Project } from "../utils/license.utils";
+import { Dependency, getProject, Project } from "../utils/license.utils";
 import { readPackageJson } from "../utils/packageJson.utils";
 
 export async function getLicencesForProjects(pathsToPackageJsons: string[]): Promise<License[]> {
-  const licensesMap: Map<string, string[]> = new Map<string, string[]>();
+  const licensesMap: Map<string, Set<string>> = new Map<string, Set<string>>();
 
   const projects: Project[] = await getProjectsForPackageJsons(pathsToPackageJsons);
 
@@ -15,8 +14,8 @@ export async function getLicencesForProjects(pathsToPackageJsons: string[]): Pro
     for (const [dependencyName, dependencyInfo] of Object.entries(project)) {
       const licenseContent: string = await getLicenseContent(dependencyInfo);
 
-      const dependenciesUsingLicense = licensesMap.get(licenseContent) ?? [];
-      dependenciesUsingLicense.push(dependencyName);
+      const dependenciesUsingLicense = licensesMap.get(licenseContent) ?? new Set<string>();
+      dependenciesUsingLicense.add(dependencyName);
 
       licensesMap.set(licenseContent, dependenciesUsingLicense);
     }
@@ -49,33 +48,34 @@ const getProjectFromPackageJsonPath = async (pathToPackageJson: string): Promise
   return project;
 };
 
-const getLicenseContent = async (moduleInfo: ModuleInfo) => {
-  const licenseFilePath: string | undefined = moduleInfo.licenseFile;
+const getLicenseContent = async (dependency: Dependency) => {
+  const licenseFilePath: string | undefined = dependency.licenseFile;
 
   if (!!licenseFilePath && (await doesFileExist(licenseFilePath))) {
     return await readFile(licenseFilePath);
   }
 
-  return getLicenseType(moduleInfo);
+  return getLicenseType(dependency);
 };
 
-const getLicenseType = (moduleInfo: ModuleInfo) => {
-  const { licenses } = moduleInfo;
+const getLicenseType = (dependency: Dependency) => {
+  const { licenses } = dependency;
 
   if (!!licenses && licenses.length > 0) {
     const licenseType = typeof licenses === "string" ? licenses : licenses[0];
     return `(${licenseType})`;
   }
 
-  console.warn(`No license found for ${moduleInfo.name}!`);
+  console.warn(`No license found for ${dependency.name}!`);
   return "Unknown license!";
 };
 
-const flattenDependencyMapToLicenseArray = (dependencyLicenses: Map<string, string[]>) => {
+const flattenDependencyMapToLicenseArray = (dependencyLicenses: Map<string, Set<string>>) => {
   const licenses: License[] = [];
 
   for (const [license, dependencies] of dependencyLicenses) {
-    licenses.push(new License(license, dependencies));
+    const dependencyArray = [...dependencies];
+    licenses.push(new License(license, dependencyArray));
   }
 
   return licenses;
