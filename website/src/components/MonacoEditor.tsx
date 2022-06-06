@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import Highlight, { defaultProps } from "prism-react-renderer";
 import React, { FC } from "react";
 
 const Window = styled.div`
@@ -105,7 +106,7 @@ const Code = styled.div`
   white-space: pre;
 `;
 
-const libraryDemo = `import { getProjectLicenses } from "generate-license-file";
+const libraryDemoSrc = `import { getProjectLicenses } from "generate-license-file";
 // Get an array of licenses for the current project's production dependencies.
 
 const licenses: ILicense[] = await getProjectLicenses("./package.json");
@@ -126,7 +127,19 @@ export const MonacoEditor: FC = () => {
             <Tab>library-demo.ts</Tab>
           </TabsContainer>
           <Editor>
-            <Code>{libraryDemo}</Code>
+            <Highlight {...defaultProps} code={libraryDemoSrc} language="typescript">
+              {({ className, style, tokens, getLineProps, getTokenProps }) => (
+                <pre className={className} style={style}>
+                  {tokens.map((line, i) => (
+                    <div {...getLineProps({ line, key: i })}>
+                      {line.map((token, key) => (
+                        <span {...getTokenProps({ token, key })} />
+                      ))}
+                    </div>
+                  ))}
+                </pre>
+              )}
+            </Highlight>
           </Editor>
         </ViewContainer>
       </Screen>
