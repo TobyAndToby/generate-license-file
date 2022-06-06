@@ -52,3 +52,7 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           directory: coverage
+
+      - name: Build Docs Site
+        uses: npm run build
+        working-directory: ./website
