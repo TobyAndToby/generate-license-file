@@ -1,5 +1,4 @@
 import styled from "@emotion/styled";
-import HomepageFeatures from "@site/src/components/HomepageFeatures";
 import Layout from "@theme/Layout";
 import React from "react";
 import { MonacoEditor } from "../components/MonacoEditor";
@@ -74,9 +73,6 @@ export default function Home(): JSX.Element {
           </Examples>
         </Hero>
       </header>
-      <main>
-        <HomepageFeatures />
-      </main>
     </Layout>
   );
 }

@@ -1,3 +1,5 @@
+// TODO(tobybe): remove need for comment / casts to any.
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import React, { FC, PropsWithChildren, useState } from "react";
@@ -14,7 +16,7 @@ const TabItem = styled.div<{ isActive: boolean }>`
   ${({ isActive }) => isActive && activeStyle}
 `;
 
-export const Tabs: FC<PropsWithChildren<{}>> = ({ children }) => {
+export const Tabs: FC<PropsWithChildren<Record<string, unknown>>> = ({ children }) => {
   const [activeTabLabel, setActiveTabLabel] = useState(children[0].props.label);
 
   return (

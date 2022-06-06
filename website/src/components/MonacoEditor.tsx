@@ -101,11 +101,6 @@ const Editor = styled.div`
   border-left: 1px solid #ffffff5c;
 `;
 
-const Code = styled.div`
-  font-size: 14px;
-  white-space: pre;
-`;
-
 const libraryDemoSrc = `import { getProjectLicenses } from "generate-license-file";
 // Get an array of licenses for the current project's production dependencies.
 

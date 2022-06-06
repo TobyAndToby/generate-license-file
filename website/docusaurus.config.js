@@ -115,6 +115,13 @@ const config = {
       prism: {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme
+      },
+      announcementBar: {
+        content: "🚧 <b>Welcome! This site is a work in progress, check back soon.</b> 🚧",
+        backgroundColor: "#f5e831",
+        textColor: "black",
+        id: "wip",
+        isCloseable: false
       }
     })
 };
