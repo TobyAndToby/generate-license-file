@@ -24,9 +24,6 @@ jobs:
       - name: Run Prettier
         run: npx prettier --check ./website
 
-      - name: Run ESLint
-        run: npx eslint ./website --max-warnings 0
-
       - name: Build
         run: npm run build
         working-directory: ./website
