@@ -75,3 +75,6 @@ jobs:
       - name: Build docs site
         run: npm run build
         working-directory: ./website
+
+      - name: Check for git changes
+        run: git diff --exit-code
