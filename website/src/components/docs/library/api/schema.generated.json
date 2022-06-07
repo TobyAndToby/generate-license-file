@@ -241,9 +241,17 @@
 								}
 							],
 							"type": {
-								"type": "reference",
-								"id": 33,
-								"name": "LineEnding"
+								"type": "union",
+								"types": [
+									{
+										"type": "literal",
+										"value": "crlf"
+									},
+									{
+										"type": "literal",
+										"value": "lf"
+									}
+								]
 							}
 						},
 						{
@@ -578,37 +586,6 @@
 			"flags": {},
 			"children": [
 				{
-					"id": 33,
-					"name": "LineEnding",
-					"kind": 4194304,
-					"kindString": "Type alias",
-					"flags": {},
-					"comment": {
-						"shortText": "Used to specify which line endings to use in the generated file",
-						"text": "`windows` = \"\\r\\n\"\n\n`posix` = \"\\n\"\n"
-					},
-					"sources": [
-						{
-							"fileName": "generateLicenseFile.ts",
-							"line": 11,
-							"character": 12
-						}
-					],
-					"type": {
-						"type": "union",
-						"types": [
-							{
-								"type": "literal",
-								"value": "windows"
-							},
-							{
-								"type": "literal",
-								"value": "posix"
-							}
-						]
-					}
-				},
-				{
 					"id": 28,
 					"name": "generateLicenseFile",
 					"kind": 64,
@@ -617,7 +594,7 @@
 					"sources": [
 						{
 							"fileName": "generateLicenseFile.ts",
-							"line": 23,
+							"line": 11,
 							"character": 22
 						}
 					],
@@ -633,7 +610,7 @@
 								"tags": [
 									{
 										"tag": "optional",
-										"text": "@param lineEnding \"windows\" or \"posix\". Will use the system default if omitted\n"
+										"text": "@param lineEnding \"crlf\" or \"lf\". Will use the system default if omitted\n"
 									}
 								]
 							},
@@ -675,9 +652,100 @@
 										"isOptional": true
 									},
 									"type": {
-										"type": "reference",
-										"id": 33,
-										"name": "LineEnding"
+										"type": "union",
+										"types": [
+											{
+												"type": "literal",
+												"value": "crlf"
+											},
+											{
+												"type": "literal",
+												"value": "lf"
+											}
+										]
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "void"
+									}
+								],
+								"qualifiedName": "Promise",
+								"package": "typescript",
+								"name": "Promise"
+							}
+						},
+						{
+							"id": 33,
+							"name": "generateLicenseFile",
+							"kind": 4096,
+							"kindString": "Call signature",
+							"flags": {},
+							"comment": {
+								"shortText": "Scans the projects found at the given paths and creates a license file at the given output location",
+								"tags": [
+									{
+										"tag": "optional",
+										"text": "@param lineEnding \"crlf\" or \"lf\". Will use the system default if omitted\n"
+									}
+								]
+							},
+							"parameters": [
+								{
+									"id": 34,
+									"name": "pathsToPackageJsons",
+									"kind": 32768,
+									"kindString": "Parameter",
+									"flags": {},
+									"comment": {
+										"shortText": "A path to the package.json for the project"
+									},
+									"type": {
+										"type": "array",
+										"elementType": {
+											"type": "intrinsic",
+											"name": "string"
+										}
+									}
+								},
+								{
+									"id": 35,
+									"name": "outputPath",
+									"kind": 32768,
+									"kindString": "Parameter",
+									"flags": {},
+									"comment": {
+										"shortText": "A file path for the resulting license file"
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									}
+								},
+								{
+									"id": 36,
+									"name": "lineEnding",
+									"kind": 32768,
+									"kindString": "Parameter",
+									"flags": {
+										"isOptional": true
+									},
+									"type": {
+										"type": "union",
+										"types": [
+											{
+												"type": "literal",
+												"value": "crlf"
+											},
+											{
+												"type": "literal",
+												"value": "lf"
+											}
+										]
 									}
 								}
 							],
@@ -697,7 +765,7 @@
 					]
 				},
 				{
-					"id": 34,
+					"id": 37,
 					"name": "getLicenseFileText",
 					"kind": 64,
 					"kindString": "Function",
@@ -705,13 +773,13 @@
 					"sources": [
 						{
 							"fileName": "getLicenseFileText.ts",
-							"line": 16,
+							"line": 15,
 							"character": 22
 						}
 					],
 					"signatures": [
 						{
-							"id": 35,
+							"id": 38,
 							"name": "getLicenseFileText",
 							"kind": 4096,
 							"kindString": "Call signature",
@@ -722,13 +790,13 @@
 								"tags": [
 									{
 										"tag": "optional",
-										"text": "@param lineEnding \"windows\" or \"posix\". Will use the system default if omitted"
+										"text": "@param lineEnding \"crlf\" or \"lf\". Will use the system default if omitted"
 									}
 								]
 							},
 							"parameters": [
 								{
-									"id": 36,
+									"id": 39,
 									"name": "pathToPackageJson",
 									"kind": 32768,
 									"kindString": "Parameter",
@@ -742,7 +810,7 @@
 									}
 								},
 								{
-									"id": 37,
+									"id": 40,
 									"name": "lineEnding",
 									"kind": 32768,
 									"kindString": "Parameter",
@@ -750,9 +818,87 @@
 										"isOptional": true
 									},
 									"type": {
-										"type": "reference",
-										"id": 33,
-										"name": "LineEnding"
+										"type": "union",
+										"types": [
+											{
+												"type": "literal",
+												"value": "crlf"
+											},
+											{
+												"type": "literal",
+												"value": "lf"
+											}
+										]
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									}
+								],
+								"qualifiedName": "Promise",
+								"package": "typescript",
+								"name": "Promise"
+							}
+						},
+						{
+							"id": 41,
+							"name": "getLicenseFileText",
+							"kind": 4096,
+							"kindString": "Call signature",
+							"flags": {},
+							"comment": {
+								"shortText": "Scans the projects found at the given paths and returns a string containing the licenses for all the dependencies across all the projects",
+								"returns": "A promise that resolves to the license file text\n",
+								"tags": [
+									{
+										"tag": "optional",
+										"text": "@param lineEnding \"crlf\" or \"lf\". Will use the system default if omitted"
+									}
+								]
+							},
+							"parameters": [
+								{
+									"id": 42,
+									"name": "pathsToPackageJsons",
+									"kind": 32768,
+									"kindString": "Parameter",
+									"flags": {},
+									"comment": {
+										"shortText": "A path to the package.json for the project"
+									},
+									"type": {
+										"type": "array",
+										"elementType": {
+											"type": "intrinsic",
+											"name": "string"
+										}
+									}
+								},
+								{
+									"id": 43,
+									"name": "lineEnding",
+									"kind": 32768,
+									"kindString": "Parameter",
+									"flags": {
+										"isOptional": true
+									},
+									"type": {
+										"type": "union",
+										"types": [
+											{
+												"type": "literal",
+												"value": "crlf"
+											},
+											{
+												"type": "literal",
+												"value": "lf"
+											}
+										]
 									}
 								}
 							],
@@ -772,7 +918,7 @@
 					]
 				},
 				{
-					"id": 38,
+					"id": 44,
 					"name": "getProjectLicenses",
 					"kind": 64,
 					"kindString": "Function",
@@ -786,7 +932,7 @@
 					],
 					"signatures": [
 						{
-							"id": 39,
+							"id": 45,
 							"name": "getProjectLicenses",
 							"kind": 4096,
 							"kindString": "Call signature",
@@ -796,7 +942,7 @@
 							},
 							"parameters": [
 								{
-									"id": 40,
+									"id": 46,
 									"name": "pathToPackageJson",
 									"kind": 32768,
 									"kindString": "Parameter",
@@ -817,7 +963,7 @@
 										"type": "array",
 										"elementType": {
 											"type": "reference",
-											"id": 41,
+											"id": 48,
 											"name": "ILicense"
 										}
 									}
@@ -830,14 +976,43 @@
 					]
 				},
 				{
-					"id": 41,
+					"id": 47,
+					"name": "LineEnding",
+					"kind": 4194304,
+					"kindString": "Type alias",
+					"flags": {},
+					"comment": {
+						"shortText": "Used to specify which line endings to use in the generated file.",
+						"text": "Possible values are:\n\n`crlf` (`\\r\\n`)\n\n`lf` (`\\n`)\n"
+					},
+					"sources": [
+						{
+							"fileName": "lineEndings.ts",
+							"line": 17,
+							"character": 12
+						}
+					],
+					"type": {
+						"type": "typeOperator",
+						"operator": "keyof",
+						"target": {
+							"type": "query",
+							"queryType": {
+								"type": "reference",
+								"name": "lineEndings"
+							}
+						}
+					}
+				},
+				{
+					"id": 48,
 					"name": "ILicense",
 					"kind": 256,
 					"kindString": "Interface",
 					"flags": {},
 					"children": [
 						{
-							"id": 42,
+							"id": 49,
 							"name": "content",
 							"kind": 1024,
 							"kindString": "Property",
@@ -858,7 +1033,7 @@
 							}
 						},
 						{
-							"id": 43,
+							"id": 50,
 							"name": "dependencies",
 							"kind": 1024,
 							"kindString": "Property",
@@ -887,8 +1062,8 @@
 							"title": "Properties",
 							"kind": 1024,
 							"children": [
-								42,
-								43
+								49,
+								50
 							]
 						}
 					],
@@ -903,26 +1078,26 @@
 			],
 			"groups": [
 				{
-					"title": "Type aliases",
-					"kind": 4194304,
-					"children": [
-						33
-					]
-				},
-				{
 					"title": "Functions",
 					"kind": 64,
 					"children": [
 						28,
-						34,
-						38
+						37,
+						44
+					]
+				},
+				{
+					"title": "Type aliases",
+					"kind": 4194304,
+					"children": [
+						47
 					]
 				},
 				{
 					"title": "Interfaces",
 					"kind": 256,
 					"children": [
-						41
+						48
 					]
 				}
 			],

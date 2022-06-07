@@ -1,5 +1,5 @@
-import { InterfaceNode, isKindString, ModuleNode, PropertyNode, Tag } from "./schema-types";
 import schema from "./schema.generated.json";
+import { InterfaceNode, isKindString, ModuleNode, PropertyNode, Tag } from "./schemaTypes";
 
 export interface CliArgument {
   name: string;

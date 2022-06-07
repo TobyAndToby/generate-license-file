@@ -1,6 +1,6 @@
 import React, { FC } from "react";
-import { getLibraryMethods } from "./get-library-methods";
-import LibraryMethod from "./library-method";
+import { getLibraryMethods } from "./getLibraryMethods";
+import LibraryMethod from "./LibraryMethod";
 
 const ApiPage: FC = () => {
   return (

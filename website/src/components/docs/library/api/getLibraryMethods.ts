@@ -1,3 +1,4 @@
+import schema from "./schema.generated.json";
 import {
   AnyType,
   ArrayTypeNode,
@@ -7,8 +8,7 @@ import {
   ModuleNode,
   ParameterNode,
   SignatureNode
-} from "./schema-types";
-import schema from "./schema.generated.json";
+} from "./schemaTypes";
 
 export interface Method {
   name: string;

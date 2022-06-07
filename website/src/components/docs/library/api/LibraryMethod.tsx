@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import React, { FC } from "react";
-import { Signature, Type } from "./get-library-methods";
+import { Signature, Type } from "./getLibraryMethods";
 
 interface Props {
   methodName: string;
