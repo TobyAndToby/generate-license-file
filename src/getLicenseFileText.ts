@@ -19,7 +19,7 @@ export async function getLicenseFileText(
 
 /**
  * Scans the projects found at the given paths and returns a string containing the licenses for all the dependencies across all the projects
- * @param pathsToPackageJsons A path to the package.json for the project
+ * @param pathsToPackageJsons Paths to the package.jsons for the projects
  * @optional @param lineEnding "crlf" or "lf". Will use the system default if omitted
  * @returns A promise that resolves to the license file text
  */

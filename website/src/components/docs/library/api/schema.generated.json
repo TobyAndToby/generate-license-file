@@ -702,7 +702,7 @@
 									"kindString": "Parameter",
 									"flags": {},
 									"comment": {
-										"shortText": "A path to the package.json for the project"
+										"shortText": "Paths to the package.jsons for the projects"
 									},
 									"type": {
 										"type": "array",
@@ -869,7 +869,7 @@
 									"kindString": "Parameter",
 									"flags": {},
 									"comment": {
-										"shortText": "A path to the package.json for the project"
+										"shortText": "Paths to the package.jsons for the projects"
 									},
 									"type": {
 										"type": "array",
