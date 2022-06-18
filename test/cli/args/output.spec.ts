@@ -1,6 +1,5 @@
 import { Result } from "arg";
 import { prompt } from "enquirer";
-import { mocked } from "ts-jest/utils";
 import { Output } from "../../../src/cli/args/output";
 import { ArgumentsWithAliases } from "../../../src/cli/cli-arguments";
 import { doesFileExist } from "../../../src/utils/file.utils";
@@ -14,8 +13,8 @@ jest.mock("enquirer", () => ({
 }));
 
 describe("Output", () => {
-  const mockDoesFileExist = mocked(doesFileExist);
-  const mockPrompt = mocked(prompt);
+  const mockDoesFileExist = jest.mocked(doesFileExist);
+  const mockPrompt = jest.mocked(prompt);
 
   let output: Output;
 

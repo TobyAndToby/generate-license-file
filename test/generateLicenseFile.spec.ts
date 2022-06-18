@@ -1,4 +1,3 @@
-import { mocked } from "ts-jest/utils";
 import { generateLicenseFile } from "../src/generateLicenseFile";
 import { getLicenseFileText } from "../src/getLicenseFileText";
 import { allLineEndings } from "../src/lineEndings";
@@ -15,8 +14,8 @@ jest.mock("../src/utils/file.utils", () => ({
 const fakeLicenseFileText = "fake license file text";
 
 describe("generateLicenseFile", () => {
-  const mockGetLicenseFileText = mocked(getLicenseFileText);
-  const mockWriteFileAsync = mocked(writeFileAsync);
+  const mockGetLicenseFileText = jest.mocked(getLicenseFileText);
+  const mockWriteFileAsync = jest.mocked(writeFileAsync);
 
   beforeEach(() => {
     jest.resetAllMocks();

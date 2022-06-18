@@ -1,4 +1,3 @@
-import { mocked } from "ts-jest/utils";
 import { doesFileExist, readFile } from "../../src/utils/file.utils";
 import { readPackageJson } from "../../src/utils/packageJson.utils";
 
@@ -8,8 +7,8 @@ jest.mock("../../src/utils/file.utils", () => ({
 }));
 
 describe("Package.json Utils", () => {
-  const mockedDoesFileExist = mocked(doesFileExist);
-  const mockedReadFile = mocked(readFile);
+  const mockedDoesFileExist = jest.mocked(doesFileExist);
+  const mockedReadFile = jest.mocked(readFile);
 
   const pathToPackageJson = "./path/to/package.json";
 

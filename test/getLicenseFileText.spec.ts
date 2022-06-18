@@ -1,4 +1,3 @@
-import { mocked } from "ts-jest/utils";
 import { getLicenseFileText } from "../src/getLicenseFileText";
 import { getLicencesForProjects } from "../src/internal/getLicencesForProjects";
 import { allLineEndings, getLineEndingValue } from "../src/lineEndings";
@@ -9,7 +8,7 @@ jest.mock("../src/internal/getLicencesForProjects", () => ({
 }));
 
 describe("getLicenseFileText", () => {
-  const mockGetLicencesForProjects = mocked(getLicencesForProjects);
+  const mockGetLicencesForProjects = jest.mocked(getLicencesForProjects);
 
   beforeEach(() => {
     jest.resetAllMocks();
@@ -59,7 +58,7 @@ describe("getLicenseFileText", () => {
       await getLicenseFileText("path", lineEnding);
 
       for (const license of licenses) {
-        const firstCallFirstArg = mocked(license.format).mock.calls[0][0];
+        const firstCallFirstArg = jest.mocked(license.format).mock.calls[0][0];
         expect(firstCallFirstArg).toBe(expectedLineEndingValue);
       }
     })
@@ -67,9 +66,9 @@ describe("getLicenseFileText", () => {
 
   it("should return the concatenated formatted licenses", async () => {
     const licenses = [getNewMockedLicense(), getNewMockedLicense(), getNewMockedLicense()];
-    mocked(licenses[0].format).mockReturnValue("first");
-    mocked(licenses[1].format).mockReturnValue("second");
-    mocked(licenses[2].format).mockReturnValue("third");
+    jest.mocked(licenses[0].format).mockReturnValue("first");
+    jest.mocked(licenses[1].format).mockReturnValue("second");
+    jest.mocked(licenses[2].format).mockReturnValue("third");
 
     mockGetLicencesForProjects.mockResolvedValue(licenses);
 
@@ -80,9 +79,9 @@ describe("getLicenseFileText", () => {
 
   it("should return formatted licenses concatenated by dashes and EOLs", async () => {
     const licenses = [getNewMockedLicense(), getNewMockedLicense(), getNewMockedLicense()];
-    mocked(licenses[0].format).mockReturnValue("first");
-    mocked(licenses[1].format).mockReturnValue("second");
-    mocked(licenses[2].format).mockReturnValue("third");
+    jest.mocked(licenses[0].format).mockReturnValue("first");
+    jest.mocked(licenses[1].format).mockReturnValue("second");
+    jest.mocked(licenses[2].format).mockReturnValue("third");
 
     mockGetLicencesForProjects.mockResolvedValue(licenses);
 
@@ -95,9 +94,9 @@ describe("getLicenseFileText", () => {
 
   it("should return formatted licenses with the footer", async () => {
     const licenses = [getNewMockedLicense(), getNewMockedLicense(), getNewMockedLicense()];
-    mocked(licenses[0].format).mockReturnValue("first");
-    mocked(licenses[1].format).mockReturnValue("second");
-    mocked(licenses[2].format).mockReturnValue("third");
+    jest.mocked(licenses[0].format).mockReturnValue("first");
+    jest.mocked(licenses[1].format).mockReturnValue("second");
+    jest.mocked(licenses[2].format).mockReturnValue("third");
 
     mockGetLicencesForProjects.mockResolvedValue(licenses);
 
