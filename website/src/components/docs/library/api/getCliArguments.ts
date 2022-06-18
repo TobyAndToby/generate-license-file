@@ -14,7 +14,6 @@ export const getCliArguments = (): CliArgument[] => {
   const cliArgumentProperties = getPropertiesFromInterface(userInputsInterface);
 
   return cliArgumentProperties.map(property => {
-    console.log(JSON.stringify(property));
     const { name, comment } = property;
     const shortText = comment?.shortText ?? null;
     const text = comment?.text ?? null;

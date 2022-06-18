@@ -1,50 +1,30 @@
 import styled from "@emotion/styled";
 import React, { FC } from "react";
-import { Signature, Type } from "./getLibraryMethods";
+import { Method, Type } from "./getLibraryMethods";
+import MethodSignature from "./MethodSignature";
 
 interface Props {
-  methodName: string;
-  signature: Signature;
+  method: Method;
 }
 
-const LibraryMethod: FC<Props> = ({ methodName, signature }) => {
-  const { shortText, parameters, returns, returnType } = signature;
-
-  const title = methodName + "(" + parameters.map(p => p.name).join(", ") + ")";
-  const isAsync = returnType.name === "Promise" && !returnType.isArray;
+const LibraryMethod: FC<Props> = ({ method }) => {
+  const { name: methodName, signatures } = method;
+  const isAsync = signatures[0].returnType.name === "Promise" && !signatures[0].returnType.isArray;
 
   return (
     <div>
       <MethodName id={methodName}>
         <OnHoverAnchorWrapper>
-          <code>{title}</code>
-          {isAsync && <Tag>Async</Tag>}
-          <a href={"#" + methodName} title={"Direct link to " + methodName} />
+          <h3>
+            {methodName}
+            {isAsync && <Tag>Async</Tag>}
+            <a href={"#" + methodName} title={"Direct link to " + methodName} />
+          </h3>
         </OnHoverAnchorWrapper>
       </MethodName>
-      <p>{shortText}</p>
-
-      <h4>Parameters</h4>
-      <ul>
-        {parameters.map(parameter => (
-          <li key={parameter.name}>
-            <p>
-              <code>{parameter.name}</code>
-              {!!parameter.shortText &&
-                parameter.shortText.length > 0 &&
-                " - " + parameter.shortText}
-            </p>
-          </li>
-        ))}
-      </ul>
-
-      <h4>Returns</h4>
-      <Returns>
-        <code>{formatType(returnType)}</code>
-        {!!returns && returns.length > 0 && " - " + returns}
-      </Returns>
-
-      <hr />
+      {signatures.map((signature, i) => (
+        <MethodSignature key={i} methodName={methodName} signature={signature} />
+      ))}
     </div>
   );
 };

@@ -4,7 +4,6 @@ import {
   ArrayTypeNode,
   FunctionNode,
   isKindString,
-  isType,
   ModuleNode,
   ParameterNode,
   SignatureNode
@@ -105,8 +104,27 @@ const mapParameters = (parameters: ParameterNode[]): Parameter[] => {
 };
 
 const mapType = (type: AnyType): Type => {
-  if (isType(type.type) && type.type === "array") {
+  if (type.type === "array") {
     return mapArrayType(type as ArrayTypeNode);
+  }
+
+  if (type.type === "union") {
+    return {
+      name: type.types
+        .map(mapType)
+        .map(t => t.name)
+        .join(" | "),
+      genericArguments: null,
+      isArray: false
+    };
+  }
+
+  if (type.type === "literal") {
+    return {
+      name: `"${type.value}"`,
+      genericArguments: null,
+      isArray: false
+    };
   }
 
   const name = type.name;
