@@ -1,5 +1,4 @@
 import os from "os";
-import { mocked } from "ts-jest/utils";
 import { getLineEndingValue, isLineEnding, LineEnding } from "../src/lineEndings";
 
 const mockSystemEOL = "EOL";
@@ -7,7 +6,7 @@ const mockSystemEOL = "EOL";
 jest.mock("os");
 
 describe("lineEndings", () => {
-  const mockedOs = mocked(os);
+  const mockedOs = jest.mocked(os);
 
   beforeEach(() => {
     jest.resetAllMocks();

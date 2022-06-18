@@ -1,4 +1,3 @@
-import { mocked } from "ts-jest/utils";
 import { getProjectLicenses } from "../src/getProjectLicenses";
 import { getLicencesForProjects } from "../src/internal/getLicencesForProjects";
 import { License } from "../src/models/license";
@@ -8,7 +7,7 @@ jest.mock("../src/internal/getLicencesForProjects", () => ({
 }));
 
 describe("getProjectLicenses", () => {
-  const mockGetLicencesForProjects = mocked(getLicencesForProjects);
+  const mockGetLicencesForProjects = jest.mocked(getLicencesForProjects);
 
   beforeEach(() => {
     jest.resetAllMocks();

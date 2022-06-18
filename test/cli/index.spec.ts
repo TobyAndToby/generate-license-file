@@ -1,5 +1,4 @@
 import arg, { Result } from "arg";
-import { mocked } from "ts-jest/utils";
 import { ArgumentsWithAliases, argumentsWithAliases } from "../../src/cli/cli-arguments";
 import { main } from "../../src/cli/index";
 import { spinner } from "../../src/cli/spinner";
@@ -65,13 +64,13 @@ jest.mock("../../src/cli/args/no-spinner.ts", () => ({
 }));
 
 describe("cli", () => {
-  const mockedArg = mocked(arg);
-  const mockedGenerateLicenseFile = mocked(generateLicenseFile);
-  const mockedStartSpinner = mocked(spinner.start);
-  const mockedStopSpinner = mocked(spinner.stop);
-  const mockedFailSpinner = mocked(spinner.fail);
-  const mockedConsoleLog = mocked(console.log);
-  const mockedReadPackageJson = mocked(readPackageJson);
+  const mockedArg = jest.mocked(arg);
+  const mockedGenerateLicenseFile = jest.mocked(generateLicenseFile);
+  const mockedStartSpinner = jest.mocked(spinner.start);
+  const mockedStopSpinner = jest.mocked(spinner.stop);
+  const mockedFailSpinner = jest.mocked(spinner.fail);
+  const mockedConsoleLog = jest.mocked(console.log);
+  const mockedReadPackageJson = jest.mocked(readPackageJson);
 
   beforeEach(() => {
     jest.resetAllMocks();
