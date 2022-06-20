@@ -1,7 +1,6 @@
 ---
 sidebar_position: 0
+title: Introduction
 ---
-
-# Introduction
 
 Coming soon!
