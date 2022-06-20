@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 import Highlight, { defaultProps } from "prism-react-renderer";
 import React, { FC } from "react";
+import "./theme.css";
 
 const Window = styled.div`
   width: auto;
@@ -101,9 +102,9 @@ const Editor = styled.div`
   border-left: 1px solid #ffffff5c;
 `;
 
-const libraryDemoSrc = `import { getProjectLicenses } from "generate-license-file";
-// Get an array of licenses for the current project's production dependencies.
+const libraryDemoSrc = `import { getProjectLicenses, ILicense } from "generate-license-file";
 
+// Get an array of licenses for the current project's production dependencies.
 const licenses: ILicense[] = await getProjectLicenses("./package.json");
 `;
 
@@ -122,7 +123,14 @@ export const MonacoEditor: FC = () => {
             <Tab>library-demo.ts</Tab>
           </TabsContainer>
           <Editor>
-            <Highlight {...defaultProps} code={libraryDemoSrc} language="typescript">
+            <Highlight
+              {...defaultProps}
+              code={libraryDemoSrc}
+              // Intentionally set to "javascript", the "typescript" lang setting doesn't
+              // appear to set correct classes on imports or non-native types.
+              language="javascript"
+              theme={undefined}
+            >
               {({ className, style, tokens, getLineProps, getTokenProps }) => (
                 <pre className={className} style={style}>
                   {tokens.map((line, i) => (
