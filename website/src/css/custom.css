@@ -15,12 +15,6 @@
   --ifm-color-primary-lightest: #3cad6e;
   --ifm-code-font-size: 95%;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
-
-  /* Custom */
-  --landing-hero-background: #7ed8f1;
-
-  --button-bg: var(--ifm-color-primary-lightest);
-  --button-color: #fff;
 }
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
@@ -33,12 +27,6 @@
   --ifm-color-primary-lighter: #32d8b4;
   --ifm-color-primary-lightest: #4fddbf;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
-
-  /* Custom */
-  --landing-hero-background: #2e382e;
-
-  --button-bg: #fff;
-  --button-color: #000;
 }
 
 .header-github-link:before {
