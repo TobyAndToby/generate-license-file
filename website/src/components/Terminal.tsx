@@ -1,6 +1,35 @@
 import styled from "@emotion/styled";
 import React, { FC } from "react";
 
+export const Terminal: FC = () => {
+  return (
+    <Container>
+      <Menu>
+        <MenuButton type="close" />
+        <MenuButton type="minimize" />
+        <MenuButton type="zoom" />
+      </Menu>
+      <Screen>
+        <div style={{ whiteSpace: "pre" }}>
+          <Prefix>$ </Prefix>
+          npx generate-license-file \<br />
+          <Argument> --input </Argument> ./package.json \<br />
+          <Argument> --output </Argument> THIRD-PARTY-LICENSES.txt
+        </div>
+      </Screen>
+    </Container>
+  );
+};
+
+const Container = styled.div`
+  position: relative;
+  width: 715px;
+  max-width: 950px;
+  margin: 0 auto;
+  border-radius: 5px;
+  box-shadow: 7px 3px 10px 0px #0000003b;
+`;
+
 const Menu = styled.div`
   width: auto;
   box-sizing: border-box;
@@ -46,40 +75,10 @@ const Screen = styled.div`
   font-family: "Fira Mono", monospace;
 `;
 
-const Container = styled.div`
-  position: relative;
-  width: auto;
-  max-width: 950px;
-  margin: 0 auto;
-  border-radius: 5px;
-  box-shadow: 7px 3px 10px 0px #0000003b;
-`;
-
 const Argument = styled.span`
   opacity: 0.7;
-`;
-
-const Command = styled.span`
-  color: #9191ff;
 `;
 
 const Prefix = styled.span`
   user-select: none;
 `;
-
-export const Terminal: FC = () => {
-  return (
-    <Container>
-      <Menu>
-        <MenuButton type="close" />
-        <MenuButton type="minimize" />
-        <MenuButton type="zoom" />
-      </Menu>
-      <Screen>
-        <Prefix>$ </Prefix>
-        <Command>npx </Command>generate-license-file <Argument> --input </Argument> ./package.json{" "}
-        <Argument> --output </Argument> THIRD-PARTY-LICENSES.txt
-      </Screen>
-    </Container>
-  );
-};
