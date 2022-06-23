@@ -1,12 +1,59 @@
+import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import Highlight, { defaultProps } from "prism-react-renderer";
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
+import { demoFiles } from "./demoFiles";
 import "./theme.css";
+
+export const MonacoEditor: FC = () => {
+  const [activeTab, setActiveTab] = useState(demoFiles[0].fileName);
+
+  return (
+    <Window>
+      <Menu>
+        <MenuButton type="close" />
+        <MenuButton type="minimize" />
+        <MenuButton type="zoom" />
+      </Menu>
+      <Screen>
+        <Sidebar />
+        <ViewContainer>
+          <MonacoTabsContainer>
+            {demoFiles.map(({ fileName }) => (
+              <MonacoTab isActive={activeTab === fileName} onClick={() => setActiveTab(fileName)}>
+                {fileName}
+              </MonacoTab>
+            ))}
+          </MonacoTabsContainer>
+          <Editor>
+            {demoFiles.map(({ fileName, language, content }) => (
+              <MonacoTabContent isActive={activeTab === fileName}>
+                <Highlight {...defaultProps} code={content} language={language} theme={undefined}>
+                  {({ className, style, tokens, getLineProps, getTokenProps }) => (
+                    <pre className={className} style={style}>
+                      {tokens.map((line, i) => (
+                        <div {...getLineProps({ line, key: i })}>
+                          {line.map((token, key) => (
+                            <span {...getTokenProps({ token, key })} />
+                          ))}
+                        </div>
+                      ))}
+                    </pre>
+                  )}
+                </Highlight>
+              </MonacoTabContent>
+            ))}
+          </Editor>
+        </ViewContainer>
+      </Screen>
+    </Window>
+  );
+};
 
 const Window = styled.div`
   width: auto;
   height: auto;
-  min-height: 450px;
+  min-height: 350px;
   display: flex;
   flex-direction: column;
   border-radius: 5px;
@@ -72,27 +119,37 @@ const ViewContainer = styled.div`
   width: 100%;
 `;
 
-const TabsContainer = styled.div`
+const MonacoTabsContainer = styled.div`
   width: 100%;
   height: 35px;
   position: relative;
   background-color: #252526;
+  display: flex;
 `;
 
-const Tab = styled.div`
+const activeStyle = css`
+  background: #1e1e1e;
+`;
+
+const MonacoTab = styled.div<{ isActive: boolean }>`
   width: auto;
   height: 100%;
-  position: absolute;
   top: 0;
   left: 0;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 5px 10px;
-  background-color: #1e1e1e;
+  background-color: #2d2d2d;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell,
     "Open Sans", "Helvetica Neue", sans-serif;
   font-size: 13px;
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  ${({ isActive }) => isActive && activeStyle}
 `;
 
 const Editor = styled.div`
@@ -102,50 +159,6 @@ const Editor = styled.div`
   border-left: 1px solid #ffffff5c;
 `;
 
-const libraryDemoSrc = `import { getProjectLicenses, ILicense } from "generate-license-file";
-
-// Get an array of licenses for the current project's production dependencies.
-const licenses: ILicense[] = await getProjectLicenses("./package.json");
+const MonacoTabContent = styled.div<{ isActive: boolean }>`
+  display: ${({ isActive }) => (isActive ? "block" : "none")};
 `;
-
-export const MonacoEditor: FC = () => {
-  return (
-    <Window>
-      <Menu>
-        <MenuButton type="close" />
-        <MenuButton type="minimize" />
-        <MenuButton type="zoom" />
-      </Menu>
-      <Screen>
-        <Sidebar />
-        <ViewContainer>
-          <TabsContainer>
-            <Tab>library-demo.ts</Tab>
-          </TabsContainer>
-          <Editor>
-            <Highlight
-              {...defaultProps}
-              code={libraryDemoSrc}
-              // Intentionally set to "javascript", the "typescript" lang setting doesn't
-              // appear to set correct classes on imports or non-native types.
-              language="javascript"
-              theme={undefined}
-            >
-              {({ className, style, tokens, getLineProps, getTokenProps }) => (
-                <pre className={className} style={style}>
-                  {tokens.map((line, i) => (
-                    <div {...getLineProps({ line, key: i })}>
-                      {line.map((token, key) => (
-                        <span {...getTokenProps({ token, key })} />
-                      ))}
-                    </div>
-                  ))}
-                </pre>
-              )}
-            </Highlight>
-          </Editor>
-        </ViewContainer>
-      </Screen>
-    </Window>
-  );
-};
