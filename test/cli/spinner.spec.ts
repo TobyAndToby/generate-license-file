@@ -1,5 +1,4 @@
 import ora, { Options } from "ora";
-import { mocked } from "ts-jest/utils";
 
 const mockDotsSpinner = {};
 jest.mock("cli-spinners", () => ({
@@ -9,7 +8,7 @@ jest.mock("cli-spinners", () => ({
 jest.mock("ora", () => jest.fn());
 
 describe("spinner", () => {
-  const mockedOra = mocked(ora);
+  const mockedOra = jest.mocked(ora);
 
   beforeEach(() => {
     jest.resetAllMocks();

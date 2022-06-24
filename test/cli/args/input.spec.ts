@@ -1,6 +1,5 @@
 import { Result } from "arg";
 import { prompt } from "enquirer";
-import { mocked } from "ts-jest/utils";
 import { Input } from "../../../src/cli/args/input";
 import { ArgumentsWithAliases } from "../../../src/cli/cli-arguments";
 import { spinner } from "../../../src/cli/spinner";
@@ -23,9 +22,9 @@ jest.mock("enquirer", () => ({
 }));
 
 describe("Input", () => {
-  const mockedPrompt = mocked(prompt);
-  const mockedDoesFileExist = mocked(doesFileExist);
-  const mockedFailSpinner = mocked(spinner.fail);
+  const mockedPrompt = jest.mocked(prompt);
+  const mockedDoesFileExist = jest.mocked(doesFileExist);
+  const mockedFailSpinner = jest.mocked(spinner.fail);
 
   let input: Input;
 

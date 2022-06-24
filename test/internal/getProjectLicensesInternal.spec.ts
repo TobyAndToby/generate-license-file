@@ -1,5 +1,4 @@
 import { ModuleInfo } from "license-checker";
-import { mocked } from "ts-jest/utils";
 import { getLicencesForProjects } from "../../src/internal/getLicencesForProjects";
 import console from "../../src/utils/console.utils";
 import { doesFileExist, readFile } from "../../src/utils/file.utils";
@@ -26,11 +25,11 @@ jest.mock("../../src/utils/packageJson.utils", () => ({
 }));
 
 describe("getLicencesForProjects", () => {
-  const mockDoesFileExist = mocked(doesFileExist);
-  const mockReadFile = mocked(readFile);
-  const mockConsoleWarn = mocked(console.warn);
-  const mockGetProject = mocked(getProject);
-  const mockReadPackageJson = mocked(readPackageJson);
+  const mockDoesFileExist = jest.mocked(doesFileExist);
+  const mockReadFile = jest.mocked(readFile);
+  const mockConsoleWarn = jest.mocked(console.warn);
+  const mockGetProject = jest.mocked(getProject);
+  const mockReadPackageJson = jest.mocked(readPackageJson);
 
   const dependencies: ModuleInfo[] = [
     { licenseFile: "path1", name: "name1" },

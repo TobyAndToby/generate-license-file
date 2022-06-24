@@ -1,6 +1,5 @@
 import { Stats } from "fs";
 import * as fs from "fs/promises";
-import { mocked } from "ts-jest/utils";
 import {
   doesFileExist,
   doesFolderExist,
@@ -16,7 +15,7 @@ jest.mock("fs/promises", () => ({
 }));
 
 describe("File Utils", () => {
-  const mockedFs = mocked(fs);
+  const mockedFs = jest.mocked(fs);
 
   beforeEach(() => jest.resetAllMocks());
   afterAll(() => jest.restoreAllMocks());
