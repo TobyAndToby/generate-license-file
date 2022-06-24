@@ -1,5 +1,11 @@
 import styled from "@emotion/styled";
 import React, { FC } from "react";
+import { CopyButton } from "./CopyButton";
+
+const cmdWithNewLines =
+  "npx generate-license-file \\\n--input ./package.json \\\n--output THIRD-PARTY-LICENSES.txt";
+const cmdOneLine =
+  "npx generate-license-file --input ./package.json --output THIRD-PARTY-LICENSES.txt";
 
 export const Terminal: FC = () => {
   return (
@@ -10,12 +16,14 @@ export const Terminal: FC = () => {
         <MenuButton type="zoom" />
       </Menu>
       <Screen>
-        <div style={{ whiteSpace: "pre" }}>
-          <Prefix>$ </Prefix>
-          npx generate-license-file \<br />
-          <Argument> --input </Argument> ./package.json \<br />
-          <Argument> --output </Argument> THIRD-PARTY-LICENSES.txt
-        </div>
+        <Prefix>$ </Prefix>
+        npx generate-license-file \<br />
+        <Argument> --input </Argument> ./package.json \<br />
+        <Argument> --output </Argument> THIRD-PARTY-LICENSES.txt
+        <CopyButtons>
+          <CopyButton labelColour="white" label="Copy" contentToCopy={cmdWithNewLines} />
+          <CopyButton labelColour="white" label="Copy as One Line" contentToCopy={cmdOneLine} />
+        </CopyButtons>
       </Screen>
     </Container>
   );
@@ -68,17 +76,37 @@ const Screen = styled.div`
   width: auto;
   margin: 0 auto;
   padding: 20px;
-  min-height: 130px;
+  min-height: 170px;
   text-align: left;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
   font-family: "Fira Mono", monospace;
+  white-space: pre;
 `;
 
 const Argument = styled.span`
   opacity: 0.7;
+
+  &::before {
+    content: "";
+    display: inline-block;
+    margin-left: 20%;
+  }
 `;
 
 const Prefix = styled.span`
   user-select: none;
+`;
+
+const CopyButtons = styled.div`
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+
+  button:not(:last-child) {
+    padding-right: 16px;
+  }
 `;

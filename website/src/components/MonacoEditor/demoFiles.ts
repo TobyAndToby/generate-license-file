@@ -31,7 +31,6 @@ generateLicenseFile
   })
   .catch(error => {
     // Do stuff with error...
-  });
-    `
+  });`
   }
 ];

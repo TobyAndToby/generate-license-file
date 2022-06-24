@@ -2,6 +2,7 @@ import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import Highlight, { defaultProps } from "prism-react-renderer";
 import React, { FC, useState } from "react";
+import { CopyButton } from "../CopyButton";
 import { demoFiles } from "./demoFiles";
 import "./theme.css";
 
@@ -41,6 +42,11 @@ export const MonacoEditor: FC = () => {
                     </pre>
                   )}
                 </Highlight>
+                <CopyButtons>
+                  <div>
+                    <CopyButton labelColour="white" label="Copy" contentToCopy={content} />
+                  </div>
+                </CopyButtons>
               </MonacoTabContent>
             ))}
           </Editor>
@@ -161,4 +167,10 @@ const Editor = styled.div`
 
 const MonacoTabContent = styled.div<{ isActive: boolean }>`
   display: ${({ isActive }) => (isActive ? "block" : "none")};
+`;
+
+const CopyButtons = styled.div`
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
 `;
