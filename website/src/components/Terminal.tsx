@@ -1,5 +1,42 @@
 import styled from "@emotion/styled";
 import React, { FC } from "react";
+import { CopyButton } from "./CopyButton";
+
+const cmdWithNewLines =
+  "npx generate-license-file \\\n--input ./package.json \\\n--output THIRD-PARTY-LICENSES.txt";
+const cmdOneLine =
+  "npx generate-license-file --input ./package.json --output THIRD-PARTY-LICENSES.txt";
+
+export const Terminal: FC = () => {
+  return (
+    <Container>
+      <Menu>
+        <MenuButton type="close" />
+        <MenuButton type="minimize" />
+        <MenuButton type="zoom" />
+      </Menu>
+      <Screen>
+        <Prefix>$ </Prefix>
+        npx generate-license-file \<br />
+        <Argument> --input </Argument> ./package.json \<br />
+        <Argument> --output </Argument> THIRD-PARTY-LICENSES.txt
+        <CopyButtons>
+          <CopyButton labelColour="white" label="Copy" contentToCopy={cmdWithNewLines} />
+          <CopyButton labelColour="white" label="Copy as One Line" contentToCopy={cmdOneLine} />
+        </CopyButtons>
+      </Screen>
+    </Container>
+  );
+};
+
+const Container = styled.div`
+  position: relative;
+  width: 715px;
+  max-width: 950px;
+  margin: 0 auto;
+  border-radius: 5px;
+  box-shadow: 7px 3px 10px 0px #0000003b;
+`;
 
 const Menu = styled.div`
   width: auto;
@@ -39,47 +76,37 @@ const Screen = styled.div`
   width: auto;
   margin: 0 auto;
   padding: 20px;
-  min-height: 130px;
+  min-height: 170px;
   text-align: left;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
   font-family: "Fira Mono", monospace;
-`;
-
-const Container = styled.div`
-  position: relative;
-  width: auto;
-  max-width: 950px;
-  margin: 0 auto;
-  border-radius: 5px;
-  box-shadow: 7px 3px 10px 0px #0000003b;
+  white-space: pre;
 `;
 
 const Argument = styled.span`
   opacity: 0.7;
-`;
 
-const Command = styled.span`
-  color: #9191ff;
+  &::before {
+    content: "";
+    display: inline-block;
+    margin-left: 20%;
+  }
 `;
 
 const Prefix = styled.span`
   user-select: none;
 `;
 
-export const Terminal: FC = () => {
-  return (
-    <Container>
-      <Menu>
-        <MenuButton type="close" />
-        <MenuButton type="minimize" />
-        <MenuButton type="zoom" />
-      </Menu>
-      <Screen>
-        <Prefix>$ </Prefix>
-        <Command>npx </Command>generate-license-file <Argument> --input </Argument> ./package.json{" "}
-        <Argument> --output </Argument> THIRD-PARTY-LICENSES.txt
-      </Screen>
-    </Container>
-  );
-};
+const CopyButtons = styled.div`
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+
+  button:not(:last-child) {
+    padding-right: 16px;
+  }
+`;
