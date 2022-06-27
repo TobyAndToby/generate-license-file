@@ -9,9 +9,14 @@ on:
 jobs:
   ci:
     strategy:
+      fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
         node: [14, 16, 18]
+        exclude:
+          # Temporarily excluded until migration to monorepo is completed.
+          - os: windows-latest
+            node: 14
 
     runs-on: ${{ matrix.os }}
 
