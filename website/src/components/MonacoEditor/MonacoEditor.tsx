@@ -114,6 +114,7 @@ const Screen = styled.div`
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
   font-family: "Fira Mono", monospace;
+  position: relative;
   display: flex;
   flex: 1;
 `;
