@@ -20,8 +20,12 @@ export const MonacoEditor: FC = () => {
         <Sidebar />
         <ViewContainer>
           <MonacoTabsContainer>
-            {demoFiles.map(({ fileName }) => (
-              <MonacoTab isActive={activeTab === fileName} onClick={() => setActiveTab(fileName)}>
+            {demoFiles.map(({ fileName, tabIcon }) => (
+              <MonacoTab
+                isActive={activeTab === fileName}
+                iconUrl={tabIcon}
+                onClick={() => setActiveTab(fileName)}
+              >
                 {fileName}
               </MonacoTab>
             ))}
@@ -137,7 +141,7 @@ const activeStyle = css`
   background: #1e1e1e;
 `;
 
-const MonacoTab = styled.div<{ isActive: boolean }>`
+const MonacoTab = styled.div<{ isActive: boolean; iconUrl: string }>`
   width: auto;
   height: 100%;
   top: 0;
@@ -153,6 +157,17 @@ const MonacoTab = styled.div<{ isActive: boolean }>`
 
   &:hover {
     cursor: pointer;
+  }
+
+  &::before {
+    content: "";
+    background: url(${({ iconUrl }) => iconUrl});
+    background-size: 16px;
+    background-repeat: no-repeat;
+    height: 25px;
+    top: 5px;
+    width: 28px;
+    position: relative;
   }
 
   ${({ isActive }) => isActive && activeStyle}

@@ -2,6 +2,7 @@ import { Language } from "prism-react-renderer";
 
 export type MonacoEditorFile = {
   fileName: string;
+  tabIcon: string;
   language: Language;
   content: string;
 };
@@ -9,6 +10,7 @@ export type MonacoEditorFile = {
 export const demoFiles: MonacoEditorFile[] = [
   {
     fileName: "library-demo.ts",
+    tabIcon: "/generate-license-file/img/ts-logo-256.png",
     // Intentionally set to "javascript", the "typescript" lang setting doesn't
     // appear to set correct classes on imports or non-native types.
     language: "javascript",
@@ -20,6 +22,7 @@ const licenses: ILicense[] = await getProjectLicenses("./package.json");
   },
   {
     fileName: "library-demo.js",
+    tabIcon: "/generate-license-file/img/js-logo-256.png",
     language: "javascript",
     content: `const generateLicenseFile = require("generate-license-file");
 
