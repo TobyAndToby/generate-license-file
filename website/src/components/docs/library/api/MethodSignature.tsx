@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { useTypescriptSnippets } from "@site/src/components/TypeScriptToggle";
+import { useTypeScriptSnippets } from "@site/src/components/TypeScriptToggle";
 import React, { FC } from "react";
 import { Parameter, Signature, Type } from "./getLibraryMethods";
 
@@ -9,7 +9,7 @@ interface Props {
 }
 
 const MethodSignature: FC<Props> = ({ methodName, signature }) => {
-  const showTypeScriptSnippets = useTypescriptSnippets();
+  const showTypeScriptSnippets = useTypeScriptSnippets();
 
   const { shortText, parameters, returns, returnType } = signature;
 

@@ -7,7 +7,7 @@ import "react-toggle/style.css";
 
 const typescriptAtom = atomWithStorage<boolean>("showTypeScript", true);
 
-export const useTypescriptSnippets = () => {
+export const useTypeScriptSnippets = () => {
   return useAtomValue(typescriptAtom);
 };
 
@@ -17,7 +17,6 @@ const TypeScriptToggle: FC = () => {
   return (
     <form>
       <Label htmlFor="show-typescript">
-        <LabelText>Language:</LabelText>
         <Toggle
           id="show-typescript"
           icons={{
@@ -72,10 +71,6 @@ const Label = styled.label`
   .react-toggle-thumb {
     background-color: var(--ifm-hero-background-color);
   }
-`;
-
-const LabelText = styled.span`
-  margin-right: 0.5rem;
 `;
 
 interface LanguageProps {

@@ -68,8 +68,6 @@ export type PropertyNode = BaseNode & {
   type: AnyType;
 };
 
-////---------
-
 export type BaseTypeNode = {
   name: string;
   typeArguments?: AnyType[];
@@ -118,8 +116,6 @@ export type ArrayTypeNode = BaseTypeNode & {
   type: "array";
   elementType: AnyType;
 };
-
-////---------
 
 export interface Comment {
   shortText?: string;

@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import React, { FC } from "react";
-import { Method, Type } from "./getLibraryMethods";
+import { Method } from "./getLibraryMethods";
 import MethodSignature from "./MethodSignature";
 
 interface Props {
@@ -29,29 +29,6 @@ const LibraryMethod: FC<Props> = ({ method }) => {
   );
 };
 export default LibraryMethod;
-
-const formatType = (type: Type) => {
-  let result = type.isArray ? "" : type.name;
-
-  if (!!type.genericArguments && type.genericArguments.length > 0) {
-    if (!type.isArray) {
-      result += "<";
-    }
-
-    const formattedGenericArguments = type.genericArguments.map(formatType);
-    result += formattedGenericArguments.join(", ");
-
-    if (!type.isArray) {
-      result += ">";
-    }
-  }
-
-  if (type.isArray) {
-    result += "[]";
-  }
-
-  return result;
-};
 
 const MethodName = styled.h3`
   ::before {
@@ -89,9 +66,4 @@ const Tag = styled.span`
   margin: 0 0.5em;
   color: white;
   font-weight: 600;
-`;
-
-const Returns = styled.p`
-  list-style-type: none;
-  padding-left: var(--ifm-list-left-padding);
 `;

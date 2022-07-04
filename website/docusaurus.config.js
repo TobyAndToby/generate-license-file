@@ -73,6 +73,10 @@ const config = {
             dropdownActiveClassDisabled: true
           },
           {
+            type: "custom-languageToggle",
+            position: "right"
+          },
+          {
             href: "https://github.com/TobyAndToby/generate-license-file",
             position: "right",
             className: "header-github-link",
