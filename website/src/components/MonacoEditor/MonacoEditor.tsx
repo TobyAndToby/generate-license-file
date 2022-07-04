@@ -1,3 +1,4 @@
+import useBaseUrl from "@docusaurus/useBaseUrl";
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import Highlight, { defaultProps } from "prism-react-renderer";
@@ -20,8 +21,12 @@ export const MonacoEditor: FC = () => {
         <Sidebar />
         <ViewContainer>
           <MonacoTabsContainer>
-            {demoFiles.map(({ fileName }) => (
-              <MonacoTab isActive={activeTab === fileName} onClick={() => setActiveTab(fileName)}>
+            {demoFiles.map(({ fileName, tabIcon }) => (
+              <MonacoTab
+                isActive={activeTab === fileName}
+                iconUrl={useBaseUrl(tabIcon)}
+                onClick={() => setActiveTab(fileName)}
+              >
                 {fileName}
               </MonacoTab>
             ))}
@@ -110,6 +115,7 @@ const Screen = styled.div`
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
   font-family: "Fira Mono", monospace;
+  position: relative;
   display: flex;
   flex: 1;
 `;
@@ -137,7 +143,7 @@ const activeStyle = css`
   background: #1e1e1e;
 `;
 
-const MonacoTab = styled.div<{ isActive: boolean }>`
+const MonacoTab = styled.div<{ isActive: boolean; iconUrl: string }>`
   width: auto;
   height: 100%;
   top: 0;
@@ -153,6 +159,17 @@ const MonacoTab = styled.div<{ isActive: boolean }>`
 
   &:hover {
     cursor: pointer;
+  }
+
+  &::before {
+    content: "";
+    background: url(${({ iconUrl }) => iconUrl});
+    background-size: 16px;
+    background-repeat: no-repeat;
+    height: 25px;
+    top: 5px;
+    width: 28px;
+    position: relative;
   }
 
   ${({ isActive }) => isActive && activeStyle}
