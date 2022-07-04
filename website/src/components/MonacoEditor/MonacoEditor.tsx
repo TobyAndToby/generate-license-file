@@ -1,3 +1,4 @@
+import useBaseUrl from "@docusaurus/useBaseUrl";
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import Highlight, { defaultProps } from "prism-react-renderer";
@@ -23,7 +24,7 @@ export const MonacoEditor: FC = () => {
             {demoFiles.map(({ fileName, tabIcon }) => (
               <MonacoTab
                 isActive={activeTab === fileName}
-                iconUrl={tabIcon}
+                iconUrl={useBaseUrl(tabIcon)}
                 onClick={() => setActiveTab(fileName)}
               >
                 {fileName}
