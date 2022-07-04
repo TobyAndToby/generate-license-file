@@ -73,7 +73,10 @@ jobs:
           node-version: 16
           registry-url: https://registry.npmjs.org/
 
-      - name: Install dependencies
+      - name: Install library dependencies
+        run: npm ci
+
+      - name: Install website dependencies
         run: npm ci
         working-directory: ./website
 

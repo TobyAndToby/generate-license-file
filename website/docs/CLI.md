@@ -1,8 +1,6 @@
 ---
 sidebar_position: 1
-slug: /cli
+title: CLI
 ---
-
-# CLI
 
 Coming soon!

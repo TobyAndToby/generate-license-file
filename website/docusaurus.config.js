@@ -63,7 +63,7 @@ const config = {
         items: [
           {
             type: "doc",
-            docId: "Intro",
+            docId: "intro",
             position: "left",
             label: "Docs"
           },
@@ -71,6 +71,10 @@ const config = {
             type: "docsVersionDropdown",
             position: "left",
             dropdownActiveClassDisabled: true
+          },
+          {
+            type: "custom-languageToggle",
+            position: "right"
           },
           {
             href: "https://github.com/TobyAndToby/generate-license-file",

@@ -1,8 +1,6 @@
 ---
 sidebar_position: 0
-slug: /intro
+title: Introduction
 ---
-
-# Introduction
 
 Coming soon!
