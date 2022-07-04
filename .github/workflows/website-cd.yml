@@ -28,6 +28,9 @@ jobs:
         run: npm run build
         working-directory: ./website
 
+      - name: Check for git changes
+        run: git diff --exit-code
+
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:

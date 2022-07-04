@@ -9,9 +9,14 @@ on:
 jobs:
   ci:
     strategy:
+      fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
         node: [14, 16, 18]
+        exclude:
+          # Temporarily excluded until migration to monorepo is completed.
+          - os: windows-latest
+            node: 14
 
     runs-on: ${{ matrix.os }}
 
@@ -53,10 +58,28 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           directory: coverage
 
-      - name: Install website dependencies
+  website-ci:
+    runs-on: ubuntu-latest
+
+    name: Website CI
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install Node.JS
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          registry-url: https://registry.npmjs.org/
+
+      - name: Install dependencies
         run: npm ci
         working-directory: ./website
 
       - name: Build docs site
         run: npm run build
         working-directory: ./website
+
+      - name: Check for git changes
+        run: git diff --exit-code

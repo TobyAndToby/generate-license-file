@@ -1,5 +1,4 @@
 import fs from "fs/promises";
-import { mocked } from "ts-jest/utils";
 import { allLineEndings, getLineEndingValue } from "../../src/lineEndings";
 import { generateLicenseFile, LineEnding } from "../../src/main";
 import { describeEachLineEnding } from "../describes/lineEndings";
@@ -12,8 +11,8 @@ jest.mock("fs/promises", () => ({
 }));
 
 describe("generateLicenseFile", () => {
-  const mockedWriteFile = mocked(fs.writeFile);
-  const mockedMkdir = mocked(fs.mkdir);
+  const mockedWriteFile = jest.mocked(fs.writeFile);
+  const mockedMkdir = jest.mocked(fs.mkdir);
 
   beforeEach(() => jest.resetAllMocks());
   afterAll(() => jest.restoreAllMocks());

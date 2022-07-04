@@ -1,13 +1,14 @@
 import styled from "@emotion/styled";
 import Layout from "@theme/Layout";
 import React from "react";
-import { MonacoEditor } from "../components/MonacoEditor";
+import { MonacoEditor } from "../components/MonacoEditor/MonacoEditor";
 import { Tab } from "../components/Tabs/Tab";
 import { Tabs } from "../components/Tabs/Tabs";
 import { Terminal } from "../components/Terminal";
 
 const Hero = styled.div`
-  padding-top: 100px;
+  padding: 100px 70px 100px 70px;
+  min-height: 100vh;
 `;
 
 const Intro = styled.div`

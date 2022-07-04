@@ -1,6 +1,5 @@
 import { Result } from "arg";
 import { prompt } from "enquirer";
-import { mocked } from "ts-jest/utils";
 import { Eol } from "../../../src/cli/args/eol";
 import { ArgumentsWithAliases } from "../../../src/cli/cli-arguments";
 import { allLineEndings } from "../../../src/lineEndings";
@@ -10,7 +9,7 @@ jest.mock("enquirer", () => ({
 }));
 
 describe("Eol", () => {
-  const mockedPrompt = mocked(prompt);
+  const mockedPrompt = jest.mocked(prompt);
 
   let eol: Eol;
 
