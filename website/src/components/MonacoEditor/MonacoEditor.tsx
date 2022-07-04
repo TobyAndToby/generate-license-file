@@ -26,6 +26,7 @@ export const MonacoEditor: FC = () => {
                 isActive={activeTab === fileName}
                 iconUrl={useBaseUrl(tabIcon)}
                 onClick={() => setActiveTab(fileName)}
+                key={fileName}
               >
                 {fileName}
               </MonacoTab>
@@ -33,7 +34,7 @@ export const MonacoEditor: FC = () => {
           </MonacoTabsContainer>
           <Editor>
             {demoFiles.map(({ fileName, language, content }) => (
-              <MonacoTabContent isActive={activeTab === fileName}>
+              <MonacoTabContent isActive={activeTab === fileName} key={fileName}>
                 <Highlight {...defaultProps} code={content} language={language} theme={undefined}>
                   {({ className, style, tokens, getLineProps, getTokenProps }) => (
                     <pre className={className} style={style}>
