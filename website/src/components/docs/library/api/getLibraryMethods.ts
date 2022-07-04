@@ -1,4 +1,3 @@
-import schema from "./schema.generated.json";
 import {
   AnyType,
   ArrayTypeNode,
@@ -6,7 +5,8 @@ import {
   isKindString,
   ModuleNode,
   ParameterNode,
-  SignatureNode
+  SignatureNode,
+  TopLevelNode
 } from "./schemaTypes";
 
 export interface Method {
@@ -36,8 +36,8 @@ export interface Type {
   isArray: boolean;
 }
 
-export const getLibraryMethods = (): Method[] => {
-  const mainModule = getMainModule();
+export const getLibraryMethods = (schema: TopLevelNode): Method[] => {
+  const mainModule = getMainModule(schema);
   const mainFunctions = getFunctionsFromModule(mainModule);
 
   return mainFunctions.map(functionNode => {
@@ -51,7 +51,7 @@ export const getLibraryMethods = (): Method[] => {
   });
 };
 
-const getMainModule = (): ModuleNode => {
+const getMainModule = (schema: TopLevelNode): ModuleNode => {
   for (const child of schema.children) {
     if (isKindString(child.kindString) && child.kindString === "Module" && child.name === "main") {
       return child as unknown as ModuleNode;

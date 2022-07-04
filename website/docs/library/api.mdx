@@ -2,6 +2,7 @@
 title: API
 ---
 
+import * as librarySchema from "./schema.generated.json";
 import ApiPage from "@site/src/components/docs/library/api/ApiPage";
 
 <!--
@@ -13,4 +14,4 @@ If you're here to edit the content of this page then you'll need to edit those c
 
 -->
 
-<ApiPage />
+<ApiPage librarySchema={librarySchema} />

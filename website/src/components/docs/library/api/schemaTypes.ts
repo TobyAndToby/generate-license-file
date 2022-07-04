@@ -19,6 +19,10 @@ type BaseNode = {
   };
 };
 
+export type TopLevelNode = BaseNode & {
+  children: ModuleNode[];
+};
+
 export type ModuleNode = BaseNode &
   ParentNode & {
     kindString: "Module";
