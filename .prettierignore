@@ -1,3 +1,5 @@
 dist
 *.generated.*
 coverage
+build
+.docusaurus

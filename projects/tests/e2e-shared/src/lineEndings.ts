@@ -4,7 +4,7 @@ type DescribeEachLineEndingCallback = (lineEnding: LineEnding, lineEndingLiteral
 
 const lineEndings: Record<LineEnding, string> = {
   crlf: "\r\n",
-  lf: "\n"
+  lf: "\n",
 };
 
 export const describeEachLineEnding = (callback: DescribeEachLineEndingCallback) => {

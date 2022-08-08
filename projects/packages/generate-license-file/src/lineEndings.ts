@@ -2,7 +2,7 @@ import os from "os";
 
 const lineEndings = {
   crlf: "\r\n",
-  lf: "\n"
+  lf: "\n",
 } as const;
 
 /**

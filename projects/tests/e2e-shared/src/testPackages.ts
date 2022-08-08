@@ -2,7 +2,7 @@ import path from "path";
 
 export const testPackageJsonPaths = [
   "all-have-licenses/package.json",
-  "missing-license-file/package.json"
+  "missing-license-file/package.json",
 ];
 
 type DescribeEachTestPackageCallback = (packageJsonPath: string, isAbsolute: boolean) => void;

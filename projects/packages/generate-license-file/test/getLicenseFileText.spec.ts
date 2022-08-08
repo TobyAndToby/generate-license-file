@@ -4,7 +4,7 @@ import { allLineEndings, getLineEndingValue } from "../src/lineEndings";
 import { License } from "../src/models/license";
 
 jest.mock("../src/internal/getLicencesForProjects", () => ({
-  getLicencesForProjects: jest.fn()
+  getLicencesForProjects: jest.fn(),
 }));
 
 describe("getLicenseFileText", () => {
@@ -61,7 +61,7 @@ describe("getLicenseFileText", () => {
         const firstCallFirstArg = jest.mocked(license.format).mock.calls[0][0];
         expect(firstCallFirstArg).toBe(expectedLineEndingValue);
       }
-    })
+    }),
   );
 
   it("should return the concatenated formatted licenses", async () => {
@@ -88,7 +88,9 @@ describe("getLicenseFileText", () => {
     const result = await getLicenseFileText("path", "lf");
 
     expect(
-      /.*?first\n\n-----------\n\nsecond\n\n-----------\n\nthird\n\n-----------\n\n.*/s.test(result)
+      /.*?first\n\n-----------\n\nsecond\n\n-----------\n\nthird\n\n-----------\n\n.*/s.test(
+        result,
+      ),
     ).toBeTruthy();
   });
 
@@ -104,14 +106,14 @@ describe("getLicenseFileText", () => {
 
     expect(
       result.endsWith(
-        "\n\nThis file was generated with generate-license-file! https://www.npmjs.com/package/generate-license-file\n"
-      )
+        "\n\nThis file was generated with generate-license-file! https://www.npmjs.com/package/generate-license-file\n",
+      ),
     ).toBeTruthy();
   });
 });
 
 const getNewMockedLicense = () => {
   return {
-    format: jest.fn()
+    format: jest.fn(),
   } as unknown as License;
 };

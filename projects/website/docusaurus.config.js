@@ -28,7 +28,7 @@ const config = {
   // to replace "en" with "zh-Hans".
   i18n: {
     defaultLocale: "en",
-    locales: ["en"]
+    locales: ["en"],
   },
 
   presets: [
@@ -42,13 +42,13 @@ const config = {
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
-            "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/"
+            "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/",
         },
         theme: {
-          customCss: require.resolve("./src/css/custom.css")
-        }
-      })
-    ]
+          customCss: require.resolve("./src/css/custom.css"),
+        },
+      }),
+    ],
   ],
 
   themeConfig:
@@ -58,31 +58,31 @@ const config = {
         title: "Generate License File",
         logo: {
           alt: "Generate License File Logo",
-          src: "img/logo.svg"
+          src: "img/logo.svg",
         },
         items: [
           {
             type: "doc",
             docId: "intro",
             position: "left",
-            label: "Docs"
+            label: "Docs",
           },
           {
             type: "docsVersionDropdown",
             position: "left",
-            dropdownActiveClassDisabled: true
+            dropdownActiveClassDisabled: true,
           },
           {
             type: "custom-languageToggle",
-            position: "right"
+            position: "right",
           },
           {
             href: "https://github.com/TobyAndToby/generate-license-file",
             position: "right",
             className: "header-github-link",
-            "aria-label": "GitHub repository"
-          }
-        ]
+            "aria-label": "GitHub repository",
+          },
+        ],
       },
       footer: {
         links: [
@@ -91,42 +91,42 @@ const config = {
             items: [
               {
                 label: "Docs",
-                to: "/docs/cli"
-              }
-            ]
+                to: "/docs/cli",
+              },
+            ],
           },
           {
             title: "More",
             items: [
               {
                 label: "GitHub",
-                href: "https://github.com/TobyAndToby/generate-license-file"
+                href: "https://github.com/TobyAndToby/generate-license-file",
               },
               {
                 label: "Toby Smith",
-                href: "https://tobysmith.uk"
+                href: "https://tobysmith.uk",
               },
               {
                 label: "Toby Bessant",
-                href: "https://tobybessant.co.uk"
-              }
-            ]
-          }
+                href: "https://tobybessant.co.uk",
+              },
+            ],
+          },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} Generate License File. Built with Docusaurus.`
+        copyright: `Copyright © ${new Date().getFullYear()} Generate License File. Built with Docusaurus.`,
       },
       prism: {
         theme: lightCodeTheme,
-        darkTheme: darkCodeTheme
+        darkTheme: darkCodeTheme,
       },
       announcementBar: {
         content: "🚧 <b>Welcome! This site is a work in progress, check back soon.</b> 🚧",
         backgroundColor: "#f5e831",
         textColor: "black",
         id: "wip",
-        isCloseable: false
-      }
-    })
+        isCloseable: false,
+      },
+    }),
 };
 
 module.exports = config;

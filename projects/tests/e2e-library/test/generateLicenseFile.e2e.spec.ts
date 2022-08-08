@@ -5,7 +5,7 @@ import { allLineEndings, generateLicenseFile, LineEnding } from "generate-licens
 jest.mock("fs/promises", () => ({
   ...jest.requireActual<typeof fs>("fs/promises"),
   writeFile: jest.fn(),
-  mkdir: jest.fn()
+  mkdir: jest.fn(),
 }));
 
 describe("generateLicenseFile", () => {
@@ -51,7 +51,7 @@ describe("generateLicenseFile", () => {
 
           const fileContent = mockedWriteFile.mock.calls[0][1];
           expect(fileContent).not.toContain(incorrectLineEndingValue);
-        })
+        }),
       );
 
       it("should write the file to the correct output path", async () => {
@@ -72,6 +72,6 @@ describe("generateLicenseFile", () => {
         const directoryPath = mockedMkdir.mock.calls[0][0];
         expect(directoryPath).toBe(outputDirectory);
       });
-    })
+    }),
   );
 });

@@ -2,6 +2,7 @@
   "private": true,
   "name": "@generate-license-file/e2e-shared",
   "main": "src/main.ts",
+  "prettier": "@generate-license-file/prettier-config",
   "dependencies": {
     "generate-license-file": "*"
   }

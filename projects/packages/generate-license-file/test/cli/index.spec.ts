@@ -7,7 +7,7 @@ import console from "../../src/utils/console.utils";
 import { readPackageJson } from "../../src/utils/packageJson.utils";
 
 jest.mock("../../src/generateLicenseFile", () => ({
-  generateLicenseFile: jest.fn()
+  generateLicenseFile: jest.fn(),
 }));
 
 jest.mock("arg", () => jest.fn());
@@ -16,17 +16,17 @@ jest.mock("../../src/cli/spinner", () => ({
   spinner: {
     start: jest.fn(),
     stop: jest.fn(),
-    fail: jest.fn()
-  }
+    fail: jest.fn(),
+  },
 }));
 
 jest.mock("../../src/utils/console.utils", () => ({
   log: jest.fn(),
-  warn: jest.fn()
+  warn: jest.fn(),
 }));
 
 jest.mock("../../src/utils/packageJson.utils", () => ({
-  readPackageJson: jest.fn()
+  readPackageJson: jest.fn(),
 }));
 
 const mockInputParse = jest.fn();
@@ -42,25 +42,25 @@ const mockNoSpinnerResolve = jest.fn();
 jest.mock("../../src/cli/args/input.ts", () => ({
   Input: function () {
     return { parse: mockInputParse, resolve: mockInputResolve };
-  }
+  },
 }));
 
 jest.mock("../../src/cli/args/output.ts", () => ({
   Output: function () {
     return { parse: mockOutputParse, resolve: mockOutputResolve };
-  }
+  },
 }));
 
 jest.mock("../../src/cli/args/eol.ts", () => ({
   Eol: function () {
     return { parse: mockEolParse, resolve: mockEolResolve };
-  }
+  },
 }));
 
 jest.mock("../../src/cli/args/no-spinner.ts", () => ({
   NoSpinner: function () {
     return { parse: mockNoSpinnerParse, resolve: mockNoSpinnerResolve };
-  }
+  },
 }));
 
 describe("cli", () => {
@@ -108,7 +108,7 @@ describe("cli", () => {
       mockedReadPackageJson.mockResolvedValue({ name: "test", version: "1.0.3" });
 
       const parsedArgResponse = {
-        "--version": true
+        "--version": true,
       } as Result<ArgumentsWithAliases>;
 
       mockedArg.mockReturnValue(parsedArgResponse);
@@ -122,7 +122,7 @@ describe("cli", () => {
       mockedReadPackageJson.mockResolvedValue({ name: "test", version: "1.0.3" });
 
       const parsedArgResponse = {
-        "--version": true
+        "--version": true,
       } as Result<ArgumentsWithAliases>;
 
       mockedArg.mockReturnValue(parsedArgResponse);
@@ -138,7 +138,7 @@ describe("cli", () => {
       const parsedArgResponse = {
         "--version": true,
         "--input": "any input value",
-        "--output": "any output value"
+        "--output": "any output value",
       } as Result<ArgumentsWithAliases>;
 
       mockedArg.mockReturnValue(parsedArgResponse);
@@ -150,10 +150,10 @@ describe("cli", () => {
         "any input value",
         "--output",
         "any output value",
-        "--version"
+        "--version",
       ]);
 
-      expect(mockedGenerateLicenseFile).toBeCalledTimes(0);
+      expect(mockedGenerateLicenseFile).toHaveBeenCalledTimes(0);
     });
   });
 
@@ -162,7 +162,7 @@ describe("cli", () => {
 
     beforeEach(() => {
       parsedArgResponse = {
-        "--ci": false
+        "--ci": false,
       } as Result<ArgumentsWithAliases>;
     });
 
@@ -202,14 +202,14 @@ describe("cli", () => {
 
     beforeEach(() => {
       parsedArgResponse = {
-        "--ci": true
+        "--ci": true,
       } as Result<ArgumentsWithAliases>;
     });
 
     it("should set no-spinner to true", async () => {
       const mockedArgs = {
         "--ci": true,
-        "--no-spinner": undefined
+        "--no-spinner": undefined,
       } as Result<ArgumentsWithAliases>;
       mockedArg.mockReturnValue(mockedArgs);
 
@@ -231,7 +231,7 @@ describe("cli", () => {
 
     it("should set an exit code of 1 when the parse method on an argument class throws an error", async () => {
       const mockedArgs = {
-        "--ci": true
+        "--ci": true,
       } as Result<ArgumentsWithAliases>;
       mockedArg.mockReturnValue(mockedArgs);
 
@@ -266,7 +266,7 @@ describe("cli", () => {
     it("should start the spinner if noSpinner is false", async () => {
       const parsedArgResponse = {
         "--input": "any input path",
-        "--output": "any output path"
+        "--output": "any output path",
       } as Result<ArgumentsWithAliases>;
 
       mockedArg.mockReturnValue(parsedArgResponse);
@@ -280,7 +280,7 @@ describe("cli", () => {
     it("should not start the spinner if noSpinner is true", async () => {
       const parsedArgResponse = {
         "--input": "any input path",
-        "--output": "any output path"
+        "--output": "any output path",
       } as Result<ArgumentsWithAliases>;
 
       mockedArg.mockReturnValue(parsedArgResponse);
@@ -294,7 +294,7 @@ describe("cli", () => {
     it("should stop the spinner if the generateLicenseFile call succeeds", async () => {
       const parsedArgResponse = {
         "--input": "any input path",
-        "--output": "any output path"
+        "--output": "any output path",
       } as Result<ArgumentsWithAliases>;
 
       mockedArg.mockReturnValue(parsedArgResponse);
@@ -307,7 +307,7 @@ describe("cli", () => {
     it("should not fail the spinner if the generateLicenseFile call succeeds", async () => {
       const parsedArgResponse = {
         "--input": "any input path",
-        "--output": "any output path"
+        "--output": "any output path",
       } as Result<ArgumentsWithAliases>;
 
       mockedArg.mockReturnValue(parsedArgResponse);
@@ -329,7 +329,7 @@ describe("cli", () => {
     it("should fail the spinner with the error message it an error is thrown", async () => {
       const parsedArgResponse = {
         "--input": "any input path",
-        "--output": "any output path"
+        "--output": "any output path",
       } as Result<ArgumentsWithAliases>;
 
       mockedArg.mockReturnValue(parsedArgResponse);
@@ -344,7 +344,7 @@ describe("cli", () => {
     it("should fail the spinner with the thrown object if it's not an error", async () => {
       const parsedArgResponse = {
         "--input": "any input path",
-        "--output": "any output path"
+        "--output": "any output path",
       } as Result<ArgumentsWithAliases>;
 
       mockedArg.mockReturnValue(parsedArgResponse);
@@ -359,7 +359,7 @@ describe("cli", () => {
     it("should fail the spinner with 'Unknown error' if the value thrown is falsy (undefined)", async () => {
       const parsedArgResponse = {
         "--input": "any input path",
-        "--output": "any output path"
+        "--output": "any output path",
       } as Result<ArgumentsWithAliases>;
 
       mockedArg.mockReturnValue(parsedArgResponse);

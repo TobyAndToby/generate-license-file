@@ -21,7 +21,7 @@ const TypeScriptToggle: FC = () => {
           id="show-typescript"
           icons={{
             checked: <Language color="white">TS</Language>,
-            unchecked: <Language color="black">JS</Language>
+            unchecked: <Language color="black">JS</Language>,
           }}
           checked={showTypeScript}
           onChange={e => setShowTypeScript(e.target.checked)}

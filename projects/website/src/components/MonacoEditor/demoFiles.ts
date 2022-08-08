@@ -22,7 +22,7 @@ generateLicenseFile
   })
   .catch(error => {
     // Do stuff with error...
-  });`
+  });`,
   },
   {
     fileName: "library-demo.ts",
@@ -34,6 +34,6 @@ generateLicenseFile
 
 // Get an array of licenses for the current project's production dependencies.
 const licenses: ILicense[] = await getProjectLicenses("./package.json");
-    `
-  }
+    `,
+  },
 ];

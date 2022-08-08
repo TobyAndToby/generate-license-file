@@ -40,13 +40,13 @@ describe("lineEndings", () => {
       expect(result).toBe(false);
     });
 
-    it("should return false for the line ending value '\r\n", () => {
+    it("should return false for the line ending value '\\r\\n'", () => {
       const result = isLineEnding("\r\n");
 
       expect(result).toBe(false);
     });
 
-    it("should return false for the line ending value '\n", () => {
+    it("should return false for the line ending value '\\n'", () => {
       const result = isLineEnding("\n");
 
       expect(result).toBe(false);
@@ -57,7 +57,7 @@ describe("lineEndings", () => {
         const result = isLineEnding(value);
 
         expect(result).toBe(false);
-      })
+      }),
     );
   });
 
@@ -82,10 +82,10 @@ describe("lineEndings", () => {
 
     ["foo", "bar"].forEach(value =>
       it("should throw an error when given an unknown value", () => {
-        expect(() => getLineEndingValue(value as unknown as LineEnding)).toThrowError(
-          `Unknown line ending value: ${value}`
+        expect(() => getLineEndingValue(value as unknown as LineEnding)).toThrow(
+          `Unknown line ending value: ${value}`,
         );
-      })
+      }),
     );
   });
 });
