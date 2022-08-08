@@ -3,5 +3,5 @@ import ComponentTypes from "@theme-original/NavbarItem/ComponentTypes";
 
 export default {
   ...ComponentTypes,
-  "custom-languageToggle": TypeScriptToggle
+  "custom-languageToggle": TypeScriptToggle,
 };

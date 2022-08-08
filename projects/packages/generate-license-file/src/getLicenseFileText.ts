@@ -14,7 +14,7 @@ const FOOTER =
  */
 export async function getLicenseFileText(
   pathToPackageJson: string,
-  lineEnding?: LineEnding
+  lineEnding?: LineEnding,
 ): Promise<string>;
 
 /**
@@ -25,12 +25,12 @@ export async function getLicenseFileText(
  */
 export async function getLicenseFileText(
   pathsToPackageJsons: string[],
-  lineEnding?: LineEnding
+  lineEnding?: LineEnding,
 ): Promise<string>;
 
 export async function getLicenseFileText(
   pathsToPackageJsons: string[] | string,
-  lineEnding?: LineEnding
+  lineEnding?: LineEnding,
 ): Promise<string> {
   if (typeof pathsToPackageJsons === "string") {
     pathsToPackageJsons = [pathsToPackageJsons];

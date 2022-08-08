@@ -88,7 +88,7 @@ const Menu = styled.div`
 const menuButtonType = {
   close: "#ff3b47",
   minimize: "#ffc100",
-  zoom: "#00d742"
+  zoom: "#00d742",
 };
 
 interface MenuButtonProps {

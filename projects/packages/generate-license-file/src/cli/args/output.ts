@@ -22,7 +22,7 @@ export class Output extends Argument<string> {
 
       if (outputExists && overwriteOutput === undefined) {
         overwriteOutput = await this.promptForBoolean(
-          "This file already exists - do you want to overwrite it?"
+          "This file already exists - do you want to overwrite it?",
         );
       }
 
@@ -47,7 +47,7 @@ export class Output extends Argument<string> {
 
     if (outputExists && !allowOverwrite) {
       throw new Error(
-        `Given --output file already exists at '${output}'. Use --overwrite to allow overwriting.`
+        `Given --output file already exists at '${output}'. Use --overwrite to allow overwriting.`,
       );
     }
 

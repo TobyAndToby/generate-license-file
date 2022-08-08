@@ -5,11 +5,11 @@ import { ArgumentsWithAliases } from "../../../src/cli/cli-arguments";
 import { doesFileExist } from "../../../src/utils/file.utils";
 
 jest.mock("../../../src/utils/file.utils", () => ({
-  doesFileExist: jest.fn()
+  doesFileExist: jest.fn(),
 }));
 
 jest.mock("enquirer", () => ({
-  prompt: jest.fn()
+  prompt: jest.fn(),
 }));
 
 describe("Output", () => {
@@ -33,7 +33,7 @@ describe("Output", () => {
       mockDoesFileExist.mockResolvedValue(false);
 
       const args = {
-        "--output": "any output value"
+        "--output": "any output value",
       } as Result<ArgumentsWithAliases>;
 
       await output.resolve(args);
@@ -48,7 +48,7 @@ describe("Output", () => {
       mockPrompt.mockResolvedValue({ value: true });
 
       const args = {
-        "--output": "any output value"
+        "--output": "any output value",
       } as Result<ArgumentsWithAliases>;
 
       await output.resolve(args);
@@ -108,7 +108,7 @@ describe("Output", () => {
 
       const args = {
         "--output": "any output value",
-        "--overwrite": true
+        "--overwrite": true,
       } as Result<ArgumentsWithAliases>;
 
       await output.resolve(args);
@@ -123,7 +123,7 @@ describe("Output", () => {
 
       const args = {
         "--output": "any output value",
-        "--overwrite": true
+        "--overwrite": true,
       } as Result<ArgumentsWithAliases>;
 
       await output.resolve(args);
@@ -137,7 +137,7 @@ describe("Output", () => {
       mockPrompt.mockResolvedValue({ value: true });
 
       const args = {
-        "--overwrite": true
+        "--overwrite": true,
       } as Result<ArgumentsWithAliases>;
 
       await output.resolve(args);
@@ -150,7 +150,7 @@ describe("Output", () => {
   describe("parse", () => {
     it("should throw if the given output is undefined", async () => {
       const args = {
-        "--output": undefined
+        "--output": undefined,
       } as Result<ArgumentsWithAliases>;
 
       await expect(output.parse(args)).rejects.toThrow("No --output argument given.");
@@ -160,11 +160,11 @@ describe("Output", () => {
       mockDoesFileExist.mockResolvedValue(true);
 
       const args = {
-        "--output": "any output value"
+        "--output": "any output value",
       } as Result<ArgumentsWithAliases>;
 
       await expect(output.parse(args)).rejects.toThrow(
-        "Given --output file already exists at 'any output value'. Use --overwrite to allow overwriting."
+        "Given --output file already exists at 'any output value'. Use --overwrite to allow overwriting.",
       );
     });
 
@@ -173,7 +173,7 @@ describe("Output", () => {
 
       const args = {
         "--output": "any output value",
-        "--overwrite": true
+        "--overwrite": true,
       } as Result<ArgumentsWithAliases>;
 
       const result = await output.parse(args);
@@ -185,7 +185,7 @@ describe("Output", () => {
       mockDoesFileExist.mockResolvedValue(false);
 
       const args = {
-        "--output": "any output value"
+        "--output": "any output value",
       } as Result<ArgumentsWithAliases>;
 
       const result = await output.parse(args);

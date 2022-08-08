@@ -4,7 +4,7 @@ const kindStrings = {
   Property: null,
   Function: null,
   "Call signature": null,
-  "Type alias": null
+  "Type alias": null,
 };
 type KindString = keyof typeof kindStrings;
 
@@ -85,7 +85,7 @@ const types = {
   reference: null,
   literal: null,
   union: null,
-  array: null
+  array: null,
 };
 type Type = keyof typeof types;
 

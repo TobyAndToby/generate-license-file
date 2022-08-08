@@ -3,7 +3,7 @@ import { getLicencesForProjects } from "../src/internal/getLicencesForProjects";
 import { License } from "../src/models/license";
 
 jest.mock("../src/internal/getLicencesForProjects", () => ({
-  getLicencesForProjects: jest.fn()
+  getLicencesForProjects: jest.fn(),
 }));
 
 describe("getProjectLicenses", () => {
@@ -36,7 +36,7 @@ describe("getProjectLicenses", () => {
   it("should return the response from the internal getProjectLicenses", async () => {
     const licenses: License[] = [
       new License("stuff", ["a", "b"]),
-      new License("also stuff", ["c", "d"])
+      new License("also stuff", ["c", "d"]),
     ];
 
     mockGetLicencesForProjects.mockResolvedValue(licenses);

@@ -8,20 +8,20 @@ import { readPackageJson } from "../../src/utils/packageJson.utils";
 jest.mock("../../src/utils/file.utils", () => ({
   doesFileExist: jest.fn(),
   readFile: jest.fn(),
-  doesFolderExist: jest.fn()
+  doesFolderExist: jest.fn(),
 }));
 
 jest.mock("../../src/utils/console.utils", () => ({
   log: jest.fn(),
-  warn: jest.fn()
+  warn: jest.fn(),
 }));
 
 jest.mock("../../src/utils/license.utils", () => ({
-  getProject: jest.fn()
+  getProject: jest.fn(),
 }));
 
 jest.mock("../../src/utils/packageJson.utils", () => ({
-  readPackageJson: jest.fn()
+  readPackageJson: jest.fn(),
 }));
 
 describe("getLicencesForProjects", () => {
@@ -34,13 +34,13 @@ describe("getLicencesForProjects", () => {
   const dependencies: ModuleInfo[] = [
     { licenseFile: "path1", name: "name1" },
     { licenseFile: "path2", name: "name2" },
-    { licenseFile: "path3", name: "name3" }
+    { licenseFile: "path3", name: "name3" },
   ];
 
   const project: Project = {
     name1: dependencies[0],
     name2: dependencies[1],
-    name3: dependencies[2]
+    name3: dependencies[2],
   };
 
   const packageJsonPath = "./path/to/package.json";
@@ -53,7 +53,7 @@ describe("getLicencesForProjects", () => {
     mockReadFile.mockImplementation(path => Promise.resolve(`Content for: ${path}`));
     mockReadPackageJson.mockResolvedValue({
       name: "test-project",
-      version: "1.2.3"
+      version: "1.2.3",
     });
   });
 
@@ -101,7 +101,7 @@ describe("getLicencesForProjects", () => {
     expect(result).toHaveLength(dependencies.length);
 
     dependencies.forEach((dependency, i) =>
-      expect(result[i].content).toBe(`Content for: ${dependency.licenseFile}`)
+      expect(result[i].content).toBe(`Content for: ${dependency.licenseFile}`),
     );
   });
 
@@ -109,12 +109,12 @@ describe("getLicencesForProjects", () => {
     const dependenciesWhichShareLicenses: ModuleInfo[] = [
       { licenseFile: "path1", name: "name1" },
       { licenseFile: "path1", name: "also1" },
-      { licenseFile: "path2", name: "name2" }
+      { licenseFile: "path2", name: "name2" },
     ];
     const projectWithSharedLicenses: Project = {
       name1: dependenciesWhichShareLicenses[0],
       also1: dependenciesWhichShareLicenses[1],
-      name2: dependenciesWhichShareLicenses[2]
+      name2: dependenciesWhichShareLicenses[2],
     };
     mockGetProject.mockReset();
     mockGetProject.mockResolvedValue(projectWithSharedLicenses);
@@ -136,7 +136,7 @@ describe("getLicencesForProjects", () => {
     mockDoesFileExist.mockResolvedValue(false);
 
     const projectWithSharedLicenses: Project = {
-      name1: { licenses: "license1", name: "name1" }
+      name1: { licenses: "license1", name: "name1" },
     };
     mockGetProject.mockReset();
     mockGetProject.mockResolvedValue(projectWithSharedLicenses);
@@ -152,7 +152,7 @@ describe("getLicencesForProjects", () => {
     mockDoesFileExist.mockResolvedValue(false);
 
     const projectWithSharedLicenses: Project = {
-      name1: { licenses: ["license1", "license2"], name: "name1" }
+      name1: { licenses: ["license1", "license2"], name: "name1" },
     };
     mockGetProject.mockReset();
     mockGetProject.mockResolvedValue(projectWithSharedLicenses);
@@ -168,7 +168,7 @@ describe("getLicencesForProjects", () => {
     mockDoesFileExist.mockResolvedValue(false);
 
     const projectWithSharedLicenses: Project = {
-      name1: { licenses: [], name: "name1" }
+      name1: { licenses: [], name: "name1" },
     };
     mockGetProject.mockReset();
     mockGetProject.mockResolvedValue(projectWithSharedLicenses);
@@ -186,7 +186,7 @@ describe("getLicencesForProjects", () => {
     mockDoesFileExist.mockResolvedValue(false);
 
     const projectWithSharedLicenses: Project = {
-      name1: { licenses: [], name: "name1" }
+      name1: { licenses: [], name: "name1" },
     };
     mockGetProject.mockReset();
     mockGetProject.mockResolvedValue(projectWithSharedLicenses);
@@ -199,22 +199,22 @@ describe("getLicencesForProjects", () => {
   it("should throw if there's no name key in the given package.json", async () => {
     mockReadPackageJson.mockReset();
     mockReadPackageJson.mockResolvedValue({
-      version: "1.2.3"
+      version: "1.2.3",
     });
 
     await expect(getLicencesForProjects([packageJsonPath])).rejects.toThrow(
-      'Cannot find the "name" key in the package.json!'
+      'Cannot find the "name" key in the package.json!',
     );
   });
 
   it("should throw if there's no version key in the given package.json", async () => {
     mockReadPackageJson.mockReset();
     mockReadPackageJson.mockResolvedValue({
-      name: "test-project"
+      name: "test-project",
     });
 
     await expect(getLicencesForProjects([packageJsonPath])).rejects.toThrow(
-      'Cannot find the "version" key in the package.json!'
+      'Cannot find the "version" key in the package.json!',
     );
   });
 });

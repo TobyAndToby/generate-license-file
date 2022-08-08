@@ -5,7 +5,7 @@ import { ArgumentsWithAliases } from "../../../src/cli/cli-arguments";
 import { allLineEndings } from "../../../src/lineEndings";
 
 jest.mock("enquirer", () => ({
-  prompt: jest.fn()
+  prompt: jest.fn(),
 }));
 
 describe("Eol", () => {
@@ -35,22 +35,22 @@ describe("Eol", () => {
     allLineEndings.forEach(lineEnding =>
       it(`should return '${lineEnding}' if '--eol' is '${lineEnding}'`, async () => {
         const args = {
-          "--eol": lineEnding
+          "--eol": lineEnding,
         } as Result<ArgumentsWithAliases>;
 
         const answer = await eol.resolve(args);
 
         expect(answer).toBe(lineEnding);
-      })
+      }),
     );
 
     it("should prompt the user for a valid answer if an invalid line ending value is provided", async () => {
       mockedPrompt.mockResolvedValue({
-        value: "dummy value"
+        value: "dummy value",
       });
 
       const args = {
-        "--eol": "test"
+        "--eol": "test",
       } as Result<ArgumentsWithAliases>;
 
       await eol.resolve(args);
@@ -60,76 +60,76 @@ describe("Eol", () => {
 
     it("should prompt the user with a multiple choice prompt if an invalid line ending value is provided", async () => {
       mockedPrompt.mockResolvedValue({
-        value: "dummy value"
+        value: "dummy value",
       });
 
       const args = {
-        "--eol": "test"
+        "--eol": "test",
       } as Result<ArgumentsWithAliases>;
 
       await eol.resolve(args);
 
       expect(mockedPrompt).toHaveBeenCalledWith(
         expect.objectContaining({
-          type: "select"
-        })
+          type: "select",
+        }),
       );
     });
 
     it("should prompt the user with a multiple choice prompt containing valid options if an invalid line ending value is provided", async () => {
       mockedPrompt.mockResolvedValue({
-        value: "dummy value"
+        value: "dummy value",
       });
 
       const args = {
-        "--eol": "test"
+        "--eol": "test",
       } as Result<ArgumentsWithAliases>;
 
       await eol.resolve(args);
 
       expect(mockedPrompt).toHaveBeenCalledWith(
         expect.objectContaining({
-          choices: ["CRLF", "LF", "System default"]
-        })
+          choices: ["CRLF", "LF", "System default"],
+        }),
       );
     });
 
     it("should prompt the user with a message if an invalid line ending value is provided", async () => {
       mockedPrompt.mockResolvedValue({
-        value: "dummy value"
+        value: "dummy value",
       });
 
       const args = {
-        "--eol": "test"
+        "--eol": "test",
       } as Result<ArgumentsWithAliases>;
 
       await eol.resolve(args);
 
       expect(mockedPrompt).toHaveBeenCalledWith(
         expect.objectContaining({
-          message: "Invalid line ending given. Please choose a line ending: "
-        })
+          message: "Invalid line ending given. Please choose a line ending: ",
+        }),
       );
     });
 
     [
       { key: "CRLF", value: "crlf" },
       { key: "LF", value: "lf" },
-      { key: "System default", value: undefined }
+      { key: "System default", value: undefined },
     ].forEach(testCase =>
       it(`should return ${testCase.value} if the user selects ${testCase.key} from the multiple choice prompt`, async () => {
         mockedPrompt.mockResolvedValue({
-          value: testCase.key
+          value: testCase.key,
         });
 
         const args = {
-          "--eol": testCase.key
+          "--eol": testCase.key,
         } as Result<ArgumentsWithAliases>;
 
         const answer = await eol.resolve(args);
 
         expect(answer).toBe(testCase.value);
-      })
+      }),
     );
   });
 
@@ -145,22 +145,22 @@ describe("Eol", () => {
     allLineEndings.forEach(lineEnding =>
       it(`should return '${lineEnding}' if '--eol' is '${lineEnding}'`, async () => {
         const args = {
-          "--eol": lineEnding
+          "--eol": lineEnding,
         } as Result<ArgumentsWithAliases>;
 
         const answer = await eol.parse(args);
 
         expect(answer).toBe(lineEnding);
-      })
+      }),
     );
 
     it("should throw if '--eol' is invalid", async () => {
       const args = {
-        "--eol": "this is invalid"
+        "--eol": "this is invalid",
       } as Result<ArgumentsWithAliases>;
 
       await expect(eol.parse(args)).rejects.toThrow(
-        "Invalid line ending given: 'this is invalid'. Possible values are 'crlf' or 'lf'. Omit the --eol flag to use the system default."
+        "Invalid line ending given: 'this is invalid'. Possible values are 'crlf' or 'lf'. Omit the --eol flag to use the system default.",
       );
     });
   });

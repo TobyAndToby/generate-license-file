@@ -6,19 +6,19 @@ import { spinner } from "../../../src/cli/spinner";
 import { doesFileExist } from "../../../src/utils/file.utils";
 
 jest.mock("../../../src/utils/file.utils", () => ({
-  doesFileExist: jest.fn()
+  doesFileExist: jest.fn(),
 }));
 
 jest.mock("../../../src/cli/spinner.ts", () => ({
   spinner: {
     start: jest.fn(),
     stop: jest.fn(),
-    fail: jest.fn()
-  }
+    fail: jest.fn(),
+  },
 }));
 
 jest.mock("enquirer", () => ({
-  prompt: jest.fn()
+  prompt: jest.fn(),
 }));
 
 describe("Input", () => {
@@ -44,7 +44,7 @@ describe("Input", () => {
 
       const inputFile = "./package.json";
       const args = {
-        "--input": inputFile
+        "--input": inputFile,
       } as Result<ArgumentsWithAliases>;
 
       const answer = await input.resolve(args);
@@ -73,8 +73,8 @@ describe("Input", () => {
 
       expect(mockedPrompt).toHaveBeenCalledWith(
         expect.objectContaining({
-          message: "Package.json location: "
-        })
+          message: "Package.json location: ",
+        }),
       );
     });
 
@@ -88,8 +88,8 @@ describe("Input", () => {
 
       expect(mockedPrompt).toHaveBeenCalledWith(
         expect.objectContaining({
-          initial: "./package.json"
-        })
+          initial: "./package.json",
+        }),
       );
     });
 
@@ -103,8 +103,8 @@ describe("Input", () => {
 
       expect(mockedPrompt).toHaveBeenCalledWith(
         expect.objectContaining({
-          initial: ""
-        })
+          initial: "",
+        }),
       );
     });
 
@@ -118,8 +118,8 @@ describe("Input", () => {
 
       expect(mockedPrompt).toHaveBeenCalledWith(
         expect.objectContaining({
-          type: "input"
-        })
+          type: "input",
+        }),
       );
     });
 
@@ -145,7 +145,7 @@ describe("Input", () => {
       mockedPrompt.mockResolvedValueOnce({ value: "./exists.json" });
 
       const args = {
-        "--input": "./not-exists.json"
+        "--input": "./not-exists.json",
       } as Result<ArgumentsWithAliases>;
 
       await input.resolve(args);
@@ -183,7 +183,7 @@ describe("Input", () => {
         .mockResolvedValueOnce({ value: "./exists.json" });
 
       const args = {
-        "--input": "./not-exists.json"
+        "--input": "./not-exists.json",
       } as Result<ArgumentsWithAliases>;
 
       await input.resolve(args);
@@ -195,7 +195,7 @@ describe("Input", () => {
   describe("parse", () => {
     it("should throw if the given input is undefined", async () => {
       const args = {
-        "--input": undefined
+        "--input": undefined,
       } as Result<ArgumentsWithAliases>;
 
       await expect(input.parse(args)).rejects.toThrow("No --input argument given.");
@@ -205,11 +205,11 @@ describe("Input", () => {
       mockedDoesFileExist.mockResolvedValueOnce(false);
 
       const args = {
-        "--input": "./package.json"
+        "--input": "./package.json",
       } as Result<ArgumentsWithAliases>;
 
       return expect(input.parse(args)).rejects.toThrow(
-        "Given --input file not found. Cannot find './package.json'."
+        "Given --input file not found. Cannot find './package.json'.",
       );
     });
 
@@ -217,7 +217,7 @@ describe("Input", () => {
       mockedDoesFileExist.mockResolvedValueOnce(true);
 
       const args = {
-        "--input": "./package.json"
+        "--input": "./package.json",
       } as Result<ArgumentsWithAliases>;
 
       const result = await input.parse(args);

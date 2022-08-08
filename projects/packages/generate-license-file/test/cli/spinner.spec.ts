@@ -2,7 +2,7 @@ import ora, { Options } from "ora";
 
 const mockDotsSpinner = {};
 jest.mock("cli-spinners", () => ({
-  dots: mockDotsSpinner
+  dots: mockDotsSpinner,
 }));
 
 jest.mock("ora", () => jest.fn());
