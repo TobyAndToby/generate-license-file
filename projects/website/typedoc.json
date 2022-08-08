@@ -1,0 +1,7 @@
+{
+  "name": "Generate License File",
+  "entryPoints": ["../packages/generate-license-file/src/main.ts", "../packages/generate-license-file/src/cli/cli-arguments.ts"],
+  "tsconfig": "../packages/generate-license-file/tsconfig.json",
+  "json": "./docs/library/schema.generated.json",
+  "sort": ["source-order"]
+}
