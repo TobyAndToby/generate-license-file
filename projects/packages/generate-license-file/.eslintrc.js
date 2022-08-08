@@ -1,7 +1,3 @@
 module.exports = {
-  root: true,
-  parser: "@typescript-eslint/parser",
-  plugins: ["@typescript-eslint"],
-  extends: ["eslint:recommended", "plugin:@typescript-eslint/recommended", "prettier"],
-  ignorePatterns: ["**/*.js", "dist", "build"]
+  extends: ["@generate-license-file/eslint-config/configs/node"]
 };
