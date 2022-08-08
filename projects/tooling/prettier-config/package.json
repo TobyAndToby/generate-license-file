@@ -1,8 +1,8 @@
 {
   "private": true,
-  "name": "@generate-license-file/eslint-config",
+  "name": "@generate-license-file/prettier-config",
   "version": "0.0.0",
-  "main": "configs/node.js",
+  "main": "src/index.js",
   "prettier": "@generate-license-file/prettier-config",
   "scripts": {},
   "contributors": [
@@ -16,16 +16,12 @@
     }
   ],
   "files": [
-    "configs"
+    "src"
   ],
   "peerDependencies": {
-    "eslint": "^8.5.0"
+    "prettier": "^2.6.2"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^5.32.0",
-    "@typescript-eslint/parser": "^5.32.0",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-jest": "^26.8.0",
-    "eslint-plugin-react": "^7.30.1"
+    "prettier-plugin-organize-imports": "^3.0.0"
   }
 }
