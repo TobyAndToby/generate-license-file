@@ -3,11 +3,20 @@ sidebar_position: 1
 title: Getting Started
 ---
 
+<<<<<<< HEAD
 Quick 5 minute guides for generating your third party license files via the CLI, or accessing the license content using the programmatic API.
 
 ## Installation
 
-Install generate license file via npm (https://www.npmjs.com/package/generate-license-file):
+# Install generate license file via npm (https://www.npmjs.com/package/generate-license-file):
+
+A couple of quick 5 minute guides for generating your license files via the CLI, or programmatic API.
+
+## Installation
+
+Install generate license file via npm:
+
+> > > > > > > 108eaed2a1021f8c466dfbd7c1eea3cdaba178c2
 
 ```sh
 npm install --save-dev generate-license-file
