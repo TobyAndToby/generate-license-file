@@ -17,13 +17,15 @@ npm install --save-dev generate-license-file
 
 Generate a third party licenses file for the project in the current working directory, outputting to a file called `third-party-licenses.txt`:
 
-```sh
+```bash
 npx generate-license-file --input ./package.json --output ./third-party-licenses.txt
 ```
 
+For more advanced usages of the CLI, including the different options and arguments supported, please see the [CLI docs](../cli.md).
+
 ## Library Quick Guide
 
-Use the library directly to fetch a list of all of the licenses found and return them for usage in code for you to do what you like with. Want to know what these license objects contain? Head on over to our [API spec](../library/api).
+Use the library directly to fetch a list of all of the licenses found and return them for usage in code for you to do what you like with. Want to know what these license objects contain? Head over to our [API spec](../library/api).
 
 ```js
 const generateLicenseFile = require("generate-license-file");
