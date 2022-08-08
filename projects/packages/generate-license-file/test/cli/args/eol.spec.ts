@@ -55,7 +55,7 @@ describe("Eol", () => {
 
       await eol.resolve(args);
 
-      expect(mockedPrompt).toBeCalledTimes(1);
+      expect(mockedPrompt).toHaveBeenCalledTimes(1);
     });
 
     it("should prompt the user with a multiple choice prompt if an invalid line ending value is provided", async () => {
@@ -69,7 +69,7 @@ describe("Eol", () => {
 
       await eol.resolve(args);
 
-      expect(mockedPrompt).toBeCalledWith(
+      expect(mockedPrompt).toHaveBeenCalledWith(
         expect.objectContaining({
           type: "select"
         })
@@ -87,7 +87,7 @@ describe("Eol", () => {
 
       await eol.resolve(args);
 
-      expect(mockedPrompt).toBeCalledWith(
+      expect(mockedPrompt).toHaveBeenCalledWith(
         expect.objectContaining({
           choices: ["CRLF", "LF", "System default"]
         })
@@ -105,7 +105,7 @@ describe("Eol", () => {
 
       await eol.resolve(args);
 
-      expect(mockedPrompt).toBeCalledWith(
+      expect(mockedPrompt).toHaveBeenCalledWith(
         expect.objectContaining({
           message: "Invalid line ending given. Please choose a line ending: "
         })

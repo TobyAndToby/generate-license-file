@@ -90,7 +90,7 @@ describe("File Utils", () => {
 
       await writeFileAsync(filePath, "any file content");
 
-      expect(mockedFs.writeFile).toBeCalledTimes(1);
+      expect(mockedFs.writeFile).toHaveBeenCalledTimes(1);
       expect(mockedFs.writeFile).toHaveBeenCalledWith(
         filePath,
         expect.anything(),
@@ -107,7 +107,7 @@ describe("File Utils", () => {
 
       await writeFileAsync("path", fileContent);
 
-      expect(mockedFs.writeFile).toBeCalledTimes(1);
+      expect(mockedFs.writeFile).toHaveBeenCalledTimes(1);
       expect(mockedFs.writeFile).toHaveBeenCalledWith(
         expect.anything(),
         fileContent,
@@ -122,7 +122,7 @@ describe("File Utils", () => {
 
       await writeFileAsync("path", "file content");
 
-      expect(mockedFs.writeFile).toBeCalledTimes(1);
+      expect(mockedFs.writeFile).toHaveBeenCalledTimes(1);
       expect(mockedFs.writeFile).toHaveBeenCalledWith(
         expect.anything(),
         expect.anything(),

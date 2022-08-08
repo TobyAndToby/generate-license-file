@@ -82,7 +82,7 @@ describe("lineEndings", () => {
 
     ["foo", "bar"].forEach(value =>
       it("should throw an error when given an unknown value", () => {
-        expect(() => getLineEndingValue(value as unknown as LineEnding)).toThrowError(
+        expect(() => getLineEndingValue(value as unknown as LineEnding)).toThrow(
           `Unknown line ending value: ${value}`
         );
       })

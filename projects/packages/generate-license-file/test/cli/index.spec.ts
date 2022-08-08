@@ -153,7 +153,7 @@ describe("cli", () => {
         "--version"
       ]);
 
-      expect(mockedGenerateLicenseFile).toBeCalledTimes(0);
+      expect(mockedGenerateLicenseFile).toHaveBeenCalledTimes(0);
     });
   });
 

@@ -60,7 +60,7 @@ describe("Input", () => {
 
       await input.resolve(args);
 
-      expect(mockedPrompt).toBeCalledTimes(1);
+      expect(mockedPrompt).toHaveBeenCalledTimes(1);
     });
 
     it("should prompt for an input value with a message if the '--input' value is undefined", async () => {
@@ -134,7 +134,7 @@ describe("Input", () => {
 
       await input.resolve(args);
 
-      expect(mockedFailSpinner).toBeCalledTimes(0);
+      expect(mockedFailSpinner).toHaveBeenCalledTimes(0);
     });
 
     it("should fail the spinner if the initial input value doesn't exist", async () => {
@@ -150,7 +150,7 @@ describe("Input", () => {
 
       await input.resolve(args);
 
-      expect(mockedFailSpinner).toBeCalledTimes(1);
+      expect(mockedFailSpinner).toHaveBeenCalledTimes(1);
     });
 
     it("should continue prompting for a value if the value doesn't exist", async () => {
@@ -168,7 +168,7 @@ describe("Input", () => {
 
       await input.resolve(args);
 
-      expect(mockedPrompt).toBeCalledTimes(4);
+      expect(mockedPrompt).toHaveBeenCalledTimes(4);
     });
 
     it("should continue failing the spinner if the value doesn't exist", async () => {
@@ -188,7 +188,7 @@ describe("Input", () => {
 
       await input.resolve(args);
 
-      expect(mockedFailSpinner).toBeCalledTimes(4);
+      expect(mockedFailSpinner).toHaveBeenCalledTimes(4);
     });
   });
 
@@ -222,7 +222,7 @@ describe("Input", () => {
 
       const result = await input.parse(args);
 
-      expect(result).toEqual("./package.json");
+      expect(result).toBe("./package.json");
     });
   });
 });
