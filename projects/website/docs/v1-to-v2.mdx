@@ -1,0 +1,88 @@
+---
+sidebar_position: 100
+title: Migrate from v1 to v2
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import EolDiff from "./partials/_v1-to-v2-eol-diff.mdx";
+import InputDiff from "./partials/_v1-to-v2-input-diff.mdx";
+
+## Breaking Changes
+
+### Line Endings
+
+In v1, generate-license-file preserved the line endings _within_ license text. The `--eol` property only applied to the text added around the licenses.
+
+In v2, the `--eol` property applies to all text in the output to create a consistant file.
+
+:::tip Actions Required
+None!
+:::
+
+### End-of-line flag (EOL)
+
+In v1, the `eol` arguement took in either `windows` or `posix` to set the line ending values in the output to either `\r\n` or `\n` respectively.
+
+In v2, the `eol` arguement now takes either `crlf` or `lf` for either `\r\n` or `\n` respectively.
+
+:::info Actions Required
+
+<Tabs groupId="apis">
+  <TabItem value="cli" label="CLI">
+    <p>
+      Change <code>--eol windows</code> to <code>--eol crlf</code>.
+    </p>
+    <p>
+      Change <code>--eol posix</code> to <code>--eol lf</code>.
+    </p>
+  </TabItem>
+  <TabItem value="programmatic" label="Programmatic use">
+    <EolDiff />
+  </TabItem>
+</Tabs>
+
+:::
+
+### Input
+
+In v1, the `input` parameter was a path to the directory containing the `package.json` file.
+
+In v2, the `input` parameter needs to be a path to the `package.json` file itself.
+
+:::info Actions Required
+
+<Tabs groupId="apis">
+  <TabItem value="cli" label="CLI">
+    <p>
+      Change <code>--input ./</code> to <code>--input ./package.json</code>.
+    </p>
+    <p>
+      Change <code>-i ./</code> to <code>-i ./package.json</code>.
+    </p>
+  </TabItem>
+  <TabItem value="programmatic" label="Programmatic use">
+    <InputDiff />
+  </TabItem>
+</Tabs>
+:::
+
+### Capitalisation of npm
+
+In v1, the output text wrote npm in capital letters.
+
+In v2, the output now [correctly](https://github.com/npm/npm/releases/tag/v5.0.0#:~:text=npm%20will%20now%20scold%20you%20if%20you%20capitalize%20its%20name.%20seriously%20it%20will%20fight%20you.) writes npm in lowercase.
+
+:::tip Actions Required
+None!
+:::
+
+## New features to consider
+
+### CI Mode
+
+If you're running the generate-license-file CLI as a part of your CI/CD pipelines/processes then you'll probably want to include our new `--ci` flag.
+
+This flag ensures that the CLI fails with a non-zero exitcode whenever it would normally prompt the user for an input.
+This can stop your processes from needlessly hanging until they hit your configured timeout,
+saving you time as well as debug effort due to the messages it will log before it exits.
