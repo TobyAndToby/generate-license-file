@@ -1,0 +1,14 @@
+{
+  "private": true,
+  "name": "@generate-license-file/e2e-library",
+  "files": [
+    "src"
+  ],
+  "scripts": {
+    "test:e2e": "jest"
+  },
+  "dependencies": {
+    "generate-license-file": "*",
+    "@generate-license-file/e2e-shared": "*"
+  }
+}

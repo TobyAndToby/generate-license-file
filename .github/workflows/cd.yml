@@ -20,27 +20,31 @@ jobs:
         uses: battila7/get-version-action@v2
 
       - run: npm --no-git-tag-version version ${{ steps.get_version.outputs.version-without-v }}
+        working-directory: ./projects/packages/generate-license-file
 
       - name: Install dependencies
         run: npm ci
 
       - name: Run Prettier
         run: npx prettier --check .
+        working-directory: ./projects/packages/generate-license-file
 
       - name: Run ESLint
         run: npx eslint . --max-warnings 0
+        working-directory: ./projects/packages/generate-license-file
 
       - name: Build
-        run: npm run build
+        run: npx lerna run build --scope generate-license-file
 
       - name: Run Tests
-        run: npm run test:ci
+        run: npx lerna run test:ci --scope generate-license-file
 
       - uses: tobysmith568/npm-publish-latest-tag@v1
         id: latest_tag
         with:
-          package-json: ./package.json
+          package-json: ./projects/packages/generate-license-file/package.json
 
       - run: npm publish --access public --tag ${{ steps.latest_tag.outputs.latest-tag }}
+        working-directory: ./projects/packages/generate-license-file
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}

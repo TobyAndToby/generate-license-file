@@ -1,0 +1,65 @@
+{
+  "name": "generate-license-file",
+  "version": "0.0.0",
+  "description": "Generates a text file containing all of the licences for your production dependencies",
+  "main": "dist/main.js",
+  "license": "ISC",
+  "bin": {
+    "generate-license-file": "bin/generate-license-file"
+  },
+  "scripts": {
+    "build": "del-cli ./dist&&tsc",
+    "build:watch": "del-cli ./dist&&tsc --watch",
+    "test": "jest",
+    "test:ci": "jest --ci --coverage"
+  },
+  "contributors": [
+    {
+      "name": "Toby Smith",
+      "url": "https://github.com/tobysmith568"
+    },
+    {
+      "name": "Toby Bessant",
+      "url": "https://github.com/tobybessant"
+    }
+  ],
+  "files": [
+    "dist",
+    "bin"
+  ],
+  "keywords": [
+    "cli",
+    "license",
+    "licence",
+    "third",
+    "party",
+    "file",
+    "generate",
+    "oss"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TobyAndToby/generate-license-file.git"
+  },
+  "bugs": {
+    "url": "https://github.com/TobyAndToby/generate-license-file/issues"
+  },
+  "homepage": "https://github.com/TobyAndToby/generate-license-file#readme",
+  "dependencies": {
+    "arg": "^5.0.0",
+    "cli-spinners": "^2.6.0",
+    "enquirer": "^2.3.6",
+    "esm": "^3.2.25",
+    "glob": "^8.0.0",
+    "inquirer": "^9.0.0",
+    "license-checker": "^25.0.1",
+    "ora": "^5.4.1"
+  },
+  "devDependencies": {
+    "@types/glob": "^7.1.4",
+    "@types/inquirer": "^8.0.0",
+    "@types/jest": "^28.0.0",
+    "@types/license-checker": "^25.0.3",
+    "del-cli": "^4.0.0"
+  }
+}

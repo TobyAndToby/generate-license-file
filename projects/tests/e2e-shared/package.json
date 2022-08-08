@@ -1,0 +1,8 @@
+{
+  "private": true,
+  "name": "@generate-license-file/e2e-shared",
+  "main": "src/main.ts",
+  "dependencies": {
+    "generate-license-file": "*"
+  }
+}
