@@ -40,13 +40,13 @@ describe("lineEndings", () => {
       expect(result).toBe(false);
     });
 
-    it("should return false for the line ending value '\r\n", () => {
+    it("should return false for the line ending value '\\r\\n'", () => {
       const result = isLineEnding("\r\n");
 
       expect(result).toBe(false);
     });
 
-    it("should return false for the line ending value '\n", () => {
+    it("should return false for the line ending value '\\n'", () => {
       const result = isLineEnding("\n");
 
       expect(result).toBe(false);
