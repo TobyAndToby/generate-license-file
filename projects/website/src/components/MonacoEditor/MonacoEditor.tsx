@@ -11,7 +11,7 @@ export const MonacoEditor: FC = () => {
   const [activeTab, setActiveTab] = useState(demoFiles[0].fileName);
 
   return (
-    <Window>
+    <Window className="monaco">
       <Menu>
         <MenuButton type="close" />
         <MenuButton type="minimize" />
@@ -34,9 +34,23 @@ export const MonacoEditor: FC = () => {
           </MonacoTabsContainer>
           <Editor>
             {demoFiles.map(({ fileName, language, content }) => (
-              <MonacoTabContent isActive={activeTab === fileName} key={fileName}>
-                <Highlight {...defaultProps} code={content} language={language} theme={undefined}>
-                  {({ className, style, tokens, getLineProps, getTokenProps }) => (
+              <MonacoTabContent
+                isActive={activeTab === fileName}
+                key={fileName}
+              >
+                <Highlight
+                  {...defaultProps}
+                  code={content}
+                  language={language}
+                  theme={undefined}
+                >
+                  {({
+                    className,
+                    style,
+                    tokens,
+                    getLineProps,
+                    getTokenProps,
+                  }) => (
                     <pre className={className} style={style}>
                       {tokens.map((line, i) => (
                         <div {...getLineProps({ line, key: i })}>
@@ -50,7 +64,11 @@ export const MonacoEditor: FC = () => {
                 </Highlight>
                 <CopyButtons>
                   <div>
-                    <CopyButton labelColour="white" label="Copy" contentToCopy={content} />
+                    <CopyButton
+                      labelColour="white"
+                      label="Copy"
+                      contentToCopy={content}
+                    />
                   </div>
                 </CopyButtons>
               </MonacoTabContent>
@@ -88,7 +106,7 @@ const Menu = styled.div`
 const menuButtonType = {
   close: "#ff3b47",
   minimize: "#ffc100",
-  zoom: "#00d742"
+  zoom: "#00d742",
 };
 
 interface MenuButtonProps {
@@ -154,8 +172,8 @@ const MonacoTab = styled.div<{ isActive: boolean; iconUrl: string }>`
   align-items: center;
   padding: 5px 10px;
   background-color: #2d2d2d;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell,
-    "Open Sans", "Helvetica Neue", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   font-size: 13px;
 
   &:hover {
