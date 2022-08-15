@@ -4,6 +4,7 @@
   "description": "Generates a text file containing all of the licences for your production dependencies",
   "main": "dist/main.js",
   "license": "ISC",
+  "prettier": "@generate-license-file/prettier-config",
   "bin": {
     "generate-license-file": "bin/generate-license-file"
   },

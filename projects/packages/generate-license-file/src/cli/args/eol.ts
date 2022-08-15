@@ -7,7 +7,7 @@ export class Eol extends Argument<LineEnding | undefined> {
   private readonly choices: MultipleChoiceOptions<LineEnding | undefined> = {
     CRLF: "crlf",
     LF: "lf",
-    "System default": undefined
+    "System default": undefined,
   };
 
   public async resolve(args: Result<ArgumentsWithAliases>): Promise<LineEnding | undefined> {
@@ -19,7 +19,7 @@ export class Eol extends Argument<LineEnding | undefined> {
 
     const answer = await this.promptForMultipleChoice(
       "Invalid line ending given. Please choose a line ending: ",
-      this.choices
+      this.choices,
     );
 
     return answer;
@@ -30,7 +30,7 @@ export class Eol extends Argument<LineEnding | undefined> {
 
     if (!isLineEnding(eol)) {
       throw new Error(
-        `Invalid line ending given: '${eol}'. Possible values are 'crlf' or 'lf'. Omit the --eol flag to use the system default.`
+        `Invalid line ending given: '${eol}'. Possible values are 'crlf' or 'lf'. Omit the --eol flag to use the system default.`,
       );
     }
 

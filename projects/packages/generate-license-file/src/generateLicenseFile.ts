@@ -11,7 +11,7 @@ import { writeFileAsync } from "./utils/file.utils";
 export async function generateLicenseFile(
   pathToPackageJson: string,
   outputPath: string,
-  lineEnding?: LineEnding
+  lineEnding?: LineEnding,
 ): Promise<void>;
 
 /**
@@ -23,13 +23,13 @@ export async function generateLicenseFile(
 export async function generateLicenseFile(
   pathsToPackageJsons: string[],
   outputPath: string,
-  lineEnding?: LineEnding
+  lineEnding?: LineEnding,
 ): Promise<void>;
 
 export async function generateLicenseFile(
   pathsToPackageJsons: string[] | string,
   outputPath: string,
-  lineEnding?: LineEnding
+  lineEnding?: LineEnding,
 ): Promise<void> {
   if (typeof pathsToPackageJsons === "string") {
     pathsToPackageJsons = [pathsToPackageJsons];

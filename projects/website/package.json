@@ -1,7 +1,8 @@
 {
-  "name": "@generate-license-file/website",
-  "version": "0.0.0",
   "private": true,
+  "version": "0.0.0",
+  "name": "@generate-license-file/website",
+  "prettier": "@generate-license-file/prettier-config",
   "scripts": {
     "docusaurus": "docusaurus",
     "start": "npm run typedoc && docusaurus start",

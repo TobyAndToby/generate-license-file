@@ -53,7 +53,7 @@ const getUserInputsInterface = (moduleNode: ModuleNode): InterfaceNode => {
 
 const getPropertiesFromInterface = (interfaceNode: InterfaceNode) => {
   return interfaceNode.children?.filter(
-    c => isKindString(c.kindString) && c.kindString === "Property"
+    c => isKindString(c.kindString) && c.kindString === "Property",
   ) as unknown as PropertyNode[];
 };
 

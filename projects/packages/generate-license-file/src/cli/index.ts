@@ -40,7 +40,7 @@ async function cli(args: string[]) {
 
 function parseUserInputs(rawArgs: string[]): Result<ArgumentsWithAliases> {
   return arg(argumentsWithAliases, {
-    argv: rawArgs.slice(2)
+    argv: rawArgs.slice(2),
   });
 }
 

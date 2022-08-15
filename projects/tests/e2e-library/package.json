@@ -1,6 +1,7 @@
 {
   "private": true,
   "name": "@generate-license-file/e2e-library",
+  "prettier": "@generate-license-file/prettier-config",
   "files": [
     "src"
   ],

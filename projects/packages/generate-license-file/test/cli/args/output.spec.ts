@@ -5,11 +5,11 @@ import { ArgumentsWithAliases } from "../../../src/cli/cli-arguments";
 import { doesFileExist } from "../../../src/utils/file.utils";
 
 jest.mock("../../../src/utils/file.utils", () => ({
-  doesFileExist: jest.fn()
+  doesFileExist: jest.fn(),
 }));
 
 jest.mock("enquirer", () => ({
-  prompt: jest.fn()
+  prompt: jest.fn(),
 }));
 
 describe("Output", () => {
@@ -33,7 +33,7 @@ describe("Output", () => {
       mockDoesFileExist.mockResolvedValue(false);
 
       const args = {
-        "--output": "any output value"
+        "--output": "any output value",
       } as Result<ArgumentsWithAliases>;
 
       await output.resolve(args);
@@ -48,13 +48,13 @@ describe("Output", () => {
       mockPrompt.mockResolvedValue({ value: true });
 
       const args = {
-        "--output": "any output value"
+        "--output": "any output value",
       } as Result<ArgumentsWithAliases>;
 
       await output.resolve(args);
 
-      expect(mockPrompt).toBeCalledTimes(1);
-      expect(mockPrompt).toBeCalledWith(expect.objectContaining({ type: "confirm" }));
+      expect(mockPrompt).toHaveBeenCalledTimes(1);
+      expect(mockPrompt).toHaveBeenCalledWith(expect.objectContaining({ type: "confirm" }));
     });
 
     it("should prompt for a string if no output file is given", async () => {
@@ -64,8 +64,8 @@ describe("Output", () => {
 
       await output.resolve(args);
 
-      expect(mockPrompt).toBeCalledTimes(1);
-      expect(mockPrompt).toBeCalledWith(expect.objectContaining({ type: "input" }));
+      expect(mockPrompt).toHaveBeenCalledTimes(1);
+      expect(mockPrompt).toHaveBeenCalledWith(expect.objectContaining({ type: "input" }));
     });
 
     it("should prompt for a bool if no output file is given and the later given output does exist", async () => {
@@ -77,8 +77,8 @@ describe("Output", () => {
 
       await output.resolve(args);
 
-      expect(mockPrompt).toBeCalledTimes(2);
-      expect(mockPrompt).toBeCalledWith(expect.objectContaining({ type: "confirm" }));
+      expect(mockPrompt).toHaveBeenCalledTimes(2);
+      expect(mockPrompt).toHaveBeenCalledWith(expect.objectContaining({ type: "confirm" }));
     });
 
     it("should prompt for a string/bool pair twice if the user disallows overwriting with no output given", async () => {
@@ -94,7 +94,7 @@ describe("Output", () => {
 
       await output.resolve(args);
 
-      expect(mockPrompt).toBeCalledTimes(4);
+      expect(mockPrompt).toHaveBeenCalledTimes(4);
 
       expect(mockPrompt).toHaveBeenNthCalledWith(1, expect.objectContaining({ type: "input" }));
       expect(mockPrompt).toHaveBeenNthCalledWith(2, expect.objectContaining({ type: "confirm" }));
@@ -108,13 +108,13 @@ describe("Output", () => {
 
       const args = {
         "--output": "any output value",
-        "--overwrite": true
+        "--overwrite": true,
       } as Result<ArgumentsWithAliases>;
 
       await output.resolve(args);
 
-      expect(mockPrompt).toBeCalledTimes(0);
-      expect(mockPrompt).not.toBeCalledWith(expect.objectContaining({ type: "confirm" }));
+      expect(mockPrompt).toHaveBeenCalledTimes(0);
+      expect(mockPrompt).not.toHaveBeenCalledWith(expect.objectContaining({ type: "confirm" }));
     });
 
     it("should not prompt for a bool if an output is given which does not exist and override is given", async () => {
@@ -123,13 +123,13 @@ describe("Output", () => {
 
       const args = {
         "--output": "any output value",
-        "--overwrite": true
+        "--overwrite": true,
       } as Result<ArgumentsWithAliases>;
 
       await output.resolve(args);
 
-      expect(mockPrompt).toBeCalledTimes(0);
-      expect(mockPrompt).not.toBeCalledWith(expect.objectContaining({ type: "confirm" }));
+      expect(mockPrompt).toHaveBeenCalledTimes(0);
+      expect(mockPrompt).not.toHaveBeenCalledWith(expect.objectContaining({ type: "confirm" }));
     });
 
     it("should not prompt for a bool if an output is not given but override is given", async () => {
@@ -137,34 +137,34 @@ describe("Output", () => {
       mockPrompt.mockResolvedValue({ value: true });
 
       const args = {
-        "--overwrite": true
+        "--overwrite": true,
       } as Result<ArgumentsWithAliases>;
 
       await output.resolve(args);
 
-      expect(mockPrompt).toBeCalledTimes(1);
-      expect(mockPrompt).not.toBeCalledWith(expect.objectContaining({ type: "confirm" }));
+      expect(mockPrompt).toHaveBeenCalledTimes(1);
+      expect(mockPrompt).not.toHaveBeenCalledWith(expect.objectContaining({ type: "confirm" }));
     });
   });
 
   describe("parse", () => {
     it("should throw if the given output is undefined", async () => {
       const args = {
-        "--output": undefined
+        "--output": undefined,
       } as Result<ArgumentsWithAliases>;
 
-      await expect(output.parse(args)).rejects.toThrowError("No --output argument given.");
+      await expect(output.parse(args)).rejects.toThrow("No --output argument given.");
     });
 
     it("should throw if the given output file exists and overwrite is false", async () => {
       mockDoesFileExist.mockResolvedValue(true);
 
       const args = {
-        "--output": "any output value"
+        "--output": "any output value",
       } as Result<ArgumentsWithAliases>;
 
-      await expect(output.parse(args)).rejects.toThrowError(
-        "Given --output file already exists at 'any output value'. Use --overwrite to allow overwriting."
+      await expect(output.parse(args)).rejects.toThrow(
+        "Given --output file already exists at 'any output value'. Use --overwrite to allow overwriting.",
       );
     });
 
@@ -173,24 +173,24 @@ describe("Output", () => {
 
       const args = {
         "--output": "any output value",
-        "--overwrite": true
+        "--overwrite": true,
       } as Result<ArgumentsWithAliases>;
 
       const result = await output.parse(args);
 
-      expect(result).toEqual("any output value");
+      expect(result).toBe("any output value");
     });
 
     it("should return the given output file if it does not exist", async () => {
       mockDoesFileExist.mockResolvedValue(false);
 
       const args = {
-        "--output": "any output value"
+        "--output": "any output value",
       } as Result<ArgumentsWithAliases>;
 
       const result = await output.parse(args);
 
-      expect(result).toEqual("any output value");
+      expect(result).toBe("any output value");
     });
   });
 });

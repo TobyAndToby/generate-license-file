@@ -114,6 +114,16 @@ const config = {
       prism: {
         theme: require("prism-react-renderer/themes/github"),
         darkTheme: require("prism-react-renderer/themes/vsDark"),
+        magicComments: [
+          {
+            className: "code-block-diff-green",
+            line: "diff-green",
+          },
+          {
+            className: "code-block-diff-red",
+            line: "diff-red",
+          },
+        ],
       },
       announcementBar: {
         content:

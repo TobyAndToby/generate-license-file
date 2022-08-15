@@ -43,5 +43,5 @@ export const argumentsWithAliases: ArgumentsWithAliases = {
   "--ci": Boolean,
   "-i": "--input",
   "-o": "--output",
-  "-v": "--version"
+  "-v": "--version",
 };
