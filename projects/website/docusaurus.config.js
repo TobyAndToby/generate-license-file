@@ -1,10 +1,6 @@
 // @ts-check
 // Note: type annotations allow type checking and IDEs autocompletion
 
-const lightCodeTheme = require("prism-react-renderer/themes/vsDark");
-const darkCodeTheme = require("prism-react-renderer/themes/vsLight");
-const path = require("path");
-
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: "My Site",
@@ -116,8 +112,8 @@ const config = {
         copyright: `Copyright © ${new Date().getFullYear()} Generate License File. Built with Docusaurus.`,
       },
       prism: {
-        theme: lightCodeTheme,
-        darkTheme: darkCodeTheme,
+        theme: require("prism-react-renderer/themes/github"),
+        darkTheme: require("prism-react-renderer/themes/vsDark"),
       },
       announcementBar: {
         content:
