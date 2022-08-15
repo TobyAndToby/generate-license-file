@@ -64,7 +64,7 @@ describe("cli", () => {
         await fs.writeFile(output, fileContent);
 
         await execAsync(
-          `npx generate-license-file --input ${input} --output ${output} --overwrite`
+          `npx generate-license-file --input ${input} --output ${output} --overwrite`,
         );
 
         const result = await fs.readFile(output, "utf8");
@@ -81,7 +81,7 @@ describe("cli", () => {
 
       it("should match snapshot when --eol is given", async () => {
         await execAsync(
-          `npx generate-license-file --input ${input} --output ${output} --eol ${lineEnding}`
+          `npx generate-license-file --input ${input} --output ${output} --eol ${lineEnding}`,
         );
 
         const result = await fs.readFile(output, "utf8");
@@ -92,7 +92,7 @@ describe("cli", () => {
         const expectedLineEndingValue = lineEndingLiteral;
 
         await execAsync(
-          `npx generate-license-file --input ${input} --output ${output} --eol ${lineEnding}`
+          `npx generate-license-file --input ${input} --output ${output} --eol ${lineEnding}`,
         );
 
         const result = await fs.readFile(output, "utf8");
@@ -104,19 +104,19 @@ describe("cli", () => {
           const incorrectLineEndingValue = lineEndingLiteral;
 
           await execAsync(
-            `npx generate-license-file --input ${input} --output ${output} --eol ${lineEnding}`
+            `npx generate-license-file --input ${input} --output ${output} --eol ${lineEnding}`,
           );
 
           const result = await fs.readFile(output, "utf8");
           expect(result).not.toContain(incorrectLineEndingValue);
-        })
+        }),
       );
     });
 
     describe("no-spinner", () => {
       it("should match snapshot when --no-spinner is given", async () => {
         await execAsync(
-          `npx generate-license-file --input ${input} --output ${output} --no-spinner`
+          `npx generate-license-file --input ${input} --output ${output} --no-spinner`,
         );
 
         const result = await fs.readFile(output, "utf8");

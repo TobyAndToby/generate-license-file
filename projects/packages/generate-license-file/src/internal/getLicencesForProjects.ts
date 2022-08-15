@@ -45,7 +45,7 @@ const getProjectFromPackageJsonPath = async (pathToPackageJson: string): Promise
   const project: Project = await getProject({
     start: directoryOfPackageJson,
     production: true,
-    excludePackages: currentProjectIdentifier
+    excludePackages: currentProjectIdentifier,
   });
 
   return project;

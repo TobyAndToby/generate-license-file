@@ -31,8 +31,8 @@ describe("getLicenseFileText", () => {
           const result = await getLicenseFileText(packageJsonUnderTest, lineEnding);
 
           expect(result).not.toContain(incorrectLineEndingValue);
-        })
+        }),
       );
-    })
+    }),
   );
 });

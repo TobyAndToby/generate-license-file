@@ -6,7 +6,7 @@ import {
   ModuleNode,
   ParameterNode,
   SignatureNode,
-  TopLevelNode
+  TopLevelNode,
 } from "./schemaTypes";
 
 export interface Method {
@@ -46,7 +46,7 @@ export const getLibraryMethods = (schema: TopLevelNode): Method[] => {
 
     return {
       name,
-      signatures
+      signatures,
     };
   });
 };
@@ -63,7 +63,7 @@ const getMainModule = (schema: TopLevelNode): ModuleNode => {
 
 const getFunctionsFromModule = (mainModule: ModuleNode): FunctionNode[] => {
   return mainModule.children.filter(
-    c => isKindString(c.kindString) && c.kindString === "Function"
+    c => isKindString(c.kindString) && c.kindString === "Function",
   ) as unknown as FunctionNode[];
 };
 
@@ -80,7 +80,7 @@ const mapSignatures = (signatures: SignatureNode[]): Signature[] => {
       returnType,
       shortText,
       text,
-      returns
+      returns,
     };
   });
 };
@@ -98,7 +98,7 @@ const mapParameters = (parameters: ParameterNode[]): Parameter[] => {
       shortText,
       text,
       type,
-      isOptional
+      isOptional,
     };
   });
 };
@@ -115,7 +115,7 @@ const mapType = (type: AnyType): Type => {
         .map(t => t.name)
         .join(" | "),
       genericArguments: null,
-      isArray: false
+      isArray: false,
     };
   }
 
@@ -123,7 +123,7 @@ const mapType = (type: AnyType): Type => {
     return {
       name: `"${type.value}"`,
       genericArguments: null,
-      isArray: false
+      isArray: false,
     };
   }
 
@@ -134,7 +134,7 @@ const mapType = (type: AnyType): Type => {
   return {
     name,
     genericArguments,
-    isArray
+    isArray,
   };
 };
 
@@ -142,6 +142,6 @@ const mapArrayType = (type: ArrayTypeNode): Type => {
   return {
     name: "array",
     genericArguments: [mapType(type.elementType)],
-    isArray: true
+    isArray: true,
   };
 };

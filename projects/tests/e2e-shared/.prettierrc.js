@@ -8,7 +8,7 @@ const overridableDefaults = {
   endOfLine: "lf",
   tabWidth: 2,
   printWidth: 80,
-  useTabs: false
+  useTabs: false,
 };
 
 module.exports = {
@@ -16,5 +16,5 @@ module.exports = {
   printWidth: 100,
   arrowParens: "avoid",
   singleQuote: false,
-  trailingComma: "none"
+  trailingComma: "none",
 };

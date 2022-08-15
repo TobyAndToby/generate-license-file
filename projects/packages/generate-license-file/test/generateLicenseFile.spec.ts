@@ -4,11 +4,11 @@ import { allLineEndings } from "../src/lineEndings";
 import { writeFileAsync } from "../src/utils/file.utils";
 
 jest.mock("../src/getLicenseFileText", () => ({
-  getLicenseFileText: jest.fn()
+  getLicenseFileText: jest.fn(),
 }));
 
 jest.mock("../src/utils/file.utils", () => ({
-  writeFileAsync: jest.fn()
+  writeFileAsync: jest.fn(),
 }));
 
 const fakeLicenseFileText = "fake license file text";
@@ -54,7 +54,7 @@ describe("generateLicenseFile", () => {
 
       const firstCallSecondArg = mockGetLicenseFileText.mock.calls[0][1];
       expect(firstCallSecondArg).toBe(lineEnding);
-    })
+    }),
   );
 
   it("should call writeFileAsync", async () => {

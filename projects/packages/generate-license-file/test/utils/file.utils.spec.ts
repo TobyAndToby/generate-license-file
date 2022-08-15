@@ -4,14 +4,14 @@ import {
   doesFileExist,
   doesFolderExist,
   readFile,
-  writeFileAsync
+  writeFileAsync,
 } from "../../src/utils/file.utils";
 
 jest.mock("fs/promises", () => ({
   stat: jest.fn(),
   readFile: jest.fn(),
   writeFile: jest.fn(),
-  mkdir: jest.fn()
+  mkdir: jest.fn(),
 }));
 
 describe("File Utils", () => {
@@ -23,7 +23,7 @@ describe("File Utils", () => {
   describe("doesFileExist", () => {
     it("should return true when the given item exists and is a file", async () => {
       mockedFs.stat.mockResolvedValue({
-        isFile: () => true
+        isFile: () => true,
       } as Stats);
 
       const result = await doesFileExist("/some/path/to/file.txt");
@@ -33,7 +33,7 @@ describe("File Utils", () => {
 
     it("should return false when the given item exists but isn't a file", async () => {
       mockedFs.stat.mockResolvedValue({
-        isFile: () => false
+        isFile: () => false,
       } as Stats);
 
       const result = await doesFileExist("/some/path/to/file.txt");
@@ -53,7 +53,7 @@ describe("File Utils", () => {
   describe("doesFolderExist", () => {
     it("should return true when the given item exists and is a directory", async () => {
       mockedFs.stat.mockResolvedValue({
-        isDirectory: () => true
+        isDirectory: () => true,
       } as Stats);
 
       const result = await doesFolderExist("/some/path/to/a/directory");
@@ -63,7 +63,7 @@ describe("File Utils", () => {
 
     it("should return false when the given item exists but isn't a directory", async () => {
       mockedFs.stat.mockResolvedValue({
-        isDirectory: () => false
+        isDirectory: () => false,
       } as Stats);
 
       const result = await doesFolderExist("/some/path/to/a/directory");
@@ -85,16 +85,16 @@ describe("File Utils", () => {
       const filePath = "/some/path/to/file.txt";
 
       mockedFs.stat.mockResolvedValue({
-        isDirectory: () => true
+        isDirectory: () => true,
       } as Stats);
 
       await writeFileAsync(filePath, "any file content");
 
-      expect(mockedFs.writeFile).toBeCalledTimes(1);
+      expect(mockedFs.writeFile).toHaveBeenCalledTimes(1);
       expect(mockedFs.writeFile).toHaveBeenCalledWith(
         filePath,
         expect.anything(),
-        expect.anything()
+        expect.anything(),
       );
     });
 
@@ -102,31 +102,31 @@ describe("File Utils", () => {
       const fileContent = "any file content";
 
       mockedFs.stat.mockResolvedValue({
-        isDirectory: () => true
+        isDirectory: () => true,
       } as Stats);
 
       await writeFileAsync("path", fileContent);
 
-      expect(mockedFs.writeFile).toBeCalledTimes(1);
+      expect(mockedFs.writeFile).toHaveBeenCalledTimes(1);
       expect(mockedFs.writeFile).toHaveBeenCalledWith(
         expect.anything(),
         fileContent,
-        expect.anything()
+        expect.anything(),
       );
     });
 
     it("should call fs.writeFileAsync with the utf8 encoding", async () => {
       mockedFs.stat.mockResolvedValue({
-        isDirectory: () => true
+        isDirectory: () => true,
       } as Stats);
 
       await writeFileAsync("path", "file content");
 
-      expect(mockedFs.writeFile).toBeCalledTimes(1);
+      expect(mockedFs.writeFile).toHaveBeenCalledTimes(1);
       expect(mockedFs.writeFile).toHaveBeenCalledWith(
         expect.anything(),
         expect.anything(),
-        expect.objectContaining({ encoding: "utf-8" })
+        expect.objectContaining({ encoding: "utf-8" }),
       );
     });
 
@@ -161,7 +161,7 @@ describe("File Utils", () => {
       expect(mockedFs.mkdir).toHaveBeenCalledTimes(1);
       expect(mockedFs.mkdir).toHaveBeenCalledWith(
         expect.anything(),
-        expect.objectContaining({ recursive: true })
+        expect.objectContaining({ recursive: true }),
       );
     });
   });

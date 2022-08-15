@@ -3,7 +3,7 @@ import { readPackageJson } from "../../src/utils/packageJson.utils";
 
 jest.mock("../../src/utils/file.utils", () => ({
   doesFileExist: jest.fn(),
-  readFile: jest.fn()
+  readFile: jest.fn(),
 }));
 
 describe("Package.json Utils", () => {
@@ -35,7 +35,7 @@ describe("Package.json Utils", () => {
 
       await readPackageJson(pathToPackageJson);
 
-      expect(mockedReadFile).toBeCalledTimes(1);
+      expect(mockedReadFile).toHaveBeenCalledTimes(1);
       expect(mockedReadFile).toHaveBeenCalledWith(pathToPackageJson, { encoding: "utf8" });
     });
 
@@ -46,7 +46,7 @@ describe("Package.json Utils", () => {
 
       expect(result).toStrictEqual({
         name: "test-project",
-        version: "1.2.3"
+        version: "1.2.3",
       });
     });
   });

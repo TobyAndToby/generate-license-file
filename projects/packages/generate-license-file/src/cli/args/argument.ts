@@ -15,7 +15,7 @@ export abstract class Argument<T> {
       type: "input",
       name: "value",
       initial: initialValue,
-      message: question
+      message: question,
     });
 
     return answer.value;
@@ -25,7 +25,7 @@ export abstract class Argument<T> {
     const answer = await prompt<{ value: boolean }>({
       type: "confirm",
       name: "value",
-      message: question
+      message: question,
     });
 
     return answer.value;
@@ -33,13 +33,13 @@ export abstract class Argument<T> {
 
   protected async promptForMultipleChoice<T>(
     question: string,
-    options: MultipleChoiceOptions<T>
+    options: MultipleChoiceOptions<T>,
   ): Promise<T> {
     const answer = await prompt<{ value: string }>({
       type: "select",
       name: "value",
       message: question,
-      choices: Object.keys(options)
+      choices: Object.keys(options),
     });
 
     const selection = answer.value;
