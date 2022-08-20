@@ -36,4 +36,4 @@ These are only a fraction of the different types of licenses your third party de
 
 ## How can I use it?
 
-Head on over to our [Getting Started](./getting-started) page to see how you can use generate license file in your projects!
+Head on over to our [Getting Started](intro/getting-started) page to see how you can use generate license file in your projects!
