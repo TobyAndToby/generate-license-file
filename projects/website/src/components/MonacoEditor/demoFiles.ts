@@ -9,6 +9,18 @@ export type MonacoEditorFile = {
 
 export const demoFiles: MonacoEditorFile[] = [
   {
+    fileName: "library-demo.ts",
+    tabIcon: "/img/ts-logo-256.png",
+    // Intentionally set to "javascript", the "typescript" lang setting doesn't
+    // appear to set correct classes on imports or non-native types.
+    language: "javascript",
+    content: `import { getProjectLicenses, ILicense } from "generate-license-file";
+
+// Get an array of licenses for the current project's production dependencies.
+const licenses: ILicense[] = await getProjectLicenses("./package.json");
+    `,
+  },
+  {
     fileName: "library-demo.js",
     tabIcon: "/img/js-logo-256.png",
     language: "javascript",
@@ -23,17 +35,5 @@ generateLicenseFile
   .catch(error => {
     // Do stuff with error...
   });`,
-  },
-  {
-    fileName: "library-demo.ts",
-    tabIcon: "/img/ts-logo-256.png",
-    // Intentionally set to "javascript", the "typescript" lang setting doesn't
-    // appear to set correct classes on imports or non-native types.
-    language: "javascript",
-    content: `import { getProjectLicenses, ILicense } from "generate-license-file";
-
-// Get an array of licenses for the current project's production dependencies.
-const licenses: ILicense[] = await getProjectLicenses("./package.json");
-    `,
   },
 ];

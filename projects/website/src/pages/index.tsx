@@ -24,11 +24,11 @@ export default function Home(): JSX.Element {
           </Intro>
           <Examples>
             <Tabs>
+            <Tab label="CLI">
+                <Terminal />
+              </Tab>
               <Tab label="Library">
                 <MonacoEditor />
-              </Tab>
-              <Tab label="CLI">
-                <Terminal />
               </Tab>
             </Tabs>
           </Examples>
