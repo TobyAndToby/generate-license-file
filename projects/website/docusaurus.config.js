@@ -1,10 +1,10 @@
 // @ts-check
-// Note: type annotations allow type checking and IDEs autocompletion
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: "My Site",
-  tagline: "Dinosaurs are cool",
+  title: "Generate License File",
+  tagline:
+    "Generate a text file containing all of the licences for your production, third-party dependencies.",
   url: "https://your-docusaurus-test-site.com",
   baseUrl: "/generate-license-file/",
   onBrokenLinks: "throw",
@@ -12,16 +12,11 @@ const config = {
   favicon: "favicon.ico",
   noIndex: true,
 
-  // GitHub pages deployment config.
-  // If you aren't using GitHub pages, you don't need these.
-  organizationName: "TobyAndToby", // Usually your GitHub org/user name.
-  projectName: "generate-license-file", // Usually your repo name.
+  organizationName: "TobyAndToby",
+  projectName: "generate-license-file",
   deploymentBranch: "gh-pages",
   trailingSlash: false,
 
-  // Even if you don't use internalization, you can use this field to set useful
-  // metadata like html lang. For example, if your site is Chinese, you may want
-  // to replace "en" with "zh-Hans".
   i18n: {
     defaultLocale: "en",
     locales: ["en"],
@@ -35,10 +30,8 @@ const config = {
         docs: {
           includeCurrentVersion: true,
           sidebarPath: require.resolve("./sidebars.js"),
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
           editUrl:
-            "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/",
+            "https://github.com/TobyAndToby/generate-license-file/tree/main/projects/website",
         },
         theme: {
           customCss: require.resolve("./src/css/custom.css"),
@@ -67,10 +60,6 @@ const config = {
             type: "docsVersionDropdown",
             position: "left",
             dropdownActiveClassDisabled: true,
-          },
-          {
-            type: "custom-languageToggle",
-            position: "right",
           },
           {
             href: "https://github.com/TobyAndToby/generate-license-file",
@@ -109,7 +98,7 @@ const config = {
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} Generate License File. Built with Docusaurus.`,
+        copyright: `Copyright © ${new Date().getFullYear()} Toby Bessant & Toby Smith. Built with Docusaurus.`,
       },
       prism: {
         theme: require("prism-react-renderer/themes/github"),
@@ -124,14 +113,6 @@ const config = {
             line: "diff-red",
           },
         ],
-      },
-      announcementBar: {
-        content:
-          "🚧 <b>Welcome! This site is a work in progress, check back soon.</b> 🚧",
-        backgroundColor: "#f5e831",
-        textColor: "black",
-        id: "wip",
-        isCloseable: false,
       },
     }),
 };
