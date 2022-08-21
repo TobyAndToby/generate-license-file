@@ -58,7 +58,7 @@ npx generate-license-file -o ./myProject/third-party-licenses.txt
 
 <ArgumentInfo type="boolean" />
 
-If a file already exists at the provided output path, then the CLL won't overwrite it by default.
+If a file already exists at the provided output path, then the CLI won't overwrite it by default.
 
 If you'd like the CLI to overwrite existing files then provide the `--overwrite` flag
 
@@ -84,9 +84,9 @@ npx generate-license-file --eol crlf
 
 <ArgumentInfo type="boolean" />
 
-When using the the CLI locally, it will prompt you for inputs if you forget to supply one that's mandatory.
+When using the the CLI locally, it will prompt you for inputs if you forget to supply one that's required.
 
-To stop the CLI from trying to show the prompts in a CI/CD environment, you can provide the `--ci` flag.
+To stop the CLI from trying to show the prompts in a CI/CD environment (and instead error/fail-fast), you can provide the `--ci` flag.
 
 ```bash
 npx generate-license-file --ci
