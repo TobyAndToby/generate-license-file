@@ -67,6 +67,20 @@ In v2, the `input` parameter needs to be a path to the `package.json` file itsel
 </Tabs>
 :::
 
+### Default Output file
+
+In v1, if you didn't provide an `--output` flag to the CLI then it would use the file name `3rd-party-licenses.txt`
+
+In v2, the default output file has been renamed to `third-party-licenses.txt` to better fit in with industry conventions.
+
+:::info Actions Required
+If you already provide the `--output` flag to the CLI, none!
+
+If you don't provide the `--output` flag to the CLI and you want to stick with `3rd-party-licenses.txt`, then you'll need to provide it `--output 3rd-party-licenses.txt`.
+
+If you don't provide the `--output` flag and you're happy with the new file name, you'll need to update anything that points to/redirects to/uses it.
+:::
+
 ### Capitalisation of npm
 
 In v1, the output text wrote npm in capital letters.
