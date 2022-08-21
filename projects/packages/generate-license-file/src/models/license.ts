@@ -4,6 +4,9 @@ const PREFIX_PLURAL = "The following npm packages may be included in this produc
 const MIDFIX = "This package contains the following license and notice below:";
 const MIDFIX_PLURAL = "These packages each contain the following license and notice below:";
 
+/**
+ * ILicense contains the content of a given license and the list of dependencies it pertains to.
+ */
 export interface ILicense {
   /**
    * Body of the license.
