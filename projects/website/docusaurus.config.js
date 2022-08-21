@@ -9,7 +9,7 @@ const config = {
   baseUrl: "/generate-license-file/",
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
-  favicon: "img/favicon.ico",
+  favicon: "favicon.ico",
   noIndex: true,
 
   organizationName: "TobyAndToby",
@@ -45,6 +45,10 @@ const config = {
     ({
       navbar: {
         title: "Generate License File",
+        logo: {
+          alt: "Generate License File Logo",
+          src: "img/glf-icon-3.svg",
+        },
         items: [
           {
             type: "doc",

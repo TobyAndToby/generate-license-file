@@ -6,21 +6,52 @@ import { Tab } from "../components/Tabs/Tab";
 import { Tabs } from "../components/Tabs/Tabs";
 import { Terminal } from "../components/Terminal";
 
+export default function Home(): JSX.Element {
+  return (
+    <Layout
+      title={`Generate License File | Docs`}
+      description="Docs website for the generate-license-file npm package."
+    >
+      <header>
+        <Hero>
+          <Intro>
+            <Icon />
+            <Title>Generate License File</Title>
+            <Subtitle>
+              Generate a text file containing all of the licences for your <br /> production,
+              third-party dependencies.
+            </Subtitle>
+          </Intro>
+          <Examples>
+            <Tabs>
+            <Tab label="CLI">
+                <Terminal />
+              </Tab>
+              <Tab label="Library">
+                <MonacoEditor />
+              </Tab>
+            </Tabs>
+          </Examples>
+        </Hero>
+      </header>
+    </Layout>
+  );
+}
+
 const Hero = styled.div`
-  padding: 100px 70px 100px 70px;
+  padding: 80px 70px 100px 70px;
   min-height: 100vh;
 `;
 
-const Intro = styled.div`
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: relative;
-  max-width: 900px;
+const Icon = styled.div`
+  background-image: url("/generate-license-file/img/glf-icon-3.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  height: 100px;
   width: 100%;
-  margin: 0 auto;
-`;
+  margin-bottom: 20px;
+`
 
 const Title = styled.h1`
   font-size: 3rem;
@@ -37,6 +68,17 @@ const Subtitle = styled.p`
   margin-bottom: 64px;
 `;
 
+const Intro = styled.div`
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  max-width: 900px;
+  width: 100%;
+  margin: 0 auto;
+`;
+
 const Examples = styled.div`
   text-align: center;
   margin: auto;
@@ -45,35 +87,3 @@ const Examples = styled.div`
   justify-content: center;
   align-items: center;
 `;
-
-export default function Home(): JSX.Element {
-  return (
-    <Layout
-      title={`Generate License File | Docs`}
-      description="Docs website for the generate-license-file npm package."
-    >
-      <header>
-        <Hero>
-          <Intro>
-            <Title>Generate License File</Title>
-
-            <Subtitle>
-              Generate a text file containing all of the licences for your <br /> production,
-              third-party dependencies.
-            </Subtitle>
-          </Intro>
-          <Examples>
-            <Tabs>
-              <Tab label="Library">
-                <MonacoEditor />
-              </Tab>
-              <Tab label="CLI">
-                <Terminal />
-              </Tab>
-            </Tabs>
-          </Examples>
-        </Hero>
-      </header>
-    </Layout>
-  );
-}

@@ -22,7 +22,7 @@ export const Terminal: FC = () => {
         <Argument> --output </Argument> THIRD-PARTY-LICENSES.txt
         <CopyButtons>
           <CopyButton labelColour="white" label="Copy" contentToCopy={cmdWithNewLines} />
-          <CopyButton labelColour="white" label="Copy as One Line" contentToCopy={cmdOneLine} />
+          <CopyButton labelColour="white" label="Copy as one line" contentToCopy={cmdOneLine} />
         </CopyButtons>
       </Screen>
     </Container>
