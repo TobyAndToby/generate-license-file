@@ -1,10 +1,6 @@
 // @ts-check
 // Note: type annotations allow type checking and IDEs autocompletion
 
-const lightCodeTheme = require("prism-react-renderer/themes/github");
-const darkCodeTheme = require("prism-react-renderer/themes/dracula");
-const path = require("path");
-
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: "My Site",
@@ -63,7 +59,7 @@ const config = {
         items: [
           {
             type: "doc",
-            docId: "intro",
+            docId: "intro/index",
             position: "left",
             label: "Docs",
           },
@@ -116,8 +112,8 @@ const config = {
         copyright: `Copyright © ${new Date().getFullYear()} Generate License File. Built with Docusaurus.`,
       },
       prism: {
-        theme: lightCodeTheme,
-        darkTheme: darkCodeTheme,
+        theme: require("prism-react-renderer/themes/github"),
+        darkTheme: require("prism-react-renderer/themes/vsDark"),
         magicComments: [
           {
             className: "code-block-diff-green",

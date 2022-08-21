@@ -1,5 +1,5 @@
 ---
-sidebar-position: 2
+sidebar-position: 3
 title: Library
 ---
 
