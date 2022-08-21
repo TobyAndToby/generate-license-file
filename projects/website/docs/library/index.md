@@ -1,5 +1,4 @@
 ---
-sidebar-position: 3
 title: Library
 ---
 
