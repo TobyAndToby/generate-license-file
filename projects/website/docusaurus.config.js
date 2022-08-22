@@ -6,7 +6,7 @@ const config = {
   tagline:
     "Generate a text file containing all of the licences for your production, third-party dependencies.",
   url: "https://your-docusaurus-test-site.com",
-  baseUrl: "/generate-license-file/",
+  baseUrl: "/",
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
   favicon: "favicon.ico",

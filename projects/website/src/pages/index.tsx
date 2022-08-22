@@ -24,7 +24,7 @@ export default function Home(): JSX.Element {
           </Intro>
           <Examples>
             <Tabs>
-            <Tab label="CLI">
+              <Tab label="CLI">
                 <Terminal />
               </Tab>
               <Tab label="Library">
@@ -44,14 +44,14 @@ const Hero = styled.div`
 `;
 
 const Icon = styled.div`
-  background-image: url("/generate-license-file/img/glf-icon-3.svg");
+  background-image: url("/img/glf-icon-3.svg");
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
   height: 100px;
   width: 100%;
   margin-bottom: 20px;
-`
+`;
 
 const Title = styled.h1`
   font-size: 3rem;
