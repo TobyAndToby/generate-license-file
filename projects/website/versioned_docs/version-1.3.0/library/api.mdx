@@ -15,3 +15,24 @@ If you're here to edit the content of this page then you'll need to edit those c
 -->
 
 <ApiPage librarySchema={librarySchema} />
+
+## Models
+
+### ILicense
+
+```ts
+/**
+ * ILicense contains the content of a given license and the list of dependencies it pertains to.
+ */
+interface ILicense {
+  /**
+   * Body of the license.
+   */
+  content: string;
+
+  /**
+   * List of node packages that this license applies to.
+   */
+  dependencies: string[];
+}
+```

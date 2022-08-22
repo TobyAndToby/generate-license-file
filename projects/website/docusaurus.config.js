@@ -8,7 +8,7 @@ const config = {
   url: "https://your-docusaurus-test-site.com",
   baseUrl: "/",
   onBrokenLinks: "throw",
-  onBrokenMarkdownLinks: "warn",
+  onBrokenMarkdownLinks: "throw",
   favicon: "favicon.ico",
   noIndex: true,
 
