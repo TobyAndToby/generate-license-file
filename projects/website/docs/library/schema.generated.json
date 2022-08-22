@@ -1043,6 +1043,9 @@
 					"kind": 256,
 					"kindString": "Interface",
 					"flags": {},
+					"comment": {
+						"shortText": "ILicense contains the content of a given license and the list of dependencies it pertains to."
+					},
 					"children": [
 						{
 							"id": 50,
@@ -1056,7 +1059,7 @@
 							"sources": [
 								{
 									"fileName": "models/license.ts",
-									"line": 11,
+									"line": 14,
 									"character": 2
 								}
 							],
@@ -1077,7 +1080,7 @@
 							"sources": [
 								{
 									"fileName": "models/license.ts",
-									"line": 16,
+									"line": 19,
 									"character": 2
 								}
 							],
@@ -1103,7 +1106,7 @@
 					"sources": [
 						{
 							"fileName": "models/license.ts",
-							"line": 7,
+							"line": 10,
 							"character": 17
 						}
 					]
