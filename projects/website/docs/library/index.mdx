@@ -12,7 +12,7 @@ a detailed spec on the method signatures and types, please read the [API spec](.
 ## Generate and write a license file to disk
 
 To programatically run the generate license file program you can use the `generateLicenseFile` method.
-Like the CLI, this method requires an input package.json path, an output file path, and can be given
+Like the CLI, this method requires a path to a package.json, an output file path, and can be given
 an optional line ending paramter. It will produce the same result as running the command via the CLI.
 
 <Tabs groupId="library-page">
@@ -44,8 +44,8 @@ glf
 ## Get the license file content without writing it to disk
 
 If you want to get the content of the expected license file output _without_ automatically writing it
-to disk, you can use the `getLicenseFileText` method. It accepts the project's package.json, and an
-optional line ending enum.
+to disk, you can use the `getLicenseFileText` method. It requires a path to the project's package.json, and can
+optionally take a line ending.
 
 <Tabs groupId="library-page">
   <TabItem value="ts" label="TypeScript">
@@ -83,6 +83,8 @@ To get an array of objects each containing the details of an identified license 
 it pertains to, use the `getProjectLicenses` method. This is useful if you wanted to manually re-format the
 license data into a nicely-formatted page on a website, rather than a plaintext file. For example,
 as used by: https://what-version-of-node.js.org/third-party.
+
+This function just requires a path to the project's package.json.
 
 <Tabs groupId="library-page">
   <TabItem value="ts" label="TypeScript">
