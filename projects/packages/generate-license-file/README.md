@@ -1,6 +1,6 @@
 # Generate License File
 
-A CLI and code library to generate a text file containing all the licenses for your production third-party dependencies.
+A CLI and code library to generate a text file containing all of the licenses for your production third-party dependencies.
 
 <a href="https://www.npmjs.com/package/generate-license-file">
   <img alt="npm" src="https://img.shields.io/npm/v/generate-license-file?logo=npm">
@@ -13,34 +13,44 @@ A CLI and code library to generate a text file containing all the licenses for y
 ## Installation and Usage (CLI)
 
 ```
-$ npm install generate-license-file -g
+$ npm install generate-license-file --save-dev
 
-$ generate-license-file --input package.json --output third-party-licenses.txt --overwrite
+$ npx generate-license-file --input package.json --output third-party-licenses.txt --overwrite
 ```
 
-| Argument       | Description                                                                                                                                                        |
-| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `--input`      | Absolute or relative path to the package.json for the project.                                                                                                     |
-| `--output`     | Absolute or relative location for the output licenses file.                                                                                                        |
-| `--overwrite`  | (optional) Allow the overwriting of existing output files.<br> If this option is not provided and the output file already exists, you will be prompted to confirm. |
-| `--eol`        | (optional) Specify the line endings used in the output file.<br> Accepted values are `crlf` or `lf`.<br> If no value is provided your system default will be used. |
-| `--no-spinner` | (optional) Disable the CLI spinner while the output file is being generated.                                                                                       |
-| `--version`    | (optional) Print the installed generate-license-file version.                                                                                                      |
+| Argument       | Description                                                                                                                                                       |
+| -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--input`      | Absolute or relative path to the package.json for the project.                                                                                                    |
+| `--output`     | Absolute or relative path for the generated output file.                                                                                                          |
+| `--overwrite`  | (optional) Allows the CLI to overwrite existing output files. If this option is not provided and the output file already exists, you will be prompted to confirm. |
+| `--eol`        | (optional) Specify the line endings used in the output file. Accepted values are `crlf` or `lf`. If no value is provided your system default will be used.        |
+| `--ci`         | (optional) Stops the CLI from prompting the user for inputs and instead exits with a non-zero exit code.                                                          |
+| `--no-spinner` | (optional) Disable the CLI spinner while the output file is being generated.                                                                                      |
+| `--version`    | (optional) Print the installed generate-license-file version.                                                                                                     |
 
 If either the `--input` or `--output` are omitted the CLI will prompt you for their values.
 
-## Installation and Usage (programmatic use)
+For a full description of the CLI arguments and their usages please see the relevant [docs page](https://generate-license-file.js.org/docs/intro).
+
+## Installation and Usage (Library API)
 
 ```
-$ npm install generate-license-file
+$ npm install generate-license-file --save-dev
 ```
 
 #### TypeScript
 
 ```ts
-import { getProjectLicenses } from "generate-license-file";
+import { generateLicenseFile, getLicenseFileText, getProjectLicenses } from "generate-license-file";
 
-// Get an array of licenses for the current project's production dependencies.
+// Generate the license file and write it to disk.
+await generateLicenseFile("./package.json", "./third-party-licenses.txt");
+
+// Generate the license file content and return it as a string.
+const licenseFileText: string = await getLicenseFileText("./package.json");
+
+// Get an array of objects each containing the details of an
+// identified license and the dependencies it pertains to.
 const licenses: ILicense[] = await getProjectLicenses("./package.json");
 ```
 
@@ -49,7 +59,7 @@ const licenses: ILicense[] = await getProjectLicenses("./package.json");
 ```js
 const generateLicenseFile = require("generate-license-file");
 
-// Get an array of licenses for the current project's production dependencies.
+// The same library methods can be used in JS, e.g.
 generateLicenseFile
   .getProjectLicenses("./package.json")
   .then(licenses => {
@@ -59,6 +69,8 @@ generateLicenseFile
     // Do stuff with error...
   });
 ```
+
+For a full description of the library API and example usages please see the relevant [docs page](https://generate-license-file.js.org/docs/library).
 
 # License
 
