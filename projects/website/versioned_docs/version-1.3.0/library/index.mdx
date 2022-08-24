@@ -21,8 +21,8 @@ an optional line ending paramter. It will produce the same result as running the
 ```ts
 import { generateLicenseFile } from "generate-license-file";
 
-// Get an array of licenses for the current project's production dependencies.
-await generateLicenseFile("./package.json");
+// Generate the license file and write it to disk.
+await generateLicenseFile("./package.json", "./third-party-licenses.txt");
 ```
 
   </TabItem>
@@ -31,7 +31,7 @@ await generateLicenseFile("./package.json");
 ```js
 const glf = require("generate-license-file");
 
-// Generate and write the license file to disk.
+// Generate the license file and write it to disk.
 glf
   .generateLicenseFile("./package.json", "./third-party-licenses.txt")
   .then(() => {})
@@ -53,7 +53,7 @@ optionally take a line ending.
 ```ts
 import { getLicenseFileText } from "generate-license-file";
 
-// Get the contents of the expected license file output.
+// Generate the license file content and return it as a string.
 const licenseFileText: string = await getLicenseFileText("./package.json");
 
 console.log(licenseFileText);
@@ -65,9 +65,9 @@ console.log(licenseFileText);
 ```js
 const glf = require("generate-license-file");
 
-// Get the contents of the expected license file output.
+// Generate the license file content and return it as a string.
 glf
-  .getLicenceFileText("./package.json")
+  .getLicenseFileText("./package.json")
   .then(licenseText => {
     console.log(licenseText);
   })
