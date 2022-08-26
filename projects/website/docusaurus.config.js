@@ -67,6 +67,12 @@ const config = {
             className: "header-github-link",
             "aria-label": "GitHub repository",
           },
+          {
+            href: "https://www.npmjs.com/package/generate-license-file",
+            position: "right",
+            className: "header-npm-link",
+            "aria-label": "npm package",
+          },
         ],
       },
       footer: {
