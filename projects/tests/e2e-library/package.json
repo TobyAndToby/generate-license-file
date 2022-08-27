@@ -6,6 +6,7 @@
     "src"
   ],
   "scripts": {
+    "lint": "eslint . --max-warnings 0",
     "test:e2e": "jest"
   },
   "dependencies": {
