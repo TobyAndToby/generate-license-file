@@ -62,7 +62,7 @@ jobs:
         run: npm ci
 
       - name: Set Version
-        if: github.event_name == workflow_call
+        if: github.event_name == 'workflow_call'
         working-directory: ${{ env.GLF_PROJECT }}
         run: npm --no-git-tag-version --allow-same-version version ${{ inputs.version }}
 

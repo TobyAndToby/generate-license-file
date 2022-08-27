@@ -50,6 +50,7 @@
     "arg": "^5.0.0",
     "cli-spinners": "^2.6.0",
     "enquirer": "^2.3.6",
+    "esm": "^3.2.25",
     "license-checker": "^25.0.1",
     "ora": "^5.4.1"
   },
