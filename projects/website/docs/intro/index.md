@@ -19,7 +19,7 @@ Third party libraries likely play an integral part of the projects you develop. 
 
 **ISC**
 
-> Permission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted, provided that the above copyright notice and this permission notice appear in all copies.
+> Permission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted, provided that the above copyright notice and this permission notice appear in all copies...
 
 **BSD-3 Clause**
 
@@ -28,6 +28,12 @@ Third party libraries likely play an integral part of the projects you develop. 
 **LGPLv3**
 
 > For a Combined Work that displays copyright notices during execution, include the copyright notice for the Library...
+
+**Apache 2.0**
+
+> 4. Redistribution. You may reproduce and distribute copies of the Work or Derivative Works thereof in any medium, with or without modifications, and in Source or Object form, provided that You meet the following conditions:
+>
+> - You must give any other recipients of the Work or Derivative Works a copy of this License; and...
 
 These are only a fraction of the different types of licenses your third party dependencies may be using. Generate license file automates the process of ensuring you are adhering to your dependencies' licenses.
 
