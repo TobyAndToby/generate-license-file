@@ -1,69 +1,72 @@
 import styled from "@emotion/styled";
-import React, { FC } from "react";
-import { Method } from "./getLibraryMethods";
-import MethodSignature from "./MethodSignature";
+import React, { SetStateAction, useState } from "react";
+import MethodSignature, { SignatureDetails } from "./MethodSignature";
 
 interface Props {
-  method: Method;
+  methodData: MethodData;
 }
 
-const LibraryMethod: FC<Props> = ({ method }) => {
-  const { name: methodName, signatures } = method;
-  const isAsync = signatures[0].returnType.name === "Promise" && !signatures[0].returnType.isArray;
+export interface MethodData {
+  name: string;
+  signatures: SignatureDetails[];
+}
+
+const LibraryMethod = ({ methodData }: Props): JSX.Element => {
+  const { name, signatures } = methodData;
+
+  const [overloadNumber, setOverloadNumber] = useState<number>(0);
+
+  const signature = signatures[overloadNumber];
 
   return (
-    <div>
-      <MethodName id={methodName}>
-        <OnHoverAnchorWrapper>
-          <h3>
-            {methodName}
-            {isAsync && <Tag>Async</Tag>}
-            <a href={"#" + methodName} title={"Direct link to " + methodName} />
-          </h3>
-        </OnHoverAnchorWrapper>
-      </MethodName>
-      {signatures.map((signature, i) => (
-        <MethodSignature key={i} methodName={methodName} signature={signature} />
-      ))}
-    </div>
+    <>
+      {signatures.length > 1 && (
+        <Overloads>
+          <ButtonGroup>
+            <button onClick={() => setOverloadNumber(decrement(signatures.length))}>◀</button>
+            <button onClick={() => setOverloadNumber(increment(signatures.length))}>▶</button>
+          </ButtonGroup>
+
+          <span>
+            Overload {overloadNumber + 1} of {signatures.length}
+          </span>
+        </Overloads>
+      )}
+
+      <MethodSignature methodName={name} signature={signature} />
+    </>
   );
 };
+
 export default LibraryMethod;
 
-const MethodName = styled.h3`
-  ::before {
-    display: block;
-    content: " ";
-    margin-top: -70px;
-    height: 70px;
-    visibility: hidden;
+const Overloads = styled.div`
+  margin-bottom: 1em;
+`;
+
+const ButtonGroup = styled.span`
+  margin-right: 0.5em;
+
+  button {
+    border-color: grey;
+    height: 1.6em;
+  }
+
+  button:first-of-type {
+    border-radius: 0.4em 0 0 0.4em;
+    border-width: 1px 0 1px 1px;
+  }
+
+  button:last-of-type {
+    border-radius: 0 0.4em 0.4em 0;
+    border-width: 1px;
   }
 `;
 
-const OnHoverAnchorWrapper = styled.div`
-  a {
-    opacity: 0;
-    transition: opacity 0.1s ease-in-out;
+const decrement = (total: number): SetStateAction<number> => {
+  return n => (n + total - 1) % total;
+};
 
-    ::before {
-      content: "#";
-    }
-  }
-
-  &:hover {
-    a {
-      opacity: 1;
-    }
-  }
-`;
-
-const Tag = styled.span`
-  background-color: var(--ifm-color-primary);
-  border-radius: 0.5em;
-  font-size: small;
-  padding: 0.2em 0.4em;
-  font-style: italic;
-  margin: 0 0.5em;
-  color: white;
-  font-weight: 600;
-`;
+const increment = (total: number): SetStateAction<number> => {
+  return n => (n + 1) % total;
+};

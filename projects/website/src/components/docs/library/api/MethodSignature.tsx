@@ -1,49 +1,60 @@
 import styled from "@emotion/styled";
 import { useTypeScriptSnippets } from "@site/src/components/TypeScriptToggle";
-import React, { FC } from "react";
-import { Parameter, Signature, Type } from "./getLibraryMethods";
+import React from "react";
 
-interface Props {
+export interface Props {
   methodName: string;
-  signature: Signature;
+  signature: SignatureDetails;
 }
 
-const MethodSignature: FC<Props> = ({ methodName, signature }) => {
-  const showTypeScriptSnippets = useTypeScriptSnippets();
+export interface SignatureDetails {
+  params: Param[];
+  returnType: ReturnType;
+  description: string;
+}
 
-  const { shortText, parameters, returns, returnType } = signature;
+interface Param {
+  name: string;
+  type: string;
+  description: string;
+  isOptional?: boolean;
+}
 
-  const getParameter = (parameter: Parameter) => {
-    if (showTypeScriptSnippets) {
-      return parameter.name + ": " + formatType(parameter.type);
-    }
+interface ReturnType {
+  type: string;
+  description: string;
+}
 
-    return parameter.name;
-  };
+const MethodSignature = ({ methodName, signature }: Props) => {
+  const useTypeScript = useTypeScriptSnippets();
 
-  let title = methodName + "(" + parameters.map(getParameter).join(", ") + ")";
+  const { params, returnType, description } = signature;
 
-  if (showTypeScriptSnippets) {
-    title += ": " + formatType(returnType);
-  }
+  const formattedReturnType = useTypeScript ? `: ${returnType.type}` : "";
+
+  const formattedParameters = params
+    .map(p => (useTypeScript ? `${p.name}${p.isOptional ? "?:" : ":"} ${p.type}` : p.name))
+    .join(", ");
+
+  const fullSignature = `${methodName}(${formattedParameters})${formattedReturnType}`;
 
   return (
-    <div>
-      <code>{title}</code>
-      <p>{shortText}</p>
+    <>
+      <p>
+        <code>{fullSignature}</code>
+      </p>
+      <p>{description}</p>
 
       <h4>Parameters</h4>
       <ul>
-        {parameters.map(parameter => (
+        {params.map(parameter => (
           <li key={parameter.name}>
             <p>
               <code>
                 {parameter.name}
-                {showTypeScriptSnippets && ": " + formatType(parameter.type)}
+                {useTypeScript && ": " + parameter.type}
               </code>
-              {!!parameter.shortText &&
-                parameter.shortText.length > 0 &&
-                " - " + parameter.shortText}
+              {parameter.description && ` - ${parameter.description}`}
             </p>
           </li>
         ))}
@@ -51,38 +62,13 @@ const MethodSignature: FC<Props> = ({ methodName, signature }) => {
 
       <h4>Returns</h4>
       <Returns>
-        <code>{formatType(returnType)}</code>
-        {!!returns && returns.length > 0 && " - " + returns}
+        <code>{returnType.type}</code>
+        {returnType.description && ` - ${returnType.description}`}
       </Returns>
-
-      <hr />
-    </div>
+    </>
   );
 };
 export default MethodSignature;
-
-const formatType = (type: Type) => {
-  let result = type.isArray ? "" : type.name;
-
-  if (!!type.genericArguments && type.genericArguments.length > 0) {
-    if (!type.isArray) {
-      result += "<";
-    }
-
-    const formattedGenericArguments = type.genericArguments.map(formatType);
-    result += formattedGenericArguments.join(", ");
-
-    if (!type.isArray) {
-      result += ">";
-    }
-  }
-
-  if (type.isArray) {
-    result += "[]";
-  }
-
-  return result;
-};
 
 const Returns = styled.p`
   list-style-type: none;
