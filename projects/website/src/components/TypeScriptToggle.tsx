@@ -89,6 +89,6 @@ const Language = styled.span<LanguageProps>`
   display: inline-block;
   font-weight: 600;
   font-family: "Arial";
-  font-size: 12px;
+  font-size: 14px;
   padding-top: 2px;
 `;
