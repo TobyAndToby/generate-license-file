@@ -7,7 +7,7 @@ const FOOTER =
   "This file was generated with generate-license-file! https://www.npmjs.com/package/generate-license-file";
 
 /**
- * Scans the project found at the given path and returns a string containing the licenses for all the dependencies
+ * Scans the project found at the given path and returns a string containing the licenses for all of the dependencies
  * @param pathToPackageJson A path to the package.json for the project
  * @optional @param lineEnding "crlf" or "lf". Will use the system default if omitted
  * @returns A promise that resolves to the license file text
