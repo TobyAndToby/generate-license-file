@@ -18,7 +18,9 @@ export abstract class Argument<T> {
       message: question,
     });
 
-    return answer.value;
+    const formattedInput = taperDoubleQuotes(answer.value);
+
+    return formattedInput;
   }
 
   protected async promptForBoolean(question: string): Promise<boolean> {
@@ -47,3 +49,20 @@ export abstract class Argument<T> {
     return options[selection];
   }
 }
+
+/**
+ * Process a strings double quotes in the same way that process.argv appears to.
+ * It 'downgrades' their escape-level. Unescaped quotes are removed, and escaped quotes
+ * become just quotes.
+ */
+const taperDoubleQuotes = (input: string): string => {
+  // Step 1: Remove all unescaped double-quotes ("). Won't replace (\").
+  // Example:
+  //
+  // "my\"file".txt" -> my\"file.txt
+  input = input.replace(/(?<!\\)"/g, "");
+
+  // Step 2: Replace all escaped double-quotes (\") with unescaped double-quotes (").
+  // my\"file.txt -> my"file.txt
+  return input.replace(/\\"/g, '"');
+};
