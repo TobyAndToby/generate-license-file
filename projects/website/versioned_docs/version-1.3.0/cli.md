@@ -80,7 +80,6 @@ npx generate-license-file --eol lf
 npx generate-license-file --eol crlf
 ```
 
-
 ## --no-spinner
 
 <ArgumentInfo type="boolean" />

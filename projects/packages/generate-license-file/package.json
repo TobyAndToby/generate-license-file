@@ -9,10 +9,10 @@
     "generate-license-file": "bin/generate-license-file"
   },
   "scripts": {
+    "lint": "eslint . --max-warnings 0",
     "build": "del-cli ./dist&&tsc",
     "build:watch": "del-cli ./dist&&tsc --watch",
-    "test": "jest",
-    "test:ci": "jest --ci --coverage"
+    "test": "jest"
   },
   "contributors": [
     {
