@@ -134,7 +134,7 @@ describe("Output", () => {
 
     it("should not prompt for a bool if an output is not given but override is given", async () => {
       mockDoesFileExist.mockResolvedValue(true);
-      mockPrompt.mockResolvedValue({ value: true });
+      mockPrompt.mockResolvedValue({ value: "any output value" });
 
       const args = {
         "--overwrite": true,
