@@ -7,10 +7,7 @@ title: Introduction
 
 Generate license file provides tooling to generate a single `.txt` file containing all of the licenses for your production third party dependencies. With both a CLI and a programmatic API, you have complete control over how and when the third party license file is generated.
 
-Generate license file does this by recursively locating the license for each dependency found in the package.json `dependencies` array - starting with a package.json that you provide the path to (most commonly the project root, `./package.json`). Licenses are not always found in the same place, so generate license file will check various locations with the following precedence:
-
-- A `LICENSE.md` (or `LICENCE.md`) file.
-- The README.md.
+Generate license file does this by recursively locating the license for each dependency found in the package.json `dependencies` array - starting with a package.json that you provide the path to (most commonly the project root, `./package.json`).
 
 ## Why should I generate my license file?
 
