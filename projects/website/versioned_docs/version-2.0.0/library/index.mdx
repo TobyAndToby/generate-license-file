@@ -1,0 +1,116 @@
+---
+title: Library
+description: Overview and example usages of the generate license file library API
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+Our library APIs allow you to interact with generate license file's functionality in code.
+This page outlines a summary of primary use cases for the methods we expose. If you're looking for
+a detailed spec on the method signatures and types, please read the [API spec](./api.mdx) page.
+
+## Generate and write a license file to disk
+
+To programatically run the generate license file program you can use the `generateLicenseFile` method.
+Like the CLI, this method requires a path to a package.json, an output file path, and can be given
+an optional line ending paramter. It will produce the same result as running the command via the CLI.
+
+<Tabs groupId="library-page">
+  <TabItem value="ts" label="TypeScript">
+
+```ts
+import { generateLicenseFile } from "generate-license-file";
+
+// Generate the license file and write it to disk.
+await generateLicenseFile("./package.json", "./third-party-licenses.txt");
+```
+
+  </TabItem>
+  <TabItem value="js" label="JavaScript">
+
+```js
+const glf = require("generate-license-file");
+
+// Generate the license file and write it to disk.
+glf
+  .generateLicenseFile("./package.json", "./third-party-licenses.txt")
+  .then(() => {})
+  .catch(error => {});
+```
+
+  </TabItem>
+</Tabs>
+
+## Get the license file content without writing it to disk
+
+If you want to get the content of the expected license file output _without_ automatically writing it
+to disk, you can use the `getLicenseFileText` method. It requires a path to the project's package.json, and can
+optionally take a line ending.
+
+<Tabs groupId="library-page">
+  <TabItem value="ts" label="TypeScript">
+
+```ts
+import { getLicenseFileText } from "generate-license-file";
+
+// Generate the license file content and return it as a string.
+const licenseFileText: string = await getLicenseFileText("./package.json");
+
+console.log(licenseFileText);
+```
+
+  </TabItem>
+  <TabItem value="js" label="JavaScript">
+
+```js
+const glf = require("generate-license-file");
+
+// Generate the license file content and return it as a string.
+glf
+  .getLicenseFileText("./package.json")
+  .then(licenseText => {
+    console.log(licenseText);
+  })
+  .catch(error => {});
+```
+
+  </TabItem>
+</Tabs>
+
+## Get an array of the identified licenses and each of the packages it pertains to
+
+To get an array of objects each containing the details of an identified license and the dependencies
+it pertains to, use the `getProjectLicenses` method. This is useful if you wanted to manually re-format the
+license data into a nicely-formatted page on a website, rather than a plaintext file. For example,
+as used by: https://what-version-of-node.js.org/third-party.
+
+This function just requires a path to the project's package.json.
+
+<Tabs groupId="library-page">
+  <TabItem value="ts" label="TypeScript">
+
+```ts
+import { getProjectLicenses, ILicense } from "generate-license-file";
+
+// Get an array of licenses for the current project's production dependencies.
+const licenses: ILicense[] = await getProjectLicenses("./package.json");
+```
+
+  </TabItem>
+  <TabItem value="js" label="JavaScript">
+
+```js
+const generateLicenseFile = require("generate-license-file");
+
+// Get an array of licenses for the current project's production dependencies.
+generateLicenseFile
+  .getProjectLicenses("./package.json")
+  .then(licenses => {
+    console.log(licenses);
+  })
+  .catch(error => {});
+```
+
+  </TabItem>
+</Tabs>

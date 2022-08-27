@@ -1,0 +1,41 @@
+{
+  "docs": [
+    {
+      "type": "category",
+      "label": "Introduction",
+      "link": {
+        "type": "doc",
+        "id": "intro/index"
+      },
+      "items": [
+        {
+          "type": "doc",
+          "id": "intro/getting-started"
+        }
+      ]
+    },
+    {
+      "type": "doc",
+      "id": "cli/index"
+    },
+    {
+      "type": "category",
+      "label": "Library",
+      "collapsed": false,
+      "link": {
+        "type": "doc",
+        "id": "library/index"
+      },
+      "items": [
+        {
+          "type": "doc",
+          "id": "library/api"
+        }
+      ]
+    },
+    {
+      "type": "doc",
+      "id": "v1-to-v2"
+    }
+  ]
+}
