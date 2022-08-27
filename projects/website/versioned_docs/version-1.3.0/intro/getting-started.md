@@ -1,6 +1,7 @@
 ---
 sidebar_position: 1
 title: Getting Started
+description: Introductory examples for getting generate license file installed and running
 ---
 
 A couple of quick 5 minute guides for generating your license files via the CLI, or programmatic API.
@@ -25,18 +26,20 @@ For more advanced usages of the CLI, including the different options and argumen
 
 ## Library Quick Guide
 
-Our library APIs allow you to programatically interact with generate license file's functionality. Examples include  generating and writing the license file to disk, or fetching the license data as an array for other usages. Want to know what the license objects contain? Head over to our [API spec](../library/api).
+Our library APIs allow you to programatically interact with generate license file's functionality. Examples include generating and writing the license file to disk, or fetching the license data as an array for other usages. Want to know what the license objects contain? Head over to our [API spec](../library/api).
 
 ```js
 const glf = require("generate-license-file");
 
 // Generate and write the license file to disk.
-glf.generateLicenseFile("./package.json", "./third-party-licenses.txt")
-   .then(() => { })
-   .catch((error) => { });
+glf
+  .generateLicenseFile("./package.json", "./third-party-licenses.txt")
+  .then(() => {})
+  .catch(error => {});
 
 // Get an array of licenses for the current project's production dependencies.
-glf.getProjectLicenses("./package.json")
-   .then((licenses) => { })
-   .catch((error) => { });
+glf
+  .getProjectLicenses("./package.json")
+  .then(licenses => {})
+  .catch(error => {});
 ```

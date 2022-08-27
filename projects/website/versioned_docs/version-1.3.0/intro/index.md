@@ -1,6 +1,7 @@
 ---
 sidebar_position: 0
 title: Introduction
+description: Introduction to generate license file
 ---
 
 ## What is Generate License File?

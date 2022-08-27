@@ -1,5 +1,6 @@
 ---
 title: CLI
+description: Overview and example usages of the generate license file CLI
 ---
 
 import ArgumentInfo from "@site/src/components/docs/cli/ArgumentInfo";
@@ -79,7 +80,6 @@ npx generate-license-file --eol lf
 
 npx generate-license-file --eol crlf
 ```
-
 
 ## --no-spinner
 
