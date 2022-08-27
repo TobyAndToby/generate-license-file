@@ -23,8 +23,12 @@ const LibraryMethod = ({ methodData }: Props): JSX.Element => {
       {signatures.length > 1 && (
         <Overloads>
           <ButtonGroup>
-            <button onClick={() => setOverloadNumber(decrement(signatures.length))}>◀</button>
-            <button onClick={() => setOverloadNumber(increment(signatures.length))}>▶</button>
+            <button onClick={() => setOverloadNumber(decrement(signatures.length))}>
+              <img src="/img/chevron-down-outline.svg" />
+            </button>
+            <button onClick={() => setOverloadNumber(increment(signatures.length))}>
+              <img src="/img/chevron-up-outline.svg" />
+            </button>
           </ButtonGroup>
 
           <span>
@@ -41,15 +45,28 @@ const LibraryMethod = ({ methodData }: Props): JSX.Element => {
 export default LibraryMethod;
 
 const Overloads = styled.div`
+  display: flex;
+  align-items: center;
   margin-bottom: 1em;
 `;
 
 const ButtonGroup = styled.span`
+  display: flex;
+  align-items: center;
   margin-right: 0.5em;
 
   button {
     border-color: grey;
-    height: 1.6em;
+    margin: 0;
+    padding: 0;
+    height: auto;
+    width: 40px;
+
+    img {
+      height: 18px;
+      margin: 0 auto;
+      margin-top: 4px;
+    }
   }
 
   button:first-of-type {
