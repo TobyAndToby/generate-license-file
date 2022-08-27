@@ -10,7 +10,7 @@ export default function Home(): JSX.Element {
   return (
     <Layout
       title={`Generate License File | Docs`}
-      description="Docs website for the generate-license-file npm package."
+      description="Documentation for the generate-license-file npm package."
     >
       <header>
         <Hero>
