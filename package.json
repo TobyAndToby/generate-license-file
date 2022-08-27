@@ -2,6 +2,7 @@
   "name": "root",
   "private": true,
   "scripts": {
+    "lint": "lerna run lint --parallel",
     "build": "lerna run build",
     "test": "lerna run test --stream",
     "test:e2e": "lerna run test:e2e --stream"

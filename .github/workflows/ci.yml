@@ -2,21 +2,168 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches:
+      - renovate/*
   pull_request:
-    branches: [main]
+    branches:
+      - main
+  workflow_call:
+    inputs:
+      version:
+        description: The npm version to use for generate-license-file
+        default: 0.0.0
+        required: false
+        type: string
+
+env:
+  NODE_VERSION: 16
+  GLF_PROJECT: ./projects/packages/generate-license-file
+  WEBSITE_PROJECT: ./projects/website
 
 jobs:
-  ci:
+  lint:
+    name: Lint
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run ESLint
+        run: npx lerna run lint --parallel
+
+      - name: Run Prettier
+        run: npx prettier --check .
+
+  build-glf:
+    name: Build Generate License File
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Set Version
+        if: github.event_name == workflow_call
+        working-directory: ${{ env.GLF_PROJECT }}
+        run: npm --no-git-tag-version --allow-same-version version ${{ inputs.version }}
+
+      - name: Build
+        working-directory: ${{ env.GLF_PROJECT }}
+        run: npm run build
+
+      - name: Upload Build
+        uses: actions/upload-artifact@v3
+        with:
+          name: Build
+          path: ${{ env.GLF_PROJECT }}/dist
+
+      - name: Pack
+        working-directory: ${{ env.GLF_PROJECT }}
+        run: npm pack
+
+      - name: Upload Packed Build
+        uses: actions/upload-artifact@v3
+        with:
+          name: Packed-Build
+          path: ${{ env.GLF_PROJECT }}/generate-license-file-*.tgz
+
+  build-website:
+    name: Build Website
+
+    runs-on: ubuntu-latest
+
+    env:
+      PROJECT: ./projects/website/
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Website
+        working-directory: ${{ env.WEBSITE_PROJECT }}
+        run: npm run build
+
+      - name: Upload Build
+        uses: actions/upload-artifact@v3
+        with:
+          name: Website
+          path: ${{ env.WEBSITE_PROJECT }}/build/
+
+  test:
+    name: Unit Test
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Unit Tests
+        run: npx lerna run test --stream -- --ci --coverage
+
+      - name: Codecov
+        uses: codecov/codecov-action@v3.1.0
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          directory: coverage
+
+  e2e:
+    needs:
+      - build-glf
+
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
-        node: [14, 16, 18]
+        os:
+          - name: Ubuntu
+            value: ubuntu-latest
+          - name: MacOS
+            value: macos-latest
+          - name: Windows
+            value: windows-latest
+        node:
+          - 14
+          - 16
+          - 18
 
-    runs-on: ${{ matrix.os }}
+    name: E2E (Node ${{ matrix.node }} on ${{ matrix.os.name }})
 
-    name: CI on ${{ matrix.os }} using Node ${{ matrix.node }}
+    runs-on: ${{ matrix.os.value }}
 
     steps:
       - name: Checkout
@@ -26,7 +173,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node }}
-          registry-url: https://registry.npmjs.org/
+          cache: npm
 
       - name: Install latest npm
         if: matrix.node == 14
@@ -35,48 +182,19 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Run Prettier
-        run: npx prettier --check .
-        working-directory: ./projects/packages/generate-license-file
-
-      - name: Run ESLint
-        run: npx eslint . --max-warnings 0
-        working-directory: ./projects/packages/generate-license-file
-
-      - name: Build
-        run: npx lerna run build --scope generate-license-file
-
-      - name: Run Tests
-        run: npx lerna run test:ci --scope generate-license-file
-
-      - name: Codecov
-        uses: codecov/codecov-action@v3.1.0
-        if: matrix.os == 'ubuntu-latest' && matrix.node == '18'
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          directory: ./projects/packages/generate-license-file/coverage
-
-  website-ci:
-    runs-on: ubuntu-latest
-
-    name: Website CI
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Install Node.JS
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16
-          registry-url: https://registry.npmjs.org/
-
-      - name: Install dependencies
+      - name: Install dependencies for all-have-licenses
+        working-directory: ./projects/tests/e2e-dependencies/all-have-licenses
         run: npm ci
 
-      - name: Build docs site
-        run: npm run build
-        working-directory: ./projects/website
+      - name: Install dependencies for missing-license-file
+        working-directory: ./projects/tests/e2e-dependencies/missing-license-file
+        run: npm ci
 
-      - name: Check for git changes
-        run: git diff --exit-code
+      - name: Download Build
+        uses: actions/download-artifact@v3
+        with:
+          name: Build
+          path: ${{ env.GLF_PROJECT }}/dist
+
+      - name: Run E2E Tests
+        run: npx lerna run test:e2e -- --ci

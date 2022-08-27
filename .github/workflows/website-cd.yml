@@ -2,34 +2,36 @@ name: Website CD
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
+
+env:
+  NODE_VERSION: 16
 
 jobs:
-  website-cd:
+  ci:
+    name: Run CI
+    uses: ./.github/workflows/ci.yml
+    secrets: inherit
+
+  deploy:
+    needs:
+      - ci
+
+    name: Deploy
+
     runs-on: ubuntu-latest
 
-    name: Website CD
-
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - name: Download Website Build
+        uses: actions/download-artifact@v3
         with:
-          node-version: 18
-          registry-url: https://registry.npmjs.org/
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build
-        run: npx lerna run build --scope @generate-license-file/website
-
-      - name: Check for git changes
-        run: git diff --exit-code
+          name: Website
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./projects/website/build
+          publish_dir: ./
           user_name: github-actions[bot]
           user_email: 41898282+github-actions[bot]@users.noreply.github.com
