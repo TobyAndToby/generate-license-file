@@ -63,6 +63,6 @@ jobs:
           path: ${{ env.GLF_PROJECT }}
 
       - name: Publish
-        run: npm publish ${{ env.GLF_PROJECT }}/generate-license-file-${{ needs.get_version.outputs.version }}.tgz --access public --tag ${{ steps.latest_tag.outputs.latest-tag }} --dry-run
+        run: npm publish ${{ env.GLF_PROJECT }}/generate-license-file-${{ needs.get_version.outputs.version }}.tgz --access public --tag ${{ steps.latest_tag.outputs.latest-tag }}
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
