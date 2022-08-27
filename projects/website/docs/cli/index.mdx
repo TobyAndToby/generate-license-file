@@ -1,5 +1,6 @@
 ---
 title: CLI
+description: Overview and example usages of the generate license file CLI
 ---
 
 import ArgumentInfo from "@site/src/components/docs/cli/ArgumentInfo";

@@ -52,6 +52,28 @@ describe("Input", () => {
       expect(answer).toBe(inputFile);
     });
 
+    it("should remove instances of unescaped double quotes", async () => {
+      mockedDoesFileExist.mockResolvedValue(true);
+
+      mockedPrompt.mockResolvedValueOnce({ value: '"./package."json"' });
+
+      const args = {} as Result<ArgumentsWithAliases>;
+      const answer = await input.resolve(args);
+
+      expect(answer).toBe("./package.json");
+    });
+
+    it("should unescape escaped double quotes", async () => {
+      mockedDoesFileExist.mockResolvedValue(true);
+
+      mockedPrompt.mockResolvedValueOnce({ value: '\\"./package.\\"json\\"' });
+
+      const args = {} as Result<ArgumentsWithAliases>;
+      const answer = await input.resolve(args);
+
+      expect(answer).toBe('"./package."json"');
+    });
+
     it("should prompt for an input value if the '--input' value is undefined", async () => {
       mockedDoesFileExist.mockResolvedValueOnce(true).mockResolvedValueOnce(true);
       mockedPrompt.mockResolvedValue({ value: "./package.json" });

@@ -19,8 +19,8 @@ const LibraryModel = ({ properties, description }: Props): JSX.Element => {
 
       <h4>Properties</h4>
       <ul>
-        {properties.map(p => (
-          <li>
+        {properties.map((p, idx) => (
+          <li key={idx}>
             {" "}
             <LibraryProperty {...p} />
           </li>

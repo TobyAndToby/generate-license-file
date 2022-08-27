@@ -1,6 +1,7 @@
 ---
 sidebar_position: 1
 title: Getting Started
+description: Introductory examples for getting generate license file installed and running
 ---
 
 A couple of quick 5 minute guides for generating your license files via the CLI, or programmatic API.
