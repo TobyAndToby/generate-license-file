@@ -8,7 +8,7 @@ import { readPackageJson } from "../utils/packageJson.utils";
 
 const UTF8 = "utf-8";
 
-export async function getLicencesForProjects(pathsToPackageJsons: string[]): Promise<License[]> {
+export async function getLicensesForProjects(pathsToPackageJsons: string[]): Promise<License[]> {
   const licensesMap: Map<string, string[]> = new Map<string, string[]>();
 
   const projects: Project[] = await getProjectsForPackageJsons(pathsToPackageJsons);

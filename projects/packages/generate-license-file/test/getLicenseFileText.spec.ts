@@ -1,19 +1,19 @@
 import { getLicenseFileText } from "../src/getLicenseFileText";
-import { getLicencesForProjects } from "../src/internal/getLicencesForProjects";
+import { getLicensesForProjects } from "../src/internal/getLicensesForProjects";
 import { allLineEndings, getLineEndingValue } from "../src/lineEndings";
 import { License } from "../src/models/license";
 
-jest.mock("../src/internal/getLicencesForProjects", () => ({
-  getLicencesForProjects: jest.fn(),
+jest.mock("../src/internal/getLicensesForProjects", () => ({
+  getLicensesForProjects: jest.fn(),
 }));
 
 describe("getLicenseFileText", () => {
-  const mockGetLicencesForProjects = jest.mocked(getLicencesForProjects);
+  const mockGetLicensesForProjects = jest.mocked(getLicensesForProjects);
 
   beforeEach(() => {
     jest.resetAllMocks();
 
-    mockGetLicencesForProjects.mockResolvedValue([]);
+    mockGetLicensesForProjects.mockResolvedValue([]);
   });
 
   afterAll(() => jest.restoreAllMocks());
@@ -24,7 +24,7 @@ describe("getLicenseFileText", () => {
 
       await getLicenseFileText(path);
 
-      expect(mockGetLicencesForProjects).toHaveBeenCalledWith([path]);
+      expect(mockGetLicensesForProjects).toHaveBeenCalledWith([path]);
     });
   });
 
@@ -34,14 +34,14 @@ describe("getLicenseFileText", () => {
 
       await getLicenseFileText(paths);
 
-      expect(mockGetLicencesForProjects).toHaveBeenCalledWith(paths);
+      expect(mockGetLicensesForProjects).toHaveBeenCalledWith(paths);
     });
   });
 
   it("should format each returned license", async () => {
     const licenses = [getNewMockedLicense(), getNewMockedLicense(), getNewMockedLicense()];
 
-    mockGetLicencesForProjects.mockResolvedValue(licenses);
+    mockGetLicensesForProjects.mockResolvedValue(licenses);
 
     await getLicenseFileText("path");
 
@@ -53,7 +53,7 @@ describe("getLicenseFileText", () => {
       const expectedLineEndingValue = getLineEndingValue(lineEnding);
       const licenses = [getNewMockedLicense(), getNewMockedLicense(), getNewMockedLicense()];
 
-      mockGetLicencesForProjects.mockResolvedValue(licenses);
+      mockGetLicensesForProjects.mockResolvedValue(licenses);
 
       await getLicenseFileText("path", lineEnding);
 
@@ -70,7 +70,7 @@ describe("getLicenseFileText", () => {
     jest.mocked(licenses[1].format).mockReturnValue("second");
     jest.mocked(licenses[2].format).mockReturnValue("third");
 
-    mockGetLicencesForProjects.mockResolvedValue(licenses);
+    mockGetLicensesForProjects.mockResolvedValue(licenses);
 
     const result = await getLicenseFileText("path");
 
@@ -83,7 +83,7 @@ describe("getLicenseFileText", () => {
     jest.mocked(licenses[1].format).mockReturnValue("second");
     jest.mocked(licenses[2].format).mockReturnValue("third");
 
-    mockGetLicencesForProjects.mockResolvedValue(licenses);
+    mockGetLicensesForProjects.mockResolvedValue(licenses);
 
     const result = await getLicenseFileText("path", "lf");
 
@@ -100,7 +100,7 @@ describe("getLicenseFileText", () => {
     jest.mocked(licenses[1].format).mockReturnValue("second");
     jest.mocked(licenses[2].format).mockReturnValue("third");
 
-    mockGetLicencesForProjects.mockResolvedValue(licenses);
+    mockGetLicensesForProjects.mockResolvedValue(licenses);
 
     const result = await getLicenseFileText("path", "lf");
 

@@ -1,7 +1,7 @@
 {
   "name": "generate-license-file",
   "version": "0.0.0",
-  "description": "Generates a text file containing all of the licences for your production dependencies",
+  "description": "Generates a text file containing all of the licenses for your production dependencies",
   "main": "dist/main.js",
   "license": "ISC",
   "prettier": "@generate-license-file/prettier-config",
