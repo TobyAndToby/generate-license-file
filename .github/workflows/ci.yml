@@ -62,8 +62,9 @@ jobs:
         run: npm ci
 
       - name: Set Version
+        if: inputs.version != ''
         working-directory: ${{ env.GLF_PROJECT }}
-        run: npm --no-git-tag-version version ${{ inputs.version }}
+        run: npm --no-git-tag-version --allow-same-version version ${{ inputs.version }}
 
       - name: Build
         working-directory: ${{ env.GLF_PROJECT }}
