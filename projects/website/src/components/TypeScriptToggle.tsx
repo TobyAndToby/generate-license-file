@@ -88,4 +88,7 @@ const Language = styled.span<LanguageProps>`
   color: ${({ color }) => color};
   display: inline-block;
   font-weight: 600;
+  font-family: "Arial";
+  font-size: 14px;
+  padding-top: 2px;
 `;

@@ -8,10 +8,7 @@ description: Introduction to generate license file
 
 Generate license file provides tooling to generate a single `.txt` file containing all of the licenses for your production third party dependencies. With both a CLI and a programmatic API, you have complete control over how and when the third party license file is generated.
 
-Generate license file does this by recursively locating the license for each dependency found in the package.json `dependencies` array - starting with a package.json that you provide the path to (most commonly the project root, `./package.json`). Licenses are not always found in the same place, so generate license file will check various locations with the following precedence:
-
-- A `LICENSE.md` (or `LICENCE.md`) file.
-- The README.md.
+Generate license file does this by recursively locating the license for each dependency found in the package.json `dependencies` array - starting with a package.json that you provide the path to (most commonly the project root, `./package.json`).
 
 ## Why should I generate my license file?
 
@@ -23,7 +20,7 @@ Third party libraries likely play an integral part of the projects you develop. 
 
 **ISC**
 
-> Permission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted, provided that the above copyright notice and this permission notice appear in all copies.
+> Permission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted, provided that the above copyright notice and this permission notice appear in all copies...
 
 **BSD-3 Clause**
 
@@ -32,6 +29,12 @@ Third party libraries likely play an integral part of the projects you develop. 
 **LGPLv3**
 
 > For a Combined Work that displays copyright notices during execution, include the copyright notice for the Library...
+
+**Apache 2.0**
+
+> 4. Redistribution. You may reproduce and distribute copies of the Work or Derivative Works thereof in any medium, with or without modifications, and in Source or Object form, provided that You meet the following conditions:
+>
+> - You must give any other recipients of the Work or Derivative Works a copy of this License; and...
 
 These are only a fraction of the different types of licenses your third party dependencies may be using. Generate license file automates the process of ensuring you are adhering to your dependencies' licenses.
 

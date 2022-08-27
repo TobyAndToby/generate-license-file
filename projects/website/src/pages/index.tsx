@@ -18,7 +18,7 @@ export default function Home(): JSX.Element {
             <Icon />
             <Title>Generate License File</Title>
             <Subtitle>
-              Generate a text file containing all of the licences for your <br /> production,
+              Generate a text file containing all of the licencss for your <br /> production,
               third-party dependencies.
             </Subtitle>
           </Intro>

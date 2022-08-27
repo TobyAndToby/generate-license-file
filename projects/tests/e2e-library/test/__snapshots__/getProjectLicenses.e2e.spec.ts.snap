@@ -26,7 +26,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ",
     "dependencies": Array [
-      "has-symbols@1.0.2",
+      "has-symbols@1.0.3",
     ],
   },
   License {
@@ -194,7 +194,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ",
     "dependencies": Array [
-      "has-symbols@1.0.2",
+      "has-symbols@1.0.3",
     ],
   },
   License {
@@ -737,7 +737,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ",
     "dependencies": Array [
-      "has-symbols@1.0.2",
+      "has-symbols@1.0.3",
     ],
   },
   License {
@@ -935,7 +935,7 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 ",
     "dependencies": Array [
-      "moment@2.29.1",
+      "moment@2.29.4",
     ],
   },
 ]
@@ -1342,7 +1342,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ",
     "dependencies": Array [
-      "has-symbols@1.0.2",
+      "has-symbols@1.0.3",
     ],
   },
   License {
@@ -1540,7 +1540,7 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 ",
     "dependencies": Array [
-      "moment@2.29.1",
+      "moment@2.29.4",
     ],
   },
 ]

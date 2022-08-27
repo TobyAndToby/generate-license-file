@@ -2,49 +2,67 @@ name: CD
 
 on:
   release:
-    types: [created]
+    types:
+      - created
+
+env:
+  NODE_VERSION: 16
+  GLF_PROJECT: ./projects/packages/generate-license-file
 
 jobs:
-  cd:
+  get-version:
+    name: Get Version
+
     runs-on: ubuntu-latest
 
-    name: CD
+    outputs:
+      version: ${{ steps.get_version.outputs.version-without-v }}
 
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 18
-          registry-url: https://registry.npmjs.org/
       - id: get_version
         uses: battila7/get-version-action@v2
 
-      - run: npm --no-git-tag-version version ${{ steps.get_version.outputs.version-without-v }}
-        working-directory: ./projects/packages/generate-license-file
+  ci:
+    needs:
+      - get-version
+    name: Run CI
+    uses: ./.github/workflows/ci.yml
+    with:
+      version: ${{ needs.get_version.outputs.version }}
+    secrets: inherit
 
-      - name: Install dependencies
-        run: npm ci
+  deploy:
+    needs:
+      - get-version
+      - ci
 
-      - name: Run Prettier
-        run: npx prettier --check .
-        working-directory: ./projects/packages/generate-license-file
+    name: Deploy
 
-      - name: Run ESLint
-        run: npx eslint . --max-warnings 0
-        working-directory: ./projects/packages/generate-license-file
+    runs-on: ubuntu-latest
 
-      - name: Build
-        run: npx lerna run build --scope generate-license-file
+    steps:
+      - uses: actions/checkout@v3
 
-      - name: Run Tests
-        run: npx lerna run test:ci --scope generate-license-file
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          registry-url: https://registry.npmjs.org/
 
-      - uses: tobysmith568/npm-publish-latest-tag@v1
+      - name: Get Latest Tag
+        uses: tobysmith568/npm-publish-latest-tag@v1
         id: latest_tag
         with:
-          package-json: ./projects/packages/generate-license-file/package.json
+          package-json: ${{ env.GLF_PROJECT }}/package.json
 
-      - run: npm publish --access public --tag ${{ steps.latest_tag.outputs.latest-tag }}
-        working-directory: ./projects/packages/generate-license-file
+      - name: Download Packed Build
+        uses: actions/download-artifact@v3
+        with:
+          name: Packed-Build
+          path: ${{ env.GLF_PROJECT }}
+
+      - name: Publish
+        run: npm publish ${{ env.GLF_PROJECT }}/generate-license-file-${{ needs.get_version.outputs.version }}.tgz --access public --tag ${{ steps.latest_tag.outputs.latest-tag }} --dry-run
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}

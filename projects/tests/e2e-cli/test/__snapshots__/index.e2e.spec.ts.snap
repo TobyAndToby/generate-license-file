@@ -3,7 +3,7 @@
 exports[`cli for package all-have-licenses/package.json with a relative path ci should match snapshot when --ci is given 1`] = `
 "The following npm package may be included in this product:
 
- - has-symbols@1.0.2
+ - has-symbols@1.0.3
 
 This package contains the following license and notice below:
 
@@ -185,7 +185,7 @@ This file was generated with generate-license-file! https://www.npmjs.com/packag
 exports[`cli for package all-have-licenses/package.json with a relative path for line ending crlf should match snapshot when --eol is given 1`] = `
 "The following npm package may be included in this product:
 
- - has-symbols@1.0.2
+ - has-symbols@1.0.3
 
 This package contains the following license and notice below:
 
@@ -367,7 +367,7 @@ This file was generated with generate-license-file! https://www.npmjs.com/packag
 exports[`cli for package all-have-licenses/package.json with a relative path for line ending lf should match snapshot when --eol is given 1`] = `
 "The following npm package may be included in this product:
 
- - has-symbols@1.0.2
+ - has-symbols@1.0.3
 
 This package contains the following license and notice below:
 
@@ -549,7 +549,7 @@ This file was generated with generate-license-file! https://www.npmjs.com/packag
 exports[`cli for package all-have-licenses/package.json with a relative path no-spinner should match snapshot when --no-spinner is given 1`] = `
 "The following npm package may be included in this product:
 
- - has-symbols@1.0.2
+ - has-symbols@1.0.3
 
 This package contains the following license and notice below:
 
@@ -731,7 +731,7 @@ This file was generated with generate-license-file! https://www.npmjs.com/packag
 exports[`cli for package all-have-licenses/package.json with a relative path should match snapshot using -i and -o 1`] = `
 "The following npm package may be included in this product:
 
- - has-symbols@1.0.2
+ - has-symbols@1.0.3
 
 This package contains the following license and notice below:
 
@@ -913,7 +913,7 @@ This file was generated with generate-license-file! https://www.npmjs.com/packag
 exports[`cli for package all-have-licenses/package.json with a relative path should match snapshot with --input and --output wrapped in double quotes 1`] = `
 "The following npm package may be included in this product:
 
- - has-symbols@1.0.2
+ - has-symbols@1.0.3
 
 This package contains the following license and notice below:
 
@@ -1095,7 +1095,7 @@ This file was generated with generate-license-file! https://www.npmjs.com/packag
 exports[`cli for package all-have-licenses/package.json with a relative path should match snapshot with --output given before --input 1`] = `
 "The following npm package may be included in this product:
 
- - has-symbols@1.0.2
+ - has-symbols@1.0.3
 
 This package contains the following license and notice below:
 
@@ -1277,7 +1277,7 @@ This file was generated with generate-license-file! https://www.npmjs.com/packag
 exports[`cli for package all-have-licenses/package.json with a relative path should match snapshot with just --input and --output 1`] = `
 "The following npm package may be included in this product:
 
- - has-symbols@1.0.2
+ - has-symbols@1.0.3
 
 This package contains the following license and notice below:
 
@@ -1459,7 +1459,7 @@ This file was generated with generate-license-file! https://www.npmjs.com/packag
 exports[`cli for package all-have-licenses/package.json with an absolute path ci should match snapshot when --ci is given 1`] = `
 "The following npm package may be included in this product:
 
- - has-symbols@1.0.2
+ - has-symbols@1.0.3
 
 This package contains the following license and notice below:
 
@@ -1641,7 +1641,7 @@ This file was generated with generate-license-file! https://www.npmjs.com/packag
 exports[`cli for package all-have-licenses/package.json with an absolute path for line ending crlf should match snapshot when --eol is given 1`] = `
 "The following npm package may be included in this product:
 
- - has-symbols@1.0.2
+ - has-symbols@1.0.3
 
 This package contains the following license and notice below:
 
@@ -1823,7 +1823,7 @@ This file was generated with generate-license-file! https://www.npmjs.com/packag
 exports[`cli for package all-have-licenses/package.json with an absolute path for line ending lf should match snapshot when --eol is given 1`] = `
 "The following npm package may be included in this product:
 
- - has-symbols@1.0.2
+ - has-symbols@1.0.3
 
 This package contains the following license and notice below:
 
@@ -2005,7 +2005,7 @@ This file was generated with generate-license-file! https://www.npmjs.com/packag
 exports[`cli for package all-have-licenses/package.json with an absolute path no-spinner should match snapshot when --no-spinner is given 1`] = `
 "The following npm package may be included in this product:
 
- - has-symbols@1.0.2
+ - has-symbols@1.0.3
 
 This package contains the following license and notice below:
 
@@ -2187,7 +2187,7 @@ This file was generated with generate-license-file! https://www.npmjs.com/packag
 exports[`cli for package all-have-licenses/package.json with an absolute path should match snapshot using -i and -o 1`] = `
 "The following npm package may be included in this product:
 
- - has-symbols@1.0.2
+ - has-symbols@1.0.3
 
 This package contains the following license and notice below:
 
@@ -2369,7 +2369,7 @@ This file was generated with generate-license-file! https://www.npmjs.com/packag
 exports[`cli for package all-have-licenses/package.json with an absolute path should match snapshot with --input and --output wrapped in double quotes 1`] = `
 "The following npm package may be included in this product:
 
- - has-symbols@1.0.2
+ - has-symbols@1.0.3
 
 This package contains the following license and notice below:
 
@@ -2551,7 +2551,7 @@ This file was generated with generate-license-file! https://www.npmjs.com/packag
 exports[`cli for package all-have-licenses/package.json with an absolute path should match snapshot with --output given before --input 1`] = `
 "The following npm package may be included in this product:
 
- - has-symbols@1.0.2
+ - has-symbols@1.0.3
 
 This package contains the following license and notice below:
 
@@ -2733,7 +2733,7 @@ This file was generated with generate-license-file! https://www.npmjs.com/packag
 exports[`cli for package all-have-licenses/package.json with an absolute path should match snapshot with just --input and --output 1`] = `
 "The following npm package may be included in this product:
 
- - has-symbols@1.0.2
+ - has-symbols@1.0.3
 
 This package contains the following license and notice below:
 
@@ -3293,7 +3293,7 @@ OR OTHER DEALINGS IN THE SOFTWARE.
 
 The following npm package may be included in this product:
 
- - has-symbols@1.0.2
+ - has-symbols@1.0.3
 
 This package contains the following license and notice below:
 
@@ -3504,7 +3504,7 @@ See source
 
 The following npm package may be included in this product:
 
- - moment@2.29.1
+ - moment@2.29.4
 
 This package contains the following license and notice below:
 
@@ -3918,7 +3918,7 @@ OR OTHER DEALINGS IN THE SOFTWARE.
 
 The following npm package may be included in this product:
 
- - has-symbols@1.0.2
+ - has-symbols@1.0.3
 
 This package contains the following license and notice below:
 
@@ -4129,7 +4129,7 @@ See source
 
 The following npm package may be included in this product:
 
- - moment@2.29.1
+ - moment@2.29.4
 
 This package contains the following license and notice below:
 
@@ -4543,7 +4543,7 @@ OR OTHER DEALINGS IN THE SOFTWARE.
 
 The following npm package may be included in this product:
 
- - has-symbols@1.0.2
+ - has-symbols@1.0.3
 
 This package contains the following license and notice below:
 
@@ -4754,7 +4754,7 @@ See source
 
 The following npm package may be included in this product:
 
- - moment@2.29.1
+ - moment@2.29.4
 
 This package contains the following license and notice below:
 
@@ -5168,7 +5168,7 @@ OR OTHER DEALINGS IN THE SOFTWARE.
 
 The following npm package may be included in this product:
 
- - has-symbols@1.0.2
+ - has-symbols@1.0.3
 
 This package contains the following license and notice below:
 
@@ -5379,7 +5379,7 @@ See source
 
 The following npm package may be included in this product:
 
- - moment@2.29.1
+ - moment@2.29.4
 
 This package contains the following license and notice below:
 
@@ -5793,7 +5793,7 @@ OR OTHER DEALINGS IN THE SOFTWARE.
 
 The following npm package may be included in this product:
 
- - has-symbols@1.0.2
+ - has-symbols@1.0.3
 
 This package contains the following license and notice below:
 
@@ -6004,7 +6004,7 @@ See source
 
 The following npm package may be included in this product:
 
- - moment@2.29.1
+ - moment@2.29.4
 
 This package contains the following license and notice below:
 
@@ -6418,7 +6418,7 @@ OR OTHER DEALINGS IN THE SOFTWARE.
 
 The following npm package may be included in this product:
 
- - has-symbols@1.0.2
+ - has-symbols@1.0.3
 
 This package contains the following license and notice below:
 
@@ -6629,7 +6629,7 @@ See source
 
 The following npm package may be included in this product:
 
- - moment@2.29.1
+ - moment@2.29.4
 
 This package contains the following license and notice below:
 
@@ -7043,7 +7043,7 @@ OR OTHER DEALINGS IN THE SOFTWARE.
 
 The following npm package may be included in this product:
 
- - has-symbols@1.0.2
+ - has-symbols@1.0.3
 
 This package contains the following license and notice below:
 
@@ -7254,7 +7254,7 @@ See source
 
 The following npm package may be included in this product:
 
- - moment@2.29.1
+ - moment@2.29.4
 
 This package contains the following license and notice below:
 
@@ -7668,7 +7668,7 @@ OR OTHER DEALINGS IN THE SOFTWARE.
 
 The following npm package may be included in this product:
 
- - has-symbols@1.0.2
+ - has-symbols@1.0.3
 
 This package contains the following license and notice below:
 
@@ -7879,7 +7879,7 @@ See source
 
 The following npm package may be included in this product:
 
- - moment@2.29.1
+ - moment@2.29.4
 
 This package contains the following license and notice below:
 
@@ -8293,7 +8293,7 @@ OR OTHER DEALINGS IN THE SOFTWARE.
 
 The following npm package may be included in this product:
 
- - has-symbols@1.0.2
+ - has-symbols@1.0.3
 
 This package contains the following license and notice below:
 
@@ -8504,7 +8504,7 @@ See source
 
 The following npm package may be included in this product:
 
- - moment@2.29.1
+ - moment@2.29.4
 
 This package contains the following license and notice below:
 
@@ -8918,7 +8918,7 @@ OR OTHER DEALINGS IN THE SOFTWARE.
 
 The following npm package may be included in this product:
 
- - has-symbols@1.0.2
+ - has-symbols@1.0.3
 
 This package contains the following license and notice below:
 
@@ -9129,7 +9129,7 @@ See source
 
 The following npm package may be included in this product:
 
- - moment@2.29.1
+ - moment@2.29.4
 
 This package contains the following license and notice below:
 
@@ -9543,7 +9543,7 @@ OR OTHER DEALINGS IN THE SOFTWARE.
 
 The following npm package may be included in this product:
 
- - has-symbols@1.0.2
+ - has-symbols@1.0.3
 
 This package contains the following license and notice below:
 
@@ -9754,7 +9754,7 @@ See source
 
 The following npm package may be included in this product:
 
- - moment@2.29.1
+ - moment@2.29.4
 
 This package contains the following license and notice below:
 
@@ -10168,7 +10168,7 @@ OR OTHER DEALINGS IN THE SOFTWARE.
 
 The following npm package may be included in this product:
 
- - has-symbols@1.0.2
+ - has-symbols@1.0.3
 
 This package contains the following license and notice below:
 
@@ -10379,7 +10379,7 @@ See source
 
 The following npm package may be included in this product:
 
- - moment@2.29.1
+ - moment@2.29.4
 
 This package contains the following license and notice below:
 
@@ -10793,7 +10793,7 @@ OR OTHER DEALINGS IN THE SOFTWARE.
 
 The following npm package may be included in this product:
 
- - has-symbols@1.0.2
+ - has-symbols@1.0.3
 
 This package contains the following license and notice below:
 
@@ -11004,7 +11004,7 @@ See source
 
 The following npm package may be included in this product:
 
- - moment@2.29.1
+ - moment@2.29.4
 
 This package contains the following license and notice below:
 
@@ -11418,7 +11418,7 @@ OR OTHER DEALINGS IN THE SOFTWARE.
 
 The following npm package may be included in this product:
 
- - has-symbols@1.0.2
+ - has-symbols@1.0.3
 
 This package contains the following license and notice below:
 
@@ -11629,7 +11629,7 @@ See source
 
 The following npm package may be included in this product:
 
- - moment@2.29.1
+ - moment@2.29.4
 
 This package contains the following license and notice below:
 
@@ -12043,7 +12043,7 @@ OR OTHER DEALINGS IN THE SOFTWARE.
 
 The following npm package may be included in this product:
 
- - has-symbols@1.0.2
+ - has-symbols@1.0.3
 
 This package contains the following license and notice below:
 
@@ -12254,7 +12254,7 @@ See source
 
 The following npm package may be included in this product:
 
- - moment@2.29.1
+ - moment@2.29.4
 
 This package contains the following license and notice below:
 
@@ -12668,7 +12668,7 @@ OR OTHER DEALINGS IN THE SOFTWARE.
 
 The following npm package may be included in this product:
 
- - has-symbols@1.0.2
+ - has-symbols@1.0.3
 
 This package contains the following license and notice below:
 
@@ -12879,7 +12879,7 @@ See source
 
 The following npm package may be included in this product:
 
- - moment@2.29.1
+ - moment@2.29.4
 
 This package contains the following license and notice below:
 

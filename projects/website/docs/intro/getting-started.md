@@ -26,7 +26,7 @@ For more advanced usages of the CLI, including the different options and argumen
 
 ## Library Quick Guide
 
-Our library APIs allow you to programatically interact with generate license file's functionality. Examples include generating and writing the license file to disk, or fetching the license data as an array for other usages. Want to know what the license objects contain? Head over to our [API spec](../library/api).
+Our library APIs allow you to programmatically interact with generate license file's functionality. Examples include generating and writing the license file to disk, or fetching the license data as an array for other usages. Want to know what the license objects contain? Head over to our [API spec](../library/api).
 
 ```js
 const glf = require("generate-license-file");

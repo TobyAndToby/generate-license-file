@@ -1,18 +1,18 @@
 import { getProjectLicenses } from "../src/getProjectLicenses";
-import { getLicencesForProjects } from "../src/internal/getLicencesForProjects";
+import { getLicensesForProjects } from "../src/internal/getLicensesForProjects";
 import { License } from "../src/models/license";
 
-jest.mock("../src/internal/getLicencesForProjects", () => ({
-  getLicencesForProjects: jest.fn(),
+jest.mock("../src/internal/getLicensesForProjects", () => ({
+  getLicensesForProjects: jest.fn(),
 }));
 
 describe("getProjectLicenses", () => {
-  const mockGetLicencesForProjects = jest.mocked(getLicencesForProjects);
+  const mockGetLicensesForProjects = jest.mocked(getLicensesForProjects);
 
   beforeEach(() => {
     jest.resetAllMocks();
 
-    mockGetLicencesForProjects.mockResolvedValue([]);
+    mockGetLicensesForProjects.mockResolvedValue([]);
   });
 
   afterAll(() => {
@@ -22,7 +22,7 @@ describe("getProjectLicenses", () => {
   it("should call the internal getProjectLicenses", async () => {
     await getProjectLicenses("path");
 
-    expect(mockGetLicencesForProjects).toHaveBeenCalledTimes(1);
+    expect(mockGetLicensesForProjects).toHaveBeenCalledTimes(1);
   });
 
   it("should call the internal getProjectLicenses with the given path", async () => {
@@ -30,7 +30,7 @@ describe("getProjectLicenses", () => {
 
     await getProjectLicenses(path);
 
-    expect(mockGetLicencesForProjects).toHaveBeenCalledWith([path]);
+    expect(mockGetLicensesForProjects).toHaveBeenCalledWith([path]);
   });
 
   it("should return the response from the internal getProjectLicenses", async () => {
@@ -39,7 +39,7 @@ describe("getProjectLicenses", () => {
       new License("also stuff", ["c", "d"]),
     ];
 
-    mockGetLicencesForProjects.mockResolvedValue(licenses);
+    mockGetLicensesForProjects.mockResolvedValue(licenses);
 
     const result = await getProjectLicenses("path");
 
