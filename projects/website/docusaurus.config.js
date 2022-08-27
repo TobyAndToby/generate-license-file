@@ -78,28 +78,45 @@ const config = {
       footer: {
         links: [
           {
-            title: "Docs",
+            title: "Links",
             items: [
               {
                 label: "Docs",
                 to: "/docs/cli",
               },
-            ],
-          },
-          {
-            title: "More",
-            items: [
+              {
+                label: "npm",
+                href: "https://www.npmjs.com/package/generate-license-file",
+              },
               {
                 label: "GitHub",
                 href: "https://github.com/TobyAndToby/generate-license-file",
               },
+            ],
+          },
+          {
+            title: "Toby Bessant",
+            items: [
               {
-                label: "Toby Smith",
+                label: "Website",
+                href: "https://tobybessant.co.uk",
+              },
+              {
+                label: "GitHub",
+                href: "https://github.com/tobybessant",
+              },
+            ],
+          },
+          {
+            title: "Toby Smith",
+            items: [
+              {
+                label: "Website",
                 href: "https://tobysmith.uk",
               },
               {
-                label: "Toby Bessant",
-                href: "https://tobybessant.co.uk",
+                label: "GitHub",
+                href: "https://github.com/tobysmith568",
               },
             ],
           },
