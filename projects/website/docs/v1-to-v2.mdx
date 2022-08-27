@@ -9,15 +9,31 @@ import InputDiff from "./partials/_v1-to-v2-input-diff.mdx";
 
 ## Breaking Changes
 
-### Line Endings
+### Output file format
+
+Between the major versions we've made a few small formatting changes to the outputted file content.
+
+:::tip Actions Required
+None!
+:::
+
+#### Line Endings
 
 In v1, generate-license-file preserved the line endings _within_ license text. The `--eol` property only applied to the text added around the licenses.
 
 In v2, the `--eol` property applies to all text in the output to create a consistent file.
 
-:::tip Actions Required
-None!
-:::
+#### Capitalisation of npm
+
+In v1, the output text wrote "npm" in capital letters.
+
+In v2, the output now [correctly](https://github.com/npm/npm/releases/tag/v5.0.0#:~:text=npm%20will%20now%20scold%20you%20if%20you%20capitalize%20its%20name.%20seriously%20it%20will%20fight%20you.) writes npm in lowercase.
+
+#### Credit
+
+In v1, credit to generate-license-file was only put at the bottom of the file.
+
+In v2, credit is now also added at the top of the file.
 
 ### End-of-line flag (EOL)
 
@@ -64,30 +80,6 @@ In v2, the `input` parameter needs to be a path to the `package.json` file itsel
     <InputDiff />
   </TabItem>
 </Tabs>
-:::
-
-### Default Output file
-
-In v1, if you didn't provide an `--output` flag to the CLI then it would use the file name `3rd-party-licenses.txt`
-
-In v2, the default output file has been renamed to `third-party-licenses.txt` to better fit in with industry conventions.
-
-:::info Actions Required
-If you already provide the `--output` flag to the CLI, none!
-
-If you don't provide the `--output` flag to the CLI and you want to stick with `3rd-party-licenses.txt`, then you'll need to provide it `--output 3rd-party-licenses.txt`.
-
-If you don't provide the `--output` flag and you're happy with the new file name, you'll need to update anything that points to/redirects to/uses it.
-:::
-
-### Capitalisation of npm
-
-In v1, the output text wrote npm in capital letters.
-
-In v2, the output now [correctly](https://github.com/npm/npm/releases/tag/v5.0.0#:~:text=npm%20will%20now%20scold%20you%20if%20you%20capitalize%20its%20name.%20seriously%20it%20will%20fight%20you.) writes npm in lowercase.
-
-:::tip Actions Required
-None!
 :::
 
 ## New features to consider
