@@ -94,7 +94,7 @@ describe("getLicenseFileText", () => {
     ).toBeTruthy();
   });
 
-  it("should return formatted licenses with the footer", async () => {
+  it("should return formatted licenses with the credit before and after", async () => {
     const licenses = [getNewMockedLicense(), getNewMockedLicense(), getNewMockedLicense()];
     jest.mocked(licenses[0].format).mockReturnValue("first");
     jest.mocked(licenses[1].format).mockReturnValue("second");
@@ -105,8 +105,14 @@ describe("getLicenseFileText", () => {
     const result = await getLicenseFileText("path", "lf");
 
     expect(
+      result.startsWith(
+        "This file was generated with the generate-license-file npm package!\nhttps://www.npmjs.com/package/generate-license-file\n\n",
+      ),
+    ).toBeTruthy();
+
+    expect(
       result.endsWith(
-        "\n\nThis file was generated with generate-license-file! https://www.npmjs.com/package/generate-license-file\n",
+        "\n\nThis file was generated with the generate-license-file npm package!\nhttps://www.npmjs.com/package/generate-license-file\n",
       ),
     ).toBeTruthy();
   });
