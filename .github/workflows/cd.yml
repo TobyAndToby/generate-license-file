@@ -19,8 +19,13 @@ jobs:
       version: ${{ steps.get_version.outputs.version-without-v }}
 
     steps:
-      - id: get_version
+      - name: Get Version
+        id: get_version
         uses: battila7/get-version-action@v2
+
+      - name: Log Version
+        shell: pwsh
+        run: Write-Host ${{ steps.get_version.outputs.version-without-v }}
 
   ci:
     needs:

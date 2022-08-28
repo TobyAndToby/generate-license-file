@@ -11,7 +11,7 @@ on:
     inputs:
       version:
         description: The npm version to use for generate-license-file
-        default: 0.0.0
+        default: "0.0.0"
         required: false
         type: string
 
@@ -60,6 +60,10 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Log Version
+        shell: pwsh
+        run: Write-Host ${{ inputs.version }}
 
       - name: Set Version
         if: inputs.version != ''
