@@ -10,7 +10,6 @@ const config = {
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "throw",
   favicon: "favicon.ico",
-  noIndex: true,
 
   organizationName: "TobyAndToby",
   projectName: "generate-license-file",
@@ -43,6 +42,11 @@ const config = {
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
+      announcementBar: {
+        backgroundColor: "#0070f3",
+        content: "<b>Version 2.0.0 just released! 🎉</b>",
+        textColor: "#FFF",
+      },
       navbar: {
         title: "Generate License File",
         logo: {
