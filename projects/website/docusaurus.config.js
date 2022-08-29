@@ -42,6 +42,12 @@ const config = {
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
+      metadata: [
+        {
+          name: "google-site-verification",
+          content: "LVR-C5uuH8bBRQHrbHnLl3_PCk1wxWfD5hnWgseIRuE",
+        },
+      ],
       announcementBar: {
         backgroundColor: "#0070f3",
         content: "<b>Version 2.0.0 just released! 🎉</b>",
