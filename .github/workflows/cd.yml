@@ -33,7 +33,7 @@ jobs:
     name: Run CI
     uses: ./.github/workflows/ci.yml
     with:
-      version: ${{ needs.get_version.outputs.version }}
+      version: ${{ needs.get-version.outputs.version }}
     secrets: inherit
 
   deploy:
@@ -68,6 +68,6 @@ jobs:
           path: ${{ env.GLF_PROJECT }}
 
       - name: Publish
-        run: npm publish ${{ env.GLF_PROJECT }}/generate-license-file-${{ needs.get_version.outputs.version }}.tgz --access public --tag ${{ steps.latest_tag.outputs.latest-tag }}
+        run: npm publish ${{ env.GLF_PROJECT }}/generate-license-file-${{ needs.get-version.outputs.version }}.tgz --access public --tag ${{ steps.latest_tag.outputs.latest-tag }}
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
