@@ -9,7 +9,7 @@ export type MonacoEditorFile = {
 
 export const demoFiles: MonacoEditorFile[] = [
   {
-    fileName: "library-demo.ts",
+    fileName: "demo.ts",
     tabIcon: "/img/ts-logo-256.png",
     // Intentionally set to "javascript", the "typescript" lang setting doesn't
     // appear to set correct classes on imports or non-native types.
@@ -21,7 +21,7 @@ const licenses: ILicense[] = await getProjectLicenses("./package.json");
     `,
   },
   {
-    fileName: "library-demo.js",
+    fileName: "demo.js",
     tabIcon: "/img/js-logo-256.png",
     language: "javascript",
     content: `const generateLicenseFile = require("generate-license-file");
