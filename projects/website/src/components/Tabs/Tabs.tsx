@@ -37,7 +37,7 @@ export const Tabs: FC<PropsWithChildren<Record<string, unknown>>> = ({ children 
         })}
       </TabsContainer>
 
-      <div className="tab-content">
+      <TabContentContainer>
         {React.Children.map(children, child => {
           if ((child as any).props.label !== activeTabLabel) {
             return undefined;
@@ -45,12 +45,12 @@ export const Tabs: FC<PropsWithChildren<Record<string, unknown>>> = ({ children 
 
           return (child as any).props.children;
         })}
-      </div>
+      </TabContentContainer>
     </>
   );
 };
 
-export const TabsContainer = styled.div`
+const TabsContainer = styled.div`
   display: flex;
   margin-bottom: 36px;
 
@@ -75,4 +75,8 @@ export const TabsContainer = styled.div`
       border-radius: 0 0.5em 0.5em 0;
     }
   }
+`;
+
+const TabContentContainer = styled.div`
+  width: 100%;
 `;

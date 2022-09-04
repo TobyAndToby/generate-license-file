@@ -18,8 +18,8 @@ export default function Home(): JSX.Element {
             <Icon />
             <Title>Generate License File</Title>
             <Subtitle>
-              Generate a text file containing all of the licences for your <br /> production,
-              third-party dependencies.
+              Generate a text file containing all of the licences for your production, third-party
+              dependencies.
             </Subtitle>
           </Intro>
           <Examples>
@@ -64,7 +64,7 @@ const Title = styled.h1`
 
 const Subtitle = styled.p`
   font-size: 1.5rem;
-  max-width: 700px;
+  max-width: 650px;
   margin-bottom: 64px;
 `;
 

@@ -31,8 +31,8 @@ export const Terminal: FC = () => {
 
 const Container = styled.div`
   position: relative;
-  width: 715px;
-  max-width: 950px;
+  width: 100%;
+  max-width: 715px;
   margin: 0 auto;
   border-radius: 5px;
   box-shadow: 7px 3px 10px 0px #0000003b;
@@ -82,6 +82,7 @@ const Screen = styled.div`
   border-bottom-right-radius: 5px;
   font-family: "Fira Mono", monospace;
   white-space: pre;
+  overflow-x: auto;
 `;
 
 const Argument = styled.span`

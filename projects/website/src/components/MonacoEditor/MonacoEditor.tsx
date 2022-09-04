@@ -65,7 +65,9 @@ export const MonacoEditor: FC = () => {
 const Window = styled.div`
   width: auto;
   height: auto;
+  max-width: 715px;
   min-height: 350px;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
   border-radius: 5px;

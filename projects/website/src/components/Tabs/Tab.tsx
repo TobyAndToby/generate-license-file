@@ -1,3 +1,4 @@
+import styled from "@emotion/styled";
 import React, { FC, PropsWithChildren } from "react";
 
 type Props = {
@@ -7,5 +8,9 @@ type Props = {
 };
 
 export const Tab: FC<PropsWithChildren<Props>> = ({ children }) => {
-  return <>{children}</>;
+  return <TabComponent>{children}</TabComponent>;
 };
+
+const TabComponent = styled.div`
+  width: 100%;
+`;
