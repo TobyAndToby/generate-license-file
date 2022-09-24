@@ -141,7 +141,7 @@ jobs:
         run: npx lerna run test --stream -- --ci --coverage
 
       - name: Codecov
-        uses: codecov/codecov-action@v3.1.0
+        uses: codecov/codecov-action@v3.1.1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           directory: coverage
