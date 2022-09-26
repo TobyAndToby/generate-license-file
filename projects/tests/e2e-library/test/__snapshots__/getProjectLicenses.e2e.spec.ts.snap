@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`getProjectLicenses for package project-1/package.json with a relative path should match snapshot 1`] = `
-Array [
+[
   License {
     "content": "# Dep Five
 
@@ -13,7 +13,7 @@ Array [
 
 This README should be used as a substitute for the license file.
 ",
-    "dependencies": Array [
+    "dependencies": [
       "dep-five@1.0.0",
     ],
   },
@@ -22,7 +22,7 @@ This README should be used as a substitute for the license file.
 
 This license file is spelt \`LICENCE\`.
 This license should be found.",
-    "dependencies": Array [
+    "dependencies": [
       "dep-four@1.0.0",
     ],
   },
@@ -32,7 +32,7 @@ This license should be found.",
 This license file is spelt \`LICENSE.md\`.
 This license should be found.
 ",
-    "dependencies": Array [
+    "dependencies": [
       "dep-one@1.0.0",
     ],
   },
@@ -41,7 +41,7 @@ This license should be found.
 
 This license file is spelt \`LICENSE\`.
 This license should be found.",
-    "dependencies": Array [
+    "dependencies": [
       "dep-three@1.0.0",
     ],
   },
@@ -51,7 +51,7 @@ This license should be found.",
 This license file is spelt \`LICENCE.md\`.
 This license should be found.
 ",
-    "dependencies": Array [
+    "dependencies": [
       "dep-two-duplicate@1.0.0",
       "dep-two@1.0.0",
     ],
@@ -60,7 +60,7 @@ This license should be found.
 `;
 
 exports[`getProjectLicenses for package project-1/package.json with an absolute path should match snapshot 1`] = `
-Array [
+[
   License {
     "content": "# Dep Five
 
@@ -72,7 +72,7 @@ Array [
 
 This README should be used as a substitute for the license file.
 ",
-    "dependencies": Array [
+    "dependencies": [
       "dep-five@1.0.0",
     ],
   },
@@ -81,7 +81,7 @@ This README should be used as a substitute for the license file.
 
 This license file is spelt \`LICENCE\`.
 This license should be found.",
-    "dependencies": Array [
+    "dependencies": [
       "dep-four@1.0.0",
     ],
   },
@@ -91,7 +91,7 @@ This license should be found.",
 This license file is spelt \`LICENSE.md\`.
 This license should be found.
 ",
-    "dependencies": Array [
+    "dependencies": [
       "dep-one@1.0.0",
     ],
   },
@@ -100,7 +100,7 @@ This license should be found.
 
 This license file is spelt \`LICENSE\`.
 This license should be found.",
-    "dependencies": Array [
+    "dependencies": [
       "dep-three@1.0.0",
     ],
   },
@@ -110,7 +110,7 @@ This license should be found.",
 This license file is spelt \`LICENCE.md\`.
 This license should be found.
 ",
-    "dependencies": Array [
+    "dependencies": [
       "dep-two-duplicate@1.0.0",
       "dep-two@1.0.0",
     ],
