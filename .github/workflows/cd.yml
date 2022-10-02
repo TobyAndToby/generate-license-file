@@ -8,6 +8,7 @@ on:
 env:
   NODE_VERSION: 16
   GLF_PROJECT: ./projects/packages/generate-license-file
+  WEBPACK_PROJECT: ./projects/packages/webpack-plugin
 
 jobs:
   get-version:
@@ -36,12 +37,12 @@ jobs:
       version: ${{ needs.get-version.outputs.version }}
     secrets: inherit
 
-  deploy:
+  deploy-glf:
     needs:
       - get-version
       - ci
 
-    name: Deploy
+    name: Deploy Generate License File
 
     runs-on: ubuntu-latest
 
@@ -64,10 +65,47 @@ jobs:
       - name: Download Packed Build
         uses: actions/download-artifact@v3
         with:
-          name: Packed-Build
+          name: Packed-Build (Generate License File)
           path: ${{ env.GLF_PROJECT }}
 
       - name: Publish
         run: npm publish ${{ env.GLF_PROJECT }}/generate-license-file-${{ needs.get-version.outputs.version }}.tgz --access public --tag ${{ steps.latest_tag.outputs.latest-tag }}
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.npm_token}}
+
+  deploy-webpack:
+    needs:
+      - get-version
+      - ci
+      - deploy-glf
+
+    name: Deploy Webpack Plugin
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          registry-url: https://registry.npmjs.org/
+
+      - name: Get Latest Tag
+        uses: tobysmith568/npm-publish-latest-tag@v1
+        id: latest_tag
+        with:
+          package-json: ${{ env.WEBPACK_PROJECT }}/package.json
+
+      - name: Download Packed Build
+        uses: actions/download-artifact@v3
+        with:
+          name: Packed-Build (Webpack Plugin)
+          path: ${{ env.WEBPACK_PROJECT }}
+
+      - name: Publish
+        run: npm publish ${{ env.WEBPACK_PROJECT }}/generate-license-file-webpack-plugin-${{ needs.get-version.outputs.version }}.tgz --access public --tag ${{ steps.latest_tag.outputs.latest-tag }}
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}

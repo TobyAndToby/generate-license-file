@@ -17,8 +17,6 @@ on:
 
 env:
   NODE_VERSION: 16
-  GLF_PROJECT: ./projects/packages/generate-license-file
-  WEBSITE_PROJECT: ./projects/website
 
 jobs:
   lint:
@@ -44,8 +42,19 @@ jobs:
       - name: Run Prettier
         run: npx prettier --check .
 
-  build-glf:
-    name: Build Generate License File
+  build:
+    strategy:
+      matrix:
+        project:
+          - name: Generate License File
+            path: ./projects/packages/generate-license-file
+            tarName: generate-license-file-*.tgz
+
+          - name: Webpack Plugin
+            path: ./projects/packages/webpack-plugin
+            tarName: generate-license-file-webpack-plugin-*.tgz
+
+    name: Build ${{ matrix.project.name }}
 
     runs-on: ubuntu-latest
 
@@ -67,28 +76,28 @@ jobs:
 
       - name: Set Version
         if: inputs.version != ''
-        working-directory: ${{ env.GLF_PROJECT }}
+        working-directory: ${{ matrix.project.path }}
         run: npm --no-git-tag-version --allow-same-version version ${{ inputs.version }}
 
       - name: Build
-        working-directory: ${{ env.GLF_PROJECT }}
+        working-directory: ${{ matrix.project.path }}
         run: npm run build
 
       - name: Upload Build
         uses: actions/upload-artifact@v3
         with:
-          name: Build
-          path: ${{ env.GLF_PROJECT }}/dist
+          name: Build (${{ matrix.project.name }})
+          path: ${{ matrix.project.path }}/dist
 
       - name: Pack
-        working-directory: ${{ env.GLF_PROJECT }}
+        working-directory: ${{ matrix.project.path }}
         run: npm pack
 
       - name: Upload Packed Build
         uses: actions/upload-artifact@v3
         with:
-          name: Packed-Build
-          path: ${{ env.GLF_PROJECT }}/generate-license-file-*.tgz
+          name: Packed-Build (${{ matrix.project.name }})
+          path: ${{ matrix.project.path }}/${{ matrix.project.tarName }}
 
   build-website:
     name: Build Website
@@ -111,14 +120,14 @@ jobs:
         run: npm ci
 
       - name: Build Website
-        working-directory: ${{ env.WEBSITE_PROJECT }}
+        working-directory: ./projects/website
         run: npm run build
 
       - name: Upload Build
         uses: actions/upload-artifact@v3
         with:
           name: Website
-          path: ${{ env.WEBSITE_PROJECT }}/build/
+          path: ./projects/website/build/
 
   test:
     name: Unit Test
@@ -148,7 +157,7 @@ jobs:
 
   e2e:
     needs:
-      - build-glf
+      - build
 
     strategy:
       fail-fast: false
@@ -194,7 +203,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: Build
-          path: ${{ env.GLF_PROJECT }}/dist
+          path: ./projects/packages/generate-license-file/dist
 
       - name: Run E2E Tests
         run: npx lerna run test:e2e -- --ci
