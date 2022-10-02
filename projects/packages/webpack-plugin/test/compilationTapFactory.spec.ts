@@ -1,11 +1,14 @@
 import { Compilation, Compiler } from "webpack";
 import { asyncProcessAssetTapFactory } from "../src/asyncProcessAssetTapFactory";
-import { CompilationTap, compilationTapFactory } from "../src/compilationTapFactory";
+import {
+  CompilationTap,
+  compilationTapFactory,
+} from "../src/compilationTapFactory";
 import { Options } from "../src/options";
 
 jest.mock("../src/asyncProcessAssetTapFactory", () => {
   return {
-    asyncProcessAssetTapFactory: jest.fn()
+    asyncProcessAssetTapFactory: jest.fn(),
   };
 });
 
@@ -15,7 +18,7 @@ describe("compilationTapFactory", () => {
 
   beforeEach(() => {
     options = {
-      outputFileName: "output file name"
+      outputFileName: "output file name",
     } as Options;
 
     compiler = {} as Compiler;
@@ -31,7 +34,9 @@ describe("compilationTapFactory", () => {
   });
 
   describe("the compilation tap function", () => {
-    let mockAsyncProcessAssetTapFactory = jest.mocked(asyncProcessAssetTapFactory);
+    let mockAsyncProcessAssetTapFactory = jest.mocked(
+      asyncProcessAssetTapFactory
+    );
     let mockTapAsync = jest.fn();
     let compilationTap: CompilationTap;
 
@@ -45,9 +50,9 @@ describe("compilationTapFactory", () => {
       compilation = {
         hooks: {
           processAssets: {
-            tapAsync: mockTapAsync
-          }
-        }
+            tapAsync: mockTapAsync,
+          },
+        },
       } as any as Compilation;
     });
 
@@ -60,21 +65,24 @@ describe("compilationTapFactory", () => {
     it("should call the asyncProcessAssetTapFactory with the given options", () => {
       compilationTap(compilation);
 
-      const firstCallFirstArg = mockAsyncProcessAssetTapFactory.mock.calls[0][0];
+      const firstCallFirstArg =
+        mockAsyncProcessAssetTapFactory.mock.calls[0][0];
       expect(firstCallFirstArg).toEqual(options);
     });
 
     it("should call the asyncProcessAssetTapFactory with the given compiler", () => {
       compilationTap(compilation);
 
-      const firstCallSecondArg = mockAsyncProcessAssetTapFactory.mock.calls[0][1];
+      const firstCallSecondArg =
+        mockAsyncProcessAssetTapFactory.mock.calls[0][1];
       expect(firstCallSecondArg).toEqual(compiler);
     });
 
     it("should call the asyncProcessAssetTapFactory with the given compilation", () => {
       compilationTap(compilation);
 
-      const firstCallThirdArg = mockAsyncProcessAssetTapFactory.mock.calls[0][2];
+      const firstCallThirdArg =
+        mockAsyncProcessAssetTapFactory.mock.calls[0][2];
       expect(firstCallThirdArg).toEqual(compilation);
     });
 
@@ -95,7 +103,9 @@ describe("compilationTapFactory", () => {
       compilationTap(compilation);
 
       const firstCallFirstArg = mockTapAsync.mock.calls[0][0];
-      expect(firstCallFirstArg.stage).toBe(Compilation.PROCESS_ASSETS_STAGE_ADDITIONAL);
+      expect(firstCallFirstArg.stage).toBe(
+        Compilation.PROCESS_ASSETS_STAGE_ADDITIONAL
+      );
     });
 
     it("should tap async into the compilation asset processing with the returned processAssetTapAsync", () => {

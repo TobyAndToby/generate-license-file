@@ -11,13 +11,13 @@ class MockRawSource {
 
 jest.mock("generate-license-file", () => {
   return {
-    getLicenseFileText: jest.fn()
+    getLicenseFileText: jest.fn(),
   };
 });
 
 jest.mock("../src/devImplementation", () => {
   return {
-    devImplementation: jest.fn()
+    devImplementation: jest.fn(),
   };
 });
 
@@ -37,20 +37,20 @@ describe("asyncProcessAssetTapFactory", () => {
 
     options = {
       outputFolder: "output folder",
-      outputFileName: "output file name"
+      outputFileName: "output file name",
     } as Options;
 
     compiler = {
       webpack: {
         sources: {
-          RawSource: MockRawSource as any
-        }
-      }
+          RawSource: MockRawSource as any,
+        },
+      },
     } as Compiler;
 
     compilation = {
       errors: [],
-      emitAsset: mockEmitAsset
+      emitAsset: mockEmitAsset,
     } as any as Compilation;
 
     mockGetLicenseFileText.mockResolvedValue("");
@@ -66,7 +66,11 @@ describe("asyncProcessAssetTapFactory", () => {
     it("should call the generate-license-file implementation when isDev is false", () => {
       options.isDev = false;
 
-      const assetProcessingAsyncTap = asyncProcessAssetTapFactory(options, compiler, compilation);
+      const assetProcessingAsyncTap = asyncProcessAssetTapFactory(
+        options,
+        compiler,
+        compilation
+      );
       assetProcessingAsyncTap(undefined, () => undefined);
 
       expect(mockGetLicenseFileText).toHaveBeenCalledTimes(1);
@@ -75,7 +79,11 @@ describe("asyncProcessAssetTapFactory", () => {
     it("should not call the generate-license-file implementation when isDev is true", () => {
       options.isDev = true;
 
-      const assetProcessingAsyncTap = asyncProcessAssetTapFactory(options, compiler, compilation);
+      const assetProcessingAsyncTap = asyncProcessAssetTapFactory(
+        options,
+        compiler,
+        compilation
+      );
       assetProcessingAsyncTap(undefined, () => undefined);
 
       expect(mockGetLicenseFileText).toHaveBeenCalledTimes(0);
@@ -84,7 +92,11 @@ describe("asyncProcessAssetTapFactory", () => {
     it("should call the dev implementation when isDev is true", () => {
       options.isDev = true;
 
-      const assetProcessingAsyncTap = asyncProcessAssetTapFactory(options, compiler, compilation);
+      const assetProcessingAsyncTap = asyncProcessAssetTapFactory(
+        options,
+        compiler,
+        compilation
+      );
       assetProcessingAsyncTap(undefined, () => undefined);
 
       expect(mockDevImplementation).toHaveBeenCalledTimes(1);
@@ -93,7 +105,11 @@ describe("asyncProcessAssetTapFactory", () => {
     it("should not call the dev implementation when isDev is false", () => {
       options.isDev = false;
 
-      const assetProcessingAsyncTap = asyncProcessAssetTapFactory(options, compiler, compilation);
+      const assetProcessingAsyncTap = asyncProcessAssetTapFactory(
+        options,
+        compiler,
+        compilation
+      );
       assetProcessingAsyncTap(undefined, () => undefined);
 
       expect(mockDevImplementation).toHaveBeenCalledTimes(0);
@@ -102,18 +118,26 @@ describe("asyncProcessAssetTapFactory", () => {
     it("should call generate-license-file with the path to the package.json", () => {
       options.pathToPackageJson = "./package.json";
 
-      const assetProcessingAsyncTap = asyncProcessAssetTapFactory(options, compiler, compilation);
+      const assetProcessingAsyncTap = asyncProcessAssetTapFactory(
+        options,
+        compiler,
+        compilation
+      );
       assetProcessingAsyncTap(undefined, () => undefined);
 
       const firstCallFirstArg = mockGetLicenseFileText.mock.calls[0][0];
       expect(firstCallFirstArg).toBe(options.pathToPackageJson);
     });
 
-    (["lf", "crlf"] as LineEnding[]).forEach(lineEnding =>
+    (["lf", "crlf"] as LineEnding[]).forEach((lineEnding) =>
       it(`should call generate-license-file with the ${lineEnding} line ending `, () => {
         options.lineEnding = lineEnding;
 
-        const assetProcessingAsyncTap = asyncProcessAssetTapFactory(options, compiler, compilation);
+        const assetProcessingAsyncTap = asyncProcessAssetTapFactory(
+          options,
+          compiler,
+          compilation
+        );
         assetProcessingAsyncTap(undefined, () => undefined);
 
         const firstCallSecondArg = mockGetLicenseFileText.mock.calls[0][1];
@@ -123,7 +147,11 @@ describe("asyncProcessAssetTapFactory", () => {
 
     describe("on success", () => {
       it("should emit a new asset", async () => {
-        const assetProcessingAsyncTap = asyncProcessAssetTapFactory(options, compiler, compilation);
+        const assetProcessingAsyncTap = asyncProcessAssetTapFactory(
+          options,
+          compiler,
+          compilation
+        );
         assetProcessingAsyncTap(undefined, () => undefined);
 
         await waitForNextEventLoop();
@@ -132,17 +160,27 @@ describe("asyncProcessAssetTapFactory", () => {
       });
 
       it("should emit a new asset with the combined output path", async () => {
-        const assetProcessingAsyncTap = asyncProcessAssetTapFactory(options, compiler, compilation);
+        const assetProcessingAsyncTap = asyncProcessAssetTapFactory(
+          options,
+          compiler,
+          compilation
+        );
         assetProcessingAsyncTap(undefined, () => undefined);
 
         await waitForNextEventLoop();
 
         const firstCallFirstArg = mockEmitAsset.mock.calls[0][0];
-        expect(firstCallFirstArg).toBe(options.outputFolder + "/" + options.outputFileName);
+        expect(firstCallFirstArg).toBe(
+          options.outputFolder + "/" + options.outputFileName
+        );
       });
 
       it("should emit a new asset of type RawSource", async () => {
-        const assetProcessingAsyncTap = asyncProcessAssetTapFactory(options, compiler, compilation);
+        const assetProcessingAsyncTap = asyncProcessAssetTapFactory(
+          options,
+          compiler,
+          compilation
+        );
         assetProcessingAsyncTap(undefined, () => undefined);
 
         await waitForNextEventLoop();
@@ -155,7 +193,11 @@ describe("asyncProcessAssetTapFactory", () => {
         const fileContent = "file content";
         mockGetLicenseFileText.mockResolvedValue(fileContent);
 
-        const assetProcessingAsyncTap = asyncProcessAssetTapFactory(options, compiler, compilation);
+        const assetProcessingAsyncTap = asyncProcessAssetTapFactory(
+          options,
+          compiler,
+          compilation
+        );
         assetProcessingAsyncTap(undefined, () => undefined);
 
         await waitForNextEventLoop();
@@ -167,7 +209,11 @@ describe("asyncProcessAssetTapFactory", () => {
       it("should call the resolve function", async () => {
         const resolveFunction = jest.fn();
 
-        const assetProcessingAsyncTap = asyncProcessAssetTapFactory(options, compiler, compilation);
+        const assetProcessingAsyncTap = asyncProcessAssetTapFactory(
+          options,
+          compiler,
+          compilation
+        );
         assetProcessingAsyncTap(undefined, resolveFunction);
 
         await waitForNextEventLoop();
@@ -178,7 +224,11 @@ describe("asyncProcessAssetTapFactory", () => {
       it("should call the resolve function with no arguments", async () => {
         const resolveFunction = jest.fn();
 
-        const assetProcessingAsyncTap = asyncProcessAssetTapFactory(options, compiler, compilation);
+        const assetProcessingAsyncTap = asyncProcessAssetTapFactory(
+          options,
+          compiler,
+          compilation
+        );
         assetProcessingAsyncTap(undefined, resolveFunction);
 
         await waitForNextEventLoop();
@@ -195,7 +245,11 @@ describe("asyncProcessAssetTapFactory", () => {
       });
 
       it("should push a new WebpackError to the compilation", async () => {
-        const assetProcessingAsyncTap = asyncProcessAssetTapFactory(options, compiler, compilation);
+        const assetProcessingAsyncTap = asyncProcessAssetTapFactory(
+          options,
+          compiler,
+          compilation
+        );
         assetProcessingAsyncTap(undefined, () => undefined);
 
         await waitForNextEventLoop();
@@ -204,7 +258,11 @@ describe("asyncProcessAssetTapFactory", () => {
       });
 
       it("should prefix the new WebpackError with the plugin name", async () => {
-        const assetProcessingAsyncTap = asyncProcessAssetTapFactory(options, compiler, compilation);
+        const assetProcessingAsyncTap = asyncProcessAssetTapFactory(
+          options,
+          compiler,
+          compilation
+        );
         assetProcessingAsyncTap(undefined, () => undefined);
 
         await waitForNextEventLoop();
@@ -213,7 +271,7 @@ describe("asyncProcessAssetTapFactory", () => {
         expect(firstError.message).toBe(`LicenseFilePlugin: ${errorMessage}`);
       });
 
-      [null, undefined].forEach(falsyValue =>
+      [null, undefined].forEach((falsyValue) =>
         it(`should use the unknown error message if the given error is falsy (${falsyValue})`, async () => {
           mockGetLicenseFileText.mockRejectedValue(falsyValue);
 
@@ -236,7 +294,11 @@ describe("asyncProcessAssetTapFactory", () => {
       it("should call the resolve function", async () => {
         const resolveFunction = jest.fn();
 
-        const assetProcessingAsyncTap = asyncProcessAssetTapFactory(options, compiler, compilation);
+        const assetProcessingAsyncTap = asyncProcessAssetTapFactory(
+          options,
+          compiler,
+          compilation
+        );
         assetProcessingAsyncTap(undefined, resolveFunction);
 
         await waitForNextEventLoop();
@@ -247,7 +309,11 @@ describe("asyncProcessAssetTapFactory", () => {
       it("should call the resolve function with the webpackError", async () => {
         const resolveFunction = jest.fn();
 
-        const assetProcessingAsyncTap = asyncProcessAssetTapFactory(options, compiler, compilation);
+        const assetProcessingAsyncTap = asyncProcessAssetTapFactory(
+          options,
+          compiler,
+          compilation
+        );
         assetProcessingAsyncTap(undefined, resolveFunction);
 
         await waitForNextEventLoop();

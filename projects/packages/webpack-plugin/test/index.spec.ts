@@ -6,7 +6,7 @@ import { Options } from "../src/options";
 
 jest.mock("../src/compilationTapFactory", () => {
   return {
-    compilationTapFactory: jest.fn()
+    compilationTapFactory: jest.fn(),
   };
 });
 
@@ -23,9 +23,9 @@ describe("LicenseFilePlugin", () => {
     compiler = {
       hooks: {
         thisCompilation: {
-          tap: mockTap
-        }
-      }
+          tap: mockTap,
+        },
+      },
     } as any as Compiler;
   });
 
@@ -71,7 +71,7 @@ describe("LicenseFilePlugin", () => {
 
     it("should call the compilationTapFactory with the given outputFileName", () => {
       const options: Partial<Options> = {
-        outputFileName: "output file name"
+        outputFileName: "output file name",
       };
 
       const licenseFilePlugin = new LicenseFilePlugin(options);
@@ -84,7 +84,7 @@ describe("LicenseFilePlugin", () => {
 
     it("should call the compilationTapFactory with the given outputFolder", () => {
       const options: Partial<Options> = {
-        outputFolder: "output folder"
+        outputFolder: "output folder",
       };
 
       const licenseFilePlugin = new LicenseFilePlugin(options);
@@ -97,7 +97,7 @@ describe("LicenseFilePlugin", () => {
 
     it("should call the compilationTapFactory with the given pathToPackageJson", () => {
       const options: Partial<Options> = {
-        pathToPackageJson: "./package.json"
+        pathToPackageJson: "./package.json",
       };
 
       const licenseFilePlugin = new LicenseFilePlugin(options);
@@ -105,12 +105,14 @@ describe("LicenseFilePlugin", () => {
       licenseFilePlugin.apply(compiler);
 
       const firstCallFirstArg = mockCompilationTapFactory.mock.calls[0][0];
-      expect(firstCallFirstArg.pathToPackageJson).toEqual(options.pathToPackageJson);
+      expect(firstCallFirstArg.pathToPackageJson).toEqual(
+        options.pathToPackageJson
+      );
     });
 
     it("should call the compilationTapFactory with the given isDev", () => {
       const options: Partial<Options> = {
-        isDev: true
+        isDev: true,
       };
 
       const licenseFilePlugin = new LicenseFilePlugin(options);
@@ -123,7 +125,7 @@ describe("LicenseFilePlugin", () => {
 
     it("should call the compilationTapFactory with the given lineEnding", () => {
       const options: Partial<Options> = {
-        lineEnding: "crlf"
+        lineEnding: "crlf",
       };
 
       const licenseFilePlugin = new LicenseFilePlugin(options);

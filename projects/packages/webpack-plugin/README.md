@@ -18,7 +18,7 @@ To use the default configuration, construct the plugin in your webpack plugins a
 const { LicenseFilePlugin } = require("generate-license-file-webpack-plugin");
 
 module.exports = {
-  plugins: [new LicenseFilePlugin()]
+  plugins: [new LicenseFilePlugin()],
 };
 ```
 
@@ -35,9 +35,9 @@ module.exports = {
       outputFolder: "./", // Relative to your build output directory
       pathToPackageJson: "./package.json",
       isDev: false, // When true, uses placeholder content to reduce compilation time
-      lineEnding: undefined // Can be 'crlf' or 'lf'. If omitted, the system default will be used
-    })
-  ]
+      lineEnding: undefined, // Can be 'crlf' or 'lf'. If omitted, the system default will be used
+    }),
+  ],
 };
 ```
 

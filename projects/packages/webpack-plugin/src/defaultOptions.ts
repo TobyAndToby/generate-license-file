@@ -5,5 +5,5 @@ export const defaultOptions: Options = {
   outputFolder: "./",
   pathToPackageJson: "./package.json",
   isDev: false,
-  lineEnding: undefined
+  lineEnding: undefined,
 };
