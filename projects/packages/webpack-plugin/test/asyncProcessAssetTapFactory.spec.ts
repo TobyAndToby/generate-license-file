@@ -1,5 +1,4 @@
 import { getLicenseFileText, LineEnding } from "generate-license-file";
-import { mocked } from "ts-jest/utils";
 import { Compilation, Compiler } from "webpack";
 import { asyncProcessAssetTapFactory } from "../src/asyncProcessAssetTapFactory";
 import { devImplementation } from "../src/devImplementation";
@@ -23,8 +22,8 @@ jest.mock("../src/devImplementation", () => {
 });
 
 describe("asyncProcessAssetTapFactory", () => {
-  let mockGetLicenseFileText = mocked(getLicenseFileText);
-  let mockDevImplementation = mocked(devImplementation);
+  let mockGetLicenseFileText = jest.mocked(getLicenseFileText);
+  let mockDevImplementation = jest.mocked(devImplementation);
   let mockEmitAsset = jest.fn();
 
   let options: Options;

@@ -1,4 +1,3 @@
-import { mocked } from "ts-jest/utils";
 import { Compiler } from "webpack";
 import { compilationTapFactory } from "../src/compilationTapFactory";
 import { defaultOptions } from "../src/defaultOptions";
@@ -12,7 +11,7 @@ jest.mock("../src/compilationTapFactory", () => {
 });
 
 describe("LicenseFilePlugin", () => {
-  let mockCompilationTapFactory = mocked(compilationTapFactory);
+  let mockCompilationTapFactory = jest.mocked(compilationTapFactory);
   let mockTap = jest.fn();
 
   let compiler: Compiler;

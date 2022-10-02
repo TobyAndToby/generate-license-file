@@ -1,4 +1,3 @@
-import { mocked } from "ts-jest/utils";
 import { Compilation, Compiler } from "webpack";
 import { asyncProcessAssetTapFactory } from "../src/asyncProcessAssetTapFactory";
 import { CompilationTap, compilationTapFactory } from "../src/compilationTapFactory";
@@ -32,7 +31,7 @@ describe("compilationTapFactory", () => {
   });
 
   describe("the compilation tap function", () => {
-    let mockAsyncProcessAssetTapFactory = mocked(asyncProcessAssetTapFactory);
+    let mockAsyncProcessAssetTapFactory = jest.mocked(asyncProcessAssetTapFactory);
     let mockTapAsync = jest.fn();
     let compilationTap: CompilationTap;
 
