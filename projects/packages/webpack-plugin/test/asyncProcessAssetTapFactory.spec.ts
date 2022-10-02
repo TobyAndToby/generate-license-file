@@ -110,7 +110,7 @@ describe("asyncProcessAssetTapFactory", () => {
       expect(firstCallFirstArg).toBe(options.pathToPackageJson);
     });
 
-    (["posix", "windows"] as LineEnding[]).forEach(lineEnding =>
+    (["lf", "crlf"] as LineEnding[]).forEach(lineEnding =>
       it(`should call generate-license-file with the ${lineEnding} line ending `, () => {
         options.lineEnding = lineEnding;
 

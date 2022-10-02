@@ -124,7 +124,7 @@ describe("LicenseFilePlugin", () => {
 
     it("should call the compilationTapFactory with the given lineEnding", () => {
       const options: Partial<Options> = {
-        lineEnding: "windows"
+        lineEnding: "crlf"
       };
 
       const licenseFilePlugin = new LicenseFilePlugin(options);
