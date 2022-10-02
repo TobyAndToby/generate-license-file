@@ -11,8 +11,8 @@ jest.mock("../src/compilationTapFactory", () => {
 });
 
 describe("LicenseFilePlugin", () => {
-  let mockCompilationTapFactory = jest.mocked(compilationTapFactory);
-  let mockTap = jest.fn();
+  const mockCompilationTapFactory = jest.mocked(compilationTapFactory);
+  const mockTap = jest.fn();
 
   let compiler: Compiler;
 

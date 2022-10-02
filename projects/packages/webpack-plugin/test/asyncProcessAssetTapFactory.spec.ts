@@ -22,9 +22,9 @@ jest.mock("../src/devImplementation", () => {
 });
 
 describe("asyncProcessAssetTapFactory", () => {
-  let mockGetLicenseFileText = jest.mocked(getLicenseFileText);
-  let mockDevImplementation = jest.mocked(devImplementation);
-  let mockEmitAsset = jest.fn();
+  const mockGetLicenseFileText = jest.mocked(getLicenseFileText);
+  const mockDevImplementation = jest.mocked(devImplementation);
+  const mockEmitAsset = jest.fn();
 
   let options: Options;
   let compiler: Compiler;

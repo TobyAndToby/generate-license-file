@@ -34,10 +34,10 @@ describe("compilationTapFactory", () => {
   });
 
   describe("the compilation tap function", () => {
-    let mockAsyncProcessAssetTapFactory = jest.mocked(
+    const mockAsyncProcessAssetTapFactory = jest.mocked(
       asyncProcessAssetTapFactory
     );
-    let mockTapAsync = jest.fn();
+    const mockTapAsync = jest.fn();
     let compilationTap: CompilationTap;
 
     let compilation: Compilation;
