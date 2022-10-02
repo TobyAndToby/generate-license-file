@@ -6,10 +6,6 @@ Webpack plugin to generate a text file asset containing all of the licenses for 
   <img alt="npm" src="https://img.shields.io/npm/v/generate-license-file-webpack-plugin?logo=npm">
 </a>
 
-<a href="https://codecov.io/github/TobyAndToby/generate-license-file-webpack-plugin">
-  <img src="https://codecov.io/github/TobyAndToby/generate-license-file-webpack-plugin/branch/main/graph/badge.svg"/>
-</a>
-
 Based on the npm package [generate-licence-file](https://www.npmjs.com/package/generate-license-file).  
 Currently supports Webpack v5.
 
@@ -39,13 +35,18 @@ module.exports = {
       outputFolder: "./", // Relative to your build output directory
       pathToPackageJson: "./package.json",
       isDev: false, // When true, uses placeholder content to reduce compilation time
-      lineEnding: undefined // Can be 'windows' or 'posix'. If omitted, the system default will be used
+      lineEnding: undefined // Can be 'crlf' or 'lf'. If omitted, the system default will be used
     })
   ]
 };
 ```
 
 ## Building the plugin yourself
+
+This plugin is stored in the generate-license-file monorepo.  
+It can be found at `projects/packages/webpack-plugin`
+
+After cloning, run the following in the top-level directory to build everything, including the webpack plugin.
 
 ```bash
 npm install
