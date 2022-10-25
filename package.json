@@ -14,7 +14,7 @@
     "projects/website"
   ],
   "devDependencies": {
-    "@types/node": "^16.7.1",
+    "@types/node": "^18.0.0",
     "@types/jest": "^29.0.0",
     "del-cli": "^5.0.0",
     "jest": "^29.0.0",
