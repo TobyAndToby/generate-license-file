@@ -16,7 +16,7 @@ on:
         type: string
 
 env:
-  NODE_VERSION: 16
+  NODE_VERSION: 18
   GLF_PROJECT: ./projects/packages/generate-license-file
   WEBSITE_PROJECT: ./projects/website
 
