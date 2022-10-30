@@ -1,0 +1,27 @@
+{
+  "name": "e2e-helpers",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/e2e-helpers/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/e2e-helpers",
+        "main": "packages/e2e-helpers/src/index.ts",
+        "tsConfig": "packages/e2e-helpers/tsconfig.lib.json",
+        "assets": ["packages/e2e-helpers/*.md"],
+        "buildableProjectDepsInPackageJsonType": "dependencies"
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/e2e-helpers/**/*.ts"]
+      }
+    }
+  },
+  "tags": []
+}

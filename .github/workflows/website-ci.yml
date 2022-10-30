@@ -1,0 +1,71 @@
+name: Website CI
+
+on:
+  push:
+    branches:
+      - renovate/*
+  pull_request:
+    branches:
+      - main
+  workflow_call:
+
+env:
+  NODE_VERSION: 18
+  CWD: ./website
+
+jobs:
+  lint:
+    name: Lint
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: ${{ env.CWD }}/package-lock.json
+
+      - name: Install dependencies
+        working-directory: ${{ env.CWD }}
+        run: npm ci
+
+      - name: Run ESLint
+        working-directory: ${{ env.CWD }}
+        run: npx eslint . --max-warnings 0
+
+      - name: Run Prettier
+        working-directory: ${{ env.CWD }}
+        run: npx prettier --check .
+
+  build:
+    name: Build
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: ${{ env.CWD }}/package-lock.json
+
+      - name: Install dependencies
+        working-directory: ${{ env.CWD }}
+        run: npm ci
+
+      - name: Build Website
+        working-directory: ${{ env.CWD }}
+        run: npm run build
+
+      - name: Upload Build
+        uses: actions/upload-artifact@v3
+        with:
+          name: Website
+          path: ${{ env.CWD }}/build/

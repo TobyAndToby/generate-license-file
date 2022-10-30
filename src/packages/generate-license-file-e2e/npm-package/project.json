@@ -1,0 +1,18 @@
+{
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "name": "npm-package",
+  "sourceRoot": "packages/generate-license-file/npm-package/src",
+  "projectType": "library",
+  "implicitDependencies": ["generate-license-file", "e2e-helpers"],
+  "targets": {
+    "e2e": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npm install && npm run e2e",
+        "cwd": "../e2e/npm-package"
+      },
+      "dependsOn": ["^build"]
+    }
+  },
+  "tags": []
+}

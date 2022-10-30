@@ -1,0 +1,168 @@
+name: Monorepo CI
+
+on:
+  push:
+    branches:
+      - renovate/*
+  pull_request:
+    branches:
+      - main
+  workflow_call:
+    inputs:
+      version:
+        description: The npm version to use for generate-license-file
+        default: "0.0.0"
+        required: false
+        type: string
+
+env:
+  NODE_VERSION: 18
+  CWD: ./src
+
+jobs:
+  lint:
+    name: Lint
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: ${{ env.CWD }}/package-lock.json
+
+      - name: Install dependencies
+        working-directory: ${{ env.CWD }}
+        run: npm ci
+
+      - name: Run ESLint
+        working-directory: ${{ env.CWD }}
+        run: npx nx run-many --target lint
+
+      - name: Run Prettier
+        working-directory: ${{ env.CWD }}
+        run: npx prettier --check .
+
+  build:
+    name: Build
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: ${{ env.CWD }}/package-lock.json
+
+      - name: Install dependencies
+        working-directory: ${{ env.CWD }}
+        run: npm ci
+
+      - name: Log Version
+        shell: pwsh
+        run: Write-Host ${{ inputs.version }}
+
+      - name: Set Version
+        if: inputs.version != ''
+        working-directory: ${{ env.CWD }}
+        run: npx nx run-many --target version --args="--version=${{ inputs.version }}"
+
+      - name: Build
+        working-directory: ${{ env.CWD }}
+        run: npx nx run-many --target build
+
+      - name: Upload Build
+        uses: actions/upload-artifact@v3
+        with:
+          name: Build
+          path: ${{ env.CWD }}/dist
+          retention-days: 1
+
+  test:
+    name: Unit Test
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: ${{ env.CWD }}/package-lock.json
+
+      - name: Install dependencies
+        working-directory: ${{ env.CWD }}
+        run: npm ci
+
+      - name: Run Unit Tests
+        working-directory: ${{ env.CWD }}
+        run: npx nx run-many --target test -- --ci --coverage
+
+      - name: Codecov
+        uses: codecov/codecov-action@v3.1.1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          directory: ${{ env.CWD }}/coverage
+
+  e2e:
+    needs:
+      - build
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - name: Ubuntu
+            value: ubuntu-latest
+          - name: MacOS
+            value: macos-latest
+          - name: Windows
+            value: windows-latest
+        node:
+          - 16
+          - 18
+          - 19
+
+    name: E2E (Node ${{ matrix.node }} on ${{ matrix.os.name }})
+
+    runs-on: ${{ matrix.os.value }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install Node.JS
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+          cache-dependency-path: ${{ env.CWD }}/package-lock.json
+
+      - name: Install latest npm
+        if: matrix.node == 14
+        run: npm i -g npm@latest
+
+      - name: Install dependencies
+        working-directory: ${{ env.CWD }}
+        run: npm ci
+
+      - name: Download Build
+        uses: actions/download-artifact@v3
+        with:
+          name: Build
+          path: ${{ env.CWD }}/dist
+
+      - name: Run E2E Tests
+        working-directory: ${{ env.CWD }}
+        run: npx nx run-many --target e2e

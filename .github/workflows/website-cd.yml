@@ -10,8 +10,8 @@ env:
 
 jobs:
   ci:
-    name: Run CI
-    uses: ./.github/workflows/ci.yml
+    name: Run Website CI
+    uses: ./.github/workflows/website/ci.yml
     secrets: inherit
 
   deploy:

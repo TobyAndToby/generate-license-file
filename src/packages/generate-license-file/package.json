@@ -1,0 +1,43 @@
+{
+  "name": "generate-license-file",
+  "version": "0.0.0",
+  "description": "Generates a text file containing all of the licenses for your production dependencies",
+  "main": "src/index.js",
+  "license": "ISC",
+  "type": "commonjs",
+  "contributors": [
+    {
+      "name": "Toby Smith",
+      "url": "https://github.com/tobysmith568"
+    },
+    {
+      "name": "Toby Bessant",
+      "url": "https://github.com/tobybessant"
+    }
+  ],
+  "files": [
+    "src",
+    "bin"
+  ],
+  "keywords": [
+    "cli",
+    "license",
+    "licence",
+    "third",
+    "party",
+    "file",
+    "generate",
+    "oss"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TobyAndToby/generate-license-file.git"
+  },
+  "bugs": {
+    "url": "https://github.com/TobyAndToby/generate-license-file/issues"
+  },
+  "homepage": "https://generate-license-file.js.org",
+  "bin": {
+    "generate-license-file": "bin/generate-license-file"
+  }
+}
