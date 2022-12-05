@@ -31,7 +31,7 @@ jobs:
     needs:
       - get-version
     name: Run Monorepo CI
-    uses: ./.github/workflows/src/ci.yml
+    uses: ./.github/workflows/src-ci.yml
     with:
       version: ${{ needs.get-version.outputs.version }}
     secrets: inherit

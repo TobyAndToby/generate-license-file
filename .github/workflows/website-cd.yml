@@ -11,7 +11,7 @@ env:
 jobs:
   ci:
     name: Run Website CI
-    uses: ./.github/workflows/website/ci.yml
+    uses: ./.github/workflows/website-ci.yml
     secrets: inherit
 
   deploy:
