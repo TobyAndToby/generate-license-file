@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - renovate/*
+      - main
   pull_request:
     branches:
       - main
