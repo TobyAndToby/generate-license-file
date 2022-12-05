@@ -11,15 +11,21 @@
         "outputPath": "dist/packages/generate-license-file-webpack-plugin",
         "main": "packages/generate-license-file-webpack-plugin/src/index.ts",
         "tsConfig": "packages/generate-license-file-webpack-plugin/tsconfig.lib.json",
-        "assets": ["packages/generate-license-file-webpack-plugin/*.md"]
+        "assets": ["packages/generate-license-file-webpack-plugin/*.md", "LICENSE.md"],
+        "buildableProjectDepsInPackageJsonType": "dependencies"
+      }
+    },
+    "version": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node tools/scripts/version.mjs generate-license-file-webpack-plugin {args.version}"
       }
     },
     "publish": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "node tools/scripts/publish.mjs generate-license-file-webpack-plugin {args.ver} {args.tag}"
-      },
-      "dependsOn": ["build"]
+        "command": "node tools/scripts/publish.mjs generate-license-file-webpack-plugin {args.tag}"
+      }
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",

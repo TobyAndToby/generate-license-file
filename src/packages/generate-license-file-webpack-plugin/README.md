@@ -1,11 +1,57 @@
 # generate-license-file-webpack-plugin
 
-This library was generated with [Nx](https://nx.dev).
+Webpack plugin to generate a text file asset containing all of the licenses for your production third-party dependencies.
 
-## Building
+<a href="https://www.npmjs.com/package/generate-license-file-webpack-plugin">
+  <img alt="npm" src="https://img.shields.io/npm/v/generate-license-file-webpack-plugin?logo=npm">
+</a>
 
-Run `nx build generate-license-file-webpack-plugin` to build the library.
+<a href="https://codecov.io/github/TobyAndToby/generate-license-file-webpack-plugin">
+  <img src="https://codecov.io/github/TobyAndToby/generate-license-file-webpack-plugin/branch/main/graph/badge.svg"/>
+</a>
 
-## Running unit tests
+Based on the npm package [generate-licence-file](https://www.npmjs.com/package/generate-license-file).  
+Currently supports Webpack v5.
 
-Run `nx test generate-license-file-webpack-plugin` to execute the unit tests via [Jest](https://jestjs.io).
+## Usage
+
+To use the default configuration, construct the plugin in your webpack plugins array:
+
+```js
+// webpack.config.js
+const { LicenseFilePlugin } = require("generate-license-file-webpack-plugin");
+
+module.exports = {
+  plugins: [new LicenseFilePlugin()],
+};
+```
+
+The plugin can be configured using the following options. Below shows the default values:
+
+```js
+// webpack.config.js
+const { LicenseFilePlugin } = require("generate-license-file-webpack-plugin");
+
+module.exports = {
+  plugins: [
+    new LicenseFilePlugin({
+      outputFileName: "third-party-licenses.txt",
+      outputFolder: "./", // Relative to your build output directory
+      pathToPackageJson: "./package.json",
+      isDev: false, // When true, uses placeholder content to reduce compilation time
+      lineEnding: undefined, // Can be 'windows' or 'posix'. If omitted, the system default will be used
+    }),
+  ],
+};
+```
+
+## Building the plugin yourself
+
+```bash
+npm install
+npm run build
+```
+
+## License
+
+generate-license-file-webpack-plugin is licensed under the [ISC License](./LICENSE.md).

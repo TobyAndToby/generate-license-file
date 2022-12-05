@@ -11,7 +11,11 @@
         "outputPath": "dist/packages/generate-license-file",
         "main": "packages/generate-license-file/src/index.ts",
         "tsConfig": "packages/generate-license-file/tsconfig.lib.json",
-        "assets": ["packages/generate-license-file/*.md", "packages/generate-license-file/bin/**"],
+        "assets": [
+          "packages/generate-license-file/*.md",
+          "packages/generate-license-file/bin/**",
+          "LICENSE.md"
+        ],
         "buildableProjectDepsInPackageJsonType": "dependencies"
       }
     },
