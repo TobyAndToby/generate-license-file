@@ -9,7 +9,7 @@ import { readPackageJson } from "../utils/packageJson.utils";
 const UTF8 = "utf-8";
 
 export async function getLicensesForProjects(pathsToPackageJsons: string[]): Promise<License[]> {
-  const licensesMap: Map<string, string[]> = new Map<string, string[]>();
+  const licensesMap: Map<string, Set<string>> = new Map<string, Set<string>>();
 
   const projects: Project[] = await getProjectsForPackageJsons(pathsToPackageJsons);
 
@@ -17,8 +17,8 @@ export async function getLicensesForProjects(pathsToPackageJsons: string[]): Pro
     for (const [dependencyName, dependencyInfo] of Object.entries(project)) {
       const licenseContent: string = await getLicenseContent(dependencyInfo);
 
-      const dependenciesUsingLicense = licensesMap.get(licenseContent) ?? [];
-      dependenciesUsingLicense.push(dependencyName);
+      const dependenciesUsingLicense = licensesMap.get(licenseContent) ?? new Set<string>();
+      dependenciesUsingLicense.add(dependencyName);
 
       licensesMap.set(licenseContent, dependenciesUsingLicense);
     }
@@ -73,11 +73,12 @@ const getLicenseType = (moduleInfo: ModuleInfo) => {
   return "Unknown license!";
 };
 
-const flattenDependencyMapToLicenseArray = (dependencyLicenses: Map<string, string[]>) => {
+const flattenDependencyMapToLicenseArray = (dependencyLicenses: Map<string, Set<string>>) => {
   const licenses: License[] = [];
 
   for (const [license, dependencies] of dependencyLicenses) {
-    licenses.push(new License(license, dependencies));
+    const dependencyArray = Array.from(dependencies.values());
+    licenses.push(new License(license, dependencyArray));
   }
 
   return licenses;

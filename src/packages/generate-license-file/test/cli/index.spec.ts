@@ -29,19 +29,19 @@ jest.mock("../../src/lib/utils/packageJson.utils", () => ({
   readPackageJson: jest.fn(),
 }));
 
-const mockInputParse = jest.fn();
+const mockInputsParse = jest.fn();
 const mockOutputParse = jest.fn();
 const mockEolParse = jest.fn();
 const mockNoSpinnerParse = jest.fn();
 
-const mockInputResolve = jest.fn();
+const mockInputsResolve = jest.fn();
 const mockOutputResolve = jest.fn();
 const mockEolResolve = jest.fn();
 const mockNoSpinnerResolve = jest.fn();
 
-jest.mock("../../src/lib/cli/args/input.ts", () => ({
-  Input: function () {
-    return { parse: mockInputParse, resolve: mockInputResolve };
+jest.mock("../../src/lib/cli/args/inputs.ts", () => ({
+  Inputs: function () {
+    return { parse: mockInputsParse, resolve: mockInputsResolve };
   },
 }));
 
@@ -104,7 +104,7 @@ describe("cli", () => {
   });
 
   describe("when --version is true", () => {
-    it("should print the version if the --version flag is provided", async () => {
+    it("should print the version", async () => {
       mockedReadPackageJson.mockResolvedValue({
         name: "test",
         version: "1.0.3",
@@ -121,7 +121,7 @@ describe("cli", () => {
       expect(mockedConsoleLog).toHaveBeenCalledWith("v1.0.3");
     });
 
-    it("should parse the package.json for the version if the --version flag is provided", async () => {
+    it("should parse the package.json for the version", async () => {
       mockedReadPackageJson.mockResolvedValue({
         name: "test",
         version: "1.0.3",
@@ -146,7 +146,7 @@ describe("cli", () => {
 
       const parsedArgResponse = {
         "--version": true,
-        "--input": "any input value",
+        "--input": ["any input value"],
         "--output": "any output value",
       } as Result<ArgumentsWithAliases>;
 
@@ -180,7 +180,7 @@ describe("cli", () => {
 
       await main([]);
 
-      expect(mockInputResolve).toHaveBeenCalledWith(parsedArgResponse);
+      expect(mockInputsResolve).toHaveBeenCalledWith(parsedArgResponse);
       expect(mockOutputResolve).toHaveBeenCalledWith(parsedArgResponse);
       expect(mockEolResolve).toHaveBeenCalledWith(parsedArgResponse);
       expect(mockNoSpinnerResolve).toHaveBeenCalledWith(parsedArgResponse);
@@ -189,7 +189,7 @@ describe("cli", () => {
     it("should call generateLicenseFile with the values from the resolve method on the argument classes", async () => {
       mockedArg.mockReturnValue(parsedArgResponse);
 
-      mockInputResolve.mockResolvedValue("resolved input value");
+      mockInputsResolve.mockResolvedValue("resolved input value");
       mockOutputResolve.mockResolvedValue("resolved output value");
       mockEolResolve.mockResolvedValue("resolved eol value");
 
@@ -232,7 +232,7 @@ describe("cli", () => {
 
       await main([]);
 
-      expect(mockInputParse).toHaveBeenCalledWith(parsedArgResponse);
+      expect(mockInputsParse).toHaveBeenCalledWith(parsedArgResponse);
       expect(mockOutputParse).toHaveBeenCalledWith(parsedArgResponse);
       expect(mockEolParse).toHaveBeenCalledWith(parsedArgResponse);
       expect(mockNoSpinnerParse).toHaveBeenCalledWith(parsedArgResponse);
@@ -244,7 +244,7 @@ describe("cli", () => {
       } as Result<ArgumentsWithAliases>;
       mockedArg.mockReturnValue(mockedArgs);
 
-      mockInputParse.mockRejectedValueOnce("Some problem");
+      mockInputsParse.mockRejectedValueOnce("Some problem");
 
       await main([]);
 
@@ -254,7 +254,7 @@ describe("cli", () => {
     it("should call generateLicenseFile with the values from the parse methods on the argument classes", async () => {
       mockedArg.mockReturnValue(parsedArgResponse);
 
-      mockInputParse.mockResolvedValue("resolved input value");
+      mockInputsParse.mockResolvedValue("resolved input value");
       mockOutputParse.mockResolvedValue("resolved output value");
       mockEolParse.mockResolvedValue("resolved eol value");
 
@@ -274,7 +274,7 @@ describe("cli", () => {
   describe("spinner", () => {
     it("should start the spinner if noSpinner is false", async () => {
       const parsedArgResponse = {
-        "--input": "any input path",
+        "--input": ["any input path"],
         "--output": "any output path",
       } as Result<ArgumentsWithAliases>;
 
@@ -288,7 +288,7 @@ describe("cli", () => {
 
     it("should not start the spinner if noSpinner is true", async () => {
       const parsedArgResponse = {
-        "--input": "any input path",
+        "--input": ["any input path"],
         "--output": "any output path",
       } as Result<ArgumentsWithAliases>;
 
@@ -302,7 +302,7 @@ describe("cli", () => {
 
     it("should stop the spinner if the generateLicenseFile call succeeds", async () => {
       const parsedArgResponse = {
-        "--input": "any input path",
+        "--input": ["any input path"],
         "--output": "any output path",
       } as Result<ArgumentsWithAliases>;
 
@@ -315,7 +315,7 @@ describe("cli", () => {
 
     it("should not fail the spinner if the generateLicenseFile call succeeds", async () => {
       const parsedArgResponse = {
-        "--input": "any input path",
+        "--input": ["any input path"],
         "--output": "any output path",
       } as Result<ArgumentsWithAliases>;
 
@@ -337,7 +337,7 @@ describe("cli", () => {
 
     it("should fail the spinner with the error message it an error is thrown", async () => {
       const parsedArgResponse = {
-        "--input": "any input path",
+        "--input": ["any input path"],
         "--output": "any output path",
       } as Result<ArgumentsWithAliases>;
 
@@ -352,7 +352,7 @@ describe("cli", () => {
 
     it("should fail the spinner with the thrown object if it's not an error", async () => {
       const parsedArgResponse = {
-        "--input": "any input path",
+        "--input": ["any input path"],
         "--output": "any output path",
       } as Result<ArgumentsWithAliases>;
 
@@ -367,7 +367,7 @@ describe("cli", () => {
 
     it("should fail the spinner with 'Unknown error' if the value thrown is falsy (undefined)", async () => {
       const parsedArgResponse = {
-        "--input": "any input path",
+        "--input": ["any input path"],
         "--output": "any output path",
       } as Result<ArgumentsWithAliases>;
 

@@ -17,18 +17,20 @@ describe("cli", () => {
     let input = "";
     let output = "";
 
-    beforeEach(async () => {
+    let requiresUnlink = true;
+
+    beforeEach(() => {
       outputFileName = `test-${Math.floor(Math.random() * 1000)}.txt`;
 
       input = packageJsonPath;
       output = path.dirname(packageJsonPath) + "/" + outputFileName;
+
+      requiresUnlink = true;
     });
 
     afterEach(async () => {
-      try {
+      if (requiresUnlink) {
         await fs.unlink(output);
-      } catch {
-        // empty
       }
     });
 
@@ -147,6 +149,8 @@ describe("cli", () => {
     });
 
     describe("version", () => {
+      beforeEach(() => (requiresUnlink = false));
+
       it("should not produce an output when --version is given", async () => {
         await execAsync(
           `npx generate-license-file --input ${input} --output ${output} --version`

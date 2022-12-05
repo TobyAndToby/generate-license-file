@@ -17,6 +17,9 @@
     "esModuleInterop": true,
     "paths": {
       "@generate-license-file/e2e-helpers": ["packages/e2e-helpers/src/index.ts"],
+      "@generate-license-file/generate-license-file-e2e/multiple-inputs": [
+        "packages/generate-license-file-e2e/multiple-inputs/src/index.ts"
+      ],
       "@generate-license-file/generate-license-file-e2e/npm-package": [
         "packages/generate-license-file-e2e/npm-package/src/index.ts"
       ],
