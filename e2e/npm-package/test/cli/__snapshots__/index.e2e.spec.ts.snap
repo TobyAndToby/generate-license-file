@@ -1,0 +1,1281 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`cli for a relative path ci should match snapshot when --ci is given 1`] = `
+"This file was generated with the generate-license-file npm package!
+https://www.npmjs.com/package/generate-license-file
+
+The following npm package may be included in this product:
+
+ - dep-five@1.0.0
+
+This package contains the following license and notice below:
+
+# Dep Five
+
+| Test Case | NO LICENSE FILE  |
+| --------- | ---------------- |
+| Found     | TRUE (README.MD) |
+
+## Notes
+
+This README should be used as a substitute for the license file.
+
+-----------
+
+The following npm package may be included in this product:
+
+ - dep-four@1.0.0
+
+This package contains the following license and notice below:
+
+# Dep Four
+
+This license file is spelt \`LICENCE\`.
+This license should be found.
+
+-----------
+
+The following npm package may be included in this product:
+
+ - dep-one@1.0.0
+
+This package contains the following license and notice below:
+
+# Dep One
+
+This license file is spelt \`LICENSE.md\`.
+This license should be found.
+
+-----------
+
+The following npm package may be included in this product:
+
+ - dep-three@1.0.0
+
+This package contains the following license and notice below:
+
+# Dep Three
+
+This license file is spelt \`LICENSE\`.
+This license should be found.
+
+-----------
+
+The following npm packages may be included in this product:
+
+ - dep-two-duplicate@1.0.0
+ - dep-two@1.0.0
+
+These packages each contain the following license and notice below:
+
+# Dep Two
+
+This license file is spelt \`LICENCE.md\`.
+This license should be found.
+
+-----------
+
+This file was generated with the generate-license-file npm package!
+https://www.npmjs.com/package/generate-license-file
+"
+`;
+
+exports[`cli for a relative path for line ending crlf should match snapshot when --eol is given 1`] = `
+"This file was generated with the generate-license-file npm package!
+https://www.npmjs.com/package/generate-license-file
+
+The following npm package may be included in this product:
+
+ - dep-five@1.0.0
+
+This package contains the following license and notice below:
+
+# Dep Five
+
+| Test Case | NO LICENSE FILE  |
+| --------- | ---------------- |
+| Found     | TRUE (README.MD) |
+
+## Notes
+
+This README should be used as a substitute for the license file.
+
+-----------
+
+The following npm package may be included in this product:
+
+ - dep-four@1.0.0
+
+This package contains the following license and notice below:
+
+# Dep Four
+
+This license file is spelt \`LICENCE\`.
+This license should be found.
+
+-----------
+
+The following npm package may be included in this product:
+
+ - dep-one@1.0.0
+
+This package contains the following license and notice below:
+
+# Dep One
+
+This license file is spelt \`LICENSE.md\`.
+This license should be found.
+
+-----------
+
+The following npm package may be included in this product:
+
+ - dep-three@1.0.0
+
+This package contains the following license and notice below:
+
+# Dep Three
+
+This license file is spelt \`LICENSE\`.
+This license should be found.
+
+-----------
+
+The following npm packages may be included in this product:
+
+ - dep-two-duplicate@1.0.0
+ - dep-two@1.0.0
+
+These packages each contain the following license and notice below:
+
+# Dep Two
+
+This license file is spelt \`LICENCE.md\`.
+This license should be found.
+
+-----------
+
+This file was generated with the generate-license-file npm package!
+https://www.npmjs.com/package/generate-license-file
+"
+`;
+
+exports[`cli for a relative path for line ending lf should match snapshot when --eol is given 1`] = `
+"This file was generated with the generate-license-file npm package!
+https://www.npmjs.com/package/generate-license-file
+
+The following npm package may be included in this product:
+
+ - dep-five@1.0.0
+
+This package contains the following license and notice below:
+
+# Dep Five
+
+| Test Case | NO LICENSE FILE  |
+| --------- | ---------------- |
+| Found     | TRUE (README.MD) |
+
+## Notes
+
+This README should be used as a substitute for the license file.
+
+-----------
+
+The following npm package may be included in this product:
+
+ - dep-four@1.0.0
+
+This package contains the following license and notice below:
+
+# Dep Four
+
+This license file is spelt \`LICENCE\`.
+This license should be found.
+
+-----------
+
+The following npm package may be included in this product:
+
+ - dep-one@1.0.0
+
+This package contains the following license and notice below:
+
+# Dep One
+
+This license file is spelt \`LICENSE.md\`.
+This license should be found.
+
+-----------
+
+The following npm package may be included in this product:
+
+ - dep-three@1.0.0
+
+This package contains the following license and notice below:
+
+# Dep Three
+
+This license file is spelt \`LICENSE\`.
+This license should be found.
+
+-----------
+
+The following npm packages may be included in this product:
+
+ - dep-two-duplicate@1.0.0
+ - dep-two@1.0.0
+
+These packages each contain the following license and notice below:
+
+# Dep Two
+
+This license file is spelt \`LICENCE.md\`.
+This license should be found.
+
+-----------
+
+This file was generated with the generate-license-file npm package!
+https://www.npmjs.com/package/generate-license-file
+"
+`;
+
+exports[`cli for a relative path no-spinner should match snapshot when --no-spinner is given 1`] = `
+"This file was generated with the generate-license-file npm package!
+https://www.npmjs.com/package/generate-license-file
+
+The following npm package may be included in this product:
+
+ - dep-five@1.0.0
+
+This package contains the following license and notice below:
+
+# Dep Five
+
+| Test Case | NO LICENSE FILE  |
+| --------- | ---------------- |
+| Found     | TRUE (README.MD) |
+
+## Notes
+
+This README should be used as a substitute for the license file.
+
+-----------
+
+The following npm package may be included in this product:
+
+ - dep-four@1.0.0
+
+This package contains the following license and notice below:
+
+# Dep Four
+
+This license file is spelt \`LICENCE\`.
+This license should be found.
+
+-----------
+
+The following npm package may be included in this product:
+
+ - dep-one@1.0.0
+
+This package contains the following license and notice below:
+
+# Dep One
+
+This license file is spelt \`LICENSE.md\`.
+This license should be found.
+
+-----------
+
+The following npm package may be included in this product:
+
+ - dep-three@1.0.0
+
+This package contains the following license and notice below:
+
+# Dep Three
+
+This license file is spelt \`LICENSE\`.
+This license should be found.
+
+-----------
+
+The following npm packages may be included in this product:
+
+ - dep-two-duplicate@1.0.0
+ - dep-two@1.0.0
+
+These packages each contain the following license and notice below:
+
+# Dep Two
+
+This license file is spelt \`LICENCE.md\`.
+This license should be found.
+
+-----------
+
+This file was generated with the generate-license-file npm package!
+https://www.npmjs.com/package/generate-license-file
+"
+`;
+
+exports[`cli for a relative path should match snapshot using -i and -o 1`] = `
+"This file was generated with the generate-license-file npm package!
+https://www.npmjs.com/package/generate-license-file
+
+The following npm package may be included in this product:
+
+ - dep-five@1.0.0
+
+This package contains the following license and notice below:
+
+# Dep Five
+
+| Test Case | NO LICENSE FILE  |
+| --------- | ---------------- |
+| Found     | TRUE (README.MD) |
+
+## Notes
+
+This README should be used as a substitute for the license file.
+
+-----------
+
+The following npm package may be included in this product:
+
+ - dep-four@1.0.0
+
+This package contains the following license and notice below:
+
+# Dep Four
+
+This license file is spelt \`LICENCE\`.
+This license should be found.
+
+-----------
+
+The following npm package may be included in this product:
+
+ - dep-one@1.0.0
+
+This package contains the following license and notice below:
+
+# Dep One
+
+This license file is spelt \`LICENSE.md\`.
+This license should be found.
+
+-----------
+
+The following npm package may be included in this product:
+
+ - dep-three@1.0.0
+
+This package contains the following license and notice below:
+
+# Dep Three
+
+This license file is spelt \`LICENSE\`.
+This license should be found.
+
+-----------
+
+The following npm packages may be included in this product:
+
+ - dep-two-duplicate@1.0.0
+ - dep-two@1.0.0
+
+These packages each contain the following license and notice below:
+
+# Dep Two
+
+This license file is spelt \`LICENCE.md\`.
+This license should be found.
+
+-----------
+
+This file was generated with the generate-license-file npm package!
+https://www.npmjs.com/package/generate-license-file
+"
+`;
+
+exports[`cli for a relative path should match snapshot with --input and --output wrapped in double quotes 1`] = `
+"This file was generated with the generate-license-file npm package!
+https://www.npmjs.com/package/generate-license-file
+
+The following npm package may be included in this product:
+
+ - dep-five@1.0.0
+
+This package contains the following license and notice below:
+
+# Dep Five
+
+| Test Case | NO LICENSE FILE  |
+| --------- | ---------------- |
+| Found     | TRUE (README.MD) |
+
+## Notes
+
+This README should be used as a substitute for the license file.
+
+-----------
+
+The following npm package may be included in this product:
+
+ - dep-four@1.0.0
+
+This package contains the following license and notice below:
+
+# Dep Four
+
+This license file is spelt \`LICENCE\`.
+This license should be found.
+
+-----------
+
+The following npm package may be included in this product:
+
+ - dep-one@1.0.0
+
+This package contains the following license and notice below:
+
+# Dep One
+
+This license file is spelt \`LICENSE.md\`.
+This license should be found.
+
+-----------
+
+The following npm package may be included in this product:
+
+ - dep-three@1.0.0
+
+This package contains the following license and notice below:
+
+# Dep Three
+
+This license file is spelt \`LICENSE\`.
+This license should be found.
+
+-----------
+
+The following npm packages may be included in this product:
+
+ - dep-two-duplicate@1.0.0
+ - dep-two@1.0.0
+
+These packages each contain the following license and notice below:
+
+# Dep Two
+
+This license file is spelt \`LICENCE.md\`.
+This license should be found.
+
+-----------
+
+This file was generated with the generate-license-file npm package!
+https://www.npmjs.com/package/generate-license-file
+"
+`;
+
+exports[`cli for a relative path should match snapshot with --output given before --input 1`] = `
+"This file was generated with the generate-license-file npm package!
+https://www.npmjs.com/package/generate-license-file
+
+The following npm package may be included in this product:
+
+ - dep-five@1.0.0
+
+This package contains the following license and notice below:
+
+# Dep Five
+
+| Test Case | NO LICENSE FILE  |
+| --------- | ---------------- |
+| Found     | TRUE (README.MD) |
+
+## Notes
+
+This README should be used as a substitute for the license file.
+
+-----------
+
+The following npm package may be included in this product:
+
+ - dep-four@1.0.0
+
+This package contains the following license and notice below:
+
+# Dep Four
+
+This license file is spelt \`LICENCE\`.
+This license should be found.
+
+-----------
+
+The following npm package may be included in this product:
+
+ - dep-one@1.0.0
+
+This package contains the following license and notice below:
+
+# Dep One
+
+This license file is spelt \`LICENSE.md\`.
+This license should be found.
+
+-----------
+
+The following npm package may be included in this product:
+
+ - dep-three@1.0.0
+
+This package contains the following license and notice below:
+
+# Dep Three
+
+This license file is spelt \`LICENSE\`.
+This license should be found.
+
+-----------
+
+The following npm packages may be included in this product:
+
+ - dep-two-duplicate@1.0.0
+ - dep-two@1.0.0
+
+These packages each contain the following license and notice below:
+
+# Dep Two
+
+This license file is spelt \`LICENCE.md\`.
+This license should be found.
+
+-----------
+
+This file was generated with the generate-license-file npm package!
+https://www.npmjs.com/package/generate-license-file
+"
+`;
+
+exports[`cli for a relative path should match snapshot with just --input and --output 1`] = `
+"This file was generated with the generate-license-file npm package!
+https://www.npmjs.com/package/generate-license-file
+
+The following npm package may be included in this product:
+
+ - dep-five@1.0.0
+
+This package contains the following license and notice below:
+
+# Dep Five
+
+| Test Case | NO LICENSE FILE  |
+| --------- | ---------------- |
+| Found     | TRUE (README.MD) |
+
+## Notes
+
+This README should be used as a substitute for the license file.
+
+-----------
+
+The following npm package may be included in this product:
+
+ - dep-four@1.0.0
+
+This package contains the following license and notice below:
+
+# Dep Four
+
+This license file is spelt \`LICENCE\`.
+This license should be found.
+
+-----------
+
+The following npm package may be included in this product:
+
+ - dep-one@1.0.0
+
+This package contains the following license and notice below:
+
+# Dep One
+
+This license file is spelt \`LICENSE.md\`.
+This license should be found.
+
+-----------
+
+The following npm package may be included in this product:
+
+ - dep-three@1.0.0
+
+This package contains the following license and notice below:
+
+# Dep Three
+
+This license file is spelt \`LICENSE\`.
+This license should be found.
+
+-----------
+
+The following npm packages may be included in this product:
+
+ - dep-two-duplicate@1.0.0
+ - dep-two@1.0.0
+
+These packages each contain the following license and notice below:
+
+# Dep Two
+
+This license file is spelt \`LICENCE.md\`.
+This license should be found.
+
+-----------
+
+This file was generated with the generate-license-file npm package!
+https://www.npmjs.com/package/generate-license-file
+"
+`;
+
+exports[`cli for an absolute path ci should match snapshot when --ci is given 1`] = `
+"This file was generated with the generate-license-file npm package!
+https://www.npmjs.com/package/generate-license-file
+
+The following npm package may be included in this product:
+
+ - dep-five@1.0.0
+
+This package contains the following license and notice below:
+
+# Dep Five
+
+| Test Case | NO LICENSE FILE  |
+| --------- | ---------------- |
+| Found     | TRUE (README.MD) |
+
+## Notes
+
+This README should be used as a substitute for the license file.
+
+-----------
+
+The following npm package may be included in this product:
+
+ - dep-four@1.0.0
+
+This package contains the following license and notice below:
+
+# Dep Four
+
+This license file is spelt \`LICENCE\`.
+This license should be found.
+
+-----------
+
+The following npm package may be included in this product:
+
+ - dep-one@1.0.0
+
+This package contains the following license and notice below:
+
+# Dep One
+
+This license file is spelt \`LICENSE.md\`.
+This license should be found.
+
+-----------
+
+The following npm package may be included in this product:
+
+ - dep-three@1.0.0
+
+This package contains the following license and notice below:
+
+# Dep Three
+
+This license file is spelt \`LICENSE\`.
+This license should be found.
+
+-----------
+
+The following npm packages may be included in this product:
+
+ - dep-two-duplicate@1.0.0
+ - dep-two@1.0.0
+
+These packages each contain the following license and notice below:
+
+# Dep Two
+
+This license file is spelt \`LICENCE.md\`.
+This license should be found.
+
+-----------
+
+This file was generated with the generate-license-file npm package!
+https://www.npmjs.com/package/generate-license-file
+"
+`;
+
+exports[`cli for an absolute path for line ending crlf should match snapshot when --eol is given 1`] = `
+"This file was generated with the generate-license-file npm package!
+https://www.npmjs.com/package/generate-license-file
+
+The following npm package may be included in this product:
+
+ - dep-five@1.0.0
+
+This package contains the following license and notice below:
+
+# Dep Five
+
+| Test Case | NO LICENSE FILE  |
+| --------- | ---------------- |
+| Found     | TRUE (README.MD) |
+
+## Notes
+
+This README should be used as a substitute for the license file.
+
+-----------
+
+The following npm package may be included in this product:
+
+ - dep-four@1.0.0
+
+This package contains the following license and notice below:
+
+# Dep Four
+
+This license file is spelt \`LICENCE\`.
+This license should be found.
+
+-----------
+
+The following npm package may be included in this product:
+
+ - dep-one@1.0.0
+
+This package contains the following license and notice below:
+
+# Dep One
+
+This license file is spelt \`LICENSE.md\`.
+This license should be found.
+
+-----------
+
+The following npm package may be included in this product:
+
+ - dep-three@1.0.0
+
+This package contains the following license and notice below:
+
+# Dep Three
+
+This license file is spelt \`LICENSE\`.
+This license should be found.
+
+-----------
+
+The following npm packages may be included in this product:
+
+ - dep-two-duplicate@1.0.0
+ - dep-two@1.0.0
+
+These packages each contain the following license and notice below:
+
+# Dep Two
+
+This license file is spelt \`LICENCE.md\`.
+This license should be found.
+
+-----------
+
+This file was generated with the generate-license-file npm package!
+https://www.npmjs.com/package/generate-license-file
+"
+`;
+
+exports[`cli for an absolute path for line ending lf should match snapshot when --eol is given 1`] = `
+"This file was generated with the generate-license-file npm package!
+https://www.npmjs.com/package/generate-license-file
+
+The following npm package may be included in this product:
+
+ - dep-five@1.0.0
+
+This package contains the following license and notice below:
+
+# Dep Five
+
+| Test Case | NO LICENSE FILE  |
+| --------- | ---------------- |
+| Found     | TRUE (README.MD) |
+
+## Notes
+
+This README should be used as a substitute for the license file.
+
+-----------
+
+The following npm package may be included in this product:
+
+ - dep-four@1.0.0
+
+This package contains the following license and notice below:
+
+# Dep Four
+
+This license file is spelt \`LICENCE\`.
+This license should be found.
+
+-----------
+
+The following npm package may be included in this product:
+
+ - dep-one@1.0.0
+
+This package contains the following license and notice below:
+
+# Dep One
+
+This license file is spelt \`LICENSE.md\`.
+This license should be found.
+
+-----------
+
+The following npm package may be included in this product:
+
+ - dep-three@1.0.0
+
+This package contains the following license and notice below:
+
+# Dep Three
+
+This license file is spelt \`LICENSE\`.
+This license should be found.
+
+-----------
+
+The following npm packages may be included in this product:
+
+ - dep-two-duplicate@1.0.0
+ - dep-two@1.0.0
+
+These packages each contain the following license and notice below:
+
+# Dep Two
+
+This license file is spelt \`LICENCE.md\`.
+This license should be found.
+
+-----------
+
+This file was generated with the generate-license-file npm package!
+https://www.npmjs.com/package/generate-license-file
+"
+`;
+
+exports[`cli for an absolute path no-spinner should match snapshot when --no-spinner is given 1`] = `
+"This file was generated with the generate-license-file npm package!
+https://www.npmjs.com/package/generate-license-file
+
+The following npm package may be included in this product:
+
+ - dep-five@1.0.0
+
+This package contains the following license and notice below:
+
+# Dep Five
+
+| Test Case | NO LICENSE FILE  |
+| --------- | ---------------- |
+| Found     | TRUE (README.MD) |
+
+## Notes
+
+This README should be used as a substitute for the license file.
+
+-----------
+
+The following npm package may be included in this product:
+
+ - dep-four@1.0.0
+
+This package contains the following license and notice below:
+
+# Dep Four
+
+This license file is spelt \`LICENCE\`.
+This license should be found.
+
+-----------
+
+The following npm package may be included in this product:
+
+ - dep-one@1.0.0
+
+This package contains the following license and notice below:
+
+# Dep One
+
+This license file is spelt \`LICENSE.md\`.
+This license should be found.
+
+-----------
+
+The following npm package may be included in this product:
+
+ - dep-three@1.0.0
+
+This package contains the following license and notice below:
+
+# Dep Three
+
+This license file is spelt \`LICENSE\`.
+This license should be found.
+
+-----------
+
+The following npm packages may be included in this product:
+
+ - dep-two-duplicate@1.0.0
+ - dep-two@1.0.0
+
+These packages each contain the following license and notice below:
+
+# Dep Two
+
+This license file is spelt \`LICENCE.md\`.
+This license should be found.
+
+-----------
+
+This file was generated with the generate-license-file npm package!
+https://www.npmjs.com/package/generate-license-file
+"
+`;
+
+exports[`cli for an absolute path should match snapshot using -i and -o 1`] = `
+"This file was generated with the generate-license-file npm package!
+https://www.npmjs.com/package/generate-license-file
+
+The following npm package may be included in this product:
+
+ - dep-five@1.0.0
+
+This package contains the following license and notice below:
+
+# Dep Five
+
+| Test Case | NO LICENSE FILE  |
+| --------- | ---------------- |
+| Found     | TRUE (README.MD) |
+
+## Notes
+
+This README should be used as a substitute for the license file.
+
+-----------
+
+The following npm package may be included in this product:
+
+ - dep-four@1.0.0
+
+This package contains the following license and notice below:
+
+# Dep Four
+
+This license file is spelt \`LICENCE\`.
+This license should be found.
+
+-----------
+
+The following npm package may be included in this product:
+
+ - dep-one@1.0.0
+
+This package contains the following license and notice below:
+
+# Dep One
+
+This license file is spelt \`LICENSE.md\`.
+This license should be found.
+
+-----------
+
+The following npm package may be included in this product:
+
+ - dep-three@1.0.0
+
+This package contains the following license and notice below:
+
+# Dep Three
+
+This license file is spelt \`LICENSE\`.
+This license should be found.
+
+-----------
+
+The following npm packages may be included in this product:
+
+ - dep-two-duplicate@1.0.0
+ - dep-two@1.0.0
+
+These packages each contain the following license and notice below:
+
+# Dep Two
+
+This license file is spelt \`LICENCE.md\`.
+This license should be found.
+
+-----------
+
+This file was generated with the generate-license-file npm package!
+https://www.npmjs.com/package/generate-license-file
+"
+`;
+
+exports[`cli for an absolute path should match snapshot with --input and --output wrapped in double quotes 1`] = `
+"This file was generated with the generate-license-file npm package!
+https://www.npmjs.com/package/generate-license-file
+
+The following npm package may be included in this product:
+
+ - dep-five@1.0.0
+
+This package contains the following license and notice below:
+
+# Dep Five
+
+| Test Case | NO LICENSE FILE  |
+| --------- | ---------------- |
+| Found     | TRUE (README.MD) |
+
+## Notes
+
+This README should be used as a substitute for the license file.
+
+-----------
+
+The following npm package may be included in this product:
+
+ - dep-four@1.0.0
+
+This package contains the following license and notice below:
+
+# Dep Four
+
+This license file is spelt \`LICENCE\`.
+This license should be found.
+
+-----------
+
+The following npm package may be included in this product:
+
+ - dep-one@1.0.0
+
+This package contains the following license and notice below:
+
+# Dep One
+
+This license file is spelt \`LICENSE.md\`.
+This license should be found.
+
+-----------
+
+The following npm package may be included in this product:
+
+ - dep-three@1.0.0
+
+This package contains the following license and notice below:
+
+# Dep Three
+
+This license file is spelt \`LICENSE\`.
+This license should be found.
+
+-----------
+
+The following npm packages may be included in this product:
+
+ - dep-two-duplicate@1.0.0
+ - dep-two@1.0.0
+
+These packages each contain the following license and notice below:
+
+# Dep Two
+
+This license file is spelt \`LICENCE.md\`.
+This license should be found.
+
+-----------
+
+This file was generated with the generate-license-file npm package!
+https://www.npmjs.com/package/generate-license-file
+"
+`;
+
+exports[`cli for an absolute path should match snapshot with --output given before --input 1`] = `
+"This file was generated with the generate-license-file npm package!
+https://www.npmjs.com/package/generate-license-file
+
+The following npm package may be included in this product:
+
+ - dep-five@1.0.0
+
+This package contains the following license and notice below:
+
+# Dep Five
+
+| Test Case | NO LICENSE FILE  |
+| --------- | ---------------- |
+| Found     | TRUE (README.MD) |
+
+## Notes
+
+This README should be used as a substitute for the license file.
+
+-----------
+
+The following npm package may be included in this product:
+
+ - dep-four@1.0.0
+
+This package contains the following license and notice below:
+
+# Dep Four
+
+This license file is spelt \`LICENCE\`.
+This license should be found.
+
+-----------
+
+The following npm package may be included in this product:
+
+ - dep-one@1.0.0
+
+This package contains the following license and notice below:
+
+# Dep One
+
+This license file is spelt \`LICENSE.md\`.
+This license should be found.
+
+-----------
+
+The following npm package may be included in this product:
+
+ - dep-three@1.0.0
+
+This package contains the following license and notice below:
+
+# Dep Three
+
+This license file is spelt \`LICENSE\`.
+This license should be found.
+
+-----------
+
+The following npm packages may be included in this product:
+
+ - dep-two-duplicate@1.0.0
+ - dep-two@1.0.0
+
+These packages each contain the following license and notice below:
+
+# Dep Two
+
+This license file is spelt \`LICENCE.md\`.
+This license should be found.
+
+-----------
+
+This file was generated with the generate-license-file npm package!
+https://www.npmjs.com/package/generate-license-file
+"
+`;
+
+exports[`cli for an absolute path should match snapshot with just --input and --output 1`] = `
+"This file was generated with the generate-license-file npm package!
+https://www.npmjs.com/package/generate-license-file
+
+The following npm package may be included in this product:
+
+ - dep-five@1.0.0
+
+This package contains the following license and notice below:
+
+# Dep Five
+
+| Test Case | NO LICENSE FILE  |
+| --------- | ---------------- |
+| Found     | TRUE (README.MD) |
+
+## Notes
+
+This README should be used as a substitute for the license file.
+
+-----------
+
+The following npm package may be included in this product:
+
+ - dep-four@1.0.0
+
+This package contains the following license and notice below:
+
+# Dep Four
+
+This license file is spelt \`LICENCE\`.
+This license should be found.
+
+-----------
+
+The following npm package may be included in this product:
+
+ - dep-one@1.0.0
+
+This package contains the following license and notice below:
+
+# Dep One
+
+This license file is spelt \`LICENSE.md\`.
+This license should be found.
+
+-----------
+
+The following npm package may be included in this product:
+
+ - dep-three@1.0.0
+
+This package contains the following license and notice below:
+
+# Dep Three
+
+This license file is spelt \`LICENSE\`.
+This license should be found.
+
+-----------
+
+The following npm packages may be included in this product:
+
+ - dep-two-duplicate@1.0.0
+ - dep-two@1.0.0
+
+These packages each contain the following license and notice below:
+
+# Dep Two
+
+This license file is spelt \`LICENCE.md\`.
+This license should be found.
+
+-----------
+
+This file was generated with the generate-license-file npm package!
+https://www.npmjs.com/package/generate-license-file
+"
+`;
