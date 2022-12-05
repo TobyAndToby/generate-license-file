@@ -30,6 +30,17 @@ const sidebars = {
       items: [{ type: "doc", id: "library/api" }],
     },
     { type: "doc", id: "v1-to-v2" },
+    {
+      type: "category",
+      label: "Integrations",
+      collapsed: false,
+      items: [
+        {
+          type: "doc",
+          id: "webpack-plugin",
+        },
+      ],
+    },
   ],
 };
 
