@@ -1,41 +1,37 @@
 {
-  "name": "generate-license-file",
+  "name": "generate-license-file-webpack-plugin",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "packages/generate-license-file/src",
+  "sourceRoot": "packages/generate-license-file-webpack-plugin/src",
   "projectType": "library",
   "targets": {
     "build": {
       "executor": "@nrwl/js:tsc",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/packages/generate-license-file",
-        "main": "packages/generate-license-file/src/index.ts",
-        "tsConfig": "packages/generate-license-file/tsconfig.lib.json",
-        "assets": [
-          "packages/generate-license-file/*.md",
-          "packages/generate-license-file/bin/**",
-          "LICENSE.md"
-        ],
+        "outputPath": "dist/packages/generate-license-file-webpack-plugin",
+        "main": "packages/generate-license-file-webpack-plugin/src/index.ts",
+        "tsConfig": "packages/generate-license-file-webpack-plugin/tsconfig.lib.json",
+        "assets": ["packages/generate-license-file-webpack-plugin/*.md", "LICENSE.md"],
         "buildableProjectDepsInPackageJsonType": "dependencies"
       }
     },
     "version": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "node tools/scripts/version.mjs generate-license-file {args.version}"
+        "command": "node tools/scripts/version.mjs generate-license-file-webpack-plugin {args.version}"
       }
     },
     "publish": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "node tools/scripts/publish.mjs generate-license-file {args.tag}"
+        "command": "node tools/scripts/publish.mjs generate-license-file-webpack-plugin {args.tag}"
       }
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["packages/generate-license-file/**/*.ts"],
+        "lintFilePatterns": ["packages/generate-license-file-webpack-plugin/**/*.ts"],
         "maxWarnings": 0
       }
     },
@@ -43,7 +39,7 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "packages/generate-license-file/jest.config.ts",
+        "jestConfig": "packages/generate-license-file-webpack-plugin/jest.config.ts",
         "passWithNoTests": true
       }
     }
