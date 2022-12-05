@@ -35,7 +35,8 @@
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["packages/generate-license-file/**/*.ts"]
+        "lintFilePatterns": ["packages/generate-license-file/**/*.ts"],
+        "maxWarnings": 0
       }
     },
     "test": {

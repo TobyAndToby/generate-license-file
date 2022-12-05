@@ -31,7 +31,8 @@
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["packages/generate-license-file-webpack-plugin/**/*.ts"]
+        "lintFilePatterns": ["packages/generate-license-file-webpack-plugin/**/*.ts"],
+        "maxWarnings": 0
       }
     },
     "test": {
