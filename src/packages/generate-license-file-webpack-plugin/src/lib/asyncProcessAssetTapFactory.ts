@@ -5,7 +5,7 @@ import { LicenseFilePlugin } from "./licenseFilePlugin";
 import { devImplementation } from "./devImplementation";
 import { Options } from "./options";
 
-export type AssetProcessingAsyncTap = (_: any, resolve: (error?: WebpackError) => void) => void;
+export type AssetProcessingAsyncTap = (_: unknown, resolve: (error?: WebpackError) => void) => void;
 
 const unknownError = "Unknown Error! Check for error output above.";
 
@@ -21,7 +21,7 @@ export const asyncProcessAssetTapFactory = (
   const RawSource = compiler.webpack.sources.RawSource;
 
   return (_, resolve) => {
-    const implementation = !!isDev ? devImplementation : getLicenseFileText;
+    const implementation = isDev ? devImplementation : getLicenseFileText;
 
     implementation(pathToPackageJson, lineEnding)
       .then(text => {

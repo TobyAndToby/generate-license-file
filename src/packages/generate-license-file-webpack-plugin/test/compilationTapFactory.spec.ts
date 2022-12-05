@@ -48,7 +48,7 @@ describe("compilationTapFactory", () => {
             tapAsync: mockTapAsync,
           },
         },
-      } as any as Compilation;
+      } as unknown as Compilation;
     });
 
     it("should call the asyncProcessAssetTapFactory", () => {

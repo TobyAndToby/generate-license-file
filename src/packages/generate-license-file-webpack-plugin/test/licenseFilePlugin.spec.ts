@@ -26,7 +26,7 @@ describe("LicenseFilePlugin", () => {
           tap: mockTap,
         },
       },
-    } as any as Compiler;
+    } as unknown as Compiler;
   });
 
   afterAll(() => {

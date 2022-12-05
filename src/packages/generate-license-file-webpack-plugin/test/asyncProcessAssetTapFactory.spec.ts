@@ -1,13 +1,9 @@
 import { getLicenseFileText, LineEnding } from "generate-license-file";
-import { Compilation, Compiler } from "webpack";
+import { Compilation, Compiler, sources } from "webpack";
 import { asyncProcessAssetTapFactory } from "../src/lib/asyncProcessAssetTapFactory";
 import { devImplementation } from "../src/lib/devImplementation";
 import { Options } from "../src/lib/options";
 import { waitForNextEventLoop } from "./utils/waitForNextEventLoop";
-
-class MockRawSource {
-  constructor(public readonly content: string) {}
-}
 
 jest.mock("generate-license-file", () => {
   return {
@@ -43,7 +39,7 @@ describe("asyncProcessAssetTapFactory", () => {
     compiler = {
       webpack: {
         sources: {
-          RawSource: MockRawSource as any,
+          RawSource: sources.RawSource,
         },
       },
     } as Compiler;
@@ -51,7 +47,7 @@ describe("asyncProcessAssetTapFactory", () => {
     compilation = {
       errors: [],
       emitAsset: mockEmitAsset,
-    } as any as Compilation;
+    } as unknown as Compilation;
 
     mockGetLicenseFileText.mockResolvedValue("");
     mockDevImplementation.mockResolvedValue("");
@@ -148,7 +144,7 @@ describe("asyncProcessAssetTapFactory", () => {
         await waitForNextEventLoop();
 
         const firstCallSecondArg = mockEmitAsset.mock.calls[0][1];
-        expect(firstCallSecondArg).toBeInstanceOf(MockRawSource);
+        expect(firstCallSecondArg).toBeInstanceOf(sources.RawSource);
       });
 
       it("should emit a new asset with the correct content", async () => {
@@ -161,7 +157,7 @@ describe("asyncProcessAssetTapFactory", () => {
         await waitForNextEventLoop();
 
         const firstCallSecondArg = mockEmitAsset.mock.calls[0][1];
-        expect(firstCallSecondArg.content).toBe(fileContent);
+        expect(firstCallSecondArg.source()).toBe(fileContent);
       });
 
       it("should call the resolve function", async () => {
