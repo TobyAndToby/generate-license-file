@@ -131,6 +131,7 @@ jobs:
           - name: Windows
             value: windows-latest
         node:
+          - 14
           - 16
           - 18
           - 19
@@ -151,8 +152,10 @@ jobs:
           cache-dependency-path: ${{ env.CWD }}/package-lock.json
 
       - name: Install latest npm
-        if: matrix.node == 14
-        run: npm i -g npm@latest
+        run: npm i -g npm@8.19.2
+
+      - name: Log versions (Debug)
+        run: node -v && npm -v
 
       - name: Install dependencies
         working-directory: ${{ env.CWD }}
