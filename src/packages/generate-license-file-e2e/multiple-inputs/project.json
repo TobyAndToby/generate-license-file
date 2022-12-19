@@ -1,0 +1,18 @@
+{
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "name": "multiple-inputs",
+  "sourceRoot": "packages/generate-license-file/multiple-inputs/src",
+  "projectType": "library",
+  "implicitDependencies": ["generate-license-file", "e2e-helpers"],
+  "targets": {
+    "e2e": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npm ci && npm run e2e",
+        "cwd": "../e2e/multiple-inputs"
+      },
+      "dependsOn": ["^build"]
+    }
+  },
+  "tags": []
+}

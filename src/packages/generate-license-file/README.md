@@ -20,7 +20,7 @@ $ npx generate-license-file --input package.json --output third-party-licenses.t
 
 | Argument       | Description                                                                                                                                                       |
 | -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `--input`      | Absolute or relative path to the package.json for the project.                                                                                                    |
+| `--input`      | Absolute or relative path to the package.json for the project. This parameter can be given multiple times to combine the results of different projects.           |
 | `--output`     | Absolute or relative path for the generated output file.                                                                                                          |
 | `--overwrite`  | (optional) Allows the CLI to overwrite existing output files. If this option is not provided and the output file already exists, you will be prompted to confirm. |
 | `--eol`        | (optional) Specify the line endings used in the output file. Accepted values are `crlf` or `lf`. If no value is provided your system default will be used.        |
