@@ -1,6 +1,6 @@
 {
-  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
   "name": "npm-package",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/generate-license-file/npm-package/src",
   "projectType": "library",
   "implicitDependencies": ["generate-license-file", "e2e-helpers"],
