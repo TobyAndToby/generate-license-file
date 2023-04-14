@@ -23,7 +23,7 @@
     "@nrwl/workspace": "15.8.9",
     "@swc/cli": "~0.1.55",
     "@swc/core": "^1.2.173",
-    "@swc/jest": "0.2.24",
+    "@swc/jest": "0.2.26",
     "@types/jest": "28.1.8",
     "@types/license-checker": "^25.0.3",
     "@types/node": "^18.11.11",
