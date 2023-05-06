@@ -1,4 +1,4 @@
-import { readCachedProjectGraph, createProjectGraphAsync } from "@nrwl/devkit";
+import { readCachedProjectGraph, createProjectGraphAsync } from "@nx/devkit";
 import chalk from "chalk";
 import { execSync } from "child_process";
 
