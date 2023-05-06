@@ -111,7 +111,7 @@ jobs:
         run: npx nx run-many --target test -- --ci --coverage
 
       - name: Codecov
-        uses: codecov/codecov-action@v3.1.2
+        uses: codecov/codecov-action@v3.1.3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           directory: ${{ env.CWD }}/coverage
