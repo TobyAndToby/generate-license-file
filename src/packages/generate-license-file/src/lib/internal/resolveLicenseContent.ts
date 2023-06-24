@@ -2,6 +2,7 @@ import { join } from "path";
 import { PackageJson, readPackageJson } from "../utils/packageJson.utils";
 import { packageJsonLicense } from "./resolutions/packageJsonLicense";
 import { licenseFile } from "./resolutions/licenseFile";
+import { spdxExpression } from "./resolutions/spdxExpression";
 
 export interface ResolutionInputs {
   directory: string;
@@ -10,7 +11,7 @@ export interface ResolutionInputs {
 
 export type Resolution = (inputs: ResolutionInputs) => Promise<string | null>;
 
-const resolutions: Resolution[] = [packageJsonLicense, licenseFile];
+const resolutions: Resolution[] = [packageJsonLicense, licenseFile, spdxExpression];
 
 export const resolveLicenseContent = async (directory: string): Promise<string | null> => {
   const packageJson = await readPackageJson(join(directory, "package.json"));
