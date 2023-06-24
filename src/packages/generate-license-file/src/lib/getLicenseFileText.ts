@@ -1,4 +1,5 @@
 import { getLicensesForProjects } from "./internal/getLicensesForProjects";
+import { resolveLicenses } from "./internal/resolveLicenses";
 import { getLineEndingValue, LineEnding } from "./lineEndings";
 import { License } from "./models/license";
 
@@ -39,7 +40,7 @@ export async function getLicenseFileText(
   const EOL = getLineEndingValue(lineEnding);
   const credit = getCredit(EOL);
 
-  const licenses: License[] = await getLicensesForProjects(pathsToPackageJsons);
+  const licenses: License[] = await resolveLicenses(pathsToPackageJsons);
 
   let licenseFile = credit + EOL + EOL;
 

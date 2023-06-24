@@ -3,6 +3,7 @@ import { doesFileExist, readFile } from "./file.utils";
 export interface PackageJson {
   name?: string;
   version?: string;
+  license?: string;
 }
 
 export const readPackageJson = async (pathToPackageJson: string): Promise<PackageJson> => {
