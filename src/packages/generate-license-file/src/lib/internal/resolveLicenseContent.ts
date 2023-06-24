@@ -1,6 +1,7 @@
 import { join } from "path";
 import { PackageJson, readPackageJson } from "../utils/packageJson.utils";
 import { packageJsonLicense } from "./resolutions/packageJsonLicense";
+import { licenseFile } from "./resolutions/licenseFile";
 
 export interface ResolutionInputs {
   directory: string;
@@ -9,7 +10,7 @@ export interface ResolutionInputs {
 
 export type Resolution = (inputs: ResolutionInputs) => Promise<string | null>;
 
-const resolutions: Resolution[] = [packageJsonLicense];
+const resolutions: Resolution[] = [packageJsonLicense, licenseFile];
 
 export const resolveLicenseContent = async (directory: string): Promise<string | null> => {
   const packageJson = await readPackageJson(join(directory, "package.json"));

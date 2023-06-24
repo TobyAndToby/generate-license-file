@@ -41,10 +41,13 @@ export async function getLicenseFileText(
   const credit = getCredit(EOL);
 
   const licenses: License[] = await resolveLicenses(pathsToPackageJsons);
+  // const licenses: License[] = await getLicensesForProjects(pathsToPackageJsons);
+
+  const sortedLicenses = licenses.sort((a, b) => a.content.localeCompare(b.content));
 
   let licenseFile = credit + EOL + EOL;
 
-  for (const license of licenses) {
+  for (const license of sortedLicenses) {
     licenseFile += license.format(EOL) + EOL + EOL + SUFFIX + EOL + EOL;
   }
 

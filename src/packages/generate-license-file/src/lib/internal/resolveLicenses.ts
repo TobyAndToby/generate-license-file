@@ -14,11 +14,15 @@ export const resolveLicenses = async (packageJsons: string[]): Promise<License[]
     const topNode = await arborist.loadActual();
 
     const parseNode = async (node: Node | Link) => {
+      if (node.dev) {
+        return;
+      }
+
       const licenseContent = await resolveLicenseContent(node.realpath);
 
       if (licenseContent) {
         const set = licensesMap.get(licenseContent) ?? new Set<string>();
-        set.add(node.name);
+        set.add(node.pkgid);
         licensesMap.set(licenseContent, set);
       }
 

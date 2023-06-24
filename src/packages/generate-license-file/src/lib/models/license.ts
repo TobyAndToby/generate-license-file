@@ -49,9 +49,11 @@ export class License implements ILicense {
   }
 
   private formatDependencies(EOL: string): string {
-    const formattedText = this.dependencies.map(dependency => {
-      return BULLET + dependency + EOL;
-    });
+    const formattedText = this.dependencies
+      .sort((a, b) => a.localeCompare(b))
+      .map(dependency => {
+        return BULLET + dependency + EOL;
+      });
 
     return formattedText.join("");
   }
