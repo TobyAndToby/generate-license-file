@@ -18,6 +18,7 @@ export const configSchema = z
     eol: z.union([z.literal("crlf"), z.literal("lf")]).optional(),
     replace: z.record(z.string().nonempty(), z.string().nonempty()).optional(),
     exclude: z.string().nonempty().array().optional(),
+    append: z.string().nonempty().array().optional(),
   })
   .optional();
 

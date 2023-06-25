@@ -6,6 +6,7 @@ export type GetLicenseFileOptions = {
   lineEnding?: LineEnding;
   replace?: Record<string, string>;
   exclude?: string[];
+  append?: string[];
 };
 
 /**

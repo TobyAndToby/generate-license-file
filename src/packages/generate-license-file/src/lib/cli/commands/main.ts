@@ -73,6 +73,7 @@ export const mainCommand = new Command()
       lineEnding: eol,
       replace: configFile?.replace,
       exclude: configFile?.exclude,
+      append: configFile?.append,
     });
 
     spinner.stop();

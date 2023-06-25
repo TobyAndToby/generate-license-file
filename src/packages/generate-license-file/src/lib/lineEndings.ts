@@ -1,9 +1,13 @@
 import os from "os";
 
+const lineEndingValues = ["\r\n", "\n"] as const;
+
+export type LineEndingCharacters = typeof lineEndingValues[number];
+
 const lineEndings = {
   crlf: "\r\n",
   lf: "\n",
-} as const;
+} satisfies Record<string, LineEndingCharacters>;
 
 /**
  * Used to specify which line endings to use in the generated file.
@@ -26,9 +30,9 @@ export const isLineEnding = (input: string | undefined): input is LineEnding => 
   return allLineEndings.includes(input as LineEnding);
 };
 
-export const getLineEndingValue = (input: LineEnding | undefined): string => {
+export const getLineEndingCharacters = (input: LineEnding | undefined): LineEndingCharacters => {
   if (input === undefined) {
-    return os.EOL;
+    return os.EOL as LineEndingCharacters;
   }
 
   const lineEndingValue = lineEndings[input as LineEnding];

@@ -1,6 +1,8 @@
 import { resolveLicenses } from "./internal/resolveLicenses";
-import { getLineEndingValue, LineEnding } from "./lineEndings";
+import { getLineEndingCharacters, LineEnding } from "./lineEndings";
 import { License } from "./models/license";
+import { readFile } from "./utils/file.utils";
+import { prepareContentForOutput } from "./utils/string.utils";
 
 const SUFFIX = "-----------";
 const CREDIT1 = "This file was generated with the generate-license-file npm package!";
@@ -10,6 +12,7 @@ export type GetLicenseFileTextOptions = {
   lineEnding?: LineEnding;
   replace?: Record<string, string>;
   exclude?: string[];
+  append?: string[];
 };
 
 /**
@@ -42,7 +45,7 @@ export async function getLicenseFileText(
     pathsToPackageJsons = [pathsToPackageJsons];
   }
 
-  const EOL = getLineEndingValue(options?.lineEnding);
+  const EOL = getLineEndingCharacters(options?.lineEnding);
   const credit = getCredit(EOL);
 
   const licenses: License[] = await resolveLicenses(pathsToPackageJsons, options);
@@ -53,6 +56,12 @@ export async function getLicenseFileText(
 
   for (const license of sortedLicenses) {
     licenseFile += license.format(EOL) + EOL + EOL + SUFFIX + EOL + EOL;
+  }
+
+  for (const appendixFilePath of options?.append ?? []) {
+    const appendixContent = await readFile(appendixFilePath, { encoding: "utf-8" });
+    const formattedAppendixContent = prepareContentForOutput(appendixContent, EOL);
+    licenseFile += formattedAppendixContent + EOL + EOL + SUFFIX + EOL + EOL;
   }
 
   licenseFile += credit + EOL;

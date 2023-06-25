@@ -45,5 +45,17 @@ const parseConfig = (configFile: ConfigFile | undefined, directory: string): Con
     config.replace[replacement] = absolutePath;
   }
 
+  if (config.append) {
+    for (let i = 0; i < config.append.length; i++) {
+      const appendixPath = config.append[i];
+      if (isAbsolute(appendixPath)) {
+        continue;
+      }
+
+      const absolutePath = join(directory, appendixPath);
+      config.append[i] = absolutePath;
+    }
+  }
+
   return config;
 };
