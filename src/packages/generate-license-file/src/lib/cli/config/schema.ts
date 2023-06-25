@@ -8,7 +8,7 @@ export const configSchema = z
       .boolean()
       .optional()
       .transform(o => (o ? o : undefined)),
-    noSpinner: z.boolean().optional(),
+    spinner: z.boolean().optional(),
     ci: z.boolean().optional(),
     eol: z.union([z.literal("crlf"), z.literal("lf")]).optional(),
   })

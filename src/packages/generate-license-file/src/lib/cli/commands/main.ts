@@ -3,7 +3,6 @@ import { loadConfigFile } from "../config";
 import { Inputs } from "../args/inputs";
 import { Output } from "../args/output";
 import { Eol } from "../args/eol";
-import { NoSpinner } from "../args/no-spinner";
 import { LineEnding } from "../../lineEndings";
 import { generateLicenseFile } from "../../generateLicenseFile";
 import { spinner } from "../spinner";
@@ -14,14 +13,14 @@ export type CombinedConfig = {
   eol?: string;
   ci?: boolean;
   overwrite?: boolean;
-  noSpinner?: boolean;
+  spinner?: boolean;
 };
 
 export interface ProgramOptions {
   inputs: string[];
   output: string;
   eol?: LineEnding;
-  noSpinner: boolean;
+  showSpinner: boolean;
 }
 
 export const mainCommand = new Command()
@@ -36,7 +35,7 @@ export const mainCommand = new Command()
   .option("--overwrite", "")
   .action(async givenArgs => {
     const cliArgs = {
-      noSpinner: !givenArgs.spinner,
+      spinner: givenArgs.spinner ? undefined : false,
       ci: givenArgs.ci,
       eol: givenArgs.eol,
       inputs: givenArgs.input,
@@ -55,11 +54,11 @@ export const mainCommand = new Command()
       ...filteredCliArgs,
     };
 
-    console.log(combinedConfig);
+    console.log({ cliArgs, combinedConfig });
 
-    const { inputs, noSpinner, output, eol } = await parseArgumentsIntoOptions(combinedConfig);
+    const { inputs, showSpinner, output, eol } = await parseArgumentsIntoOptions(combinedConfig);
 
-    if (!noSpinner) {
+    if (showSpinner) {
       spinner.start();
     }
 
@@ -69,7 +68,7 @@ export const mainCommand = new Command()
 
 async function parseArgumentsIntoOptions(config: CombinedConfig): Promise<ProgramOptions> {
   if (config.ci) {
-    config.noSpinner = true;
+    config.spinner = false;
 
     try {
       return await getOptionsOrThrow(config);
@@ -86,18 +85,18 @@ async function getOptionsOrThrow(config: CombinedConfig): Promise<ProgramOptions
   const inputs = await new Inputs().parse(config);
   const output = await new Output().parse(config);
   const eol = await new Eol().parse(config);
-  const noSpinner = await new NoSpinner().parse(config);
+  const showSpinner = config.spinner ?? true;
 
-  return { inputs, output, eol, noSpinner };
+  return { inputs, output, eol, showSpinner };
 }
 
 async function promptForMissingOptions(config: CombinedConfig): Promise<ProgramOptions> {
   const inputs = await new Inputs().resolve(config);
   const output = await new Output().resolve(config);
   const eol = await new Eol().resolve(config);
-  const noSpinner = await new NoSpinner().resolve(config);
+  const showSpinner = config.spinner ?? true;
 
-  return { inputs, output, eol, noSpinner };
+  return { inputs, output, eol, showSpinner };
 }
 
 function getMessageFromCaughtUnknown(e: unknown): string {
