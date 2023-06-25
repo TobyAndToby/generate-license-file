@@ -35,6 +35,9 @@ export const mainCommand = new Command()
   .option("--overwrite", "")
   .action(async givenArgs => {
     const cliArgs = {
+      // Commander sets spinner to true by default, meaning it will always override
+      // a spinner value in the config file - set to undefined if it is true (ie,
+      // omitted from CLI args) so the filtering below removes it.
       spinner: givenArgs.spinner ? undefined : false,
       ci: givenArgs.ci,
       eol: givenArgs.eol,
@@ -45,6 +48,8 @@ export const mainCommand = new Command()
 
     const configFile = await loadConfigFile(givenArgs.config);
 
+    // Filter out undefined values in the CLI args, so they do not
+    // potentially override values provided in the config file.
     const filteredCliArgs = Object.fromEntries(
       Object.entries(cliArgs).filter(([, v]) => v !== undefined),
     );

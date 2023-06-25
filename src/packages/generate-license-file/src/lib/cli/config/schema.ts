@@ -7,6 +7,11 @@ export const configSchema = z
     overwrite: z
       .boolean()
       .optional()
+      // TODO: Remove. With the addition of config files the user has the ability to
+      // set overwrite to false. This was not possible via the CLI (which only ever
+      // gave true or undefined), and the usage of the overwrite flag in the output
+      // resolution no longer worked. This overrides any false value with undefined
+      // to restore output resolution.
       .transform(o => (o ? o : undefined)),
     spinner: z.boolean().optional(),
     ci: z.boolean().optional(),
