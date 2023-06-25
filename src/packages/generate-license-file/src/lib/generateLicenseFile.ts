@@ -4,9 +4,8 @@ import { writeFileAsync } from "./utils/file.utils";
 
 export type GetLicenseFileOptions = {
   lineEnding?: LineEnding;
-  exclude?: string[];
-  additions?: string[];
   replace?: Record<string, string>;
+  exclude?: string[];
 };
 
 /**

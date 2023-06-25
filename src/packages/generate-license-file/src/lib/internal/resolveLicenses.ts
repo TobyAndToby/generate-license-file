@@ -14,6 +14,8 @@ export const resolveLicenses = async (
   options?: ResolveLicensesOptions,
 ): Promise<License[]> => {
   const replacements = options?.replace ?? {};
+  const exclude = options?.exclude ?? [];
+
   const licensesMap: Map<string, Set<string>> = new Map<string, Set<string>>();
 
   const resolveLicensesForPackageJson = async (packageJson: string) => {
@@ -24,6 +26,10 @@ export const resolveLicenses = async (
 
     const parseNode = async (node: Node | Link) => {
       if (node.dev) {
+        return;
+      }
+
+      if (exclude.includes(node.pkgid)) {
         return;
       }
 

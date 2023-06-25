@@ -2,9 +2,8 @@ import { z } from "zod";
 
 export const configSchema = z
   .object({
-    replace: z.record(z.string().nonempty(), z.string().nonempty()).optional(),
-    inputs: z.string().array().optional(),
-    output: z.string().optional(),
+    inputs: z.string().nonempty().array().optional(),
+    output: z.string().nonempty().optional(),
     overwrite: z
       .boolean()
       .optional()
@@ -17,6 +16,8 @@ export const configSchema = z
     spinner: z.boolean().optional(),
     ci: z.boolean().optional(),
     eol: z.union([z.literal("crlf"), z.literal("lf")]).optional(),
+    replace: z.record(z.string().nonempty(), z.string().nonempty()).optional(),
+    exclude: z.string().nonempty().array().optional(),
   })
   .optional();
 

@@ -8,9 +8,8 @@ const CREDIT2 = "https://www.npmjs.com/package/generate-license-file";
 
 export type GetLicenseFileTextOptions = {
   lineEnding?: LineEnding;
-  exclude?: string[];
-  additions?: string[];
   replace?: Record<string, string>;
+  exclude?: string[];
 };
 
 /**

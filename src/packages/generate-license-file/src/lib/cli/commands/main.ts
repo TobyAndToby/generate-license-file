@@ -72,6 +72,7 @@ export const mainCommand = new Command()
     await generateLicenseFile(inputs, output, {
       lineEnding: eol,
       replace: configFile?.replace,
+      exclude: configFile?.exclude,
     });
 
     spinner.stop();
