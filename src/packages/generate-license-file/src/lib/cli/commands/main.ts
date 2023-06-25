@@ -34,23 +34,28 @@ export const mainCommand = new Command()
   .option("--ci", "")
   .option("--no-spinner", "")
   .option("--overwrite", "")
-  .action(async cliArgs => {
-    const configFile = await loadConfigFile(cliArgs.config);
+  .action(async givenArgs => {
+    const cliArgs = {
+      noSpinner: !givenArgs.spinner,
+      ci: givenArgs.ci,
+      eol: givenArgs.eol,
+      inputs: givenArgs.input,
+      output: givenArgs.output,
+      overwrite: givenArgs.overwrite,
+    };
 
-    const { input, ...rest } = cliArgs;
+    const configFile = await loadConfigFile(givenArgs.config);
 
-    const filteredRest = Object.fromEntries(
-      Object.entries(rest).filter(([, v]) => v !== undefined),
+    const filteredCliArgs = Object.fromEntries(
+      Object.entries(cliArgs).filter(([, v]) => v !== undefined),
     );
 
     const combinedConfig = {
       ...configFile,
-      ...filteredRest,
+      ...filteredCliArgs,
     };
 
-    if (input) {
-      combinedConfig.inputs = input;
-    }
+    console.log(combinedConfig);
 
     const { inputs, noSpinner, output, eol } = await parseArgumentsIntoOptions(combinedConfig);
 

@@ -4,7 +4,10 @@ export const configSchema = z
   .object({
     inputs: z.string().array().optional(),
     output: z.string().optional(),
-    overwrite: z.boolean().optional(),
+    overwrite: z
+      .boolean()
+      .optional()
+      .transform(o => (o ? o : undefined)),
     noSpinner: z.boolean().optional(),
     ci: z.boolean().optional(),
     eol: z.union([z.literal("crlf"), z.literal("lf")]).optional(),
