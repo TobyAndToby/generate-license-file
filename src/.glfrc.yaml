@@ -1,0 +1,4 @@
+inputs:
+  - ./package.json
+replace:
+  exponential-backoff@3.1.1: ./nx.json

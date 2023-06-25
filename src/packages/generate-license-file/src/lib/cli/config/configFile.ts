@@ -1,7 +1,9 @@
 import { Options as CosmiconfigOptions, cosmiconfig } from "cosmiconfig";
 import { json5Parse } from "./parsers/json5";
 
-export const loadConfig = async (filePath: string): Promise<unknown> => {
+export type ConfigFile = { path: string; config: unknown };
+
+export const loadConfig = async (filePath: string): Promise<ConfigFile | undefined> => {
   const options: CosmiconfigOptions = {
     loaders: {
       ".json": json5Parse,
@@ -13,7 +15,14 @@ export const loadConfig = async (filePath: string): Promise<unknown> => {
   const explorer = cosmiconfig("generate-license-file", options);
   const result = await explorer.load(filePath);
 
-  return result?.config;
+  if (result !== null && !result?.isEmpty) {
+    return {
+      path: result.filepath,
+      config: result.config,
+    };
+  }
+
+  return;
 };
 
 const moduleNames = ["glf", "glfrc", "generatelicensefile", "generatelicensefilerc"];
@@ -45,7 +54,7 @@ for (const moduleName of moduleNames) {
   searchPlaces.push(...generateSearchPlaces(moduleName));
 }
 
-export const findConfig = async (directory: string): Promise<unknown> => {
+export const findConfig = async (directory: string): Promise<ConfigFile | undefined> => {
   const options: CosmiconfigOptions = {
     stopDir: directory,
     loaders: {
@@ -59,5 +68,12 @@ export const findConfig = async (directory: string): Promise<unknown> => {
   const explorer = cosmiconfig("generate-license-file", options);
   const result = await explorer.search(directory);
 
-  return result?.config;
+  if (result !== null && !result?.isEmpty) {
+    return {
+      path: result.filepath,
+      config: result.config,
+    };
+  }
+
+  return;
 };

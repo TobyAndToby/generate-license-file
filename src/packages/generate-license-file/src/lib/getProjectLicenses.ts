@@ -1,6 +1,10 @@
-import { getLicensesForProjects } from "./internal/getLicensesForProjects";
 import { resolveLicenses } from "./internal/resolveLicenses";
 import { ILicense } from "./models/license";
+
+export type GetProjectLicensesOptions = {
+  replace?: Record<string, string>;
+  exclude?: string[];
+};
 
 /**
  * Scans the project found at the given path and returns an array of objects each
@@ -8,7 +12,9 @@ import { ILicense } from "./models/license";
  * @param pathToPackageJson A path to the package.json for the project
  * @returns Array of `ILicense`s each containing the license content and respective dependencies
  */
-export async function getProjectLicenses(pathToPackageJson: string): Promise<ILicense[]> {
-  // return getLicensesForProjects([pathToPackageJson]);
-  return resolveLicenses([pathToPackageJson]);
+export async function getProjectLicenses(
+  pathToPackageJson: string,
+  options?: GetProjectLicensesOptions,
+): Promise<ILicense[]> {
+  return resolveLicenses([pathToPackageJson], options);
 }

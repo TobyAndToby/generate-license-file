@@ -4,7 +4,16 @@ import Arborist from "@npmcli/arborist";
 import { dirname, isAbsolute, join } from "path";
 import { resolveLicenseContent } from "./resolveLicenseContent";
 
-export const resolveLicenses = async (packageJsons: string[]): Promise<License[]> => {
+type ResolveLicensesOptions = {
+  replace?: Record<string, string>;
+  exclude?: string[];
+};
+
+export const resolveLicenses = async (
+  packageJsons: string[],
+  options?: ResolveLicensesOptions,
+): Promise<License[]> => {
+  const replacements = options?.replace ?? {};
   const licensesMap: Map<string, Set<string>> = new Map<string, Set<string>>();
 
   const resolveLicensesForPackageJson = async (packageJson: string) => {
@@ -18,7 +27,7 @@ export const resolveLicenses = async (packageJsons: string[]): Promise<License[]
         return;
       }
 
-      const licenseContent = await resolveLicenseContent(node.realpath);
+      const licenseContent = await resolveLicenseContent(node.realpath, replacements);
 
       if (licenseContent) {
         const set = licensesMap.get(licenseContent) ?? new Set<string>();

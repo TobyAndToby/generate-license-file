@@ -1,4 +1,3 @@
-import { getLicensesForProjects } from "./internal/getLicensesForProjects";
 import { resolveLicenses } from "./internal/resolveLicenses";
 import { getLineEndingValue, LineEnding } from "./lineEndings";
 import { License } from "./models/license";
@@ -6,6 +5,13 @@ import { License } from "./models/license";
 const SUFFIX = "-----------";
 const CREDIT1 = "This file was generated with the generate-license-file npm package!";
 const CREDIT2 = "https://www.npmjs.com/package/generate-license-file";
+
+export type GetLicenseFileTextOptions = {
+  lineEnding?: LineEnding;
+  exclude?: string[];
+  additions?: string[];
+  replace?: Record<string, string>;
+};
 
 /**
  * Scans the project found at the given path and returns a string containing the licenses for all of the dependencies
@@ -15,7 +21,7 @@ const CREDIT2 = "https://www.npmjs.com/package/generate-license-file";
  */
 export async function getLicenseFileText(
   pathToPackageJson: string,
-  lineEnding?: LineEnding,
+  options?: GetLicenseFileTextOptions,
 ): Promise<string>;
 
 /**
@@ -26,22 +32,21 @@ export async function getLicenseFileText(
  */
 export async function getLicenseFileText(
   pathsToPackageJsons: string[],
-  lineEnding?: LineEnding,
+  options?: GetLicenseFileTextOptions,
 ): Promise<string>;
 
 export async function getLicenseFileText(
   pathsToPackageJsons: string[] | string,
-  lineEnding?: LineEnding,
+  options?: GetLicenseFileTextOptions,
 ): Promise<string> {
   if (typeof pathsToPackageJsons === "string") {
     pathsToPackageJsons = [pathsToPackageJsons];
   }
 
-  const EOL = getLineEndingValue(lineEnding);
+  const EOL = getLineEndingValue(options?.lineEnding);
   const credit = getCredit(EOL);
 
-  const licenses: License[] = await resolveLicenses(pathsToPackageJsons);
-  // const licenses: License[] = await getLicensesForProjects(pathsToPackageJsons);
+  const licenses: License[] = await resolveLicenses(pathsToPackageJsons, options);
 
   const sortedLicenses = licenses.sort((a, b) => a.content.localeCompare(b.content));
 

@@ -2,6 +2,7 @@ import { z } from "zod";
 
 export const configSchema = z
   .object({
+    replace: z.record(z.string().nonempty(), z.string().nonempty()).optional(),
     inputs: z.string().array().optional(),
     output: z.string().optional(),
     overwrite: z
@@ -28,5 +29,5 @@ export const parseSchema = (input: unknown): ConfigSchema => {
     return parseResult.data;
   }
 
-  throw new Error(`Invalid config: ${parseResult.error.issues}`);
+  throw new Error(`Invalid config: ${JSON.stringify(parseResult.error.issues)}`);
 };

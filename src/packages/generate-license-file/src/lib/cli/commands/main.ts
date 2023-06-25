@@ -48,6 +48,8 @@ export const mainCommand = new Command()
 
     const configFile = await loadConfigFile(givenArgs.config);
 
+    console.log(configFile);
+
     // Filter out undefined values in the CLI args, so they do not
     // potentially override values provided in the config file.
     const filteredCliArgs = Object.fromEntries(
@@ -65,7 +67,13 @@ export const mainCommand = new Command()
       spinner.start();
     }
 
-    await generateLicenseFile(inputs, output, eol);
+    console.log(combinedConfig);
+
+    await generateLicenseFile(inputs, output, {
+      lineEnding: eol,
+      replace: configFile?.replace,
+    });
+
     spinner.stop();
   });
 
