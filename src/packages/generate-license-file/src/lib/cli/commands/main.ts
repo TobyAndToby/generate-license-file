@@ -54,8 +54,6 @@ export const mainCommand = new Command()
       ...filteredCliArgs,
     };
 
-    console.log({ cliArgs, combinedConfig });
-
     const { inputs, showSpinner, output, eol } = await parseArgumentsIntoOptions(combinedConfig);
 
     if (showSpinner) {
