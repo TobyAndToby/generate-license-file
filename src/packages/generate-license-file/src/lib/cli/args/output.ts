@@ -12,8 +12,6 @@ export class Output extends Argument<string> {
     let outputExists = output ? await doesFileExist(output) : false;
 
     while (!output || (outputExists && !overwrite)) {
-      console.log({ output, outputExists, overwrite });
-
       if (!output) {
         output = await this.promptForString(this.question, this.initialValue);
       }

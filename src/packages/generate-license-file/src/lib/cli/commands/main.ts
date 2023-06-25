@@ -7,7 +7,6 @@ import { NoSpinner } from "../args/no-spinner";
 import { LineEnding } from "../../lineEndings";
 import { generateLicenseFile } from "../../generateLicenseFile";
 import { spinner } from "../spinner";
-import { ConfigSchema } from "../config/schema";
 
 export type CombinedConfig = {
   inputs?: string[];
@@ -38,9 +37,22 @@ export const mainCommand = new Command()
   .action(async cliArgs => {
     const configFile = await loadConfigFile(cliArgs.config);
 
-    const config = combineArgsWithConfig(cliArgs, configFile);
+    const { input, ...rest } = cliArgs;
 
-    const { inputs, noSpinner, output, eol } = await parseArgumentsIntoOptions(config);
+    const filteredRest = Object.fromEntries(
+      Object.entries(rest).filter(([, v]) => v !== undefined),
+    );
+
+    const combinedConfig = {
+      ...configFile,
+      ...filteredRest,
+    };
+
+    if (input) {
+      combinedConfig.inputs = input;
+    }
+
+    const { inputs, noSpinner, output, eol } = await parseArgumentsIntoOptions(combinedConfig);
 
     if (!noSpinner) {
       spinner.start();
@@ -49,19 +61,6 @@ export const mainCommand = new Command()
     await generateLicenseFile(inputs, output, eol);
     spinner.stop();
   });
-
-const combineArgsWithConfig = <T extends Record<string, unknown>>(
-  cliArgs: T,
-  configFile: ConfigSchema,
-): CombinedConfig => {
-  const { input, ...rest } = cliArgs;
-
-  return {
-    ...configFile,
-    ...rest,
-    inputs: input,
-  };
-};
 
 async function parseArgumentsIntoOptions(config: CombinedConfig): Promise<ProgramOptions> {
   if (config.ci) {
