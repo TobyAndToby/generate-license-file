@@ -1,7 +1,6 @@
-import { Result } from "arg";
 import { isLineEnding, LineEnding } from "../../lineEndings";
-import { ArgumentsWithAliases } from "../cli-arguments";
 import { Argument, MultipleChoiceOptions } from "./argument";
+import { CombinedConfig } from "../commands/main";
 
 export class Eol extends Argument<LineEnding | undefined> {
   private readonly choices: MultipleChoiceOptions<LineEnding | undefined> = {
@@ -10,11 +9,11 @@ export class Eol extends Argument<LineEnding | undefined> {
     "System default": undefined,
   };
 
-  public async resolve(args: Result<ArgumentsWithAliases>): Promise<LineEnding | undefined> {
-    const inputtedEol = args["--eol"];
+  public async resolve(config: CombinedConfig): Promise<LineEnding | undefined> {
+    const { eol } = config;
 
-    if (isLineEnding(inputtedEol)) {
-      return inputtedEol;
+    if (isLineEnding(eol)) {
+      return eol;
     }
 
     const answer = await this.promptForMultipleChoice(
@@ -25,8 +24,8 @@ export class Eol extends Argument<LineEnding | undefined> {
     return answer;
   }
 
-  public async parse(args: Result<ArgumentsWithAliases>): Promise<LineEnding | undefined> {
-    const eol = args["--eol"];
+  public async parse(config: CombinedConfig): Promise<LineEnding | undefined> {
+    const { eol } = config;
 
     if (!isLineEnding(eol)) {
       throw new Error(

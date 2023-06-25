@@ -1,14 +1,13 @@
-import { Result } from "arg";
 import { doesFileExist } from "../../utils/file.utils";
-import { ArgumentsWithAliases } from "../cli-arguments";
-import { spinner } from "../spinner";
 import { Argument } from "./argument";
+import { CombinedConfig } from "../commands/main";
+import { spinner } from "../spinner";
 
 export class Inputs extends Argument<string[]> {
   private question = "Package.json location: ";
 
-  public async resolve(args: Result<ArgumentsWithAliases>): Promise<string[]> {
-    const inputs = args["--input"];
+  public async resolve(config: CombinedConfig): Promise<string[]> {
+    const { inputs } = config;
 
     if (!inputs) {
       return await this.resolveOne(undefined);
@@ -21,8 +20,8 @@ export class Inputs extends Argument<string[]> {
     return await this.resolveMany(inputs);
   }
 
-  public async parse(args: Result<ArgumentsWithAliases>): Promise<string[]> {
-    const inputs = args["--input"];
+  public async parse(config: CombinedConfig): Promise<string[]> {
+    const { inputs } = config;
 
     if (!inputs || inputs.length === 0) {
       throw new Error("No --input argument given.");

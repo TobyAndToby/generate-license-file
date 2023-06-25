@@ -1,15 +1,14 @@
-import { Result } from "arg";
-import { ArgumentsWithAliases } from "../cli-arguments";
 import { Argument } from "./argument";
+import { CombinedConfig } from "../commands/main";
 
 export class NoSpinner extends Argument<boolean> {
-  public resolve(args: Result<ArgumentsWithAliases>): Promise<boolean> {
-    const inputtedNoSpinner = args["--no-spinner"];
-    return Promise.resolve(inputtedNoSpinner ?? false);
+  public resolve(config: CombinedConfig): Promise<boolean> {
+    const { noSpinner } = config;
+    return Promise.resolve(noSpinner ?? false);
   }
 
-  public parse(args: Result<ArgumentsWithAliases>): Promise<boolean> {
-    const inputtedNoSpinner = args["--no-spinner"];
-    return Promise.resolve(inputtedNoSpinner ?? false);
+  public parse(config: CombinedConfig): Promise<boolean> {
+    const { noSpinner } = config;
+    return Promise.resolve(noSpinner ?? false);
   }
 }

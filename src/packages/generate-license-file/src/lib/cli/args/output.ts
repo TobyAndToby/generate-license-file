@@ -1,43 +1,42 @@
-import { Result } from "arg";
 import { doesFileExist } from "../../utils/file.utils";
-import { ArgumentsWithAliases } from "../cli-arguments";
 import { Argument } from "./argument";
+import { CombinedConfig } from "../commands/main";
 
 export class Output extends Argument<string> {
   private question = "Output location: ";
 
   private initialValue = "third-party-licenses.txt";
 
-  public async resolve(args: Result<ArgumentsWithAliases>): Promise<string> {
-    let output = args["--output"];
+  public async resolve(config: CombinedConfig): Promise<string> {
+    let { output, overwrite } = config;
     let outputExists = output ? await doesFileExist(output) : false;
-    let overwriteOutput = args["--overwrite"];
 
-    while (!output || (outputExists && !overwriteOutput)) {
+    while (!output || (outputExists && !overwrite)) {
+      console.log({ output, outputExists, overwrite });
+
       if (!output) {
         output = await this.promptForString(this.question, this.initialValue);
       }
 
       outputExists = await doesFileExist(output);
 
-      if (outputExists && overwriteOutput === undefined) {
-        overwriteOutput = await this.promptForBoolean(
+      if (outputExists && overwrite === undefined) {
+        overwrite = await this.promptForBoolean(
           "This file already exists - do you want to overwrite it?",
         );
       }
 
-      if (outputExists && overwriteOutput === false) {
+      if (outputExists && overwrite === false) {
         output = undefined;
-        overwriteOutput = undefined;
+        overwrite = undefined;
       }
     }
 
     return output;
   }
 
-  public async parse(args: Result<ArgumentsWithAliases>): Promise<string> {
-    const output = args["--output"];
-    const allowOverwrite = args["--overwrite"];
+  public async parse(config: CombinedConfig): Promise<string> {
+    const { output, overwrite } = config;
 
     if (!output) {
       throw new Error("No --output argument given.");
@@ -45,7 +44,7 @@ export class Output extends Argument<string> {
 
     const outputExists = await doesFileExist(output);
 
-    if (outputExists && !allowOverwrite) {
+    if (outputExists && !overwrite) {
       throw new Error(
         `Given --output file already exists at '${output}'. Use --overwrite to allow overwriting.`,
       );

@@ -1,14 +1,13 @@
-import { Result } from "arg";
 import { prompt } from "enquirer";
-import { ArgumentsWithAliases } from "../cli-arguments";
+import { CombinedConfig } from "../commands/main";
 
 export type MultipleChoiceOptions<T> = {
   [key: string]: T;
 };
 
 export abstract class Argument<T> {
-  abstract parse(args: Result<ArgumentsWithAliases>): Promise<T>;
-  abstract resolve(args: Result<ArgumentsWithAliases>): Promise<T>;
+  abstract parse(config: CombinedConfig): Promise<T>;
+  abstract resolve(config: CombinedConfig): Promise<T>;
 
   protected async promptForString(question: string, initialValue: string): Promise<string> {
     const answer = await prompt<{ value: string }>({
