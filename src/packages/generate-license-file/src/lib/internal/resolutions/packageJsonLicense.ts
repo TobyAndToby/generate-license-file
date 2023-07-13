@@ -18,20 +18,17 @@ export const packageJsonLicense: Resolution = async inputs => {
 
   const licenseFilePath = sanitise(spdxExpression.substring(15));
 
-  return await readLicense(directory, licenseFilePath);
+  if (licenseFilePath.startsWith("http") || licenseFilePath.startsWith("www")) {
+    return spdxExpression;
+  }
+
+  return await readLicenseFromDisk(directory, licenseFilePath);
 };
 
 const sanitise = (str: string) => str.replace(/['<>]/g, "");
 
-const readLicense = async (dir: string, path: string): Promise<string | null> => {
-  if (path.startsWith("http")) {
-    // TODO
-    return null;
-  }
-
+const readLicenseFromDisk = async (dir: string, path: string): Promise<string | null> => {
   const absolutePath = join(dir, path);
-
-  global.console.log(`Found license in package.json: ${absolutePath}`);
 
   const fileExists = await doesFileExist(path);
   if (!fileExists) {
