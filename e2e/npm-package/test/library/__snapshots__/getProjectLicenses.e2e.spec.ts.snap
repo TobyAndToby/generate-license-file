@@ -3,16 +3,7 @@
 exports[`getProjectLicenses for a relative path should match snapshot 1`] = `
 [
   License {
-    "content": "# Dep Five
-
-| Test Case | NO LICENSE FILE  |
-| --------- | ---------------- |
-| Found     | TRUE (README.MD) |
-
-## Notes
-
-This README should be used as a substitute for the license file.
-",
+    "content": "MIT",
     "dependencies": [
       "dep-five@1.0.0",
     ],
@@ -52,8 +43,8 @@ This license file is spelt \`LICENCE.md\`.
 This license should be found.
 ",
     "dependencies": [
-      "dep-two-duplicate@1.0.0",
       "dep-two@1.0.0",
+      "dep-two-duplicate@1.0.0",
     ],
   },
 ]
@@ -62,16 +53,7 @@ This license should be found.
 exports[`getProjectLicenses for an absolute path should match snapshot 1`] = `
 [
   License {
-    "content": "# Dep Five
-
-| Test Case | NO LICENSE FILE  |
-| --------- | ---------------- |
-| Found     | TRUE (README.MD) |
-
-## Notes
-
-This README should be used as a substitute for the license file.
-",
+    "content": "MIT",
     "dependencies": [
       "dep-five@1.0.0",
     ],
@@ -111,8 +93,8 @@ This license file is spelt \`LICENCE.md\`.
 This license should be found.
 ",
     "dependencies": [
-      "dep-two-duplicate@1.0.0",
       "dep-two@1.0.0",
+      "dep-two-duplicate@1.0.0",
     ],
   },
 ]
