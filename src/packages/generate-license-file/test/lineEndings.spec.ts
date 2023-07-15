@@ -16,12 +16,6 @@ describe("lineEndings", () => {
   afterAll(jest.restoreAllMocks);
 
   describe("isLineEnding", () => {
-    it("should return true for undefined", () => {
-      const result = isLineEnding(undefined);
-
-      expect(result).toBe(true);
-    });
-
     it("should return true for 'crlf'", () => {
       const result = isLineEnding("crlf");
 
@@ -35,7 +29,13 @@ describe("lineEndings", () => {
     });
 
     it("should return false for null", () => {
-      const result = isLineEnding(null as unknown as string);
+      const result = isLineEnding(null);
+
+      expect(result).toBe(false);
+    });
+
+    it("should return false for undefined", () => {
+      const result = isLineEnding(undefined);
 
       expect(result).toBe(false);
     });
