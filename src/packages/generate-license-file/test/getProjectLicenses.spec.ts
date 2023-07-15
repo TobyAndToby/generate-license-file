@@ -1,45 +1,56 @@
-import { getProjectLicenses } from "../src/lib/getProjectLicenses";
-import { getLicensesForProjects } from "../src/lib/internal/getLicensesForProjects";
+import { GetProjectLicensesOptions, getProjectLicenses } from "../src/lib/getProjectLicenses";
+import { resolveLicenses } from "../src/lib/internal/resolveLicenses";
 import { License } from "../src/lib/models/license";
 
-jest.mock("../src/lib/internal/getLicensesForProjects", () => ({
-  getLicensesForProjects: jest.fn(),
+jest.mock("../src/lib/internal/resolveLicenses", () => ({
+  resolveLicenses: jest.fn(),
 }));
 
 describe("getProjectLicenses", () => {
-  const mockGetLicensesForProjects = jest.mocked(getLicensesForProjects);
+  const mockedResolveLicenses = jest.mocked(resolveLicenses);
 
   beforeEach(() => {
     jest.resetAllMocks();
 
-    mockGetLicensesForProjects.mockResolvedValue([]);
+    mockedResolveLicenses.mockResolvedValue([]);
   });
 
-  afterAll(() => {
-    jest.restoreAllMocks();
+  afterAll(jest.restoreAllMocks);
+
+  it("should call resolveLicenses", async () => {
+    const _ = await getProjectLicenses("path");
+
+    expect(mockedResolveLicenses).toHaveBeenCalledTimes(1);
   });
 
-  it("should call the internal getProjectLicenses", async () => {
-    await getProjectLicenses("path");
-
-    expect(mockGetLicensesForProjects).toHaveBeenCalledTimes(1);
-  });
-
-  it("should call the internal getProjectLicenses with the given path", async () => {
+  it("should call resolveLicenses with the given path", async () => {
     const path = "the given path";
 
-    await getProjectLicenses(path);
+    const _ = await getProjectLicenses(path);
 
-    expect(mockGetLicensesForProjects).toHaveBeenCalledWith([path]);
+    expect(mockedResolveLicenses).toHaveBeenCalledWith([path], undefined);
   });
 
-  it("should return the response from the internal getProjectLicenses", async () => {
+  it("should pass the options to resolveLicenses", async () => {
+    const options: GetProjectLicensesOptions = {
+      replace: {
+        a: "b",
+      },
+      exclude: ["c"],
+    };
+
+    const _ = await getProjectLicenses("path", options);
+
+    expect(mockedResolveLicenses).toHaveBeenCalledWith(["path"], options);
+  });
+
+  it("should return the response from resolveLicenses", async () => {
     const licenses: License[] = [
       new License("stuff", ["a", "b"]),
       new License("also stuff", ["c", "d"]),
     ];
 
-    mockGetLicensesForProjects.mockResolvedValue(licenses);
+    mockedResolveLicenses.mockResolvedValue(licenses);
 
     const result = await getProjectLicenses("path");
 

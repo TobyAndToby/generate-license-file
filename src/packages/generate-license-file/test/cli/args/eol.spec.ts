@@ -1,6 +1,6 @@
 import { prompt } from "enquirer";
 import { Eol } from "../../../src/lib/cli/args/eol";
-import { allLineEndings } from "../../../src/lib/lineEndings";
+import { lineEndings } from "../../../src/lib/lineEndings";
 import { CombinedConfig } from "packages/generate-license-file/src/lib/cli/commands/main";
 
 jest.mock("enquirer", () => ({
@@ -31,7 +31,7 @@ describe("Eol", () => {
       expect(answer).toBeUndefined();
     });
 
-    allLineEndings.forEach(lineEnding =>
+    lineEndings.forEach(lineEnding =>
       it(`should return '${lineEnding}' if '--eol' is '${lineEnding}'`, async () => {
         const args: CombinedConfig = {
           eol: lineEnding,
@@ -141,7 +141,7 @@ describe("Eol", () => {
       expect(answer).toBeUndefined();
     });
 
-    allLineEndings.forEach(lineEnding =>
+    lineEndings.forEach(lineEnding =>
       it(`should return '${lineEnding}' if '--eol' is '${lineEnding}'`, async () => {
         const args: CombinedConfig = {
           eol: lineEnding,

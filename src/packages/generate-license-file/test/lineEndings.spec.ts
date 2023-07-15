@@ -1,5 +1,5 @@
 import os from "os";
-import { getLineEndingValue, isLineEnding, LineEnding } from "../src/lib/lineEndings";
+import { getLineEndingCharacters, isLineEnding } from "../src/lib/lineEndings";
 
 const mockSystemEOL = "EOL";
 
@@ -13,7 +13,7 @@ describe("lineEndings", () => {
     mockedOs.EOL = mockSystemEOL;
   });
 
-  afterAll(() => jest.restoreAllMocks());
+  afterAll(jest.restoreAllMocks);
 
   describe("isLineEnding", () => {
     it("should return true for undefined", () => {
@@ -61,31 +61,23 @@ describe("lineEndings", () => {
     );
   });
 
-  describe("getLineEndingValue", () => {
+  describe("getLineEndingCharacters", () => {
     it("should return the system EOL when given undefined", () => {
-      const result = getLineEndingValue(undefined);
+      const result = getLineEndingCharacters(undefined);
 
       expect(result).toBe(mockSystemEOL);
     });
 
     it("should return '\\r\\n' when given 'crlf'", () => {
-      const result = getLineEndingValue("crlf");
+      const result = getLineEndingCharacters("crlf");
 
       expect(result).toBe("\r\n");
     });
 
     it("should return '\\n' when given 'lf'", () => {
-      const result = getLineEndingValue("lf");
+      const result = getLineEndingCharacters("lf");
 
       expect(result).toBe("\n");
     });
-
-    ["foo", "bar"].forEach(value =>
-      it("should throw an error when given an unknown value", () => {
-        expect(() => getLineEndingValue(value as unknown as LineEnding)).toThrow(
-          `Unknown line ending value: ${value}`,
-        );
-      }),
-    );
   });
 });

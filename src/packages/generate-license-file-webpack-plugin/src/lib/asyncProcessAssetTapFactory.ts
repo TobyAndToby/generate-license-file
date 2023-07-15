@@ -23,7 +23,7 @@ export const asyncProcessAssetTapFactory = (
   return (_, resolve) => {
     const implementation = isDev ? devImplementation : getLicenseFileText;
 
-    implementation(pathToPackageJson, lineEnding)
+    implementation(pathToPackageJson, { lineEnding })
       .then(text => {
         const outputPath = join(outputFolder, outputFileName);
         compilation.emitAsset(outputPath, new RawSource(text));
