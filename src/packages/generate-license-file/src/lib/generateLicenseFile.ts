@@ -1,13 +1,14 @@
 import { getLicenseFileText } from "./getLicenseFileText";
-import { LineEnding } from "./lineEndings";
+import { AppendOption } from "./options/append";
+import { ExcludeOption } from "./options/exclude";
+import { LineEndingOption } from "./options/lineEnding";
+import { IntersectionExpander } from "./options/optionsExpander";
+import { ReplaceOption } from "./options/replace";
 import { writeFileAsync } from "./utils/file.utils";
 
-export type GetLicenseFileOptions = {
-  lineEnding?: LineEnding;
-  replace?: Record<string, string>;
-  exclude?: string[];
-  append?: string[];
-};
+export type GetLicenseFileOptions = IntersectionExpander<
+  LineEndingOption & ReplaceOption & ExcludeOption & AppendOption
+>;
 
 /**
  * Scans the project found at the given path and creates a license file at the given output location

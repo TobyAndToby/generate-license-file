@@ -1,6 +1,11 @@
 import { resolveLicenses } from "./internal/resolveLicenses";
-import { getLineEndingCharacters, LineEnding } from "./lineEndings";
+import { getLineEndingCharacters } from "./lineEndings";
 import { License } from "./models/license";
+import { AppendOption } from "./options/append";
+import { ExcludeOption } from "./options/exclude";
+import { LineEndingOption } from "./options/lineEnding";
+import { IntersectionExpander } from "./options/optionsExpander";
+import { ReplaceOption } from "./options/replace";
 import { readFile } from "./utils/file.utils";
 import { prepareContentForOutput } from "./utils/string.utils";
 
@@ -8,12 +13,9 @@ const SUFFIX = "-----------";
 const CREDIT1 = "This file was generated with the generate-license-file npm package!";
 const CREDIT2 = "https://www.npmjs.com/package/generate-license-file";
 
-export type GetLicenseFileTextOptions = {
-  lineEnding?: LineEnding;
-  replace?: Record<string, string>;
-  exclude?: string[];
-  append?: string[];
-};
+export type GetLicenseFileTextOptions = IntersectionExpander<
+  LineEndingOption & ReplaceOption & ExcludeOption & AppendOption
+>;
 
 /**
  * Scans the project found at the given path and returns a string containing the licenses for all of the dependencies
