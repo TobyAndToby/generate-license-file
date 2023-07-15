@@ -6,7 +6,7 @@ import { IntersectionExpander } from "./options/optionsExpander";
 import { ReplaceOption } from "./options/replace";
 import { writeFileAsync } from "./utils/file.utils";
 
-export type GetLicenseFileOptions = IntersectionExpander<
+export type GenerateLicenseFileOptions = IntersectionExpander<
   LineEndingOption & ReplaceOption & ExcludeOption & AppendOption
 >;
 
@@ -19,7 +19,7 @@ export type GetLicenseFileOptions = IntersectionExpander<
 export async function generateLicenseFile(
   pathToPackageJson: string,
   outputPath: string,
-  options?: GetLicenseFileOptions,
+  options?: GenerateLicenseFileOptions,
 ): Promise<void>;
 
 /**
@@ -31,13 +31,13 @@ export async function generateLicenseFile(
 export async function generateLicenseFile(
   pathsToPackageJsons: string[],
   outputPath: string,
-  options?: GetLicenseFileOptions,
+  options?: GenerateLicenseFileOptions,
 ): Promise<void>;
 
 export async function generateLicenseFile(
   pathsToPackageJsons: string[] | string,
   outputPath: string,
-  options?: GetLicenseFileOptions,
+  options?: GenerateLicenseFileOptions,
 ): Promise<void> {
   if (typeof pathsToPackageJsons === "string") {
     pathsToPackageJsons = [pathsToPackageJsons];
