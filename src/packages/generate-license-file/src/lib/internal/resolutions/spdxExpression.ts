@@ -11,7 +11,6 @@ export const spdxExpression: Resolution = async input => {
   }
 
   const containsOr = expression.includes(" OR ");
-
   if (containsOr) {
     logger.warn(
       `The license expression for ${packageJson.name}@${packageJson.version} contains multiple licenses: "${expression}"`,

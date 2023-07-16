@@ -1,9 +1,8 @@
-import { Result } from "arg";
 import { prompt } from "enquirer";
 import { Inputs } from "../../../src/lib/cli/args/inputs";
-import { ArgumentsWithAliases } from "../../../src/lib/cli/cli-arguments";
 import { spinner } from "../../../src/lib/cli/spinner";
 import { doesFileExist } from "../../../src/lib/utils/file.utils";
+import { CombinedConfig } from "../../../src/lib/cli/commands/main";
 
 jest.mock("../../../src/lib/utils/file.utils", () => ({
   doesFileExist: jest.fn(),
@@ -45,9 +44,9 @@ describe("Inputs", () => {
       mockedDoesFileExist.mockResolvedValue(true);
 
       const inputFile = "./package.json";
-      const args = {
-        "--input": [inputFile],
-      } as Result<ArgumentsWithAliases>;
+      const args: CombinedConfig = {
+        inputs: [inputFile],
+      };
 
       const answer = await inputs.resolve(args);
 
@@ -59,7 +58,7 @@ describe("Inputs", () => {
 
       mockedPrompt.mockResolvedValueOnce({ value: '"./package."json"' });
 
-      const args = {} as Result<ArgumentsWithAliases>;
+      const args: CombinedConfig = {};
       const answer = await inputs.resolve(args);
 
       expect(answer).toStrictEqual(["./package.json"]);
@@ -70,7 +69,7 @@ describe("Inputs", () => {
 
       mockedPrompt.mockResolvedValueOnce({ value: '\\"./package.\\"json\\"' });
 
-      const args = {} as Result<ArgumentsWithAliases>;
+      const args: CombinedConfig = {};
       const answer = await inputs.resolve(args);
 
       expect(answer).toStrictEqual(['"./package."json"']);
@@ -81,7 +80,7 @@ describe("Inputs", () => {
         mockedDoesFileExist.mockResolvedValueOnce(true).mockResolvedValueOnce(true);
         mockedPrompt.mockResolvedValue({ value: "./package.json" });
 
-        const args = {} as Result<ArgumentsWithAliases>;
+        const args: CombinedConfig = {};
 
         await inputs.resolve(args);
 
@@ -92,7 +91,7 @@ describe("Inputs", () => {
         mockedDoesFileExist.mockResolvedValueOnce(true).mockResolvedValueOnce(true);
         mockedPrompt.mockResolvedValue({ value: "./package.json" });
 
-        const args = {} as Result<ArgumentsWithAliases>;
+        const args: CombinedConfig = {};
 
         await inputs.resolve(args);
 
@@ -107,7 +106,7 @@ describe("Inputs", () => {
         mockedDoesFileExist.mockResolvedValueOnce(true).mockResolvedValueOnce(true);
         mockedPrompt.mockResolvedValue({ value: "./package.json" });
 
-        const args = {} as Result<ArgumentsWithAliases>;
+        const args: CombinedConfig = {};
 
         await inputs.resolve(args);
 
@@ -122,7 +121,7 @@ describe("Inputs", () => {
         mockedDoesFileExist.mockResolvedValueOnce(false).mockResolvedValueOnce(true);
         mockedPrompt.mockResolvedValue({ value: "./package.json" });
 
-        const args = {} as Result<ArgumentsWithAliases>;
+        const args: CombinedConfig = {};
 
         await inputs.resolve(args);
 
@@ -137,7 +136,7 @@ describe("Inputs", () => {
         mockedDoesFileExist.mockResolvedValueOnce(true).mockResolvedValueOnce(true);
         mockedPrompt.mockResolvedValue({ value: "./package.json" });
 
-        const args = {} as Result<ArgumentsWithAliases>;
+        const args: CombinedConfig = {};
 
         await inputs.resolve(args);
 
@@ -155,7 +154,7 @@ describe("Inputs", () => {
 
         mockedPrompt.mockResolvedValueOnce({ value: "./exists.json" });
 
-        const args = {} as Result<ArgumentsWithAliases>;
+        const args: CombinedConfig = {};
 
         await inputs.resolve(args);
 
@@ -171,9 +170,9 @@ describe("Inputs", () => {
 
         mockedPrompt.mockResolvedValueOnce({ value: "./exists.json" });
 
-        const args = {
-          "--input": ["./not-exists.json"],
-        } as Result<ArgumentsWithAliases>;
+        const args: CombinedConfig = {
+          inputs: ["./not-exists.json"],
+        };
 
         await inputs.resolve(args);
 
@@ -191,7 +190,7 @@ describe("Inputs", () => {
           .mockResolvedValueOnce({ value: "./not-exists.json" })
           .mockResolvedValueOnce({ value: "./exists.json" });
 
-        const args = {} as Result<ArgumentsWithAliases>;
+        const args: CombinedConfig = {};
 
         await inputs.resolve(args);
 
@@ -209,9 +208,9 @@ describe("Inputs", () => {
           .mockResolvedValueOnce({ value: "./not-exists.json" })
           .mockResolvedValueOnce({ value: "./exists.json" });
 
-        const args = {
-          "--input": ["./not-exists.json"],
-        } as Result<ArgumentsWithAliases>;
+        const args: CombinedConfig = {
+          inputs: ["./not-exists.json"],
+        };
 
         await inputs.resolve(args);
 
@@ -226,9 +225,9 @@ describe("Inputs", () => {
 
           const inputFile1 = "./package.json";
           const inputFile2 = "./second-package.json";
-          const args = {
-            "--input": [inputFile1, inputFile2],
-          } as Result<ArgumentsWithAliases>;
+          const args: CombinedConfig = {
+            inputs: [inputFile1, inputFile2],
+          };
 
           const answer = await inputs.resolve(args);
 
@@ -244,9 +243,9 @@ describe("Inputs", () => {
 
           mockedPrompt.mockResolvedValueOnce({ value: false });
 
-          const args = {
-            "--input": ["./does-not-exist.json", "./exists.json", "./also-does-not-exist.json"],
-          } as Result<ArgumentsWithAliases>;
+          const args: CombinedConfig = {
+            inputs: ["./does-not-exist.json", "./exists.json", "./also-does-not-exist.json"],
+          };
 
           try {
             await inputs.resolve(args);
@@ -272,9 +271,9 @@ describe("Inputs", () => {
 
           mockedPrompt.mockResolvedValueOnce({ value: false });
 
-          const args = {
-            "--input": ["./does-not-exist.json", "./exists.json"],
-          } as Result<ArgumentsWithAliases>;
+          const args: CombinedConfig = {
+            inputs: ["./does-not-exist.json", "./exists.json"],
+          };
 
           try {
             await inputs.resolve(args);
@@ -297,9 +296,9 @@ describe("Inputs", () => {
 
           mockedPrompt.mockResolvedValueOnce({ value: false });
 
-          const args = {
-            "--input": ["./does-not-exist.json", "./exists.json"],
-          } as Result<ArgumentsWithAliases>;
+          const args: CombinedConfig = {
+            inputs: ["./does-not-exist.json", "./exists.json"],
+          };
 
           await expect(inputs.resolve(args)).rejects.toThrowError("Process terminated by user");
         });
@@ -311,9 +310,9 @@ describe("Inputs", () => {
 
           mockedPrompt.mockResolvedValueOnce({ value: true });
 
-          const args = {
-            "--input": ["./does-not-exist.json", "./exists.json"],
-          } as Result<ArgumentsWithAliases>;
+          const args: CombinedConfig = {
+            inputs: ["./does-not-exist.json", "./exists.json"],
+          };
 
           await expect(inputs.resolve(args)).resolves.not.toThrowError();
         });
@@ -324,9 +323,9 @@ describe("Inputs", () => {
   describe("parse", () => {
     describe("when one '--input' value is given", () => {
       it("should throw if the given input is undefined", async () => {
-        const args = {
-          "--input": undefined,
-        } as Result<ArgumentsWithAliases>;
+        const args: CombinedConfig = {
+          inputs: undefined,
+        };
 
         await expect(inputs.parse(args)).rejects.toThrow("No --input argument given.");
       });
@@ -334,9 +333,9 @@ describe("Inputs", () => {
       it("should throw if the given input does not exist", () => {
         mockedDoesFileExist.mockResolvedValueOnce(false);
 
-        const args = {
-          "--input": ["./package.json"],
-        } as Result<ArgumentsWithAliases>;
+        const args: CombinedConfig = {
+          inputs: ["./package.json"],
+        };
 
         return expect(inputs.parse(args)).rejects.toThrow("Given --input file not found");
       });
@@ -344,9 +343,9 @@ describe("Inputs", () => {
       it("should return the given input if it exists", async () => {
         mockedDoesFileExist.mockResolvedValueOnce(true);
 
-        const args = {
-          "--input": ["./package.json"],
-        } as Result<ArgumentsWithAliases>;
+        const args: CombinedConfig = {
+          inputs: ["./package.json"],
+        };
 
         const result = await inputs.parse(args);
 
@@ -360,9 +359,9 @@ describe("Inputs", () => {
           return Promise.resolve(path === "./exists.json");
         });
 
-        const args = {
-          "--input": ["./does-not-exist", "./exists.json", "./also-does-not-exist.json"],
-        } as Result<ArgumentsWithAliases>;
+        const args: CombinedConfig = {
+          inputs: ["./does-not-exist", "./exists.json", "./also-does-not-exist.json"],
+        };
 
         try {
           await inputs.parse(args);
@@ -386,9 +385,9 @@ describe("Inputs", () => {
           return Promise.resolve(path === "./exists.json");
         });
 
-        const args = {
-          "--input": ["./does-not-exist", "./exists.json"],
-        } as Result<ArgumentsWithAliases>;
+        const args: CombinedConfig = {
+          inputs: ["./does-not-exist", "./exists.json"],
+        };
 
         await expect(inputs.parse(args)).rejects.toThrowError(
           "One or more given --input files not found",

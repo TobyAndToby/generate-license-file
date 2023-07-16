@@ -1,3 +1,7 @@
+import {
+  getLineEndingCharacters,
+  lineEndings,
+} from "packages/generate-license-file/src/lib/lineEndings";
 import { License } from "../../src/lib/models/license";
 
 describe("License", () => {
@@ -19,27 +23,22 @@ describe("License", () => {
       expect(result.startsWith(prefix)).toBeTruthy();
     });
 
-    [
-      { eol: "\n", eolName: "lf" },
-      { eol: "\r\n", eolName: "crlf" },
-    ].forEach(lineBreak =>
-      it(`should use the line break '${lineBreak.eolName}' twice after the prefix`, () => {
-        const { eol } = lineBreak;
+    it.each(lineEndings)("should use the %s line ending twice after the prefix", lineEnding => {
+      const eol = getLineEndingCharacters(lineEnding);
 
-        const license = new License("", []);
+      const license = new License("", []);
 
-        const result = license.format(eol);
-        const resultWithoutPrefix = result.substr(prefix.length);
+      const result = license.format(eol);
+      const resultWithoutPrefix = result.substring(prefix.length);
 
-        expect(resultWithoutPrefix.startsWith(eol + eol)).toBeTruthy();
-      }),
-    );
+      expect(resultWithoutPrefix.startsWith(eol + eol)).toBeTruthy();
+    });
 
     it("should list all of the dependencies", () => {
       const license = new License("", dependencies);
 
-      const result = license.format("|");
-      const resultLines = result.split("|");
+      const result = license.format("\n");
+      const resultLines = result.split("\n");
 
       expect(resultLines[2]).toEqual(" - " + dependency1);
       expect(resultLines[3]).toEqual(" - " + dependency2);
@@ -47,12 +46,10 @@ describe("License", () => {
       expect(resultLines[5]).toEqual(" - " + dependency4);
     });
 
-    [
-      { eol: "\n", eolName: "lf" },
-      { eol: "\r\n", eolName: "crlf" },
-    ].forEach(lineBreak =>
-      it(`should use the line break '${lineBreak.eolName}' twice after the dependencies`, () => {
-        const { eol } = lineBreak;
+    it.each(lineEndings)(
+      "should use the %s line ending twice after the dependencies",
+      lineEnding => {
+        const eol = getLineEndingCharacters(lineEnding);
 
         const lastDep = "last dep";
         const lastDepOnly = [lastDep];
@@ -61,9 +58,9 @@ describe("License", () => {
         const result = license.format(eol);
         const indexOfLastDependency = result.lastIndexOf(lastDep);
 
-        const resultWithoutDependencies = result.substr(indexOfLastDependency + lastDep.length);
+        const resultWithoutDependencies = result.substring(indexOfLastDependency + lastDep.length);
         expect(resultWithoutDependencies.startsWith(eol + eol)).toBeTruthy();
-      }),
+      },
     );
 
     it("should end with the license content", () => {
@@ -71,18 +68,15 @@ describe("License", () => {
 
       const license = new License(theLicenseContent, dependencies);
 
-      const result = license.format("|");
+      const result = license.format("\n");
 
       expect(result.endsWith(theLicenseContent)).toBeTruthy();
     });
 
-    [
-      { eol: "\n", eolName: "lf" },
-      { eol: "\r", eolName: "cr" },
-      { eol: "\r\n", eolName: "crlf" },
-    ].forEach(lineBreak =>
-      it(`should normalise the line endings in the license content to '${lineBreak.eolName}'`, () => {
-        const { eol } = lineBreak;
+    it.each(lineEndings)(
+      "should normalise the line endings in the license content to %s",
+      lineEnding => {
+        const eol = getLineEndingCharacters(lineEnding);
 
         const originalLicenseContent = `The\rlicense\nfile\r\ncontent`;
         const expectedLicenseContent = `The${eol}license${eol}file${eol}content`;
@@ -92,7 +86,7 @@ describe("License", () => {
         const result = license.format(eol);
 
         expect(result.endsWith(expectedLicenseContent)).toBeTruthy();
-      }),
+      },
     );
   });
 });

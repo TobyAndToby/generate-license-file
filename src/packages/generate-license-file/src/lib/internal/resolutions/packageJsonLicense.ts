@@ -18,26 +18,29 @@ export const packageJsonLicense: Resolution = async inputs => {
 
   const licenseFilePath = sanitise(spdxExpression.substring(15));
 
-  return await readLicense(directory, licenseFilePath);
-};
-
-const sanitise = (str: string) => str.replace(/['<>]/g, "");
-
-const readLicense = async (dir: string, path: string): Promise<string | null> => {
-  if (path.startsWith("http")) {
-    // TODO
-    return null;
+  if (licenseFilePath.startsWith("http") || licenseFilePath.startsWith("www")) {
+    return spdxExpression;
   }
 
+  return await readLicenseFromDisk(directory, licenseFilePath);
+};
+
+// Removes characters that we've witnessed people use in license file paths
+const sanitise = (str: string) => str.replace(/['"<>]/g, "");
+
+const readLicenseFromDisk = async (dir: string, path: string): Promise<string | null> => {
   const absolutePath = join(dir, path);
 
-  global.console.log(`Found license in package.json: ${absolutePath}`);
-
-  const fileExists = await doesFileExist(path);
+  const fileExists = await doesFileExist(absolutePath);
   if (!fileExists) {
     logger.warn(`Could not find license file '${absolutePath}'`);
     return null;
   }
 
-  return await readFile(absolutePath, { encoding: "utf-8" });
+  try {
+    return await readFile(absolutePath, { encoding: "utf-8" });
+  } catch (e) {
+    logger.warn(`Could not read license file '${absolutePath}'`);
+    return null;
+  }
 };

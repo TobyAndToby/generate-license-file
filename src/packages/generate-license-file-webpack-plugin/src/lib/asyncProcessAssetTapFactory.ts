@@ -1,4 +1,4 @@
-import { getLicenseFileText } from "generate-license-file";
+import { getLicenseFileText, GetLicenseFileTextOptions } from "generate-license-file";
 import { join } from "path/posix";
 import { Compilation, Compiler, WebpackError } from "webpack";
 import { LicenseFilePlugin } from "./licenseFilePlugin";
@@ -16,14 +16,30 @@ export const asyncProcessAssetTapFactory = (
 ): AssetProcessingAsyncTap => {
   const pluginName = LicenseFilePlugin.name;
 
-  const { outputFileName, outputFolder, isDev, lineEnding, pathToPackageJson } = options;
+  const {
+    outputFileName,
+    outputFolder,
+    isDev,
+    pathToPackageJson,
+    lineEnding,
+    append,
+    exclude,
+    replace,
+  } = options;
+
+  const getLicenseFileTextOptions: GetLicenseFileTextOptions = {
+    lineEnding,
+    append,
+    exclude,
+    replace,
+  };
 
   const RawSource = compiler.webpack.sources.RawSource;
 
   return (_, resolve) => {
-    const implementation = isDev ? devImplementation : getLicenseFileText;
+    const implementation = resolveImplementation(isDev);
 
-    implementation(pathToPackageJson, lineEnding)
+    implementation(pathToPackageJson, getLicenseFileTextOptions)
       .then(text => {
         const outputPath = join(outputFolder, outputFileName);
         compilation.emitAsset(outputPath, new RawSource(text));
@@ -36,4 +52,12 @@ export const asyncProcessAssetTapFactory = (
         resolve(webpackError);
       });
   };
+};
+
+const resolveImplementation = (isDev: boolean): typeof getLicenseFileText => {
+  if (isDev) {
+    return devImplementation;
+  }
+
+  return getLicenseFileText;
 };

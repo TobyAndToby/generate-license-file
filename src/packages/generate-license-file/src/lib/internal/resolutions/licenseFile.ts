@@ -4,7 +4,9 @@ import logger from "../../utils/console.utils";
 import { readFile } from "../../utils/file.utils";
 import { extname } from "path";
 
-const extensionDenyList = [".js", ".ts", ".sh", ".ps1"];
+// A 'best guess' for file extensions that are not license files
+// but that may have the same name as a license file
+export const extensionDenyList = [".js", ".ts", ".sh", ".ps1"];
 
 export const licenseFile: Resolution = async inputs => {
   const { directory, packageJson } = inputs;

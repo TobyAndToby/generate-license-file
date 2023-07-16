@@ -37,7 +37,7 @@ describe("Package.json Utils", () => {
 
       expect(mockedReadFile).toHaveBeenCalledTimes(1);
       expect(mockedReadFile).toHaveBeenCalledWith(pathToPackageJson, {
-        encoding: "utf8",
+        encoding: "utf-8",
       });
     });
 

@@ -12,7 +12,7 @@ export class Eol extends Argument<LineEnding | undefined> {
   public async resolve(config: CombinedConfig): Promise<LineEnding | undefined> {
     const { eol } = config;
 
-    if (isLineEnding(eol)) {
+    if (eol === undefined || isLineEnding(eol)) {
       return eol;
     }
 
@@ -27,7 +27,7 @@ export class Eol extends Argument<LineEnding | undefined> {
   public async parse(config: CombinedConfig): Promise<LineEnding | undefined> {
     const { eol } = config;
 
-    if (!isLineEnding(eol)) {
+    if (eol !== undefined && !isLineEnding(eol)) {
       throw new Error(
         `Invalid line ending given: '${eol}'. Possible values are 'crlf' or 'lf'. Omit the --eol flag to use the system default.`,
       );

@@ -1,8 +1,7 @@
-import { Result } from "arg";
 import { prompt } from "enquirer";
 import { Eol } from "../../../src/lib/cli/args/eol";
-import { ArgumentsWithAliases } from "../../../src/lib/cli/cli-arguments";
-import { allLineEndings } from "../../../src/lib/lineEndings";
+import { lineEndings } from "../../../src/lib/lineEndings";
+import { CombinedConfig } from "packages/generate-license-file/src/lib/cli/commands/main";
 
 jest.mock("enquirer", () => ({
   prompt: jest.fn(),
@@ -25,18 +24,18 @@ describe("Eol", () => {
 
   describe("resolve", () => {
     it("should return undefined if '--eol' is undefined", async () => {
-      const args = {} as Result<ArgumentsWithAliases>;
+      const args: CombinedConfig = {};
 
       const answer = await eol.resolve(args);
 
       expect(answer).toBeUndefined();
     });
 
-    allLineEndings.forEach(lineEnding =>
+    lineEndings.forEach(lineEnding =>
       it(`should return '${lineEnding}' if '--eol' is '${lineEnding}'`, async () => {
-        const args = {
-          "--eol": lineEnding,
-        } as Result<ArgumentsWithAliases>;
+        const args: CombinedConfig = {
+          eol: lineEnding,
+        };
 
         const answer = await eol.resolve(args);
 
@@ -49,9 +48,9 @@ describe("Eol", () => {
         value: "dummy value",
       });
 
-      const args = {
-        "--eol": "test",
-      } as Result<ArgumentsWithAliases>;
+      const args: CombinedConfig = {
+        eol: "test",
+      };
 
       await eol.resolve(args);
 
@@ -63,9 +62,9 @@ describe("Eol", () => {
         value: "dummy value",
       });
 
-      const args = {
-        "--eol": "test",
-      } as Result<ArgumentsWithAliases>;
+      const args: CombinedConfig = {
+        eol: "test",
+      };
 
       await eol.resolve(args);
 
@@ -81,9 +80,9 @@ describe("Eol", () => {
         value: "dummy value",
       });
 
-      const args = {
-        "--eol": "test",
-      } as Result<ArgumentsWithAliases>;
+      const args: CombinedConfig = {
+        eol: "test",
+      };
 
       await eol.resolve(args);
 
@@ -99,9 +98,9 @@ describe("Eol", () => {
         value: "dummy value",
       });
 
-      const args = {
-        "--eol": "test",
-      } as Result<ArgumentsWithAliases>;
+      const args: CombinedConfig = {
+        eol: "test",
+      };
 
       await eol.resolve(args);
 
@@ -123,8 +122,8 @@ describe("Eol", () => {
         });
 
         const args = {
-          "--eol": testCase.key,
-        } as Result<ArgumentsWithAliases>;
+          eol: testCase.key,
+        } as CombinedConfig;
 
         const answer = await eol.resolve(args);
 
@@ -135,18 +134,18 @@ describe("Eol", () => {
 
   describe("parse", () => {
     it("should return undefined if '--eol' is undefined", async () => {
-      const args = {} as Result<ArgumentsWithAliases>;
+      const args: CombinedConfig = {};
 
       const answer = await eol.parse(args);
 
       expect(answer).toBeUndefined();
     });
 
-    allLineEndings.forEach(lineEnding =>
+    lineEndings.forEach(lineEnding =>
       it(`should return '${lineEnding}' if '--eol' is '${lineEnding}'`, async () => {
-        const args = {
-          "--eol": lineEnding,
-        } as Result<ArgumentsWithAliases>;
+        const args: CombinedConfig = {
+          eol: lineEnding,
+        };
 
         const answer = await eol.parse(args);
 
@@ -155,9 +154,9 @@ describe("Eol", () => {
     );
 
     it("should throw if '--eol' is invalid", async () => {
-      const args = {
-        "--eol": "this is invalid",
-      } as Result<ArgumentsWithAliases>;
+      const args: CombinedConfig = {
+        eol: "this is invalid",
+      };
 
       await expect(eol.parse(args)).rejects.toThrow(
         "Invalid line ending given: 'this is invalid'. Possible values are 'crlf' or 'lf'. Omit the --eol flag to use the system default.",
