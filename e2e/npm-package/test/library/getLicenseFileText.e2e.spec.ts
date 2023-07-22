@@ -2,11 +2,8 @@ import {
   describeEachLineEnding,
   describeRelativeAndAbsolutePaths,
 } from "@generate-license-file/e2e-helpers";
-import {
-  allLineEndings,
-  getLicenseFileText,
-  LineEnding,
-} from "generate-license-file";
+import { getLicenseFileText, LineEnding } from "generate-license-file";
+import { lineEndings } from "generate-license-file/src/lib/lineEndings";
 
 describe("getLicenseFileText", () => {
   describeRelativeAndAbsolutePaths("./package.json", (packageJsonPath) =>
@@ -14,9 +11,7 @@ describe("getLicenseFileText", () => {
       let lineEndingsNotUnderTest: LineEnding[] = [];
 
       beforeEach(() => {
-        lineEndingsNotUnderTest = allLineEndings.filter(
-          (x) => x !== lineEnding
-        );
+        lineEndingsNotUnderTest = lineEndings.filter((x) => x !== lineEnding);
       });
 
       it("should match snapshot", async () => {

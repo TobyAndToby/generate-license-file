@@ -3,11 +3,8 @@ import {
   describeRelativeAndAbsolutePaths,
 } from "@generate-license-file/e2e-helpers";
 import fs from "fs/promises";
-import {
-  allLineEndings,
-  generateLicenseFile,
-  LineEnding,
-} from "generate-license-file";
+import { generateLicenseFile, LineEnding } from "generate-license-file";
+import { lineEndings } from "generate-license-file/src/lib/lineEndings";
 
 jest.mock("fs/promises", () => ({
   ...jest.requireActual<typeof fs>("fs/promises"),
@@ -27,9 +24,7 @@ describe("generateLicenseFile", () => {
       let lineEndingsNotUnderTest: LineEnding[] = [];
 
       beforeEach(() => {
-        lineEndingsNotUnderTest = allLineEndings.filter(
-          (x) => x !== lineEnding
-        );
+        lineEndingsNotUnderTest = lineEndings.filter((x) => x !== lineEnding);
       });
 
       it("should match snapshot", async () => {
