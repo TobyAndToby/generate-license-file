@@ -31,7 +31,7 @@
   },
   "devDependencies": {
     "@docusaurus/module-type-aliases": "2.4.1",
-    "@tsconfig/docusaurus": "^1.0.5",
+    "@tsconfig/docusaurus": "^2.0.0",
     "@types/react-toggle": "^4.0.3",
     "@typescript-eslint/eslint-plugin": "^5.32.0",
     "@typescript-eslint/parser": "^5.32.0",
