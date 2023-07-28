@@ -9,7 +9,7 @@
     "cli-spinners": "^2.6.0",
     "enquirer": "^2.3.6",
     "license-checker": "^25.0.1",
-    "ora": "^5.4.1",
+    "ora": "^7.0.0",
     "tslib": "^2.3.0",
     "webpack": "^5.75.0"
   },
