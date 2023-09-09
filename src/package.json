@@ -2,7 +2,6 @@
   "private": true,
   "name": "monorepo",
   "version": "0.0.0",
-  "license": "MIT",
   "scripts": {},
   "dependencies": {
     "@commander-js/extra-typings": "^11.0.0",
