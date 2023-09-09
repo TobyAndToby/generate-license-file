@@ -1,7 +1,4 @@
-import {
-  getLineEndingCharacters,
-  lineEndings,
-} from "packages/generate-license-file/src/lib/lineEndings";
+import { getLineEndingCharacters, lineEndings } from "../../src/lib/lineEndings";
 import { License } from "../../src/lib/models/license";
 
 describe("License", () => {

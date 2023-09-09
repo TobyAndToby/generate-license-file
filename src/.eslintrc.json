@@ -18,6 +18,16 @@
               }
             ]
           }
+        ],
+        "@typescript-eslint/no-unused-vars": [
+          "error",
+          {
+            "vars": "all",
+            "args": "all",
+            "ignoreRestSiblings": true,
+            "varsIgnorePattern": "^_",
+            "argsIgnorePattern": "^_"
+          }
         ]
       }
     },
