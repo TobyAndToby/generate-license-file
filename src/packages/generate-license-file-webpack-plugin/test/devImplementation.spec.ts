@@ -2,12 +2,12 @@ import { devImplementation } from "../src/lib/devImplementation";
 
 describe("devImplementation", () => {
   it("should return a promise", () => {
-    const result = devImplementation();
+    const result = devImplementation("unused path to package.json");
     expect(result).toBeInstanceOf(Promise);
   });
 
   it("should resolve to a string", async () => {
-    const result = await devImplementation();
+    const result = await devImplementation("anything");
 
     expect(result)
       .toBe(`In a production build this file will contain the licenses of your production dependencies.
