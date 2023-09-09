@@ -54,23 +54,31 @@ const licenseFileText: string = await getLicenseFileText("./package.json");
 const licenses: ILicense[] = await getProjectLicenses("./package.json");
 ```
 
-#### JavaScript
-
-```js
-const generateLicenseFile = require("generate-license-file");
-
-// The same library methods can be used in JS, e.g.
-generateLicenseFile
-  .getProjectLicenses("./package.json")
-  .then(licenses => {
-    // Do stuff with licenses...
-  })
-  .catch(error => {
-    // Do stuff with error...
-  });
-```
-
 For a full description of the library API and example usages please see the relevant [docs page](https://generate-license-file.js.org/docs/library).
+
+## Advanced Configuration (beta)
+
+Advanced configuration of the generated output can be done using a configuration file. In addition to the basic CLI arguments, a configuration file allows you to specify appendices, exclusions, and replacements.
+
+```jsonc
+{
+  // Default config - can be passed in via config and/or CLI
+  "inputs": ["./package.json"],
+  "output": "./third-party-licenses.txt",
+  "lineEnding": "lf",
+
+  // Paths to any file's whose content will be appended to the end of the generated file.
+  "append": ["./additional-content.txt"],
+
+  // Substitute the given packages output with the content in the respective file.
+  "replace": {
+    "replaced-package@4.33.1": "./bespoke-license.txt"
+  },
+
+  // Exclude any packages from the output.
+  "exclude": ["my-package@1.2.0"]
+}
+```
 
 # License
 
