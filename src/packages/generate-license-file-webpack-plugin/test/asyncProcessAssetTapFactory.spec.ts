@@ -113,9 +113,43 @@ describe("asyncProcessAssetTapFactory", () => {
         assetProcessingAsyncTap(undefined, () => undefined);
 
         const firstCallSecondArg = mockGetLicenseFileText.mock.calls[0][1];
-        expect(firstCallSecondArg).toBe(lineEnding);
+        expect(firstCallSecondArg).toStrictEqual(expect.objectContaining({ lineEnding }));
       }),
     );
+
+    it("should call generate-license-file with the append option", () => {
+      options.append = ["path/to/append.txt"];
+
+      const assetProcessingAsyncTap = asyncProcessAssetTapFactory(options, compiler, compilation);
+      assetProcessingAsyncTap(undefined, () => undefined);
+
+      const firstCallSecondArg = mockGetLicenseFileText.mock.calls[0][1];
+      expect(firstCallSecondArg).toStrictEqual(expect.objectContaining({ append: options.append }));
+    });
+
+    it("should call generate-license-file with the exclude option", () => {
+      options.exclude = ["license-to-exclude"];
+
+      const assetProcessingAsyncTap = asyncProcessAssetTapFactory(options, compiler, compilation);
+      assetProcessingAsyncTap(undefined, () => undefined);
+
+      const firstCallSecondArg = mockGetLicenseFileText.mock.calls[0][1];
+      expect(firstCallSecondArg).toStrictEqual(
+        expect.objectContaining({ exclude: options.exclude }),
+      );
+    });
+
+    it("should call generate-license-file with the replace option", () => {
+      options.replace = { "license-to-replace": "replacement" };
+
+      const assetProcessingAsyncTap = asyncProcessAssetTapFactory(options, compiler, compilation);
+      assetProcessingAsyncTap(undefined, () => undefined);
+
+      const firstCallSecondArg = mockGetLicenseFileText.mock.calls[0][1];
+      expect(firstCallSecondArg).toStrictEqual(
+        expect.objectContaining({ replace: options.replace }),
+      );
+    });
 
     describe("on success", () => {
       it("should emit a new asset", async () => {

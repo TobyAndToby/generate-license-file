@@ -1,3 +1,6 @@
+import { LineEndingCharacters } from "../lineEndings";
+import { prepareContentForOutput } from "../utils/string.utils";
+
 const BULLET = " - ";
 const PREFIX = "The following npm package may be included in this product:";
 const PREFIX_PLURAL = "The following npm packages may be included in this product:";
@@ -20,8 +23,6 @@ export interface ILicense {
 }
 
 export class License implements ILicense {
-  private static readonly lineEndingRegex = /\r\n|\r|\n/g;
-
   public content: string;
   public dependencies: string[];
 
@@ -30,12 +31,12 @@ export class License implements ILicense {
     this.dependencies = dependencies;
   }
 
-  public format(EOL: string): string {
+  public format(lineEnding: LineEndingCharacters): string {
     const formattedText =
-      this.prefix(EOL) +
-      this.formatDependencies(EOL) +
-      this.midfix(EOL) +
-      this.normalizeLineEndings(this.content.trim(), EOL);
+      this.prefix(lineEnding) +
+      this.formatDependencies(lineEnding) +
+      this.midfix(lineEnding) +
+      prepareContentForOutput(this.content.trim(), lineEnding);
 
     return formattedText;
   }
@@ -49,9 +50,11 @@ export class License implements ILicense {
   }
 
   private formatDependencies(EOL: string): string {
-    const formattedText = this.dependencies.map(dependency => {
-      return BULLET + dependency + EOL;
-    });
+    const formattedText = this.dependencies
+      .sort((a, b) => a.localeCompare(b))
+      .map(dependency => {
+        return BULLET + dependency + EOL;
+      });
 
     return formattedText.join("");
   }
@@ -62,9 +65,5 @@ export class License implements ILicense {
     }
 
     return EOL + MIDFIX_PLURAL + EOL + EOL;
-  }
-
-  private normalizeLineEndings(text: string, EOL: string): string {
-    return text.replace(License.lineEndingRegex, EOL);
   }
 }

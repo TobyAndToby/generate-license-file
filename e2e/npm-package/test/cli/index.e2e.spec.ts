@@ -4,7 +4,8 @@ import {
 } from "@generate-license-file/e2e-helpers";
 import { exec } from "child_process";
 import fs from "fs/promises";
-import { allLineEndings, LineEnding } from "generate-license-file";
+import { LineEnding } from "generate-license-file";
+import { lineEndings } from "generate-license-file/src/lib/lineEndings";
 import path from "path";
 import { promisify } from "util";
 
@@ -87,9 +88,7 @@ describe("cli", () => {
       let lineEndingsNotUnderTest: LineEnding[] = [];
 
       beforeEach(async () => {
-        lineEndingsNotUnderTest = allLineEndings.filter(
-          (x) => x !== lineEnding
-        );
+        lineEndingsNotUnderTest = lineEndings.filter((x) => x !== lineEnding);
       });
 
       it("should match snapshot when --eol is given", async () => {
@@ -109,7 +108,7 @@ describe("cli", () => {
         );
 
         const result = await fs.readFile(output, "utf8");
-        expect(result).toContain(expectedLineEndingValue);
+        expect(result).toContain(`package!${expectedLineEndingValue}https://`);
       });
 
       lineEndingsNotUnderTest.forEach((otherLineEnding) =>
@@ -121,7 +120,9 @@ describe("cli", () => {
           );
 
           const result = await fs.readFile(output, "utf8");
-          expect(result).not.toContain(incorrectLineEndingValue);
+          expect(result).not.toContain(
+            `package!${incorrectLineEndingValue}https://`
+          );
         })
       );
     });

@@ -3,6 +3,7 @@ import { doesFileExist, readFile } from "./file.utils";
 export interface PackageJson {
   name?: string;
   version?: string;
+  license?: string;
 }
 
 export const readPackageJson = async (pathToPackageJson: string): Promise<PackageJson> => {
@@ -11,7 +12,7 @@ export const readPackageJson = async (pathToPackageJson: string): Promise<Packag
     throw new Error(`Cannot find the file: '${pathToPackageJson}'`);
   }
 
-  const packageJsonAsString: string = await readFile(pathToPackageJson, { encoding: "utf8" });
+  const packageJsonAsString: string = await readFile(pathToPackageJson, { encoding: "utf-8" });
 
   const packageJson: PackageJson = JSON.parse(packageJsonAsString);
   return packageJson;

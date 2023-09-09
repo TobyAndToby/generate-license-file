@@ -1,5 +1,10 @@
-import { getLicensesForProjects } from "./internal/getLicensesForProjects";
+import { resolveLicenses } from "./internal/resolveLicenses";
 import { ILicense } from "./models/license";
+import { ExcludeOption } from "./options/exclude";
+import { IntersectionExpander } from "./options/optionsExpander";
+import { ReplaceOption } from "./options/replace";
+
+export type GetProjectLicensesOptions = IntersectionExpander<ReplaceOption & ExcludeOption>;
 
 /**
  * Scans the project found at the given path and returns an array of objects each
@@ -7,6 +12,9 @@ import { ILicense } from "./models/license";
  * @param pathToPackageJson A path to the package.json for the project
  * @returns Array of `ILicense`s each containing the license content and respective dependencies
  */
-export async function getProjectLicenses(pathToPackageJson: string): Promise<ILicense[]> {
-  return getLicensesForProjects([pathToPackageJson]);
+export async function getProjectLicenses(
+  pathToPackageJson: string,
+  options?: GetProjectLicensesOptions,
+): Promise<ILicense[]> {
+  return resolveLicenses([pathToPackageJson], options);
 }

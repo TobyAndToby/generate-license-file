@@ -1,10 +1,21 @@
-import { getLicensesForProjects } from "./internal/getLicensesForProjects";
-import { getLineEndingValue, LineEnding } from "./lineEndings";
+import { resolveLicenses } from "./internal/resolveLicenses";
+import { getLineEndingCharacters } from "./lineEndings";
 import { License } from "./models/license";
+import { AppendOption } from "./options/append";
+import { ExcludeOption } from "./options/exclude";
+import { LineEndingOption } from "./options/lineEnding";
+import { IntersectionExpander } from "./options/optionsExpander";
+import { ReplaceOption } from "./options/replace";
+import { readFile } from "./utils/file.utils";
+import { prepareContentForOutput } from "./utils/string.utils";
 
 const SUFFIX = "-----------";
 const CREDIT1 = "This file was generated with the generate-license-file npm package!";
 const CREDIT2 = "https://www.npmjs.com/package/generate-license-file";
+
+export type GetLicenseFileTextOptions = IntersectionExpander<
+  LineEndingOption & ReplaceOption & ExcludeOption & AppendOption
+>;
 
 /**
  * Scans the project found at the given path and returns a string containing the licenses for all of the dependencies
@@ -14,7 +25,7 @@ const CREDIT2 = "https://www.npmjs.com/package/generate-license-file";
  */
 export async function getLicenseFileText(
   pathToPackageJson: string,
-  lineEnding?: LineEnding,
+  options?: GetLicenseFileTextOptions,
 ): Promise<string>;
 
 /**
@@ -25,26 +36,34 @@ export async function getLicenseFileText(
  */
 export async function getLicenseFileText(
   pathsToPackageJsons: string[],
-  lineEnding?: LineEnding,
+  options?: GetLicenseFileTextOptions,
 ): Promise<string>;
 
 export async function getLicenseFileText(
   pathsToPackageJsons: string[] | string,
-  lineEnding?: LineEnding,
+  options?: GetLicenseFileTextOptions,
 ): Promise<string> {
   if (typeof pathsToPackageJsons === "string") {
     pathsToPackageJsons = [pathsToPackageJsons];
   }
 
-  const EOL = getLineEndingValue(lineEnding);
+  const EOL = getLineEndingCharacters(options?.lineEnding);
   const credit = getCredit(EOL);
 
-  const licenses: License[] = await getLicensesForProjects(pathsToPackageJsons);
+  const licenses: License[] = await resolveLicenses(pathsToPackageJsons, options);
+
+  const sortedLicenses = licenses.sort((a, b) => a.content.localeCompare(b.content));
 
   let licenseFile = credit + EOL + EOL;
 
-  for (const license of licenses) {
+  for (const license of sortedLicenses) {
     licenseFile += license.format(EOL) + EOL + EOL + SUFFIX + EOL + EOL;
+  }
+
+  for (const appendixFilePath of options?.append ?? []) {
+    const appendixContent = await readFile(appendixFilePath, { encoding: "utf-8" });
+    const formattedAppendixContent = prepareContentForOutput(appendixContent, EOL);
+    licenseFile += formattedAppendixContent + EOL + EOL + SUFFIX + EOL + EOL;
   }
 
   licenseFile += credit + EOL;

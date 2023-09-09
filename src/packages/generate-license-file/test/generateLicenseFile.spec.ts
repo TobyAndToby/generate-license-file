@@ -1,6 +1,6 @@
 import { generateLicenseFile } from "../src/lib/generateLicenseFile";
 import { getLicenseFileText } from "../src/lib/getLicenseFileText";
-import { allLineEndings } from "../src/lib/lineEndings";
+import { lineEndings } from "../src/lib/lineEndings";
 import { writeFileAsync } from "../src/lib/utils/file.utils";
 
 jest.mock("../src/lib/getLicenseFileText", () => ({
@@ -48,13 +48,14 @@ describe("generateLicenseFile", () => {
     });
   });
 
-  [...allLineEndings, undefined].forEach(lineEnding =>
-    it(`should call getLicenseFileText with the given line ending (${lineEnding})`, async () => {
-      await generateLicenseFile("path", "outputPath", lineEnding);
+  it.each([...lineEndings, undefined])(
+    "should call getLicenseFileText with the line ending %s",
+    async lineEnding => {
+      await generateLicenseFile("path", "outputPath", { lineEnding });
 
       const firstCallSecondArg = mockGetLicenseFileText.mock.calls[0][1];
-      expect(firstCallSecondArg).toBe(lineEnding);
-    }),
+      expect(firstCallSecondArg?.lineEnding).toBe(lineEnding);
+    },
   );
 
   it("should call writeFileAsync", async () => {

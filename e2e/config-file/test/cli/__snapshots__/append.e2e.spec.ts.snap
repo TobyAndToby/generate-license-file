@@ -1,0 +1,79 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`cli should match snapshot when content is appended 1`] = `
+"This file was generated with the generate-license-file npm package!
+https://www.npmjs.com/package/generate-license-file
+
+The following npm package may be included in this product:
+
+ - dep-four@1.0.0
+
+This package contains the following license and notice below:
+
+# Dep Four
+
+This license file is spelt \`LICENCE\`.
+This license should be found.
+
+-----------
+
+The following npm package may be included in this product:
+
+ - dep-one@1.0.0
+
+This package contains the following license and notice below:
+
+# Dep One
+
+This license file is spelt \`LICENSE.md\`.
+This license should be found.
+
+-----------
+
+The following npm package may be included in this product:
+
+ - dep-three@1.0.0
+
+This package contains the following license and notice below:
+
+# Dep Three
+
+This license file is spelt \`LICENSE\`.
+This license should be found.
+
+-----------
+
+The following npm packages may be included in this product:
+
+ - dep-two-duplicate@1.0.0
+ - dep-two@1.0.0
+
+These packages each contain the following license and notice below:
+
+# Dep Two
+
+This license file is spelt \`LICENCE.md\`.
+This license should be found.
+
+-----------
+
+The following npm package may be included in this product:
+
+ - dep-five@1.0.0
+
+This package contains the following license and notice below:
+
+MIT
+
+-----------
+
+I am the appended content.
+
+Multiple lines! :o
+
+-----------
+
+This file was generated with the generate-license-file npm package!
+https://www.npmjs.com/package/generate-license-file
+"
+`;

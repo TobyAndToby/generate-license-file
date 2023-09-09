@@ -3,11 +3,8 @@ import {
   describeRelativeAndAbsolutePaths,
 } from "@generate-license-file/e2e-helpers";
 import fs from "fs/promises";
-import {
-  allLineEndings,
-  generateLicenseFile,
-  LineEnding,
-} from "generate-license-file";
+import { generateLicenseFile, LineEnding } from "generate-license-file";
+import { lineEndings } from "generate-license-file/src/lib/lineEndings";
 
 jest.mock("fs/promises", () => ({
   ...jest.requireActual<typeof fs>("fs/promises"),
@@ -27,15 +24,13 @@ describe("generateLicenseFile", () => {
       let lineEndingsNotUnderTest: LineEnding[] = [];
 
       beforeEach(() => {
-        lineEndingsNotUnderTest = allLineEndings.filter(
-          (x) => x !== lineEnding
-        );
+        lineEndingsNotUnderTest = lineEndings.filter((x) => x !== lineEnding);
       });
 
       it("should match snapshot", async () => {
         const outputPath = "/output/path.txt";
 
-        await generateLicenseFile(packageJsonPath, outputPath, lineEnding);
+        await generateLicenseFile(packageJsonPath, outputPath, { lineEnding });
 
         const fileContent = mockedWriteFile.mock.calls[0][1];
         expect(fileContent).toMatchSnapshot();
@@ -45,7 +40,7 @@ describe("generateLicenseFile", () => {
         const expectedLineEndingValue = lineEndingLiteral;
         const outputPath = "/output/path.txt";
 
-        await generateLicenseFile(packageJsonPath, outputPath, lineEnding);
+        await generateLicenseFile(packageJsonPath, outputPath, { lineEnding });
 
         const fileContent = mockedWriteFile.mock.calls[0][1];
         expect(fileContent).toContain(expectedLineEndingValue);
@@ -56,7 +51,9 @@ describe("generateLicenseFile", () => {
           const incorrectLineEndingValue = lineEndingLiteral;
           const outputPath = "/output/path.txt";
 
-          await generateLicenseFile(packageJsonPath, outputPath, lineEnding);
+          await generateLicenseFile(packageJsonPath, outputPath, {
+            lineEnding,
+          });
 
           const fileContent = mockedWriteFile.mock.calls[0][1];
           expect(fileContent).not.toContain(incorrectLineEndingValue);
@@ -66,7 +63,7 @@ describe("generateLicenseFile", () => {
       it("should write the file to the correct output path", async () => {
         const outputPath = "/output/path.txt";
 
-        await generateLicenseFile(packageJsonPath, outputPath, lineEnding);
+        await generateLicenseFile(packageJsonPath, outputPath, { lineEnding });
 
         const filePath = mockedWriteFile.mock.calls[0][0];
         expect(filePath).toBe(outputPath);
@@ -76,7 +73,7 @@ describe("generateLicenseFile", () => {
         const outputDirectory = "/output/path";
         const outputPath = outputDirectory + "/filename.txt";
 
-        await generateLicenseFile(packageJsonPath, outputPath, lineEnding);
+        await generateLicenseFile(packageJsonPath, outputPath, { lineEnding });
 
         const directoryPath = mockedMkdir.mock.calls[0][0];
         expect(directoryPath).toBe(outputDirectory);

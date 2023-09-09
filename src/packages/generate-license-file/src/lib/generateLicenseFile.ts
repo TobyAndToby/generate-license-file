@@ -1,6 +1,14 @@
 import { getLicenseFileText } from "./getLicenseFileText";
-import { LineEnding } from "./lineEndings";
+import { AppendOption } from "./options/append";
+import { ExcludeOption } from "./options/exclude";
+import { LineEndingOption } from "./options/lineEnding";
+import { IntersectionExpander } from "./options/optionsExpander";
+import { ReplaceOption } from "./options/replace";
 import { writeFileAsync } from "./utils/file.utils";
+
+export type GenerateLicenseFileOptions = IntersectionExpander<
+  LineEndingOption & ReplaceOption & ExcludeOption & AppendOption
+>;
 
 /**
  * Scans the project found at the given path and creates a license file at the given output location
@@ -11,7 +19,7 @@ import { writeFileAsync } from "./utils/file.utils";
 export async function generateLicenseFile(
   pathToPackageJson: string,
   outputPath: string,
-  lineEnding?: LineEnding,
+  options?: GenerateLicenseFileOptions,
 ): Promise<void>;
 
 /**
@@ -23,18 +31,18 @@ export async function generateLicenseFile(
 export async function generateLicenseFile(
   pathsToPackageJsons: string[],
   outputPath: string,
-  lineEnding?: LineEnding,
+  options?: GenerateLicenseFileOptions,
 ): Promise<void>;
 
 export async function generateLicenseFile(
   pathsToPackageJsons: string[] | string,
   outputPath: string,
-  lineEnding?: LineEnding,
+  options?: GenerateLicenseFileOptions,
 ): Promise<void> {
   if (typeof pathsToPackageJsons === "string") {
     pathsToPackageJsons = [pathsToPackageJsons];
   }
 
-  const licenseFileText: string = await getLicenseFileText(pathsToPackageJsons, lineEnding);
+  const licenseFileText: string = await getLicenseFileText(pathsToPackageJsons, options);
   await writeFileAsync(outputPath, licenseFileText);
 }
