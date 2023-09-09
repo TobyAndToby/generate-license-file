@@ -108,7 +108,7 @@ describe("cli", () => {
         );
 
         const result = await fs.readFile(output, "utf8");
-        expect(result).toContain(expectedLineEndingValue);
+        expect(result).toContain(`package!${expectedLineEndingValue}https://`);
       });
 
       lineEndingsNotUnderTest.forEach((otherLineEnding) =>
@@ -120,7 +120,9 @@ describe("cli", () => {
           );
 
           const result = await fs.readFile(output, "utf8");
-          expect(result).not.toContain(incorrectLineEndingValue);
+          expect(result).not.toContain(
+            `package!${incorrectLineEndingValue}https://`
+          );
         })
       );
     });

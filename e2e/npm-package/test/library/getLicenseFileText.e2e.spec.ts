@@ -15,7 +15,9 @@ describe("getLicenseFileText", () => {
       });
 
       it("should match snapshot", async () => {
-        const result = await getLicenseFileText(packageJsonPath, lineEnding);
+        const result = await getLicenseFileText(packageJsonPath, {
+          lineEnding,
+        });
 
         expect(result).toMatchSnapshot();
       });
@@ -23,7 +25,9 @@ describe("getLicenseFileText", () => {
       it("should contain the correct line ending value", async () => {
         const expectedLineEndingValue = lineEndingLiteral;
 
-        const result = await getLicenseFileText(packageJsonPath, lineEnding);
+        const result = await getLicenseFileText(packageJsonPath, {
+          lineEnding,
+        });
 
         expect(result).toContain(expectedLineEndingValue);
       });
@@ -32,7 +36,9 @@ describe("getLicenseFileText", () => {
         it(`should not contain the incorrect line ending value (${otherLineEnding})`, async () => {
           const incorrectLineEndingValue = lineEndingLiteral;
 
-          const result = await getLicenseFileText(packageJsonPath, lineEnding);
+          const result = await getLicenseFileText(packageJsonPath, {
+            lineEnding,
+          });
 
           expect(result).not.toContain(incorrectLineEndingValue);
         })
