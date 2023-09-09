@@ -7,7 +7,6 @@ on:
 
 env:
   NODE_VERSION: 18
-  CWD: ./src
 
 jobs:
   get-version:
@@ -53,11 +52,9 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
-          cache-dependency-path: ${{ env.CWD }}/package-lock.json
           registry-url: https://registry.npmjs.org/
 
       - name: Install dependencies
-        working-directory: ${{ env.CWD }}
         run: npm ci
 
       - name: Get Latest Tag
@@ -71,10 +68,9 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: Build
-          path: ${{ env.CWD }}/dist
+          path: dist
 
       - name: Publish
-        working-directory: ${{ env.CWD }}
         run: npx nx run-many --target publish --args="--tag=${{ steps.latest_tag.outputs.latest-tag }}"
         env:
           NODE_AUTH_TOKEN: ${{ secrets.npm_token }}

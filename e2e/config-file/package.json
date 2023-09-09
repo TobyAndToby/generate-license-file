@@ -14,10 +14,10 @@
     "dep-two-duplicate": "file:../.dependencies/dep-2-duplicate"
   },
   "devDependencies": {
-    "@generate-license-file/e2e-helpers": "file:../../src/dist/packages/e2e-helpers",
+    "@generate-license-file/e2e-helpers": "file:../../dist/packages/e2e-helpers",
     "@types/jest": "^29.0.0",
     "@types/node": "^18.0.0",
-    "generate-license-file": "file:../../src/dist/packages/generate-license-file",
+    "generate-license-file": "file:../../dist/packages/generate-license-file",
     "jest": "^29.0.0",
     "ts-jest": "^29.0.0",
     "typescript": "^4.6.2"

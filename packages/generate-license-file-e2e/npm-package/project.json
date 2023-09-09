@@ -9,7 +9,7 @@
       "executor": "nx:run-commands",
       "options": {
         "command": "npm ci && npm run e2e",
-        "cwd": "../e2e/npm-package"
+        "cwd": "./e2e/npm-package"
       },
       "dependsOn": ["^build"]
     }
