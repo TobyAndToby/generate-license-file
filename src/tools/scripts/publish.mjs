@@ -28,4 +28,4 @@ invariant(
 
 process.chdir(outputPath);
 
-execSync(`npm publish --access public --tag ${tag}`);
+execSync(`npm publish --access public --provenance --tag ${tag}`);
