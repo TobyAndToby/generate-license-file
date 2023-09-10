@@ -18,17 +18,16 @@ $ npm install generate-license-file --save-dev
 $ npx generate-license-file --input package.json --output third-party-licenses.txt --overwrite
 ```
 
-|     | Argument       | Description                                                                                                                                                       |     |
-| --- | -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | --- |
-|     | -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |     |
-|     | `--input`      | Absolute or relative path to the package.json for the project.                                                                                                    |     |
-|     | `--output`     | Absolute or relative path for the generated output file.                                                                                                          |     |
-|     | `--overwrite`  | (optional) Allows the CLI to overwrite existing output files. If this option is not provided and the output file already exists, you will be prompted to confirm. |     |
-|     | `--eol`        | (optional) Specify the line endings used in the output file. Accepted values are `crlf` or `lf`. If no value is provided your system default will be used.        |     |
-|     | `--ci`         | (optional) Stops the CLI from prompting the user for inputs and instead exits with a non-zero exit code.                                                          |     |
-|     | `--no-spinner` | (optional) Disable the CLI spinner while the output file is being generated.                                                                                      |     |
-|     | `--config`     | (optional) Specify the path to a generate-license-file config file at a non-standard location.                                                                    |     |
-|     | `--version`    | (optional) Print the installed generate-license-file version.                                                                                                     |     |
+| Argument       | Description                                                                                                                                                       |
+| -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--input`      | Absolute or relative path to the package.json for the project.                                                                                                    |
+| `--output`     | Absolute or relative path for the generated output file.                                                                                                          |
+| `--overwrite`  | (optional) Allows the CLI to overwrite existing output files. If this option is not provided and the output file already exists, you will be prompted to confirm. |
+| `--eol`        | (optional) Specify the line endings used in the output file. Accepted values are `crlf` or `lf`. If no value is provided your system default will be used.        |
+| `--ci`         | (optional) Stops the CLI from prompting the user for inputs and instead exits with a non-zero exit code.                                                          |
+| `--no-spinner` | (optional) Disable the CLI spinner while the output file is being generated.                                                                                      |
+| `--config`     | (optional) Specify the path to a generate-license-file config file at a non-standard location.                                                                    |
+| `--version`    | (optional) Print the installed generate-license-file version.                                                                                                     |
 
 If either the `--input` or `--output` are omitted the CLI will prompt you for their values.
 
