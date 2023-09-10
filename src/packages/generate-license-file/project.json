@@ -4,6 +4,14 @@
   "sourceRoot": "packages/generate-license-file/src",
   "projectType": "library",
   "targets": {
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/generate-license-file/**/*.ts"],
+        "maxWarnings": 0
+      }
+    },
     "build": {
       "executor": "@nx/js:tsc",
       "outputs": ["{options.outputPath}"],
@@ -17,33 +25,15 @@
           "LICENSE.md"
         ],
         "buildableProjectDepsInPackageJsonType": "dependencies"
-      }
+      },
+      "dependsOn": ["^build"]
     },
     "run": {
       "executor": "nx:run-commands",
       "options": {
         "command": "node ./dist/packages/generate-license-file/bin/generate-license-file"
-      }
-    },
-    "version": {
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "node tools/scripts/version.mjs generate-license-file {args.version}"
-      }
-    },
-    "publish": {
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "node tools/scripts/publish.mjs generate-license-file {args.tag}"
-      }
-    },
-    "lint": {
-      "executor": "@nx/linter:eslint",
-      "outputs": ["{options.outputFile}"],
-      "options": {
-        "lintFilePatterns": ["packages/generate-license-file/**/*.ts"],
-        "maxWarnings": 0
-      }
+      },
+      "dependsOn": ["build"]
     },
     "test": {
       "executor": "@nx/jest:jest",
@@ -52,6 +42,28 @@
         "jestConfig": "packages/generate-license-file/jest.config.ts",
         "passWithNoTests": false
       }
+    },
+    "version": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node tools/scripts/version.mjs generate-license-file {args.version}"
+      }
+    },
+    "pack": {
+      "executor": "nx:run-commands",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packs/generate-license-file",
+        "command": "node tools/scripts/pack.mjs generate-license-file"
+      },
+      "dependsOn": ["build"]
+    },
+    "publish": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node tools/scripts/publish.mjs generate-license-file {args.tag}"
+      }
+      // "dependsOn": ["pack"]
     }
   },
   "tags": []

@@ -1,6 +1,8 @@
-import { readCachedProjectGraph, createProjectGraphAsync } from "@nx/devkit";
+import devkit from "@nx/devkit";
 import chalk from "chalk";
 import { execSync } from "child_process";
+
+const { readCachedProjectGraph, createProjectGraphAsync } = devkit;
 
 function invariant(condition, message) {
   if (!condition) {
