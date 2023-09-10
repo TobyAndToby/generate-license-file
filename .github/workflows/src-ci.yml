@@ -131,10 +131,9 @@ jobs:
           - name: Windows
             value: windows-latest
         node:
-          - 14
           - 16
           - 18
-          - 19
+          - 20
 
     name: E2E (Node ${{ matrix.node }} on ${{ matrix.os.name }})
 
