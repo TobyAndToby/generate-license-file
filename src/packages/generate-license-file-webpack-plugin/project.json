@@ -12,7 +12,8 @@
         "main": "packages/generate-license-file-webpack-plugin/src/index.ts",
         "tsConfig": "packages/generate-license-file-webpack-plugin/tsconfig.lib.json",
         "assets": ["packages/generate-license-file-webpack-plugin/*.md", "LICENSE.md"],
-        "buildableProjectDepsInPackageJsonType": "dependencies"
+        "buildableProjectDepsInPackageJsonType": "dependencies",
+        "updateBuildableProjectDepsInPackageJson": true
       }
     },
     "version": {
