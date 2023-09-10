@@ -20,12 +20,13 @@ $ npx generate-license-file --input package.json --output third-party-licenses.t
 
 | Argument       | Description                                                                                                                                                       |
 | -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `--input`      | Absolute or relative path to the package.json for the project. This parameter can be given multiple times to combine the results of different projects.           |
+| `--input`      | Absolute or relative path to the package.json for the project.                                                                                                    |
 | `--output`     | Absolute or relative path for the generated output file.                                                                                                          |
 | `--overwrite`  | (optional) Allows the CLI to overwrite existing output files. If this option is not provided and the output file already exists, you will be prompted to confirm. |
 | `--eol`        | (optional) Specify the line endings used in the output file. Accepted values are `crlf` or `lf`. If no value is provided your system default will be used.        |
 | `--ci`         | (optional) Stops the CLI from prompting the user for inputs and instead exits with a non-zero exit code.                                                          |
 | `--no-spinner` | (optional) Disable the CLI spinner while the output file is being generated.                                                                                      |
+| `--config`     | (optional) Specify the path to a generate-license-file config file at a non-standard location.                                                                    |
 | `--version`    | (optional) Print the installed generate-license-file version.                                                                                                     |
 
 If either the `--input` or `--output` are omitted the CLI will prompt you for their values.
@@ -34,7 +35,7 @@ For a full description of the CLI arguments and their usages please see the rele
 
 ## Installation and Usage (Library API)
 
-```
+```bash
 $ npm install generate-license-file --save-dev
 ```
 
@@ -54,23 +55,45 @@ const licenseFileText: string = await getLicenseFileText("./package.json");
 const licenses: ILicense[] = await getProjectLicenses("./package.json");
 ```
 
-#### JavaScript
+For a full description of the library API and example usages please see the relevant [docs page](https://generate-license-file.js.org/docs/library).
 
-```js
-const generateLicenseFile = require("generate-license-file");
+## Advanced Configuration (beta)
 
-// The same library methods can be used in JS, e.g.
-generateLicenseFile
-  .getProjectLicenses("./package.json")
-  .then(licenses => {
-    // Do stuff with licenses...
-  })
-  .catch(error => {
-    // Do stuff with error...
-  });
+Advanced configuration of the generated output can be done using a configuration file. In addition to the basic CLI arguments, a configuration file allows you to specify appendices, exclusions, and replacements.
+
+Config files can be called either `.glf` or `.generatelicensefile` and can be customised using the following options:
+
+- Optionally ending with `rc`
+- Being in a `/.config` directory (no longer needs the `.` prefix on the file name)
+- Have the following file endings: `.json`, `jsonc`, `.json5`, `.yaml`, `.yml`, `.js`, `.cjs`
+
+E.g. `.glf.json`, `.glfrc.yml`, `.generatelicensefile.jsonc`, `.config/glf.js`, and more.
+
+```jsonc
+{
+  // Default config - can be passed in via config and/or CLI
+  "inputs": ["./package.json"],
+  "output": "./third-party-licenses.txt",
+  "lineEnding": "lf",
+
+  // Paths to any file's whose content will be appended to the end of the generated file.
+  "append": ["./additional-content.txt"],
+
+  // Substitute the given packages license with the content in the respective file.
+  "replace": {
+    "replaced-package@4.33.1": "./bespoke-license.txt"
+  },
+
+  // Exclude any packages from the output.
+  "exclude": ["my-package@1.2.0"]
+}
 ```
 
-For a full description of the library API and example usages please see the relevant [docs page](https://generate-license-file.js.org/docs/library).
+If you want to call your config file something else then you can pass it to the CLI via the `--config` argument:
+
+```bash
+$ npx generate-license-file --config ./my-config.json
+```
 
 # License
 
