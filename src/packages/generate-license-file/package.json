@@ -31,7 +31,8 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/TobyAndToby/generate-license-file.git"
+    "url": "git+https://github.com/TobyAndToby/generate-license-file.git",
+    "directory": "src/packages/generate-license-file"
   },
   "bugs": {
     "url": "https://github.com/TobyAndToby/generate-license-file/issues"

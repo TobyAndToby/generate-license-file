@@ -4,7 +4,7 @@
   "main": "src/index.js",
   "license": "ISC",
   "description": "Webpack plugin to generate a text file asset containing all of the licenses for your production third-party dependencies.",
-  "homepage": "https://github.com/TobyAndToby/generate-license-file-webpack-plugin#readme",
+  "homepage": "https://github.com/TobyAndToby/generate-license-file#readme",
   "keywords": [
     "webpack",
     "plugin",
@@ -28,10 +28,11 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/TobyAndToby/generate-license-file-webpack-plugin.git"
+    "url": "git+https://github.com/TobyAndToby/generate-license-file.git",
+    "directory": "src/packages/generate-license-file-webpack-plugin"
   },
   "bugs": {
-    "url": "https://github.com/TobyAndToby/generate-license-file-webpack-plugin/issues"
+    "url": "https://github.com/TobyAndToby/generate-license-file/issues"
   },
   "files": [
     "src"
