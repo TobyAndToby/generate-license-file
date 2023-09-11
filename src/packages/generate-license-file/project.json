@@ -16,7 +16,8 @@
           "packages/generate-license-file/bin/**",
           "LICENSE.md"
         ],
-        "buildableProjectDepsInPackageJsonType": "dependencies"
+        "buildableProjectDepsInPackageJsonType": "dependencies",
+        "updateBuildableProjectDepsInPackageJson": true
       }
     },
     "run": {
