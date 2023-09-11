@@ -63,11 +63,17 @@ jobs:
         working-directory: ${{ env.CWD }}
         run: npm ci
 
+      - name: Download Build
+        uses: actions/download-artifact@v3
+        with:
+          name: Build
+          path: ${{ env.CWD }}/dist
+
       - name: Get Latest Tag
         uses: tobysmith568/npm-publish-latest-tag@v1
         id: latest_tag
         with:
-          package-json: ./src/dist/packages/generate-license-file/package.json
+          package-json: ${{ env.CWD }}/dist/packages/generate-license-file/package.json
 
       - name: Download Build
         uses: actions/download-artifact@v3
