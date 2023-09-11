@@ -5,7 +5,7 @@
   "scripts": {},
   "dependencies": {
     "@commander-js/extra-typings": "^11.0.0",
-    "@npmcli/arborist": "^6.2.10",
+    "@npmcli/arborist": "^7.0.0",
     "@swc/helpers": "0.5.2",
     "@types/npmcli__arborist": "^5.6.1",
     "cli-spinners": "^2.6.0",
