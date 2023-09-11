@@ -67,8 +67,7 @@ jobs:
         uses: tobysmith568/npm-publish-latest-tag@v1
         id: latest_tag
         with:
-          package-name: generate-license-file
-          version: ${{ needs.get-version.outputs.version }}
+          package-json: ./src/dist/packages/generate-license-file/package.json
 
       - name: Download Build
         uses: actions/download-artifact@v3
