@@ -1,9 +1,9 @@
 import { join } from "path";
-import { PackageJson, readPackageJson } from "../utils/packageJson.utils";
-import { packageJsonLicense } from "./resolutions/packageJsonLicense";
-import { licenseFile } from "./resolutions/licenseFile";
-import { spdxExpression } from "./resolutions/spdxExpression";
-import { readFile } from "../utils/file.utils";
+import { PackageJson, readPackageJson } from "../../utils/packageJson.utils";
+import { packageJsonLicense } from "./packageJsonLicense";
+import { licenseFile } from "./licenseFile";
+import { spdxExpression } from "./spdxExpression";
+import { readFile } from "../../utils/file.utils";
 
 export interface ResolutionInputs {
   directory: string;
