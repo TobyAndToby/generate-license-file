@@ -1,4 +1,5 @@
 import { glob } from "glob";
+import { relative } from "path";
 import { Resolution } from "../resolveLicenseContent";
 import logger from "../../utils/console.utils";
 import { readFile } from "../../utils/file.utils";
@@ -28,10 +29,12 @@ export const licenseFile: Resolution = async inputs => {
   }
 
   if (filteredLicenseFiles.length > 1) {
+    const relativeLicenseFiles = filteredLicenseFiles.map(file => relative(directory, file));
+
     logger.warn(
       `Found multiple license files for ${packageJson.name}@${
         packageJson.version
-      }: ${filteredLicenseFiles.join(", ")}`,
+      }: ${relativeLicenseFiles.join(", ")}`,
     );
   }
 
