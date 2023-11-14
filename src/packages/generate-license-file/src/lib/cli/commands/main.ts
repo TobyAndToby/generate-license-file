@@ -89,8 +89,6 @@ export const mainCommand = new Command()
       spinner.start();
     }
 
-    console.log(combinedConfig);
-
     await generateLicenseFile(inputs, output, {
       lineEnding: eol,
       replace: configFile?.replace,
