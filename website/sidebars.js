@@ -24,6 +24,7 @@ const sidebars = {
     {
       type: "category",
       label: "CLI",
+      collapsed: false,
       link: { type: "doc", id: "cli/index" },
       items: [{ type: "doc", id: "cli/config" }],
     },
