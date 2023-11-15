@@ -21,7 +21,12 @@ const sidebars = {
       link: { type: "doc", id: "intro/index" },
       items: [{ type: "doc", id: "intro/getting-started" }],
     },
-    { type: "doc", id: "cli/index" },
+    {
+      type: "category",
+      label: "CLI",
+      link: { type: "doc", id: "cli/index" },
+      items: [{ type: "doc", id: "cli/config" }],
+    },
     {
       type: "category",
       label: "Library",

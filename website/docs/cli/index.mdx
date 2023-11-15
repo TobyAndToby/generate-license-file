@@ -5,7 +5,12 @@ description: Overview and example usages of the generate license file CLI
 
 import ArgumentInfo from "@site/src/components/docs/cli/ArgumentInfo";
 
-The `generate-license-file` CLI will resolve all of the licenses of your third-party dependencies and write them to a file on the disk.
+The `generate-license-file` CLI will resolve all of the licenses of your third-party dependencies and write them to a file on disk.
+
+Below outlines all of the CLI flags that you can give to change generate-license-file's behavior.
+
+For more complex use cases, see the [config file](./config) documentation for additional configuration options that can't
+be set using the CLI.
 
 ## --input
 
@@ -41,7 +46,7 @@ npx generate-license-file --input ./package.json --input ../sibling-directory/pa
 
 <ArgumentInfo type="string" isRequired aliases={["-o"]} />
 
-The output parameter is required and needs be a path to desired output file. It can be a relative or absolute path.
+The output parameter is required and needs be a path to the desired output file. It can be a relative or absolute path.
 
 ```bash
 npx generate-license-file --output ./third-party-licenses.txt
@@ -106,6 +111,8 @@ npx generate-license-file --ci
 The CLI shows a spinner in the terminal while it's doing it's work.
 
 If the spinner doesn't play nicely with your local or CI/CD environments then you can pass the `--no-spinner` flag to make it only log standard text messages.
+
+Using `--ci` will implicitly set `--no-spinner`.
 
 ```bash
 npx generate-license-file --no-spinner

@@ -63,9 +63,9 @@ Advanced configuration of the generated output can be done using a configuration
 
 Config files can be called either `.glf` or `.generatelicensefile` and can be customised using the following options:
 
-- Optionally ending with `rc`
-- Being in a `/.config` directory (no longer needs the `.` prefix on the file name)
-- Have the following file endings: `.json`, `jsonc`, `.json5`, `.yaml`, `.yml`, `.js`, `.cjs`
+- File name can optionally end with `rc`
+- Can be in a `./.config` directory (no longer needs the `.` prefix on the file name)
+- Have the following file extensions: `.json`, `jsonc`, `.json5`, `.yaml`, `.yml`, `.js`, `.cjs`
 
 E.g. `.glf.json`, `.glfrc.yml`, `.generatelicensefile.jsonc`, `.config/glf.js`, and more.
 
