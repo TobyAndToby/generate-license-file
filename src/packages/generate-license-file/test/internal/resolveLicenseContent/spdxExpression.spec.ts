@@ -1,4 +1,4 @@
-import { spdxExpression } from "../../../src/lib/internal/resolutions/spdxExpression";
+import { spdxExpression } from "../../../src/lib/internal/resolveLicenseContent/spdxExpression";
 import { ResolutionInputs } from "../../../src/lib/internal/resolveLicenseContent";
 import logger from "../../../src/lib/utils/console.utils";
 
@@ -64,7 +64,10 @@ describe("spdxExpression", () => {
 
     expect(mockedWarn).toHaveBeenCalledTimes(1);
     expect(mockedWarn).toHaveBeenCalledWith(
-      `The license expression for ${inputs.packageJson.name}@${inputs.packageJson.version} contains multiple licenses: "${inputs.packageJson.license}"`,
+      `The license expression for ${inputs.packageJson.name}@${inputs.packageJson.version} contains multiple licenses: "MIT OR Apache-2.0"\n` +
+        "We suggest you determine which license applies to your project and replace the license content\n" +
+        `for ${inputs.packageJson.name}@${inputs.packageJson.version} using a generate-license-file config file.\n` +
+        "See: https://generate-license-file.js.org/docs/cli/config-file for more information.\n",
     );
   });
 });

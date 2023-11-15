@@ -1,6 +1,6 @@
 import { glob } from "glob";
 import { relative } from "path";
-import { Resolution } from "../resolveLicenseContent";
+import { Resolution } from "./index";
 import logger from "../../utils/console.utils";
 import { readFile } from "../../utils/file.utils";
 import { extname } from "path";

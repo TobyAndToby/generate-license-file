@@ -1,16 +1,16 @@
 import { when } from "jest-when";
-import { resolveLicenseContent } from "../../src/lib/internal/resolveLicenseContent";
-import { doesFileExist, readFile } from "../../src/lib/utils/file.utils";
+import { resolveLicenseContent } from "../../../src/lib/internal/resolveLicenseContent";
+import { doesFileExist, readFile } from "../../../src/lib/utils/file.utils";
 import { join } from "path";
-import { packageJsonLicense } from "../../src/lib/internal/resolutions/packageJsonLicense";
-import { licenseFile } from "../../src/lib/internal/resolutions/licenseFile";
-import { spdxExpression } from "../../src/lib/internal/resolutions/spdxExpression";
-import { PackageJson } from "../../src/lib/utils/packageJson.utils";
+import { packageJsonLicense } from "../../../src/lib/internal/resolveLicenseContent/packageJsonLicense";
+import { licenseFile } from "../../../src/lib/internal/resolveLicenseContent/licenseFile";
+import { spdxExpression } from "../../../src/lib/internal/resolveLicenseContent/spdxExpression";
+import { PackageJson } from "../../../src/lib/utils/packageJson.utils";
 
-jest.mock("../../src/lib/utils/file.utils");
-jest.mock("../../src/lib/internal/resolutions/packageJsonLicense");
-jest.mock("../../src/lib/internal/resolutions/licenseFile");
-jest.mock("../../src/lib/internal/resolutions/spdxExpression");
+jest.mock("../../../src/lib/utils/file.utils");
+jest.mock("../../../src/lib/internal/resolveLicenseContent/packageJsonLicense");
+jest.mock("../../../src/lib/internal/resolveLicenseContent/licenseFile");
+jest.mock("../../../src/lib/internal/resolveLicenseContent/spdxExpression");
 
 describe("resolveLicenseContent", () => {
   const mockedReadFile = jest.mocked(readFile);
