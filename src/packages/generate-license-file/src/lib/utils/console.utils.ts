@@ -19,7 +19,7 @@ class ConsoleUtils {
     message?: any,
     ...optionalParams: any[]
   ) {
-    let isSpinning = spinner.isSpinning;
+    const isSpinning = spinner.isSpinning;
     if (isSpinning) {
       spinner.stop();
     }

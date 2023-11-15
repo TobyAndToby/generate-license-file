@@ -1,9 +1,4 @@
 import { License } from "../models/license";
-import { Node, Link } from "@npmcli/arborist";
-import Arborist from "@npmcli/arborist";
-import { dirname, isAbsolute, join } from "path";
-import { resolveLicenseContent } from "./resolveLicenseContent";
-import { resolveDependenciesForNpmProject } from "./resolveDependencies/resolveNpmDependencies";
 import { resolveDependencies } from "./resolveDependencies";
 
 type ResolveLicensesOptions = {

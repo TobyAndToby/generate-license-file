@@ -26,9 +26,10 @@ export const resolveDependencies = async (
       await resolveDependenciesForPnpmProject(packageJson, licensesMap, options);
       break;
     }
-    default:
+    default: {
       const _exhaustiveCheck: never = packageManager;
       throw new Error(`Unknown package manager: ${packageManager}`);
+    }
   }
 };
 
