@@ -3,8 +3,8 @@ title: Config File
 description: Overview and example usages of the generate license file CLI config file
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
 
 The generate-license-file CLI can be configured using a config file so that you don't need to re-enter the same
 config options every time. The config file also allows you to specify additional more complex options that are not
@@ -29,14 +29,15 @@ The file can contain all of the options that are [available as CLI flags](./).
 
 ```json
 {
-    "inputs": ["./package.json"],
-    "output": "./THIRD-PARTY-LICENSES.txt",
-    "overwrite": true,
-    "eol": "lf",
-    "ci": true,
-    "no-spinner": true,
+  "inputs": ["./package.json"],
+  "output": "./THIRD-PARTY-LICENSES.txt",
+  "overwrite": true,
+  "eol": "lf",
+  "ci": true,
+  "no-spinner": true
 }
 ```
+
 </TabItem>
 
 <TabItem value="yaml" label="YAML">
@@ -50,30 +51,34 @@ eol: lf
 ci: true
 no-spinner: true
 ```
+
 </TabItem>
 
 <TabItem value="js" label="JavaScript">
 
 ```js
 module.exports = {
-    inputs: ["./package.json"],
-    output: "./THIRD-PARTY-LICENSES.txt",
-    overwrite: true,
-    eol: "lf",
-    ci: true,
-    noSpinner: true,
+  inputs: ["./package.json"],
+  output: "./THIRD-PARTY-LICENSES.txt",
+  overwrite: true,
+  eol: "lf",
+  ci: true,
+  noSpinner: true,
 };
 ```
+
 </TabItem>
 </Tabs>
 
 :::info Tip
 JavaScript allows for more dynamic usages
+
 ```js
 module.exports = {
-    ci: process.env.CI === "true"
-}
+  ci: process.env.CI === "true",
+};
 ```
+
 :::
 
 The more advanced features that a config file can contain allow you to edit the contents of the generated output file.
@@ -88,9 +93,10 @@ contains other types of licensed material other than node_modules dependencies t
 
 ```json
 {
-    "append": ["./extra-licenses.txt"]
+  "append": ["./extra-licenses.txt"]
 }
 ```
+
 </TabItem>
 
 <TabItem value="yaml" label="YAML">
@@ -99,21 +105,24 @@ contains other types of licensed material other than node_modules dependencies t
 append:
   - ./extra-licenses.txt
 ```
+
 </TabItem>
 
 <TabItem value="js" label="JavaScript">
 
 ```js
 module.exports = {
-    append: ["./extra-licenses.txt"]
+  append: ["./extra-licenses.txt"],
 };
 ```
+
 </TabItem>
 </Tabs>
 
 ### Replace
 
 The replace option allows you to replace the license content for a specific dependency. This is useful in situations like:
+
 - A dependency does not have its license file included in the published package
 - The license file is not in a standard format
 - The published package contains multiple license files and you want to pick a specific one
@@ -123,12 +132,13 @@ The replace option allows you to replace the license content for a specific depe
 
 ```json
 {
-    "replace": {
-        "lodash@1.2.3": "./licenses/lodash.txt",
-        "react@1.2.3": "./node_modules/react/LICENSE"
-    }
+  "replace": {
+    "lodash@1.2.3": "./licenses/lodash.txt",
+    "react@1.2.3": "./node_modules/react/LICENSE"
+  }
 }
 ```
+
 </TabItem>
 
 <TabItem value="yaml" label="YAML">
@@ -138,18 +148,20 @@ replace:
   lodash@1.2.3: ./licenses/lodash.txt
   react@1.2.3: ./node_modules/react/LICENSE
 ```
+
 </TabItem>
 
 <TabItem value="js" label="JavaScript">
 
 ```js
 module.exports = {
-    replace: {
-        "lodash@1.2.3": "./licenses/lodash.txt",
-        "react@1.2.3": "./node_modules/react/LICENSE"
-    }
+  replace: {
+    "lodash@1.2.3": "./licenses/lodash.txt",
+    "react@1.2.3": "./node_modules/react/LICENSE",
+  },
 };
 ```
+
 </TabItem>
 </Tabs>
 
@@ -159,11 +171,12 @@ module.exports = {
 
 ```json
 {
-    "replace": {
-        "react@18.2.0": "node_modules/.pnpm/react@18.2.0/node_modules/react/LICENSE"
-    }
+  "replace": {
+    "react@18.2.0": "node_modules/.pnpm/react@18.2.0/node_modules/react/LICENSE"
+  }
 }
 ```
+
 </div>
 </details>
 
@@ -177,9 +190,10 @@ accidentally lists one of it's own dev-dependencies as a normal dependency and y
 
 ```json
 {
-    "exclude": ["lodash@1.2.3"]
+  "exclude": ["lodash@1.2.3"]
 }
 ```
+
 </TabItem>
 
 <TabItem value="yaml" label="YAML">
@@ -188,15 +202,17 @@ accidentally lists one of it's own dev-dependencies as a normal dependency and y
 exclude:
   - lodash@1.2.3
 ```
+
 </TabItem>
 
 <TabItem value="js" label="JavaScript">
 
 ```js
 module.exports = {
-    exclude: ["lodash@1.2.3"]
+  exclude: ["lodash@1.2.3"],
 };
 ```
+
 </TabItem>
 </Tabs>
 
