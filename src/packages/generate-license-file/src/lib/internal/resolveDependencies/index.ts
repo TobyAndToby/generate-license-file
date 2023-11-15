@@ -18,14 +18,15 @@ export const resolveDependencies = async (
   const packageManager = await resolvePackageManager(packageJson);
 
   switch (packageManager) {
-    case "npm": {
+    case "npm":
       await resolveDependenciesForNpmProject(packageJson, licensesMap, options);
       break;
-    }
-    case "pnpm": {
+
+    case "pnpm":
       await resolveDependenciesForPnpmProject(packageJson, licensesMap, options);
       break;
-    }
+
+    // istanbul ignore next
     default: {
       const _exhaustiveCheck: never = packageManager;
       throw new Error(`Unknown package manager: ${packageManager}`);
