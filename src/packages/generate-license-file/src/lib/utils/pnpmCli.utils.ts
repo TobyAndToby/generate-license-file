@@ -1,7 +1,4 @@
-﻿import { promisify } from "util";
-import { exec } from "child_process";
-
-const execAsync = promisify(exec);
+﻿import { execAsync } from "./exec.utils";
 
 export type PnpmVersion = {
   major: number;
