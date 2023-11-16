@@ -63,7 +63,7 @@ describe("ConsoleUtils", () => {
       expect(firstCallThirdArg).toBe("param2");
     });
 
-    it("should stop and restart the logger if it is spinning", () => {
+    it("should stop and restart the spinner if it is spinning", () => {
       setMockIsSpinning(true);
 
       expect(spinner.stop).not.toHaveBeenCalled();
@@ -75,7 +75,7 @@ describe("ConsoleUtils", () => {
       expect(spinner.start).toHaveBeenCalledTimes(1);
     });
 
-    it("should not stop and restart the logger if it is not spinning", () => {
+    it("should not stop and restart the spinner if it is not spinning", () => {
       setMockIsSpinning(false);
 
       expect(spinner.stop).not.toHaveBeenCalled();
@@ -110,7 +110,7 @@ describe("ConsoleUtils", () => {
       expect(firstCallThirdArg).toBe("param2");
     });
 
-    it("should stop and restart the logger if it is spinning", () => {
+    it("should stop and restart the spinner if it is spinning", () => {
       setMockIsSpinning(true);
 
       expect(spinner.stop).not.toHaveBeenCalled();
@@ -122,7 +122,7 @@ describe("ConsoleUtils", () => {
       expect(spinner.start).toHaveBeenCalledTimes(1);
     });
 
-    it("should not stop and restart the logger if it is not spinning", () => {
+    it("should not stop and restart the spinner if it is not spinning", () => {
       setMockIsSpinning(false);
 
       expect(spinner.stop).not.toHaveBeenCalled();
@@ -157,7 +157,7 @@ describe("ConsoleUtils", () => {
       expect(firstCallThirdArg).toBe("param2");
     });
 
-    it("should stop and restart the logger if it is spinning", () => {
+    it("should stop and restart the spinner if it is spinning", () => {
       setMockIsSpinning(true);
 
       expect(spinner.stop).not.toHaveBeenCalled();
@@ -169,7 +169,7 @@ describe("ConsoleUtils", () => {
       expect(spinner.start).toHaveBeenCalledTimes(1);
     });
 
-    it("should not stop and restart the logger if it is not spinning", () => {
+    it("should not stop and restart the spinner if it is not spinning", () => {
       setMockIsSpinning(false);
 
       expect(spinner.stop).not.toHaveBeenCalled();

@@ -22,7 +22,7 @@ export type Dependency = {
 export const getPnpmVersion = async (): Promise<PnpmVersion> => {
   const { stdout } = await execAsync("pnpm --version");
 
-  const [major, minor, patch] = stdout.split(".").map(v => +v);
+  const [major, minor, patch] = stdout.split(".").map(Number);
 
   return { major, minor, patch };
 };
