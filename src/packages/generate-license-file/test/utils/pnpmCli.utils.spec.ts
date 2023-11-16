@@ -5,6 +5,8 @@ jest.mock("../../src/lib/utils/exec.utils", () => ({
   execAsync: jest.fn(),
 }));
 
+type MockExecStdOut = { stdout: string | Buffer; stderr: string | Buffer };
+
 describe("pnpmCli.utils", () => {
   const mockedExecAsync = jest.mocked(execAsync);
 
@@ -16,7 +18,7 @@ describe("pnpmCli.utils", () => {
 
   describe("getPnpmVersion", () => {
     it("should call the pnpm cli with the correct arguments", async () => {
-      mockedExecAsync.mockResolvedValue({ stdout: "1.2.3" } as any);
+      mockedExecAsync.mockResolvedValue({ stdout: "1.2.3" } as MockExecStdOut);
 
       await getPnpmVersion();
 
@@ -25,7 +27,7 @@ describe("pnpmCli.utils", () => {
     });
 
     it("should format the returned value from the pnpm cli correctly", async () => {
-      mockedExecAsync.mockResolvedValue({ stdout: "1.2.3" } as any);
+      mockedExecAsync.mockResolvedValue({ stdout: "1.2.3" } as MockExecStdOut);
 
       const result = await getPnpmVersion();
 
@@ -36,7 +38,7 @@ describe("pnpmCli.utils", () => {
   describe("getPnpmProjectDependencies", () => {
     it("should call the pnpm cli with the correct arguments", async () => {
       const projectDirectory = "/path/to/project";
-      mockedExecAsync.mockResolvedValue({ stdout: "{}" } as any);
+      mockedExecAsync.mockResolvedValue({ stdout: "{}" } as MockExecStdOut);
 
       await getPnpmProjectDependencies(projectDirectory);
 
@@ -64,7 +66,7 @@ describe("pnpmCli.utils", () => {
       const mockStdOut = JSON.stringify({ anySpdxKey: expected });
       mockedExecAsync.mockResolvedValue({
         stdout: mockStdOut,
-      } as any);
+      } as MockExecStdOut);
 
       const result = await getPnpmProjectDependencies(projectDirectory);
 
