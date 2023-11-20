@@ -1,4 +1,4 @@
-const OutputFileNames = require("../test/output-filenames");
+const OutputFileNames = require("../../output-filenames");
 
 module.exports = {
   // Test that the input and output config is picked up from config correctly.
