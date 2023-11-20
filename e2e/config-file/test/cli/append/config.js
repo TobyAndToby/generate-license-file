@@ -1,8 +1,6 @@
-const OutputFileNames = require("../../output-filenames");
-
 module.exports = {
   inputs: ["./package.json"],
-  output: OutputFileNames.AppendConfig,
+  output: "append-config-output.txt",
 
   // Test that appendices are used in the output file.
   append: ["./append-content.txt"],

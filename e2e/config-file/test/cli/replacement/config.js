@@ -1,8 +1,6 @@
-const OutputFileNames = require("../../output-filenames");
-
 module.exports = {
   inputs: ["./package.json"],
-  output: OutputFileNames.ReplacementConfig,
+  output: "replacement-config-output.txt",
 
   // Test that replacements are used in the output file.
   replace: {
