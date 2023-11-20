@@ -9,7 +9,7 @@ describe("cli", () => {
   beforeEach(async () => {});
 
   it("should match snapshot when inputs and outputs are provided via config file", async () => {
-    const configPath = "./.config/inputs-output-config.js";
+    const configPath = "./test/cli/inputs-output/config.js";
     const outputPath = OutputFileNames.InputsOutputConfig;
 
     await execAsync(`npx generate-license-file -c ${configPath}`);

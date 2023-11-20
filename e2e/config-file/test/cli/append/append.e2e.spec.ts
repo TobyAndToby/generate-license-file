@@ -9,7 +9,7 @@ describe("cli", () => {
   beforeEach(async () => {});
 
   it("should match snapshot when content is appended", async () => {
-    const configPath = "./.config/append-config.js";
+    const configPath = "./test/cli/append/config.js";
     const outputPath = OutputFileNames.AppendConfig;
 
     await execAsync(`npx generate-license-file -c ${configPath}`);

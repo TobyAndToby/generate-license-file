@@ -9,7 +9,7 @@ describe("cli", () => {
   beforeEach(async () => {});
 
   it("should match snapshot when content is excluded", async () => {
-    const configPath = "./.config/exclude-config.js";
+    const configPath = "./test/cli/exclude/config.js";
     const outputPath = OutputFileNames.ExcludeConfig;
 
     await execAsync(`npx generate-license-file -c ${configPath}`);

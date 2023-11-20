@@ -9,7 +9,7 @@ describe("cli", () => {
   beforeEach(async () => {});
 
   it("should match snapshot when a package is replaced", async () => {
-    const configPath = "./.config/replacement-config.js";
+    const configPath = "./test/cli/replacement/config.js";
     const outputPath = OutputFileNames.ReplacementConfig;
 
     await execAsync(`npx generate-license-file -c ${configPath}`);
