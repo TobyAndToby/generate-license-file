@@ -60,14 +60,14 @@ describe("resolveDependenciesForPnpmProject", () => {
 
   afterAll(() => jest.restoreAllMocks());
 
-  describe("when the pnpm version is not 8.x.x", () => {
+  describe("when the pnpm version is less than 7.33.0", () => {
     it("should throw an error", async () => {
-      mockedGetPnpmVersion.mockResolvedValue({ major: 7, minor: 6, patch: 5 });
+      mockedGetPnpmVersion.mockResolvedValue({ major: 7, minor: 32, patch: 999 });
 
       await expect(resolveDependenciesForPnpmProject).rejects.toThrow(
-        "Unsupported pnpm version: 7.6.5.\n" +
-          "Generate license file currently only supports pnpm version 8.x.x\n" +
-          "Please either switch to pnpm version 8 or raise an issue on the generate-license-file repository for us to support your version of pnpm:\n" +
+        "Unsupported pnpm version: 7.32.999.\n" +
+          "Generate license file currently only supports pnpm versions >=7.33.0 & >=8.0.0\n" +
+          "Please either switch to a supported version of pnpm or raise an issue on the generate-license-file repository for us to support your version of pnpm:\n" +
           "https://github.com/TobyAndToby/generate-license-file",
       );
     });
@@ -81,9 +81,12 @@ describe("resolveDependenciesForPnpmProject", () => {
     });
   });
 
-  describe("when the pnpm version is 8.x.x", () => {
+  describe.each([
+    { major: 7, minor: 33, patch: 0 },
+    { major: 8, minor: 0, patch: 0 },
+  ])("when the pnpm version is a supported version (%p)", pnpmVersion => {
     it("should call getPnpmProjectDependencies", async () => {
-      mockedGetPnpmVersion.mockResolvedValue({ major: 8, minor: 6, patch: 5 });
+      mockedGetPnpmVersion.mockResolvedValue(pnpmVersion);
       mockedGetPnpmProjectDependencies.mockResolvedValue([]);
 
       await resolveDependenciesForPnpmProject("/some/path/package.json", new Map());
@@ -93,7 +96,7 @@ describe("resolveDependenciesForPnpmProject", () => {
     });
 
     it("should pass the replace option to resolveLicenseContent", async () => {
-      mockedGetPnpmVersion.mockResolvedValue({ major: 8, minor: 6, patch: 5 });
+      mockedGetPnpmVersion.mockResolvedValue(pnpmVersion);
       mockedGetPnpmProjectDependencies.mockResolvedValue([dependency1]);
 
       const replace = { "some-package@1.0.0": "/some/path/to/license.txt" };
@@ -105,7 +108,7 @@ describe("resolveDependenciesForPnpmProject", () => {
     });
 
     it("should call resolveLicenseContent for each dependency", async () => {
-      mockedGetPnpmVersion.mockResolvedValue({ major: 8, minor: 6, patch: 5 });
+      mockedGetPnpmVersion.mockResolvedValue(pnpmVersion);
       mockedGetPnpmProjectDependencies.mockResolvedValue([dependency1, dependency2, dependency3]);
 
       await resolveDependenciesForPnpmProject("/some/path/package.json", new Map());
@@ -117,7 +120,7 @@ describe("resolveDependenciesForPnpmProject", () => {
     });
 
     it("should add the license content to the licensesMap if it is not null", async () => {
-      mockedGetPnpmVersion.mockResolvedValue({ major: 8, minor: 6, patch: 5 });
+      mockedGetPnpmVersion.mockResolvedValue(pnpmVersion);
       mockedGetPnpmProjectDependencies.mockResolvedValue([dependency1, dependency2, dependency3]);
 
       const licensesMap = new Map<string, Set<string>>();
@@ -132,7 +135,7 @@ describe("resolveDependenciesForPnpmProject", () => {
 
     describe("when the dependency is in the exclude list", () => {
       it("should not call resolveLicenseContent", async () => {
-        mockedGetPnpmVersion.mockResolvedValue({ major: 8, minor: 6, patch: 5 });
+        mockedGetPnpmVersion.mockResolvedValue(pnpmVersion);
         mockedGetPnpmProjectDependencies.mockResolvedValue([dependency1, dependency2, dependency3]);
 
         await resolveDependenciesForPnpmProject("/some/path/package.json", new Map(), {

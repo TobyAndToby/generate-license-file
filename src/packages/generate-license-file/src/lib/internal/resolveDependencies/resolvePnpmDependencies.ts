@@ -37,17 +37,23 @@ export const resolveDependenciesForPnpmProject = async (
   }
 };
 
+const allowedPnpmMinorVersions: Record<number, number> = {
+  8: 0,
+  7: 33,
+};
+
 const verifyPnpmVersion = async () => {
   const pnpmVersion = await getPnpmVersion();
 
-  if (pnpmVersion.major === 8) {
+  const allowedMinorVersion = allowedPnpmMinorVersions[pnpmVersion.major];
+  if (allowedMinorVersion !== undefined && pnpmVersion.minor >= allowedMinorVersion) {
     return;
   }
 
   const errorLines = [
     `Unsupported pnpm version: ${pnpmVersion.major}.${pnpmVersion.minor}.${pnpmVersion.patch}.`,
-    "Generate license file currently only supports pnpm version 8.x.x",
-    "Please either switch to pnpm version 8 or raise an issue on the generate-license-file repository for us to support your version of pnpm:",
+    "Generate license file currently only supports pnpm versions >=7.33.0 & >=8.0.0",
+    "Please either switch to a supported version of pnpm or raise an issue on the generate-license-file repository for us to support your version of pnpm:",
     "https://github.com/TobyAndToby/generate-license-file",
   ];
 
