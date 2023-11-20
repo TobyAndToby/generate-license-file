@@ -1,5 +1,6 @@
 import { glob } from "glob";
-import { Resolution } from "../resolveLicenseContent";
+import { relative } from "path";
+import { Resolution } from "./index";
 import logger from "../../utils/console.utils";
 import { readFile } from "../../utils/file.utils";
 import { extname } from "path";
@@ -28,11 +29,20 @@ export const licenseFile: Resolution = async inputs => {
   }
 
   if (filteredLicenseFiles.length > 1) {
-    logger.warn(
-      `Found multiple license files for ${packageJson.name}@${
-        packageJson.version
-      }: ${filteredLicenseFiles.join(", ")}`,
+    const relativeLicenseFiles = filteredLicenseFiles.map(
+      file => ` - ./${relative(directory, file)}`,
     );
+
+    const warningLines = [
+      `Found multiple license files for ${packageJson.name}@${packageJson.version}:`,
+      ...relativeLicenseFiles,
+      "We suggest you determine which file you wish to use and replace the license content",
+      `for ${packageJson.name}@${packageJson.version} using a generate-license-file config file.`,
+      "See: https://generate-license-file.js.org/docs/cli/config-file for more information.",
+      "", // Empty line for spacing
+    ];
+
+    logger.warn(warningLines.join("\n"));
   }
 
   return await readFile(filteredLicenseFiles[0], { encoding: "utf-8" });

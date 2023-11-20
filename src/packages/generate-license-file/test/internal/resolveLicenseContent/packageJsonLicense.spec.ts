@@ -1,5 +1,5 @@
 import { join } from "path";
-import { packageJsonLicense } from "../../../src/lib/internal/resolutions/packageJsonLicense";
+import { packageJsonLicense } from "../../../src/lib/internal/resolveLicenseContent/packageJsonLicense";
 import { ResolutionInputs } from "../../../src/lib/internal/resolveLicenseContent";
 import { doesFileExist, readFile } from "../../../src/lib/utils/file.utils";
 import { when } from "jest-when";

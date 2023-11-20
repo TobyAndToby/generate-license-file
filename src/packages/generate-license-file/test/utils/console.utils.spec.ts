@@ -1,12 +1,24 @@
 import consoleUtils from "../../src/lib/utils/console.utils";
+import { spinner } from "../../src/lib/cli/spinner";
+
+jest.mock("../../src/lib/cli/spinner", () => ({
+  spinner: {
+    isSpinning: false,
+    start: jest.fn(),
+    stop: jest.fn(),
+  },
+}));
 
 describe("ConsoleUtils", () => {
+  const mockSpinner = jest.mocked(spinner);
+
   let originalLog: typeof global.console.log;
   let originalWarn: typeof global.console.warn;
   let originalError: typeof global.console.error;
 
   const mockLog = jest.fn();
   const mockWarn = jest.fn();
+
   const mockError = jest.fn();
 
   beforeAll(() => {
@@ -50,6 +62,30 @@ describe("ConsoleUtils", () => {
       const firstCallThirdArg = mockLog.mock.calls[0][2];
       expect(firstCallThirdArg).toBe("param2");
     });
+
+    it("should stop and restart the spinner if it is spinning", () => {
+      setMockIsSpinning(true);
+
+      expect(spinner.stop).not.toHaveBeenCalled();
+      expect(spinner.start).not.toHaveBeenCalled();
+
+      consoleUtils.log("console log message");
+
+      expect(spinner.stop).toHaveBeenCalledTimes(1);
+      expect(spinner.start).toHaveBeenCalledTimes(1);
+    });
+
+    it("should not stop and restart the spinner if it is not spinning", () => {
+      setMockIsSpinning(false);
+
+      expect(spinner.stop).not.toHaveBeenCalled();
+      expect(spinner.start).not.toHaveBeenCalled();
+
+      consoleUtils.log("console log message");
+
+      expect(spinner.stop).not.toHaveBeenCalled();
+      expect(spinner.start).not.toHaveBeenCalled();
+    });
   });
 
   describe("warn", () => {
@@ -72,6 +108,30 @@ describe("ConsoleUtils", () => {
 
       const firstCallThirdArg = mockWarn.mock.calls[0][2];
       expect(firstCallThirdArg).toBe("param2");
+    });
+
+    it("should stop and restart the spinner if it is spinning", () => {
+      setMockIsSpinning(true);
+
+      expect(spinner.stop).not.toHaveBeenCalled();
+      expect(spinner.start).not.toHaveBeenCalled();
+
+      consoleUtils.warn("console log message");
+
+      expect(spinner.stop).toHaveBeenCalledTimes(1);
+      expect(spinner.start).toHaveBeenCalledTimes(1);
+    });
+
+    it("should not stop and restart the spinner if it is not spinning", () => {
+      setMockIsSpinning(false);
+
+      expect(spinner.stop).not.toHaveBeenCalled();
+      expect(spinner.start).not.toHaveBeenCalled();
+
+      consoleUtils.warn("console log message");
+
+      expect(spinner.stop).not.toHaveBeenCalled();
+      expect(spinner.start).not.toHaveBeenCalled();
     });
   });
 
@@ -96,5 +156,36 @@ describe("ConsoleUtils", () => {
       const firstCallThirdArg = mockError.mock.calls[0][2];
       expect(firstCallThirdArg).toBe("param2");
     });
+
+    it("should stop and restart the spinner if it is spinning", () => {
+      setMockIsSpinning(true);
+
+      expect(spinner.stop).not.toHaveBeenCalled();
+      expect(spinner.start).not.toHaveBeenCalled();
+
+      consoleUtils.error("console log message");
+
+      expect(spinner.stop).toHaveBeenCalledTimes(1);
+      expect(spinner.start).toHaveBeenCalledTimes(1);
+    });
+
+    it("should not stop and restart the spinner if it is not spinning", () => {
+      setMockIsSpinning(false);
+
+      expect(spinner.stop).not.toHaveBeenCalled();
+      expect(spinner.start).not.toHaveBeenCalled();
+
+      consoleUtils.error("console log message");
+
+      expect(spinner.stop).not.toHaveBeenCalled();
+      expect(spinner.start).not.toHaveBeenCalled();
+    });
   });
+
+  const setMockIsSpinning = (state: boolean) => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    // noinspection JSConstantReassignment
+    mockSpinner.isSpinning = state;
+  };
 });

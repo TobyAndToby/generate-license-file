@@ -1,0 +1,226 @@
+﻿---
+title: Config File
+description: Overview and example usages of the generate license file CLI config file
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+The generate-license-file CLI can be configured using a config file so that you don't need to re-enter the same
+config options every time. The config file also allows you to specify additional more complex options that are not
+available as CLI flags.
+
+## File Formats
+
+Config files can be called either `.glf` or `.generatelicensefile` and can be customised using the following options:
+
+- File name can optionally end with `rc`
+- Can be in a `./.config` directory (no longer needs the `.` prefix on the file name)
+- Have the following file extensions: `.json`, `jsonc`, `.json5`, `.yaml`, `.yml`, `.js`, `.cjs`
+
+E.g. `.glf.json`, `.glfrc.yml`, `.generatelicensefile.jsonc`, `.config/glf.js`, and more.
+
+## Config Options
+
+The file can contain all of the options that are [available as CLI flags](./).
+
+<Tabs groupId="file-formats">
+<TabItem value="json" label="JSON" default>
+
+```json
+{
+  "inputs": ["./package.json"],
+  "output": "./THIRD-PARTY-LICENSES.txt",
+  "overwrite": true,
+  "eol": "lf",
+  "ci": true,
+  "no-spinner": true
+}
+```
+
+</TabItem>
+
+<TabItem value="yaml" label="YAML">
+
+```yaml
+inputs:
+  - ./package.json
+output: ./THIRD-PARTY-LICENSES.txt
+overwrite: true
+eol: lf
+ci: true
+no-spinner: true
+```
+
+</TabItem>
+
+<TabItem value="js" label="JavaScript">
+
+```js
+module.exports = {
+  inputs: ["./package.json"],
+  output: "./THIRD-PARTY-LICENSES.txt",
+  overwrite: true,
+  eol: "lf",
+  ci: true,
+  noSpinner: true,
+};
+```
+
+</TabItem>
+</Tabs>
+
+:::info Tip
+JavaScript allows for more dynamic usages
+
+```js
+module.exports = {
+  ci: process.env.CI === "true",
+};
+```
+
+:::
+
+The more advanced features that a config file can contain allow you to edit the contents of the generated output file.
+
+### Append
+
+The append option allows you to append files to the end of the generated output file. This is useful if your project
+contains other types of licensed material other than node_modules dependencies that you want to include like fonts or images.
+
+<Tabs groupId="file-formats">
+<TabItem value="json" label="JSON" default>
+
+```json
+{
+  "append": ["./extra-licenses.txt"]
+}
+```
+
+</TabItem>
+
+<TabItem value="yaml" label="YAML">
+
+```yaml
+append:
+  - ./extra-licenses.txt
+```
+
+</TabItem>
+
+<TabItem value="js" label="JavaScript">
+
+```js
+module.exports = {
+  append: ["./extra-licenses.txt"],
+};
+```
+
+</TabItem>
+</Tabs>
+
+### Replace
+
+The replace option allows you to replace the license content for a specific dependency. This is useful in situations like:
+
+- A dependency does not have its license file included in the published package
+- The license file is not in a standard format
+- The published package contains multiple license files and you want to pick a specific one
+
+<Tabs groupId="file-formats">
+<TabItem value="json" label="JSON" default>
+
+```json
+{
+  "replace": {
+    "lodash@1.2.3": "./licenses/lodash.txt",
+    "react@1.2.3": "./node_modules/react/LICENSE"
+  }
+}
+```
+
+</TabItem>
+
+<TabItem value="yaml" label="YAML">
+
+```yaml
+replace:
+  lodash@1.2.3: ./licenses/lodash.txt
+  react@1.2.3: ./node_modules/react/LICENSE
+```
+
+</TabItem>
+
+<TabItem value="js" label="JavaScript">
+
+```js
+module.exports = {
+  replace: {
+    "lodash@1.2.3": "./licenses/lodash.txt",
+    "react@1.2.3": "./node_modules/react/LICENSE",
+  },
+};
+```
+
+</TabItem>
+</Tabs>
+
+<details>
+<summary>When using pnpm, the way to reference a file in a node_module can look a little different</summary>
+<div>
+
+```json
+{
+  "replace": {
+    "react@18.2.0": "node_modules/.pnpm/react@18.2.0/node_modules/react/LICENSE"
+  }
+}
+```
+
+</div>
+</details>
+
+### Exclude
+
+The exclude option allows you to exclude a dependency from the generated output file. This is useful if a dependency
+accidentally lists one of it's own dev-dependencies as a normal dependency and you want to exclude that dev-dependency.
+
+<Tabs groupId="file-formats">
+<TabItem value="json" label="JSON" default>
+
+```json
+{
+  "exclude": ["lodash@1.2.3"]
+}
+```
+
+</TabItem>
+
+<TabItem value="yaml" label="YAML">
+
+```yaml
+exclude:
+  - lodash@1.2.3
+```
+
+</TabItem>
+
+<TabItem value="js" label="JavaScript">
+
+```js
+module.exports = {
+  exclude: ["lodash@1.2.3"],
+};
+```
+
+</TabItem>
+</Tabs>
+
+## File Location
+
+If you want to keep your config file in a different location to the current working directory (or a `./.config` directory)
+then you can specify the location of the config file using the `--config` CLI flag.
+
+```bash
+generate-license-file --config ./path/to/config.json
+```

@@ -54,7 +54,7 @@ export const mainCommand = new Command()
   .option("-v,--version", "Prints the installed version of generate-license-file")
   .action(async givenArgs => {
     if (givenArgs.version) {
-      printPackageVersion();
+      await printPackageVersion();
       return;
     }
 
@@ -88,8 +88,6 @@ export const mainCommand = new Command()
     if (showSpinner) {
       spinner.start();
     }
-
-    console.log(combinedConfig);
 
     await generateLicenseFile(inputs, output, {
       lineEnding: eol,

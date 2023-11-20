@@ -1,5 +1,8 @@
 import { glob } from "glob";
-import { extensionDenyList, licenseFile } from "../../../src/lib/internal/resolutions/licenseFile";
+import {
+  extensionDenyList,
+  licenseFile,
+} from "../../../src/lib/internal/resolveLicenseContent/licenseFile";
 import { when } from "jest-when";
 import { readFile } from "../../../src/lib/utils/file.utils";
 import { ResolutionInputs } from "../../../src/lib/internal/resolveLicenseContent";
