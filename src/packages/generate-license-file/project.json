@@ -15,9 +15,7 @@
           "packages/generate-license-file/*.md",
           "packages/generate-license-file/bin/**",
           "LICENSE.md"
-        ],
-        "buildableProjectDepsInPackageJsonType": "dependencies",
-        "updateBuildableProjectDepsInPackageJson": true
+        ]
       }
     },
     "run": {
@@ -39,7 +37,7 @@
       }
     },
     "lint": {
-      "executor": "@nx/linter:eslint",
+      "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": ["packages/generate-license-file/**/*.ts"],
