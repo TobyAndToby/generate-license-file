@@ -10,7 +10,7 @@
     "@types/npmcli__arborist": "^5.6.1",
     "cli-spinners": "^2.6.0",
     "commander": "^11.0.0",
-    "cosmiconfig": "^8.2.0",
+    "cosmiconfig": "^9.0.0",
     "enquirer": "^2.3.6",
     "glob": "^10.3.0",
     "json5": "^2.2.3",
