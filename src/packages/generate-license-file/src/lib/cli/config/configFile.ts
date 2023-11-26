@@ -3,12 +3,14 @@ import { json5Parse } from "./parsers/json5";
 
 export type ConfigFile = { path: string; config: unknown };
 
+const json5Loader = (_filepath: string, content: string) => json5Parse(content);
+
 export const loadConfig = async (filePath: string): Promise<ConfigFile | undefined> => {
   const options: Partial<CosmiconfigOptions> = {
     loaders: {
-      ".json": json5Parse,
-      ".jsonc": json5Parse,
-      ".json5": json5Parse,
+      ".json": json5Loader,
+      ".jsonc": json5Loader,
+      ".json5": json5Loader,
     },
   };
 
@@ -58,9 +60,9 @@ export const findConfig = async (directory: string): Promise<ConfigFile | undefi
   const options: Partial<CosmiconfigOptions> = {
     stopDir: directory,
     loaders: {
-      ".json": json5Parse,
-      ".jsonc": json5Parse,
-      ".json5": json5Parse,
+      ".json": json5Loader,
+      ".jsonc": json5Loader,
+      ".json5": json5Loader,
     },
     searchPlaces,
   };
