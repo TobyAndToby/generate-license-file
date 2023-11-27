@@ -1,18 +1,49 @@
 import { doesFileExist, readFile } from "../../utils/file.utils";
 import logger from "../../utils/console.utils";
 import { join } from "path";
-import { Resolution } from "../resolveLicenseContent";
+import { Resolution } from "./index";
+import { PackageJson, PackageJsonLicense } from "../../utils/packageJson.utils";
+
+// This file specifically handles cases where the package.json links
+// to a license file that is on disk and is a part of the package.
+//
+// If it instead finds a URL to a license file, it will return that URL as-is.
 
 export const packageJsonLicense: Resolution = async inputs => {
   const { packageJson, directory } = inputs;
+  const { license, licenses } = packageJson;
 
-  const spdxExpression = packageJson.license;
+  if (typeof license === "string") {
+    return parseStringLicense(license, directory);
+  }
 
+  if (Array.isArray(license)) {
+    return parseArrayLicense(license, packageJson);
+  }
+
+  if (typeof license === "object") {
+    return parseObjectLicense(license);
+  }
+
+  if (Array.isArray(licenses)) {
+    return parseArrayLicense(licenses, packageJson);
+  }
+
+  return null;
+};
+
+const parseStringLicense = async (spdxExpression: string, directory: string) => {
   if (!spdxExpression) {
     return null;
   }
 
-  if (!spdxExpression.toLowerCase().startsWith("see license in ")) {
+  const lowerCaseExpression = spdxExpression.toLowerCase();
+
+  if (lowerCaseExpression.startsWith("http") || lowerCaseExpression.startsWith("www")) {
+    return spdxExpression;
+  }
+
+  if (!lowerCaseExpression.startsWith("see license in ")) {
     return null;
   }
 
@@ -43,4 +74,34 @@ const readLicenseFromDisk = async (dir: string, path: string): Promise<string | 
     logger.warn(`Could not read license file '${absolutePath}'`);
     return null;
   }
+};
+
+const parseArrayLicense = (license: PackageJsonLicense[], packageJson: PackageJson) => {
+  if (license.length === 0) {
+    return null;
+  }
+
+  if (license.length === 1) {
+    return parseObjectLicense(license[0]);
+  }
+
+  const warningLines = [
+    `The license key for ${packageJson.name}@${packageJson.version} contains multiple licenses"`,
+    "We suggest you determine which license applies to your project and replace the license content",
+    `for ${packageJson.name}@${packageJson.version} using a generate-license-file config file.`,
+    "See: https://generate-license-file.js.org/docs/cli/config-file for more information.",
+    "", // Empty line for spacing
+  ];
+
+  logger.warn(warningLines.join("\n"));
+
+  return parseObjectLicense(license[0]);
+};
+
+const parseObjectLicense = (license: PackageJsonLicense) => {
+  if (!license.url) {
+    return null;
+  }
+
+  return license.url;
 };

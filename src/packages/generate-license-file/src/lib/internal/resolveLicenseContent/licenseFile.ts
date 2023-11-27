@@ -5,6 +5,10 @@ import logger from "../../utils/console.utils";
 import { readFile } from "../../utils/file.utils";
 import { extname } from "path";
 
+// This file specifically handles cases where we're able to find
+// a license file on disk that is a part of the package but it's
+// not referenced in the package.json file.
+
 // A 'best guess' for file extensions that are not license files
 // but that may have the same name as a license file
 export const extensionDenyList = [".js", ".ts", ".sh", ".ps1"];
