@@ -67,6 +67,10 @@ jobs:
         working-directory: ${{ env.CWD }}
         run: npm ci
 
+      - name: Build
+        working-directory: ${{ env.CWD }}
+        run: npx nx run-many --target build
+
       - name: Log Version
         shell: pwsh
         run: Write-Host ${{ inputs.version }}
@@ -75,10 +79,6 @@ jobs:
         if: inputs.version != ''
         working-directory: ${{ env.CWD }}
         run: npx nx run-many --target version --args="--version=${{ inputs.version }}"
-
-      - name: Build
-        working-directory: ${{ env.CWD }}
-        run: npx nx run-many --target build
 
       - name: Upload Build
         uses: actions/upload-artifact@v3

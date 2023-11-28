@@ -31,7 +31,11 @@
       "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["packages/generate-license-file-webpack-plugin/**/*.ts"],
+        "lintFilePatterns": [
+          "packages/generate-license-file-webpack-plugin/**/*.ts",
+          "packages/generate-license-file-webpack-plugin/package.json",
+          "packages/generate-license-file-webpack-plugin/project.json"
+        ],
         "maxWarnings": 0
       }
     },

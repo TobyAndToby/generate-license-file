@@ -40,7 +40,11 @@
       "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["packages/generate-license-file/**/*.ts"],
+        "lintFilePatterns": [
+          "packages/generate-license-file/**/*.ts",
+          "packages/generate-license-file/package.json",
+          "packages/generate-license-file/project.json"
+        ],
         "maxWarnings": 0
       }
     },

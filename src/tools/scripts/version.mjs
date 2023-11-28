@@ -1,6 +1,7 @@
 import devkit from "@nx/devkit";
 import chalk from "chalk";
-import { execSync } from "child_process";
+import { join } from "path";
+import fs from "fs/promises";
 
 const { createProjectGraphAsync, readCachedProjectGraph } = devkit;
 
@@ -27,6 +28,11 @@ invariant(
   `Could not find project "${name}" in the workspace. Is the project.json configured correctly?`,
 );
 
-process.chdir(project.data.root);
+const distDir = project.data.targets.build.options.outputPath;
+const distPackageJson = join(distDir, "package.json");
 
-execSync("npm --no-git-tag-version --allow-same-version version " + version);
+await fs.access(distPackageJson);
+
+const packageJsonContent = await fs.readFile(distPackageJson, "utf8");
+const updatedPackageJsonContent = packageJsonContent.replace(/"\*"/g, `"${version}"`);
+await fs.writeFile(distPackageJson, updatedPackageJsonContent, "utf8");

@@ -169,17 +169,21 @@ describe("cli", () => {
       });
 
       it("should return the current version when --version is given", async () => {
+        const versionInPackageJson = "*";
+
         const { stdout } = await execAsync(
           `npx generate-license-file --version`
         );
 
-        expect(stdout.trim()).toBe("v0.0.0");
+        expect(stdout.trim()).toBe(`v${versionInPackageJson}`);
       });
 
       it("should return the current version when -v is given", async () => {
+        const versionInPackageJson = "*";
+
         const { stdout } = await execAsync(`npx generate-license-file -v`);
 
-        expect(stdout.trim()).toBe("v0.0.0");
+        expect(stdout.trim()).toBe(`v${versionInPackageJson}`);
       });
     });
   });
