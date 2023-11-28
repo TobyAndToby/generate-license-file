@@ -1,6 +1,6 @@
 {
   "name": "generate-license-file",
-  "version": "0.0.0",
+  "version": "*",
   "description": "Generates a text file containing all of the licenses for your production dependencies",
   "main": "src/index.js",
   "license": "ISC",
@@ -40,5 +40,17 @@
   "homepage": "https://generate-license-file.js.org",
   "bin": {
     "generate-license-file": "bin/generate-license-file"
+  },
+  "dependencies": {
+    "@commander-js/extra-typings": "^11.0.0",
+    "@npmcli/arborist": "^7.0.0",
+    "cli-spinners": "^2.6.0",
+    "cosmiconfig": "^9.0.0",
+    "enquirer": "^2.3.6",
+    "glob": "^10.3.0",
+    "json5": "^2.2.3",
+    "ora": "^5.4.1",
+    "tslib": "^2.3.0",
+    "zod": "^3.21.4"
   }
 }
