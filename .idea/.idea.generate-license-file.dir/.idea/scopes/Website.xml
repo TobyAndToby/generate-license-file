@@ -1,0 +1,3 @@
+﻿<component name="DependencyValidationManager">
+  <scope name="Website" pattern="file:website//*&amp;&amp;!file:website/.docusaurus//*&amp;&amp;!file:website/build//*&amp;&amp;!file:website/node_modules//*" />
+</component>
