@@ -4,6 +4,8 @@
   "compilerOptions": {
     "baseUrl": ".",
     "resolveJsonModule": true,
-    "strict": true
+    "strict": true,
+    "jsx": "react",
+    "allowSyntheticDefaultImports": true
   }
 }
