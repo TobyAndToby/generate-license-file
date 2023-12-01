@@ -6,8 +6,8 @@ Webpack plugin to generate a text file asset containing all of the licenses for 
   <img alt="npm" src="https://img.shields.io/npm/v/generate-license-file-webpack-plugin?logo=npm">
 </a>
 
-<a href="https://codecov.io/github/TobyAndToby/generate-license-file-webpack-plugin">
-  <img src="https://codecov.io/github/TobyAndToby/generate-license-file-webpack-plugin/branch/main/graph/badge.svg"/>
+<a href="https://codecov.io/github/TobyAndToby/generate-license-file">
+  <img alt="CodeCov" src="https://codecov.io/github/TobyAndToby/generate-license-file/branch/main/graph/badge.svg"/>
 </a>
 
 Based on the npm package [generate-licence-file](https://www.npmjs.com/package/generate-license-file).  
