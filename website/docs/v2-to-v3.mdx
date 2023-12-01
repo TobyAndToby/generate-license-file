@@ -1,0 +1,78 @@
+---
+title: Migrate from V2 to V3
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+## Breaking Changes
+
+### Improved Output Content
+
+Between v2 and v3 we've re-written our core license-finding logic to be more accurate;
+this means that your outputted file content has probably changed, but don't worry, it'll now contain more precise information.
+
+:::tip Actions Required
+None!
+:::
+
+### Specifying Line Endings
+
+In v2, when using the library programmatically, you could specify the line ending to use in the output as the last parameter.
+
+In v3, there are now more options you can pass in so the line ending option has moved into an options object along with the new options.
+
+:::info Actions Required
+
+<Tabs groupId="apis">
+  <TabItem value="cli" label="CLI">
+    None!
+  </TabItem>
+  <TabItem value="programmatic" label="Programmatic use">
+
+```ts
+// diff-red
+await generateLicenseFile(myInput, myOutput, "lf");
+// diff-green
+await generateLicenseFile(myInput, myOutput, { lineEnding: "lf" });
+
+// diff-red
+await getLicenseFileText(myInput, "lf");
+// diff-green
+await getLicenseFileText(myInput, { lineEnding: "lf" });
+
+// diff-red
+await getProjectLicenses(myInput, "lf");
+// diff-green
+await getProjectLicenses(myInput, { lineEnding: "lf" });
+```
+
+  </TabItem>
+</Tabs>
+
+:::
+
+### Warnings in the Console
+
+In v3, Generate License File will now log warnings in particular scenarios. While you don't _need_ to fix them, we suggest that you do so that
+your output is as accurate as possible. Such scenarios include:
+
+- Being unable to find a license for a package
+- Finding multiple licenses for a package
+
+:::info Actions Required
+Check your console output for warnings and fix them if you can.
+:::
+
+## New Features to Consider
+
+### Config Files
+
+The v3 implementation is more flexible and allows those who use our CLI to have greater control over what it produces,
+so if you find you're unhappy with what it's producing for a particular package then see our page on <a href="./cli/config-file">using a config file</a>.
+
+In summary, you can now:
+
+- Exclude packages from the output
+- Replace the license for a package
+- Append additional text to the generated output

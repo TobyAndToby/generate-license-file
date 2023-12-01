@@ -1,11 +1,9 @@
 ---
-title: Migrate from v1 to v2
+title: Migrate from V1 to V2
 ---
 
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
-import EolDiff from "./partials/_v1-to-v2-eol-diff.mdx";
-import InputDiff from "./partials/_v1-to-v2-input-diff.mdx";
 
 ## Breaking Changes
 
@@ -53,7 +51,31 @@ In v2, the `eol` arguement now takes either `crlf` or `lf` for either `\r\n` or 
     </p>
   </TabItem>
   <TabItem value="programmatic" label="Programmatic use">
-    <EolDiff />
+
+    ```ts
+    // diff-red
+    await generateLicenseFile(myInput, myOutput, "windows");
+    // diff-red
+    await generateLicenseFile(myInput, myOutput, "posix");
+    // diff-red
+
+    // diff-red
+    await getLicenseFileText(myInput, "windows");
+    // diff-red
+    await getLicenseFileText(myInput, "posix");
+
+    // diff-green
+    await generateLicenseFile(myInput, myOutput, "crlf");
+    // diff-green
+    await generateLicenseFile(myInput, myOutput, "lf");
+    // diff-green
+
+    // diff-green
+    await getLicenseFileText(myInput, "crlf");
+    // diff-green
+    await getLicenseFileText(myInput, "lf");
+    ```
+
   </TabItem>
 </Tabs>
 
@@ -77,7 +99,31 @@ In v2, the `input` parameter needs to be a path to the `package.json` file itsel
     </p>
   </TabItem>
   <TabItem value="programmatic" label="Programmatic use">
-    <InputDiff />
+
+    ```ts
+    // diff-red
+    await generateLicenseFile("./", myOutput);
+    // diff-red
+
+    // diff-red
+    await getLicenseFileText("./");
+    // diff-red
+
+    // diff-red
+    await getProjectLicenses("./");
+
+    // diff-green
+    await generateLicenseFile("./package.json", myOutput);
+    // diff-green
+
+    // diff-green
+    await getLicenseFileText("./package.json");
+    // diff-green
+
+    // diff-green
+    await getProjectLicenses("./package.json");
+    ```
+
   </TabItem>
 </Tabs>
 :::

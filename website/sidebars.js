@@ -18,6 +18,7 @@ const sidebars = {
     {
       type: "category",
       label: "Introduction",
+      collapsed: false,
       link: { type: "doc", id: "intro/index" },
       items: [{ type: "doc", id: "intro/getting-started" }],
     },
@@ -35,16 +36,19 @@ const sidebars = {
       link: { type: "doc", id: "library/index" },
       items: [{ type: "doc", id: "library/api" }],
     },
-    { type: "doc", id: "v1-to-v2" },
     {
       type: "category",
       label: "Integrations",
       collapsed: false,
+      items: [{ type: "doc", id: "webpack-plugin" }],
+    },
+    {
+      type: "category",
+      label: "Migration Guides",
+      collapsed: false,
       items: [
-        {
-          type: "doc",
-          id: "webpack-plugin",
-        },
+        { type: "doc", id: "v2-to-v3", label: "V2 to V3" },
+        { type: "doc", id: "v1-to-v2", label: "V1 to V2" },
       ],
     },
   ],

@@ -1,0 +1,182 @@
+---
+title: API
+description: API reference documentation for the generate license file library API
+---
+
+import TypeScriptToggle from "@site/src/components/TypeScriptToggle";
+import LibraryMethod from "@site/src/components/docs/library/api/LibraryMethod";
+import LibraryModel from "@site/src/components/docs/library/api/LibraryModel";
+import MethodSignature from "@site/src/components/docs/library/api/MethodSignature";
+import MethodTags from "@site/src/components/docs/library/api/MethodTags";
+
+<TypeScriptToggle />
+
+## Methods
+
+### generateLicenseFile <MethodTags isAsync />
+
+<LibraryMethod
+  methodData={{
+    name: "generateLicenseFile",
+    signatures: [
+      {
+        params: [
+          {
+            name: "pathToPackageJson",
+            type: "string",
+            description: "A path to the package.json for the project",
+          },
+          {
+            name: "outputPath",
+            type: "string",
+            description: "A file path for the resulting license file",
+          },
+          {
+            name: "lineEnding",
+            type: `"crlf" | "lf"`,
+            description: `Will use the system default if omitted`,
+            isOptional: true,
+          },
+        ],
+        returnType: {
+          type: "Promise<void>",
+          description: "",
+        },
+        description:
+          "Scans the project found at the given path and creates a license file at the given output location",
+      },
+      {
+        params: [
+          {
+            name: "pathsToPackageJsons",
+            type: "string[]",
+            description: "Paths to the package.jsons for the projects",
+          },
+          {
+            name: "outputPath",
+            type: "string",
+            description: "A file path for the resulting license file",
+          },
+          {
+            name: "lineEnding",
+            type: `"crlf" | "lf"`,
+            description: `Will use the system default if omitted`,
+            isOptional: true,
+          },
+        ],
+        returnType: {
+          type: "Promise<void>",
+          description: "",
+        },
+        description:
+          "Scans the projects found at the given paths and creates a license file at the given output location",
+      },
+    ],
+  }}
+/>
+
+<hr />
+
+### getLicenseFileText <MethodTags isAsync />
+
+<LibraryMethod
+  methodData={{
+    name: "getLicenseFileText",
+    signatures: [
+      {
+        params: [
+          {
+            name: "pathToPackageJson",
+            type: "string",
+            description: "A path to the package.json for the project",
+          },
+          {
+            name: "lineEnding",
+            type: `"crlf" | "lf"`,
+            description: `Will use the system default if omitted`,
+            isOptional: true,
+          },
+        ],
+        returnType: {
+          type: "Promise<string>",
+          description: "A promise that resolves to the license file text",
+        },
+        description:
+          "Scans the project found at the given path and returns a string containing the licenses for all the dependencies",
+      },
+      {
+        params: [
+          {
+            name: "pathsToPackageJsons",
+            type: "string",
+            description: "Paths to the package.jsons for the projects",
+          },
+          {
+            name: "lineEnding",
+            type: `"crlf" | "lf"`,
+            description: `Will use the system default if omitted`,
+            isOptional: true,
+          },
+        ],
+        returnType: {
+          type: "Promise<string>",
+          description: "A promise that resolves to the license file text",
+        },
+        description:
+          "Scans the projects found at the given paths and returns a string containing the licenses for all the dependencies across all the projects",
+      },
+    ],
+  }}
+/>
+
+<hr />
+
+### getProjectLicenses <MethodTags isAsync />
+
+<LibraryMethod
+  methodData={{
+    name: "getProjectLicenses",
+    signatures: [
+      {
+        params: [
+          {
+            name: "pathToPackageJson",
+            type: "string",
+            description: "A path to the package.json for the project",
+          },
+        ],
+        returnType: {
+          type: "Promise<ILicense[]>",
+          description:
+            "Array of ILicense objects, each containing the license content and respective dependencies",
+        },
+        description:
+          "Scans the project found at the given path and returns an array of objects each containing the details of an identified license and the dependencies it pertains to.",
+      },
+    ],
+  }}
+/>
+
+## Models
+
+### ILicense
+
+<LibraryModel
+  properties={[
+    { name: "content", type: "string", description: "Body of the license." },
+    {
+      name: "dependencies",
+      type: "string[]",
+      description: "List of node packages that this license applies to.",
+    },
+  ]}
+  description={
+    <>
+      Contains the content of a given license and the list of dependencies it pertains to. It is
+      returned from{" "}
+      <a href="#getProjectLicenses">
+        <code>getProjectLicenses</code>
+      </a>
+    </>
+  }
+/>

@@ -6,4 +6,7 @@ export const defaultOptions: Options = {
   pathToPackageJson: "./package.json",
   isDev: false,
   lineEnding: undefined,
+  append: undefined,
+  exclude: undefined,
+  replace: undefined,
 };
