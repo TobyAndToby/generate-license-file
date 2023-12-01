@@ -29,8 +29,7 @@ const config = {
         docs: {
           includeCurrentVersion: true,
           sidebarPath: require.resolve("./sidebars.js"),
-          editUrl:
-            "https://github.com/TobyAndToby/generate-license-file/tree/main/projects/website",
+          editUrl: "https://github.com/TobyAndToby/generate-license-file/tree/main/website",
         },
         theme: {
           customCss: require.resolve("./src/css/custom.css"),
@@ -134,8 +133,8 @@ const config = {
         copyright: `Copyright © ${new Date().getFullYear()} Toby Bessant & Toby Smith. Built with Docusaurus.`,
       },
       prism: {
-        theme: require("prism-react-renderer/themes/github"),
-        darkTheme: require("prism-react-renderer/themes/vsDark"),
+        theme: require("prism-react-renderer").themes.github,
+        darkTheme: require("prism-react-renderer").themes.vsDark,
         magicComments: [
           {
             className: "code-block-diff-green",
@@ -146,6 +145,7 @@ const config = {
             line: "diff-red",
           },
         ],
+        additionalLanguages: ["bash", "diff", "json"],
       },
     }),
 };

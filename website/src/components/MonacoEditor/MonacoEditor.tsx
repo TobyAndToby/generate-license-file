@@ -1,7 +1,7 @@
 import useBaseUrl from "@docusaurus/useBaseUrl";
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
-import Highlight, { defaultProps } from "prism-react-renderer";
+import { Highlight } from "prism-react-renderer";
 import React, { FC, useState } from "react";
 import { CopyButton } from "../CopyButton";
 import { demoFiles } from "./demoFiles";
@@ -35,7 +35,7 @@ export const MonacoEditor: FC = () => {
           <Editor>
             {demoFiles.map(({ fileName, language, content }) => (
               <MonacoTabContent isActive={activeTab === fileName} key={fileName}>
-                <Highlight {...defaultProps} code={content} language={language} theme={undefined}>
+                <Highlight code={content} language={language} theme={undefined}>
                   {({ className, style, tokens, getLineProps, getTokenProps }) => (
                     <pre className={className} style={style}>
                       {tokens.map((line, i) => (
