@@ -57,7 +57,7 @@ const licenses: ILicense[] = await getProjectLicenses("./package.json");
 
 For a full description of the library API and example usages please see the relevant [docs page](https://generate-license-file.js.org/docs/library).
 
-## Advanced Configuration (beta)
+## Advanced Configuration
 
 Advanced configuration of the generated output can be done using a configuration file. In addition to the basic CLI arguments, a configuration file allows you to specify appendices, exclusions, and replacements.
 

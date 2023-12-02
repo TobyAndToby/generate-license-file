@@ -49,7 +49,7 @@ const config = {
       ],
       announcementBar: {
         backgroundColor: "#0070f3",
-        content: "<b>Version 2.0.0 just released! 🎉</b>",
+        content: "<b>Version 3.0.0 just released! 🎉</b>",
         textColor: "#FFF",
       },
       navbar: {

@@ -57,15 +57,15 @@ const licenses: ILicense[] = await getProjectLicenses("./package.json");
 
 For a full description of the library API and example usages please see the relevant [docs page](https://generate-license-file.js.org/docs/library).
 
-## Advanced Configuration (beta)
+## Advanced Configuration
 
 Advanced configuration of the generated output can be done using a configuration file. In addition to the basic CLI arguments, a configuration file allows you to specify appendices, exclusions, and replacements.
 
 Config files can be called either `.glf` or `.generatelicensefile` and can be customised using the following options:
 
-- Optionally ending with `rc`
-- Being in a `/.config` directory (no longer needs the `.` prefix on the file name)
-- Have the following file endings: `.json`, `jsonc`, `.json5`, `.yaml`, `.yml`, `.js`, `.cjs`
+- File name can optionally end with `rc`
+- Can be in a `./.config` directory (no longer needs the `.` prefix on the file name)
+- Have the following file extensions: `.json`, `jsonc`, `.json5`, `.yaml`, `.yml`, `.js`, `.cjs`
 
 E.g. `.glf.json`, `.glfrc.yml`, `.generatelicensefile.jsonc`, `.config/glf.js`, and more.
 
