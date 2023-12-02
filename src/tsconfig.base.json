@@ -24,9 +24,7 @@
         "packages/generate-license-file-e2e/npm-package/src/index.ts"
       ],
       "generate-license-file": ["packages/generate-license-file/src/index.ts"],
-      "generate-license-file-webpack-plugin": [
-        "packages/generate-license-file-webpack-plugin/src/index.ts"
-      ]
+      "webpack-plugin": ["packages/webpack-plugin/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

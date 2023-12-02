@@ -1,6 +1,6 @@
 /* eslint-disable */
 export default {
-  displayName: "generate-license-file-webpack-plugin",
+  displayName: "webpack-plugin",
   preset: "../../jest.preset.js",
   globals: {
     "ts-jest": {
@@ -11,5 +11,5 @@ export default {
     "^.+\\.[tj]s$": "ts-jest",
   },
   moduleFileExtensions: ["ts", "js", "html"],
-  coverageDirectory: "../../coverage/packages/generate-license-file-webpack-plugin",
+  coverageDirectory: "../../coverage/packages/webpack-plugin",
 };
