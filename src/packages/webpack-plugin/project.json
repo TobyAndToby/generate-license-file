@@ -31,11 +31,6 @@
       "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": [
-          "packages/webpack-plugin/**/*.ts",
-          "packages/webpack-plugin/package.json",
-          "packages/webpack-plugin/project.json"
-        ],
         "maxWarnings": 0
       }
     },

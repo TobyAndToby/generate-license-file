@@ -16,10 +16,7 @@
     },
     "lint": {
       "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"],
-      "options": {
-        "lintFilePatterns": ["packages/e2e-helpers/**/*.ts"]
-      }
+      "outputs": ["{options.outputFile}"]
     }
   },
   "tags": []

@@ -5,9 +5,6 @@ on:
     branches:
       - main
 
-env:
-  NODE_VERSION: 18
-
 jobs:
   ci:
     name: Run Website CI
