@@ -17,7 +17,7 @@ on:
         type: string
 
 env:
-  NODE_VERSION: 18
+  NODE_VERSION: 20
   CWD: ./src
 
 jobs:
@@ -131,9 +131,9 @@ jobs:
           - name: Windows
             value: windows-latest
         node:
-          - 16
           - 18
           - 20
+          - 21
 
     name: E2E (Node ${{ matrix.node }} on ${{ matrix.os.name }})
 
