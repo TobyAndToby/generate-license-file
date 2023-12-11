@@ -33,6 +33,21 @@ describe("resolveNpmDependencies", () => {
   const child2_1Realpath = "/some/path/child2.1";
   const child2_1LicenseContent = "license contents for child2.1";
 
+  const child3Pkgid = "child3";
+  const child3Realpath = "/some/path/child3";
+  const child3LicenseContent = "license contents for child3";
+
+  const child3_1Pkgid = "child3.1";
+  const child3_1Realpath = "/some/path/child3.1";
+  const child3_1LicenseContent = "license contents for child3.1";
+
+  // A node tree where:
+  // - child1 is a 'normal' dependency
+  //   - It has two 'normal' dependencies
+  // - child2 is a dev dependency
+  //   - It has one 'normal' dependency (but it won't show in results because it's parent is a dev dependency)
+  // - child3 is a peer dependency
+  //   - It has one 'normal' dependency (but it won't show in results because it's parent is a peer dependency)
   const topNode: Arborist.Node = {
     children: new Map([
       [
@@ -48,6 +63,7 @@ describe("resolveNpmDependencies", () => {
                 realpath: child1_1Realpath,
                 children: new Map(),
                 dev: false,
+                peer: false,
               },
             ],
             [
@@ -57,10 +73,12 @@ describe("resolveNpmDependencies", () => {
                 realpath: child1_2Realpath,
                 children: new Map(),
                 dev: false,
+                peer: false,
               },
             ],
           ]),
           dev: false,
+          peer: false,
         },
       ],
       [
@@ -76,10 +94,33 @@ describe("resolveNpmDependencies", () => {
                 realpath: child2_1Realpath,
                 children: new Map(),
                 dev: false,
+                peer: false,
               },
             ],
           ]),
           dev: true,
+          peer: false,
+        },
+      ],
+      [
+        "child3",
+        {
+          pkgid: child3Pkgid,
+          realpath: child3Realpath,
+          children: new Map([
+            [
+              "child3.1",
+              {
+                pkgid: child3_1Pkgid,
+                realpath: child3_1Realpath,
+                children: new Map(),
+                dev: false,
+                peer: false,
+              },
+            ],
+          ]),
+          dev: false,
+          peer: true,
         },
       ],
     ]),
@@ -117,6 +158,14 @@ describe("resolveNpmDependencies", () => {
     when(mockedResolveLicenseContent)
       .calledWith(child2_1Realpath, expect.anything())
       .mockResolvedValue(child2_1LicenseContent);
+
+    when(mockedResolveLicenseContent)
+      .calledWith(child3Realpath, expect.anything())
+      .mockResolvedValue(child3LicenseContent);
+
+    when(mockedResolveLicenseContent)
+      .calledWith(child3_1Realpath, expect.anything())
+      .mockResolvedValue(child3_1LicenseContent);
   });
 
   afterAll(() => jest.restoreAllMocks());
@@ -166,6 +215,18 @@ describe("resolveNpmDependencies", () => {
 
       const child2_1LicenseContentMap = licensesMap.get(child2_1LicenseContent);
       expect(child2_1LicenseContentMap).toBeUndefined();
+    });
+
+    it("should not include peer dependencies in the result", async () => {
+      const licensesMap = new Map<string, Set<string>>();
+
+      await resolveDependenciesForNpmProject("/some/path/package.json", licensesMap);
+
+      const child3LicenseContentMap = licensesMap.get(child3LicenseContent);
+      expect(child3LicenseContentMap).toBeUndefined();
+
+      const child3_1LicenseContentMap = licensesMap.get(child3_1LicenseContent);
+      expect(child3_1LicenseContentMap).toBeUndefined();
     });
   });
 
