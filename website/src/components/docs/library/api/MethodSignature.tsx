@@ -52,7 +52,9 @@ const MethodSignature = ({ methodName, signature }: Props) => {
             <p>
               <code>
                 {parameter.name}
-                {useTypeScript && ": " + parameter.type}
+                {useTypeScript && parameter.isOptional && "?"}
+                {useTypeScript && ": "}
+                {useTypeScript && parameter.type}
               </code>
               {parameter.description && ` - ${parameter.description}`}
             </p>

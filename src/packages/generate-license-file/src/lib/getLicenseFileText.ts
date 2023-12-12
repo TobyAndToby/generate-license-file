@@ -20,7 +20,7 @@ export type GetLicenseFileTextOptions = IntersectionExpander<
 /**
  * Scans the project found at the given path and returns a string containing the licenses for all of the dependencies
  * @param pathToPackageJson A path to the package.json for the project
- * @optional @param lineEnding "crlf" or "lf". Will use the system default if omitted
+ * @param options Additional options for the license text generation
  * @returns A promise that resolves to the license file text
  */
 export async function getLicenseFileText(
@@ -31,7 +31,7 @@ export async function getLicenseFileText(
 /**
  * Scans the projects found at the given paths and returns a string containing the licenses for all the dependencies across all the projects
  * @param pathsToPackageJsons Paths to the package.jsons for the projects
- * @optional @param lineEnding "crlf" or "lf". Will use the system default if omitted
+ * @param options Additional options for the license text generation
  * @returns A promise that resolves to the license file text
  */
 export async function getLicenseFileText(

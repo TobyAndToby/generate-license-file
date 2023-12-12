@@ -6,7 +6,6 @@ description: API reference documentation for the generate license file library A
 import TypeScriptToggle from "@site/src/components/TypeScriptToggle";
 import LibraryMethod from "@site/src/components/docs/library/api/LibraryMethod";
 import LibraryModel from "@site/src/components/docs/library/api/LibraryModel";
-import MethodSignature from "@site/src/components/docs/library/api/MethodSignature";
 import MethodTags from "@site/src/components/docs/library/api/MethodTags";
 
 <TypeScriptToggle />
@@ -32,9 +31,9 @@ import MethodTags from "@site/src/components/docs/library/api/MethodTags";
             description: "A file path for the resulting license file",
           },
           {
-            name: "lineEnding",
-            type: `"crlf" | "lf"`,
-            description: `Will use the system default if omitted`,
+            name: "options",
+            type: "GenerateLicenseFileOptions",
+            description: "Additional options for the license file generation",
             isOptional: true,
           },
         ],
@@ -58,9 +57,9 @@ import MethodTags from "@site/src/components/docs/library/api/MethodTags";
             description: "A file path for the resulting license file",
           },
           {
-            name: "lineEnding",
-            type: `"crlf" | "lf"`,
-            description: `Will use the system default if omitted`,
+            name: "options",
+            type: "GenerateLicenseFileOptions",
+            description: "Additional options for the license file generation",
             isOptional: true,
           },
         ],
@@ -91,9 +90,9 @@ import MethodTags from "@site/src/components/docs/library/api/MethodTags";
             description: "A path to the package.json for the project",
           },
           {
-            name: "lineEnding",
-            type: `"crlf" | "lf"`,
-            description: `Will use the system default if omitted`,
+            name: "options",
+            type: "GetLicenseFileTextOptions",
+            description: "Additional options for the license text generation",
             isOptional: true,
           },
         ],
@@ -112,9 +111,9 @@ import MethodTags from "@site/src/components/docs/library/api/MethodTags";
             description: "Paths to the package.jsons for the projects",
           },
           {
-            name: "lineEnding",
-            type: `"crlf" | "lf"`,
-            description: `Will use the system default if omitted`,
+            name: "options",
+            type: "GetLicenseFileTextOptions",
+            description: "Additional options for the license text generation",
             isOptional: true,
           },
         ],
@@ -143,6 +142,12 @@ import MethodTags from "@site/src/components/docs/library/api/MethodTags";
             name: "pathToPackageJson",
             type: "string",
             description: "A path to the package.json for the project",
+          },
+          {
+            name: "options",
+            type: "GetProjectLicensesOptions",
+            description: "Additional options for the license discovery",
+            isOptional: true,
           },
         ],
         returnType: {
@@ -174,9 +179,113 @@ import MethodTags from "@site/src/components/docs/library/api/MethodTags";
     <>
       Contains the content of a given license and the list of dependencies it pertains to. It is
       returned from{" "}
-      <a href="#getProjectLicenses">
+      <a href="#getprojectlicenses-">
         <code>getProjectLicenses</code>
       </a>
+      {""}.
+    </>
+  }
+/>
+
+### GenerateLicenseFileOptions
+
+<LibraryModel
+  properties={[
+    {
+      name: "lineEnding",
+      type: '"lf" | "crlf"',
+      description:
+        'Specify the line ending to use in the generated license file: either "lf" or "crlf". Leave undefined to use the system default',
+    },
+    {
+      name: "replace",
+      type: "Record<string, string>",
+      description:
+        "A map of packages-to-file-paths containing content that should be used instead of the package's license content",
+    },
+    {
+      name: "exclude",
+      type: "string[]",
+      description: "Packages to exclude from the generated license file",
+    },
+    {
+      name: "append",
+      type: "string[]",
+      description: "File paths to read in and append to the bottom of the generated license file",
+    },
+  ]}
+  description={
+    <>
+      Additional options for the license file generation. Can be optionally passed into{" "}
+      <a href="#generatelicensefile-">
+        <code>generateLicenseFile</code>
+      </a>
+      {""}.
+    </>
+  }
+/>
+
+### GetLicenseFileTextOptions
+
+<LibraryModel
+  properties={[
+    {
+      name: "lineEnding",
+      type: '"lf" | "crlf"',
+      description:
+        'Specify the line ending to use in the generated license file: either   "lf" or "crlf". Leave undefined to use the system default',
+    },
+    {
+      name: "replace",
+      type: "Record<string, string>",
+      description:
+        "A map of packages-to-file-paths containing content that should be used instead of the package's license content",
+    },
+    {
+      name: "exclude",
+      type: "string[]",
+      description: "Packages to exclude from the generated license file",
+    },
+    {
+      name: "append",
+      type: "string[]",
+      description: "File paths to read in and append to the bottom of the generated license file",
+    },
+  ]}
+  description={
+    <>
+      Additional options for the license text generation. Can be optionally passed into{" "}
+      <a href="#getlicensefiletext-">
+        <code>getLicenseFileText</code>
+      </a>
+      {""}.
+    </>
+  }
+/>
+
+### GetProjectLicensesOptions
+
+<LibraryModel
+  properties={[
+    {
+      name: "replace",
+      type: "Record<string, string>",
+      description:
+        "A map of packages-to-file-paths containing content that should be used instead of the package's license content",
+    },
+    {
+      name: "exclude",
+      type: "string[]",
+      description: "Packages to exclude from the generated license file",
+    },
+  ]}
+  description={
+    <>
+      Additional options for the license discovery. Can be optionally passed into{" "}
+      <a href="#getprojectlicenses-">
+        <code>getProjectLicenses</code>
+      </a>
+      {""}.
     </>
   }
 />

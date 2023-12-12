@@ -2,7 +2,7 @@ import { LineEnding } from "../lineEndings";
 
 export type LineEndingOption = {
   /**
-   * Specify the line ending to use in the generated license file
+   * Specify the line ending to use in the generated license file: either "lf" or "crlf"
    *
    * If you don't specify a line ending then line ending of the operating
    * system will be used
