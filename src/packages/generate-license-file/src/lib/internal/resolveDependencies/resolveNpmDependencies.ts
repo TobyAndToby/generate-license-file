@@ -21,7 +21,7 @@ export const resolveDependenciesForNpmProject = async (
   const topNode = await arborist.loadActual();
 
   const parseNode = async (node: Node | Link) => {
-    if (node.dev) {
+    if (node.dev || node.peer) {
       return;
     }
 
