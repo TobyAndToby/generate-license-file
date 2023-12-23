@@ -21,7 +21,7 @@ jobs:
 
     steps:
       - name: Download Website Build
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: Website
 
