@@ -28,7 +28,7 @@
     "@swc/cli": "0.3.3",
     "@swc/core": "1.3.106",
     "@swc/jest": "0.2.31",
-    "@types/jest": "29.5.11",
+    "@types/jest": "29.5.12",
     "@types/jest-when": "^3.5.2",
     "@types/license-checker": "^25.0.3",
     "@types/node": "20.11.16",
