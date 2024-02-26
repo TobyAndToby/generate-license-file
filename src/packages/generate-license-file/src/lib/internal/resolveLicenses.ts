@@ -1,3 +1,4 @@
+import BTree from "sorted-btree";
 import { License } from "../models/license";
 import { resolveDependencies } from "./resolveDependencies";
 
@@ -10,7 +11,7 @@ export const resolveLicenses = async (
   packageJsons: string[],
   options?: ResolveLicensesOptions,
 ): Promise<License[]> => {
-  const licensesMap: Map<string, Set<string>> = new Map<string, Set<string>>();
+  const licensesMap = new BTree<string, Set<string>>();
 
   for (const packageJson of packageJsons) {
     await resolveDependencies(packageJson, licensesMap, options);
@@ -19,11 +20,11 @@ export const resolveLicenses = async (
   return flattenDependencyMapToLicenseArray(licensesMap);
 };
 
-const flattenDependencyMapToLicenseArray = (dependencyLicenses: Map<string, Set<string>>) => {
+const flattenDependencyMapToLicenseArray = (dependencyLicenses: BTree<string, Set<string>>) => {
   const licenses: License[] = [];
 
-  for (const [license, dependencies] of dependencyLicenses) {
-    const dependencyArray = Array.from(dependencies.values());
+  for (const [license, dependencies] of dependencyLicenses.entries()) {
+    const dependencyArray = Array.from(dependencies.values()).sort();
     licenses.push(new License(license, dependencyArray));
   }
 

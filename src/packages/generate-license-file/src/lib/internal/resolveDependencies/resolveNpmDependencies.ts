@@ -1,6 +1,7 @@
 ﻿import Arborist, { Link, Node } from "@npmcli/arborist";
 import { resolveLicenseContent } from "../resolveLicenseContent";
 import { dirname, isAbsolute, join } from "path";
+import BTree from "sorted-btree";
 
 type ResolveLicensesOptions = {
   replace?: Record<string, string>;
@@ -9,7 +10,7 @@ type ResolveLicensesOptions = {
 
 export const resolveDependenciesForNpmProject = async (
   packageJson: string,
-  licensesMap: Map<string, Set<string>>,
+  licensesMap: BTree<string, Set<string>>,
   options?: ResolveLicensesOptions,
 ) => {
   const replacements = options?.replace ?? {};

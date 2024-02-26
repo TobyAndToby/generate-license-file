@@ -1,6 +1,7 @@
 ﻿import { resolveLicenseContent } from "../resolveLicenseContent";
 import { dirname } from "path";
 import { getPnpmProjectDependencies, getPnpmVersion } from "../../utils/pnpmCli.utils";
+import BTree from "sorted-btree";
 
 type ResolveLicensesOptions = {
   replace?: Record<string, string>;
@@ -9,7 +10,7 @@ type ResolveLicensesOptions = {
 
 export const resolveDependenciesForPnpmProject = async (
   packageJson: string,
-  licensesMap: Map<string, Set<string>>,
+  licensesMap: BTree<string, Set<string>>,
   options?: ResolveLicensesOptions,
 ) => {
   const replacements = options?.replace ?? {};
