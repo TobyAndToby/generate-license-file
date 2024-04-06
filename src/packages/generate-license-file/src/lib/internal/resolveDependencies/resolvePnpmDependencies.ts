@@ -5,6 +5,7 @@ import { getPnpmProjectDependencies, getPnpmVersion } from "../../utils/pnpmCli.
 type ResolveLicensesOptions = {
   replace?: Record<string, string>;
   exclude?: string[];
+  omitVersion?: boolean;
 };
 
 export const resolveDependenciesForPnpmProject = async (
@@ -30,8 +31,14 @@ export const resolveDependenciesForPnpmProject = async (
     const licenseContent = await resolveLicenseContent(dependency.path, replacements);
 
     if (licenseContent) {
+      let pkIdOutput = pkgId;
+
+      if (options?.omitVersion === true){
+        pkIdOutput = dependency.name;
+      }
+
       const set = licensesMap.get(licenseContent) ?? new Set<string>();
-      set.add(pkgId);
+      set.add(pkIdOutput);
       licensesMap.set(licenseContent, set);
     }
   }

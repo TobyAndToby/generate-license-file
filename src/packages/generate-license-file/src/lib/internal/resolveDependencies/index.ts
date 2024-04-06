@@ -6,6 +6,7 @@ import { doesFileExist } from "../../utils/file.utils";
 type ResolveLicensesOptions = {
   replace?: Record<string, string>;
   exclude?: string[];
+  omitVersion?: boolean;
 };
 
 type PackageManager = "npm" | "pnpm";

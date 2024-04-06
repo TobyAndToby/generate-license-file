@@ -5,6 +5,7 @@ import { dirname, isAbsolute, join } from "path";
 type ResolveLicensesOptions = {
   replace?: Record<string, string>;
   exclude?: string[];
+  omitVersion?: boolean;
 };
 
 export const resolveDependenciesForNpmProject = async (
@@ -32,8 +33,14 @@ export const resolveDependenciesForNpmProject = async (
     const licenseContent = await resolveLicenseContent(node.realpath, replacements);
 
     if (licenseContent) {
+      let pkIdOutput = node.pkgid;
+
+      if (options?.omitVersion === true){
+        pkIdOutput = node.packageName;
+      }
+
       const set = licensesMap.get(licenseContent) ?? new Set<string>();
-      set.add(node.pkgid);
+      set.add(pkIdOutput);
       licensesMap.set(licenseContent, set);
     }
 

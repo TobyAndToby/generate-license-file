@@ -4,6 +4,7 @@ import { License } from "./models/license";
 import { AppendOption } from "./options/append";
 import { ExcludeOption } from "./options/exclude";
 import { LineEndingOption } from "./options/lineEnding";
+import { NameOption } from "./options/name";
 import { IntersectionExpander } from "./options/optionsExpander";
 import { ReplaceOption } from "./options/replace";
 import { readFile } from "./utils/file.utils";
@@ -14,7 +15,7 @@ const CREDIT1 = "This file was generated with the generate-license-file npm pack
 const CREDIT2 = "https://www.npmjs.com/package/generate-license-file";
 
 export type GetLicenseFileTextOptions = IntersectionExpander<
-  LineEndingOption & ReplaceOption & ExcludeOption & AppendOption
+  LineEndingOption & ReplaceOption & ExcludeOption & AppendOption & NameOption
 >;
 
 /**

@@ -85,7 +85,10 @@ E.g. `.glf.json`, `.glfrc.yml`, `.generatelicensefile.jsonc`, `.config/glf.js`, 
   },
 
   // Exclude any packages from the output.
-  "exclude": ["my-package@1.2.0"]
+  "exclude": ["my-package@1.2.0"],
+  
+  // Omit the version number in the output file
+  "omitVersion": false
 }
 ```
 

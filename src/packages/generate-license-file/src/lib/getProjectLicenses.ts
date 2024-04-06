@@ -2,9 +2,10 @@ import { resolveLicenses } from "./internal/resolveLicenses";
 import { ILicense } from "./models/license";
 import { ExcludeOption } from "./options/exclude";
 import { IntersectionExpander } from "./options/optionsExpander";
+import { NameOption } from "./options/name";
 import { ReplaceOption } from "./options/replace";
 
-export type GetProjectLicensesOptions = IntersectionExpander<ReplaceOption & ExcludeOption>;
+export type GetProjectLicensesOptions = IntersectionExpander<ReplaceOption & ExcludeOption & NameOption>;
 
 /**
  * Scans the project found at the given path and returns an array of objects each

@@ -4,6 +4,7 @@ import { resolveDependencies } from "./resolveDependencies";
 type ResolveLicensesOptions = {
   replace?: Record<string, string>;
   exclude?: string[];
+  omitVersion?: boolean;
 };
 
 export const resolveLicenses = async (
