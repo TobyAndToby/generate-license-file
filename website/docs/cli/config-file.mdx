@@ -127,6 +127,14 @@ The replace option allows you to replace the license content for a specific depe
 - The license file is not in a standard format
 - The published package contains multiple license files and you want to pick a specific one
 
+Packages can be specified using the format `package@version` or `package`, where the latter will match all versions of a given package. If both are specified, then the configuration with a matching version will take precedence.
+
+:::tip
+
+While it might be more convenient to use the package name without the version, it is recommended to use the version where possible to guarentee you always know exactly which package you are replacing the license for.
+
+:::
+
 <Tabs groupId="file-formats">
 <TabItem value="json" label="JSON" default>
 
@@ -134,7 +142,8 @@ The replace option allows you to replace the license content for a specific depe
 {
   "replace": {
     "lodash@1.2.3": "./licenses/lodash.txt",
-    "react@1.2.3": "./node_modules/react/LICENSE"
+    "react@1.2.3": "./node_modules/react/LICENSE",
+    "axios": "./node_modules/axios/LICENSE"
   }
 }
 ```
@@ -147,6 +156,7 @@ The replace option allows you to replace the license content for a specific depe
 replace:
   lodash@1.2.3: ./licenses/lodash.txt
   react@1.2.3: ./node_modules/react/LICENSE
+  axios: ./node_modules/axios/LICENSE
 ```
 
 </TabItem>
@@ -158,6 +168,7 @@ module.exports = {
   replace: {
     "lodash@1.2.3": "./licenses/lodash.txt",
     "react@1.2.3": "./node_modules/react/LICENSE",
+    axios: "./node_modules/axios/LICENSE",
   },
 };
 ```

@@ -23,7 +23,28 @@ describe("resolveLicenseContent", () => {
   beforeEach(jest.resetAllMocks);
   afterAll(jest.restoreAllMocks);
 
-  describe("when a replacement is given for a package", () => {
+  describe("when a 'name' replacement is given for a package", () => {
+    it("should return the content of the replacement file", async () => {
+      const packageJson: PackageJson = {
+        name: "some-package",
+        version: "1.2.3",
+      };
+      setUpPackageJson("/some/directory", packageJson);
+
+      const replacements: Record<string, string> = {
+        "some-package": "/some/replacement/path",
+      };
+      when(mockedReadFile)
+        .calledWith("/some/replacement/path", { encoding: "utf-8" })
+        .mockResolvedValue("the replacement content");
+
+      const result = await resolveLicenseContent("/some/directory", replacements);
+
+      expect(result).toBe("the replacement content");
+    });
+  });
+
+  describe("when a 'name@version' replacement is given for a package", () => {
     it("should return the content of the replacement file", async () => {
       const packageJson: PackageJson = {
         name: "some-package",
@@ -41,6 +62,29 @@ describe("resolveLicenseContent", () => {
       const result = await resolveLicenseContent("/some/directory", replacements);
 
       expect(result).toBe("the replacement content");
+    });
+
+    it("should should be prioritised over a 'name' replacement", async () => {
+      const packageJson: PackageJson = {
+        name: "some-package",
+        version: "1.2.3",
+      };
+      setUpPackageJson("/some/directory", packageJson);
+
+      const replacements: Record<string, string> = {
+        "some-package": "/some/less/specific/replacement/path",
+        "some-package@1.2.3": "/some/more/specific/replacement/path",
+      };
+      when(mockedReadFile)
+        .calledWith("/some/less/specific/replacement/path", { encoding: "utf-8" })
+        .mockResolvedValue("the less specific replacement content");
+      when(mockedReadFile)
+        .calledWith("/some/more/specific/replacement/path", { encoding: "utf-8" })
+        .mockResolvedValue("the more specific replacement content");
+
+      const result = await resolveLicenseContent("/some/directory", replacements);
+
+      expect(result).toBe("the more specific replacement content");
     });
   });
 
