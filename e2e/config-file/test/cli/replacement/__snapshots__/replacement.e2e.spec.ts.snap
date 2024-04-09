@@ -17,19 +17,6 @@ This license should be found.
 
 -----------
 
-The following npm package may be included in this product:
-
- - dep-three@1.0.0
-
-This package contains the following license and notice below:
-
-# Dep Three
-
-This license file is spelt \`LICENSE\`.
-This license should be found.
-
------------
-
 The following npm packages may be included in this product:
 
  - dep-two-duplicate@1.0.0
@@ -46,11 +33,21 @@ This license should be found.
 
 The following npm package may be included in this product:
 
+ - dep-three@1.0.0
+
+This package contains the following license and notice below:
+
+I am the name-and-version replacement content.
+
+-----------
+
+The following npm package may be included in this product:
+
  - dep-one@1.0.0
 
 This package contains the following license and notice below:
 
-I am the replaced content.
+I am the name-only replacement content.
 
 -----------
 

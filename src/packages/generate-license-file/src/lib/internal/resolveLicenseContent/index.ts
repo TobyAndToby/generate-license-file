@@ -20,7 +20,10 @@ export const resolveLicenseContent = async (
 ): Promise<string | null> => {
   const packageJson = await readPackageJson(join(directory, "package.json"));
 
-  const replacementPath = replacements[`${packageJson.name}@${packageJson.version}`];
+  const replacementPath =
+    replacements[`${packageJson.name}@${packageJson.version}`] ||
+    replacements[`${packageJson.name}`];
+
   if (replacementPath) {
     return await readFile(replacementPath, { encoding: "utf-8" });
   }
