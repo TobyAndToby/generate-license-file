@@ -24,22 +24,19 @@ jest.mock("../../../src/lib/internal/resolveLicenseContent", () => ({
 describe("resolveDependenciesForPnpmProject", () => {
   const dependency1: Dependency = {
     name: "dependency1",
-    version: "1.0.0",
-    path: "/some/path/dependency1",
+    paths: ["/some/path/dependency1"],
   };
   const dependency1LicenseContent = "license content 1";
 
   const dependency2: Dependency = {
     name: "dependency2",
-    version: "2.0.0",
-    path: "/some/path/dependency2",
+    paths: ["/some/path/dependency2", "/some/other/path/dependency2"],
   };
   const dependency2LicenseContent = "license content 2";
 
   const dependency3: Dependency = {
     name: "dependency3",
-    version: "3.0.0",
-    path: "/some/path/dependency3",
+    paths: ["/some/path/dependency3"],
   };
   const dependency3LicenseContent = null as unknown as string;
 
@@ -53,19 +50,24 @@ describe("resolveDependenciesForPnpmProject", () => {
     jest.resetAllMocks();
 
     when(mockedResolveLicenseContent)
-      .calledWith(dependency1.path, expect.anything(), expect.anything())
+      .calledWith(dependency1.paths[0], expect.anything(), expect.anything())
       .mockResolvedValue(dependency1LicenseContent);
-    setUpPackageJson(dependency1.path, { name: dependency1.name, version: "1.0.0" });
+    setUpPackageJson(dependency1.paths[0], { name: dependency1.name, version: "1.0.0" });
 
     when(mockedResolveLicenseContent)
-      .calledWith(dependency2.path, expect.anything(), expect.anything())
+      .calledWith(dependency2.paths[0], expect.anything(), expect.anything())
       .mockResolvedValue(dependency2LicenseContent);
-    setUpPackageJson(dependency2.path, { name: dependency2.name, version: "1.0.0" });
+    setUpPackageJson(dependency2.paths[0], { name: dependency2.name, version: "1.0.0" });
 
     when(mockedResolveLicenseContent)
-      .calledWith(dependency3.path, expect.anything(), expect.anything())
+      .calledWith(dependency2.paths[1], expect.anything(), expect.anything())
+      .mockResolvedValue(dependency2LicenseContent);
+    setUpPackageJson(dependency2.paths[1], { name: dependency2.name, version: "2.0.0" });
+
+    when(mockedResolveLicenseContent)
+      .calledWith(dependency3.paths[0], expect.anything(), expect.anything())
       .mockResolvedValue(dependency3LicenseContent);
-    setUpPackageJson(dependency3.path, { name: dependency3.name, version: "1.0.0" });
+    setUpPackageJson(dependency3.paths[0], { name: dependency3.name, version: "1.0.0" });
   });
 
   afterAll(() => jest.restoreAllMocks());
@@ -116,7 +118,7 @@ describe("resolveDependenciesForPnpmProject", () => {
       expect(mockedResolveLicenseContent).toHaveBeenCalledTimes(1);
 
       const directoryActual = mockedResolveLicenseContent.mock.calls[0][0];
-      expect(directoryActual).toBe(dependency1.path);
+      expect(directoryActual).toBe(dependency1.paths[0]);
     });
 
     it("should pass the package.json to resolveLicenseContent", async () => {
@@ -153,19 +155,24 @@ describe("resolveDependenciesForPnpmProject", () => {
 
       await resolveDependenciesForPnpmProject("/some/path/package.json", new Map());
 
-      expect(mockedResolveLicenseContent).toHaveBeenCalledTimes(3);
+      expect(mockedResolveLicenseContent).toHaveBeenCalledTimes(4);
       expect(mockedResolveLicenseContent).toHaveBeenCalledWith(
-        dependency1.path,
+        dependency1.paths[0],
         expect.anything(),
         expect.anything(),
       );
       expect(mockedResolveLicenseContent).toHaveBeenCalledWith(
-        dependency2.path,
+        dependency2.paths[0],
         expect.anything(),
         expect.anything(),
       );
       expect(mockedResolveLicenseContent).toHaveBeenCalledWith(
-        dependency3.path,
+        dependency2.paths[1],
+        expect.anything(),
+        expect.anything(),
+      );
+      expect(mockedResolveLicenseContent).toHaveBeenCalledWith(
+        dependency3.paths[0],
         expect.anything(),
         expect.anything(),
       );
@@ -194,14 +201,24 @@ describe("resolveDependenciesForPnpmProject", () => {
           exclude: ["dependency2@2.0.0"],
         });
 
-        expect(mockedResolveLicenseContent).toHaveBeenCalledTimes(2);
+        expect(mockedResolveLicenseContent).toHaveBeenCalledTimes(3);
         expect(mockedResolveLicenseContent).toHaveBeenCalledWith(
-          dependency1.path,
+          dependency1.paths[0],
           expect.anything(),
           expect.anything(),
         );
         expect(mockedResolveLicenseContent).toHaveBeenCalledWith(
-          dependency3.path,
+          dependency2.paths[0],
+          expect.anything(),
+          expect.anything(),
+        );
+        expect(mockedResolveLicenseContent).not.toHaveBeenCalledWith(
+          dependency2.paths[1],
+          expect.anything(),
+          expect.anything(),
+        );
+        expect(mockedResolveLicenseContent).toHaveBeenCalledWith(
+          dependency3.paths[0],
           expect.anything(),
           expect.anything(),
         );
