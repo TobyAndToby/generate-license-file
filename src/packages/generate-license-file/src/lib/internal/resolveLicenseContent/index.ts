@@ -1,5 +1,4 @@
-import { join } from "path";
-import { PackageJson, readPackageJson } from "../../utils/packageJson.utils";
+import { PackageJson } from "../../utils/packageJson.utils";
 import { packageJsonLicense } from "./packageJsonLicense";
 import { licenseFile } from "./licenseFile";
 import { spdxExpression } from "./spdxExpression";
@@ -16,10 +15,9 @@ const resolutions: Resolution[] = [packageJsonLicense, licenseFile, spdxExpressi
 
 export const resolveLicenseContent = async (
   directory: string,
+  packageJson: PackageJson,
   replacements: Record<string, string>,
 ): Promise<string | null> => {
-  const packageJson = await readPackageJson(join(directory, "package.json"));
-
   const replacementPath =
     replacements[`${packageJson.name}@${packageJson.version}`] ||
     replacements[`${packageJson.name}`];

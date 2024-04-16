@@ -1,6 +1,7 @@
-﻿import { resolveLicenseContent } from "../resolveLicenseContent";
-import { dirname } from "path";
+import { resolveLicenseContent } from "../resolveLicenseContent";
+import { dirname, join } from "path";
 import { getPnpmProjectDependencies, getPnpmVersion } from "../../utils/pnpmCli.utils";
+import { readPackageJson } from "../../utils/packageJson.utils";
 
 type ResolveLicensesOptions = {
   replace?: Record<string, string>;
@@ -27,7 +28,9 @@ export const resolveDependenciesForPnpmProject = async (
       continue;
     }
 
-    const licenseContent = await resolveLicenseContent(dependency.path, replacements);
+    const packageJson = await readPackageJson(join(dependency.path, "package.json"));
+
+    const licenseContent = await resolveLicenseContent(dependency.path, packageJson, replacements);
 
     if (licenseContent) {
       const set = licensesMap.get(licenseContent) ?? new Set<string>();
