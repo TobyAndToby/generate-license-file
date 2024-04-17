@@ -1,4 +1,6 @@
-﻿import { execAsync } from "./exec.utils";
+﻿import { z } from "zod";
+import { execAsync } from "./exec.utils";
+import consoleUtils from "./console.utils";
 
 export type PnpmVersion = {
   major: number;
@@ -6,15 +8,24 @@ export type PnpmVersion = {
   patch: number;
 };
 
-type PnpmLsJsonStdOut = {
-  [spdxKey: string]: Dependency[];
-};
+const v8DependencyValidator = z.object({
+  name: z.string(),
+  path: z.string(),
+});
 
-export type Dependency = {
-  name: string;
-  version: string;
-  path: string;
-};
+const v9DependencyValidator = z.object({
+  name: z.string(),
+  paths: z.string().array(),
+});
+
+const dependencyValidator = v8DependencyValidator.or(v9DependencyValidator).transform(dep => ({
+  name: dep.name,
+  paths: "paths" in dep ? dep.paths : [dep.path],
+}));
+
+const pnpmLsJsonStdOutValidator = z.record(z.array(dependencyValidator));
+
+export type Dependency = z.infer<typeof dependencyValidator>;
 
 export const getPnpmVersion = async (): Promise<PnpmVersion> => {
   const { stdout } = await execAsync("pnpm --version");
@@ -29,7 +40,14 @@ export const getPnpmProjectDependencies = async (
 ): Promise<Dependency[]> => {
   const { stdout } = await execAsync("pnpm licenses list --json --prod", { cwd: projectDirectory });
 
-  const parsed = JSON.parse(stdout) as PnpmLsJsonStdOut;
+  const parsedOutput = JSON.parse(stdout);
+  const commandOutput = pnpmLsJsonStdOutValidator.safeParse(parsedOutput);
 
-  return Object.values(parsed).flatMap(dependencies => dependencies);
+  if (!commandOutput.success) {
+    const errors = JSON.stringify(commandOutput.error.flatten());
+    consoleUtils.error("Failed to parse pnpm licenses list output: " + errors);
+    throw new Error("Failed to parse pnpm licenses list output");
+  }
+
+  return Object.values(commandOutput.data).flatMap(dependencies => dependencies);
 };
