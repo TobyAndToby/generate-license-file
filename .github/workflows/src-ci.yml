@@ -136,6 +136,7 @@ jobs:
           - 21
         pnpm:
           - 8
+          - 9
 
     name: E2E (Node ${{ matrix.node }}, pnpm ${{ matrix.pnpm }} on ${{ matrix.os.name }})
 
