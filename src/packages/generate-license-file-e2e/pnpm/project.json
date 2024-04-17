@@ -8,7 +8,7 @@
     "e2e": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "pnpm i && pnpm run e2e",
+        "command": "pnpm i --fix-lockfile && pnpm run e2e",
         "cwd": "../e2e/pnpm"
       },
       "dependsOn": ["^build"]
