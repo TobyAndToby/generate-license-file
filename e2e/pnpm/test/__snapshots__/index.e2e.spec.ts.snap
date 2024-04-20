@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`cli should match snapshot when a package is replaced 1`] = `
+exports[`when using pnpm should match the snapshot 1`] = `
 "This file was generated with the generate-license-file npm package!
 https://www.npmjs.com/package/generate-license-file
 
@@ -17,6 +17,32 @@ This license should be found.
 
 -----------
 
+The following npm package may be included in this product:
+
+ - dep-one@1.0.0
+
+This package contains the following license and notice below:
+
+# Dep One
+
+This license file is spelt \`LICENSE.md\`.
+This license should be found.
+
+-----------
+
+The following npm package may be included in this product:
+
+ - dep-three@1.0.0
+
+This package contains the following license and notice below:
+
+# Dep Three
+
+This license file is spelt \`LICENSE\`.
+This license should be found.
+
+-----------
+
 The following npm packages may be included in this product:
 
  - dep-two-duplicate@1.0.0
@@ -28,26 +54,6 @@ These packages each contain the following license and notice below:
 
 This license file is spelt \`LICENCE.md\`.
 This license should be found.
-
------------
-
-The following npm package may be included in this product:
-
- - dep-three@1.0.0
-
-This package contains the following license and notice below:
-
-I am the name-and-version replacement content.
-
------------
-
-The following npm package may be included in this product:
-
- - dep-one@1.0.0
-
-This package contains the following license and notice below:
-
-I am the name-only replacement content.
 
 -----------
 

@@ -48,22 +48,34 @@ describe("pnpmCli.utils", () => {
       });
     });
 
-    it("should format the returned value from the pnpm cli correctly", async () => {
+    it("should be able to handle <9.0.0 command output", async () => {
+      // Before pnpm 9.0.0 the output contained a single path per dependency
+
       const projectDirectory = "/path/to/project";
       const expected = [
         {
           name: "dep1",
-          version: "1.2.3",
-          path: "/path/to/project/node_modules/dep1",
+          paths: ["/path/to/project/node_modules/dep1"],
         },
         {
           name: "dep2",
-          version: "4.5.6",
-          path: "/path/to/project/node_modules/dep2",
+          paths: ["/path/to/project/node_modules/dep2"],
         },
       ];
 
-      const mockStdOut = JSON.stringify({ anySpdxKey: expected });
+      const mockStdOut = JSON.stringify({
+        anySpdxKey: [
+          {
+            name: "dep1",
+            path: "/path/to/project/node_modules/dep1",
+          },
+          {
+            name: "dep2",
+            path: "/path/to/project/node_modules/dep2",
+          },
+        ],
+      });
+
       mockedExecAsync.mockResolvedValue({
         stdout: mockStdOut,
       } as MockExecStdOut);
@@ -71,6 +83,65 @@ describe("pnpmCli.utils", () => {
       const result = await getPnpmProjectDependencies(projectDirectory);
 
       expect(result).toEqual(expected);
+    });
+
+    it("should be able to handle >=9.0.0 command output", async () => {
+      // From pnpm 9.0.0 the output can contain multiple paths per dependency
+
+      const projectDirectory = "/path/to/project";
+      const expected = [
+        {
+          name: "dep1",
+          paths: ["/path/to/project/node_modules/dep1"],
+        },
+        {
+          name: "dep2",
+          paths: ["/path/to/project/node_modules/dep2", "/path/to/project/node_modules/dep2/again"],
+        },
+      ];
+
+      const mockStdOut = JSON.stringify({
+        anySpdxKey: [
+          {
+            name: "dep1",
+            paths: ["/path/to/project/node_modules/dep1"],
+          },
+          {
+            name: "dep2",
+            paths: [
+              "/path/to/project/node_modules/dep2",
+              "/path/to/project/node_modules/dep2/again",
+            ],
+          },
+        ],
+      });
+
+      mockedExecAsync.mockResolvedValue({
+        stdout: mockStdOut,
+      } as MockExecStdOut);
+
+      const result = await getPnpmProjectDependencies(projectDirectory);
+
+      expect(result).toEqual(expected);
+    });
+
+    it("should throw an error if the output is not valid", async () => {
+      const projectDirectory = "/path/to/project";
+
+      const mockStdOut = JSON.stringify({
+        anySpdxKey: [
+          {
+            someRandom: "stuff",
+          },
+        ],
+      });
+
+      mockedExecAsync.mockResolvedValue({
+        stdout: mockStdOut,
+      } as MockExecStdOut);
+
+      const promise = getPnpmProjectDependencies(projectDirectory);
+      await expect(promise).rejects.toThrow("Failed to parse pnpm licenses list output");
     });
   });
 });

@@ -81,7 +81,8 @@ E.g. `.glf.json`, `.glfrc.yml`, `.generatelicensefile.jsonc`, `.config/glf.js`, 
 
   // Substitute the given packages license with the content in the respective file.
   "replace": {
-    "replaced-package@4.33.1": "./bespoke-license.txt"
+    "replaced-package@4.33.1": "./bespoke-license.txt",
+    "another-replaced-package": "./bespoke-license-2.txt"
   },
 
   // Exclude any packages from the output.

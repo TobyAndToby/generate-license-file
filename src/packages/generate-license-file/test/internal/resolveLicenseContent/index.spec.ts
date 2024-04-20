@@ -1,7 +1,6 @@
 import { when } from "jest-when";
 import { resolveLicenseContent } from "../../../src/lib/internal/resolveLicenseContent";
-import { doesFileExist, readFile } from "../../../src/lib/utils/file.utils";
-import { join } from "path";
+import { readFile } from "../../../src/lib/utils/file.utils";
 import { packageJsonLicense } from "../../../src/lib/internal/resolveLicenseContent/packageJsonLicense";
 import { licenseFile } from "../../../src/lib/internal/resolveLicenseContent/licenseFile";
 import { spdxExpression } from "../../../src/lib/internal/resolveLicenseContent/spdxExpression";
@@ -14,7 +13,6 @@ jest.mock("../../../src/lib/internal/resolveLicenseContent/spdxExpression");
 
 describe("resolveLicenseContent", () => {
   const mockedReadFile = jest.mocked(readFile);
-  const mockedDoesFileExist = jest.mocked(doesFileExist);
 
   const mockedPackageJsonLicenseResolution = jest.mocked(packageJsonLicense);
   const mockedLicenseFileResolution = jest.mocked(licenseFile);
@@ -23,13 +21,32 @@ describe("resolveLicenseContent", () => {
   beforeEach(jest.resetAllMocks);
   afterAll(jest.restoreAllMocks);
 
-  describe("when a replacement is given for a package", () => {
+  describe("when a 'name' replacement is given for a package", () => {
     it("should return the content of the replacement file", async () => {
       const packageJson: PackageJson = {
         name: "some-package",
         version: "1.2.3",
       };
-      setUpPackageJson("/some/directory", packageJson);
+
+      const replacements: Record<string, string> = {
+        "some-package": "/some/replacement/path",
+      };
+      when(mockedReadFile)
+        .calledWith("/some/replacement/path", { encoding: "utf-8" })
+        .mockResolvedValue("the replacement content");
+
+      const result = await resolveLicenseContent("/some/directory", packageJson, replacements);
+
+      expect(result).toBe("the replacement content");
+    });
+  });
+
+  describe("when a 'name@version' replacement is given for a package", () => {
+    it("should return the content of the replacement file", async () => {
+      const packageJson: PackageJson = {
+        name: "some-package",
+        version: "1.2.3",
+      };
 
       const replacements: Record<string, string> = {
         "some-package@1.2.3": "/some/replacement/path",
@@ -38,9 +55,31 @@ describe("resolveLicenseContent", () => {
         .calledWith("/some/replacement/path", { encoding: "utf-8" })
         .mockResolvedValue("the replacement content");
 
-      const result = await resolveLicenseContent("/some/directory", replacements);
+      const result = await resolveLicenseContent("/some/directory", packageJson, replacements);
 
       expect(result).toBe("the replacement content");
+    });
+
+    it("should should be prioritised over a 'name' replacement", async () => {
+      const packageJson: PackageJson = {
+        name: "some-package",
+        version: "1.2.3",
+      };
+
+      const replacements: Record<string, string> = {
+        "some-package": "/some/less/specific/replacement/path",
+        "some-package@1.2.3": "/some/more/specific/replacement/path",
+      };
+      when(mockedReadFile)
+        .calledWith("/some/less/specific/replacement/path", { encoding: "utf-8" })
+        .mockResolvedValue("the less specific replacement content");
+      when(mockedReadFile)
+        .calledWith("/some/more/specific/replacement/path", { encoding: "utf-8" })
+        .mockResolvedValue("the more specific replacement content");
+
+      const result = await resolveLicenseContent("/some/directory", packageJson, replacements);
+
+      expect(result).toBe("the more specific replacement content");
     });
   });
 
@@ -54,11 +93,10 @@ describe("resolveLicenseContent", () => {
         name: "some-package",
         version: "1.2.3",
       };
-      setUpPackageJson("/some/directory", packageJson);
 
       const resolutions: Record<string, string> = {};
 
-      const _ = await resolveLicenseContent("/some/directory", resolutions);
+      const _ = await resolveLicenseContent("/some/directory", packageJson, resolutions);
 
       expect(mockedPackageJsonLicenseResolution).toHaveBeenCalledTimes(1);
       expect(mockedPackageJsonLicenseResolution).toHaveBeenCalledWith({
@@ -88,11 +126,10 @@ describe("resolveLicenseContent", () => {
         name: "some-package",
         version: "1.2.3",
       };
-      setUpPackageJson("/some/directory", packageJson);
 
       const resolutions: Record<string, string> = {};
 
-      const result = await resolveLicenseContent("/some/directory", resolutions);
+      const result = await resolveLicenseContent("/some/directory", packageJson, resolutions);
 
       expect(result).toBeNull();
     });
@@ -107,11 +144,10 @@ describe("resolveLicenseContent", () => {
           name: "some-package",
           version: "1.2.3",
         };
-        setUpPackageJson("/some/directory", packageJson);
 
         const resolutions: Record<string, string> = {};
 
-        const result = await resolveLicenseContent("/some/directory", resolutions);
+        const result = await resolveLicenseContent("/some/directory", packageJson, resolutions);
 
         expect(result).toBe("the license file content");
       });
@@ -125,11 +161,10 @@ describe("resolveLicenseContent", () => {
           name: "some-package",
           version: "1.2.3",
         };
-        setUpPackageJson("/some/directory", packageJson);
 
         const resolutions: Record<string, string> = {};
 
-        const _ = await resolveLicenseContent("/some/directory", resolutions);
+        const _ = await resolveLicenseContent("/some/directory", packageJson, resolutions);
 
         expect(mockedPackageJsonLicenseResolution).toHaveBeenCalledTimes(1);
         expect(mockedLicenseFileResolution).toHaveBeenCalledTimes(1);
@@ -137,14 +172,4 @@ describe("resolveLicenseContent", () => {
       });
     });
   });
-
-  const setUpPackageJson = (directory: string, packageJson: PackageJson): void => {
-    const fullPackageJsonPath = join(directory, "package.json");
-    const packageJsonContent = JSON.stringify(packageJson);
-
-    when(mockedDoesFileExist).calledWith(fullPackageJsonPath).mockResolvedValue(true);
-    when(mockedReadFile)
-      .calledWith(fullPackageJsonPath, { encoding: "utf-8" })
-      .mockResolvedValue(packageJsonContent);
-  };
 });

@@ -1,0 +1,23 @@
+{
+  "private": true,
+  "name": "pnpm",
+  "version": "1.0.0",
+  "scripts": {
+    "e2e": "jest"
+  },
+  "dependencies": {
+    "dep-five": "file:../.dependencies/dep-5",
+    "dep-four": "file:../.dependencies/dep-4",
+    "dep-one": "file:../.dependencies/dep-1",
+    "dep-three": "file:../.dependencies/dep-3",
+    "dep-two": "file:../.dependencies/dep-2",
+    "dep-two-duplicate": "file:../.dependencies/dep-2-duplicate"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.0.0",
+    "@types/node": "^20.0.0",
+    "jest": "^29.0.0",
+    "ts-jest": "^29.0.0",
+    "typescript": "^4.6.2"
+  }
+}

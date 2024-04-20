@@ -2,21 +2,26 @@
 import { resolveDependenciesForNpmProject } from "../../../src/lib/internal/resolveDependencies/resolveNpmDependencies";
 import { resolveLicenseContent } from "../../../src/lib/internal/resolveLicenseContent";
 import { when } from "jest-when";
-import {
-  Dependency,
-  LicenseContent,
-} from "packages/generate-license-file/src/lib/internal/resolveLicenses";
+import { Dependency, LicenseContent } from "../../../src/lib/internal/resolveLicenses";
+import { PackageJson } from "../../../src/lib/utils/packageJson.utils";
+import { join } from "path";
+import { doesFileExist, readFile } from "../../../src/lib/utils/file.utils";
 
 jest.mock("@npmcli/arborist", () => ({
   __esModule: true,
   default: jest.fn(),
 }));
 
+jest.mock("../../../src/lib/utils/file.utils");
+
 jest.mock("../../../src/lib/internal/resolveLicenseContent", () => ({
   resolveLicenseContent: jest.fn(),
 }));
 
 describe("resolveNpmDependencies", () => {
+  const mockedReadFile = jest.mocked(readFile);
+  const mockedDoesFileExist = jest.mocked(doesFileExist);
+
   const child1Name = "child1";
   const child1Version = "1.0.0";
   const child1Realpath = "/some/path/child1";
@@ -158,32 +163,39 @@ describe("resolveNpmDependencies", () => {
     );
 
     when(mockedResolveLicenseContent)
-      .calledWith(child1Realpath, expect.anything())
+      .calledWith(child1Realpath, expect.anything(), expect.anything())
       .mockResolvedValue(child1LicenseContent);
+    setUpPackageJson(child1Realpath, { name: child1Name, version: "1.0.0" });
 
     when(mockedResolveLicenseContent)
-      .calledWith(child1_1Realpath, expect.anything())
+      .calledWith(child1_1Realpath, expect.anything(), expect.anything())
       .mockResolvedValue(child1_1LicenseContent);
+    setUpPackageJson(child1_1Realpath, { name: child1_1Name, version: "1.0.0" });
 
     when(mockedResolveLicenseContent)
-      .calledWith(child1_2Realpath, expect.anything())
+      .calledWith(child1_2Realpath, expect.anything(), expect.anything())
       .mockResolvedValue(child1_2LicenseContent);
+    setUpPackageJson(child1_2Realpath, { name: child1_2Name, version: "1.0.0" });
 
     when(mockedResolveLicenseContent)
-      .calledWith(child2Realpath, expect.anything())
+      .calledWith(child2Realpath, expect.anything(), expect.anything())
       .mockResolvedValue(child2LicenseContent);
+    setUpPackageJson(child2Realpath, { name: child2Name, version: "1.0.0" });
 
     when(mockedResolveLicenseContent)
-      .calledWith(child2_1Realpath, expect.anything())
+      .calledWith(child2_1Realpath, expect.anything(), expect.anything())
       .mockResolvedValue(child2_1LicenseContent);
+    setUpPackageJson(child2_1Realpath, { name: child2_1Name, version: "1.0.0" });
 
     when(mockedResolveLicenseContent)
-      .calledWith(child3Realpath, expect.anything())
+      .calledWith(child3Realpath, expect.anything(), expect.anything())
       .mockResolvedValue(child3LicenseContent);
+    setUpPackageJson(child3Realpath, { name: child3Name, version: "1.0.0" });
 
     when(mockedResolveLicenseContent)
-      .calledWith(child3_1Realpath, expect.anything())
+      .calledWith(child3_1Realpath, expect.anything(), expect.anything())
       .mockResolvedValue(child3_1LicenseContent);
+    setUpPackageJson(child3_1Realpath, { name: child3_1Name, version: "1.0.0" });
   });
 
   afterAll(() => jest.restoreAllMocks());
@@ -195,16 +207,55 @@ describe("resolveNpmDependencies", () => {
     expect(mockedArborist).toHaveBeenCalledWith({ path: "/some/path" });
   });
 
-  it("should pass replacements to resolveLicenseContent", async () => {
+  it("should pass the directory to resolveLicenseContent", async () => {
     const replacements = { "some-package@1.0.0": "/some/path/to/license.txt" };
 
     await resolveDependenciesForNpmProject("/some/path/package.json", new Map(), {
       replace: replacements,
     });
 
-    expect(mockedResolveLicenseContent).toHaveBeenCalledWith(child1Realpath, replacements);
-    expect(mockedResolveLicenseContent).toHaveBeenCalledWith(child1_1Realpath, replacements);
-    expect(mockedResolveLicenseContent).toHaveBeenCalledWith(child1_2Realpath, replacements);
+    const directory1 = mockedResolveLicenseContent.mock.calls[0][0];
+    expect(directory1).toBe(child1Realpath);
+
+    const directory2 = mockedResolveLicenseContent.mock.calls[1][0];
+    expect(directory2).toBe(child1_1Realpath);
+
+    const directory3 = mockedResolveLicenseContent.mock.calls[2][0];
+    expect(directory3).toBe(child1_2Realpath);
+  });
+
+  it("should pass the package.json to resolveLicenseContent", async () => {
+    const replacements = { "some-package@1.0.0": "/some/path/to/license.txt" };
+
+    await resolveDependenciesForNpmProject("/some/path/package.json", new Map(), {
+      replace: replacements,
+    });
+
+    const packageJson1 = mockedResolveLicenseContent.mock.calls[0][1];
+    expect(packageJson1.name).toBe(child1Name);
+
+    const packageJson2 = mockedResolveLicenseContent.mock.calls[1][1];
+    expect(packageJson2.name).toBe(child1_1Name);
+
+    const packageJson3 = mockedResolveLicenseContent.mock.calls[2][1];
+    expect(packageJson3.name).toBe(child1_2Name);
+  });
+
+  it("should pass the replacements to resolveLicenseContent", async () => {
+    const replacements = { "some-package@1.0.0": "/some/path/to/license.txt" };
+
+    await resolveDependenciesForNpmProject("/some/path/package.json", new Map(), {
+      replace: replacements,
+    });
+
+    const replacements1 = mockedResolveLicenseContent.mock.calls[0][2];
+    expect(replacements1).toBe(replacements);
+
+    const replacements2 = mockedResolveLicenseContent.mock.calls[1][2];
+    expect(replacements2).toBe(replacements);
+
+    const replacements3 = mockedResolveLicenseContent.mock.calls[2][2];
+    expect(replacements3).toBe(replacements);
   });
 
   describe("when no options are provided", () => {
@@ -266,4 +317,14 @@ describe("resolveNpmDependencies", () => {
       expect(child1_2LicenseContentMap?.find(c => c.name === child1_2Name)).toBeDefined();
     });
   });
+
+  const setUpPackageJson = (directory: string, packageJson: PackageJson): void => {
+    const fullPackageJsonPath = join(directory, "package.json");
+    const packageJsonContent = JSON.stringify(packageJson);
+
+    when(mockedDoesFileExist).calledWith(fullPackageJsonPath).mockResolvedValue(true);
+    when(mockedReadFile)
+      .calledWith(fullPackageJsonPath, { encoding: "utf-8" })
+      .mockResolvedValue(packageJsonContent);
+  };
 });

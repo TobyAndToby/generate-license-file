@@ -1,7 +1,8 @@
 ﻿import { resolveLicenseContent } from "../resolveLicenseContent";
-import { dirname } from "path";
+import { dirname, join } from "path";
 import { getPnpmProjectDependencies, getPnpmVersion } from "../../utils/pnpmCli.utils";
 import { Dependency, LicenseContent } from "../resolveLicenses";
+import { readPackageJson } from "../../utils/packageJson.utils";
 
 type ResolveLicensesOptions = {
   replace?: Record<string, string>;
@@ -23,31 +24,36 @@ export const resolveDependenciesForPnpmProject = async (
   const dependencies = await getPnpmProjectDependencies(projectDirectory);
 
   for (const dependency of dependencies) {
-    const pkgId = `${dependency.name}@${dependency.version}`;
+    for (const dependencyPath of dependency.paths) {
+      const packageJson = await readPackageJson(join(dependencyPath, "package.json"));
 
-    if (exclude.includes(pkgId)) {
-      continue;
-    }
+      const pkgId = `${packageJson.name}@${packageJson.version}`;
 
-    const licenseContent = await resolveLicenseContent(dependency.path, replacements);
+      if (exclude.includes(pkgId)) {
+        continue;
+      }
 
-    if (licenseContent) {
+      const licenseContent = await resolveLicenseContent(dependencyPath, packageJson, replacements);
+
+      if (licenseContent) {
       const dependencies = licensesMap.get(licenseContent) ?? [];
 
       const alreadyExists = dependencies.find(
-        dep => dep.name === dependency.name && dep.version === dependency.version,
+        dep => dep.name === packageJson.name && dep.version === packageJson.version,
       );
 
       if (!alreadyExists) {
-        dependencies.push({ name: dependency.name, version: dependency.version });
+        dependencies.push({ name: packageJson.name, version: packageJson.version });
       }
 
       licensesMap.set(licenseContent, dependencies);
+      }
     }
   }
 };
 
 const allowedPnpmMinorVersions: Record<number, number> = {
+  9: 0,
   8: 0,
   7: 33,
 };
