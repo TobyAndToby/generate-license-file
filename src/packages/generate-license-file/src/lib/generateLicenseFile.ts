@@ -2,12 +2,13 @@ import { getLicenseFileText } from "./getLicenseFileText";
 import { AppendOption } from "./options/append";
 import { ExcludeOption } from "./options/exclude";
 import { LineEndingOption } from "./options/lineEnding";
+import { OmitVersionsOption } from "./options/omitVersions";
 import { IntersectionExpander } from "./options/optionsExpander";
 import { ReplaceOption } from "./options/replace";
 import { writeFileAsync } from "./utils/file.utils";
 
 export type GenerateLicenseFileOptions = IntersectionExpander<
-  LineEndingOption & ReplaceOption & ExcludeOption & AppendOption
+  LineEndingOption & ReplaceOption & ExcludeOption & AppendOption & OmitVersionsOption
 >;
 
 /**

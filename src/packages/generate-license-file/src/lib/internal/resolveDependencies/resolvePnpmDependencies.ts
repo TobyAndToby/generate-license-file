@@ -1,6 +1,7 @@
 ﻿import { resolveLicenseContent } from "../resolveLicenseContent";
 import { dirname } from "path";
 import { getPnpmProjectDependencies, getPnpmVersion } from "../../utils/pnpmCli.utils";
+import { Dependency, LicenseContent } from "../resolveLicenses";
 
 type ResolveLicensesOptions = {
   replace?: Record<string, string>;
@@ -10,7 +11,7 @@ type ResolveLicensesOptions = {
 
 export const resolveDependenciesForPnpmProject = async (
   packageJson: string,
-  licensesMap: Map<string, Set<string>>,
+  licensesMap: Map<LicenseContent, Dependency[]>,
   options?: ResolveLicensesOptions,
 ) => {
   const replacements = options?.replace ?? {};
@@ -31,15 +32,17 @@ export const resolveDependenciesForPnpmProject = async (
     const licenseContent = await resolveLicenseContent(dependency.path, replacements);
 
     if (licenseContent) {
-      let pkIdOutput = pkgId;
+      const dependencies = licensesMap.get(licenseContent) ?? [];
 
-      if (options?.omitVersion === true){
-        pkIdOutput = dependency.name;
+      const alreadyExists = dependencies.find(
+        dep => dep.name === dependency.name && dep.version === dependency.version,
+      );
+
+      if (!alreadyExists) {
+        dependencies.push({ name: dependency.name, version: dependency.version });
       }
 
-      const set = licensesMap.get(licenseContent) ?? new Set<string>();
-      set.add(pkIdOutput);
-      licensesMap.set(licenseContent, set);
+      licensesMap.set(licenseContent, dependencies);
     }
   }
 };

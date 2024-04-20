@@ -7,10 +7,10 @@ export type PnpmVersion = {
 };
 
 type PnpmLsJsonStdOut = {
-  [spdxKey: string]: Dependency[];
+  [spdxKey: string]: PnpmDependency[];
 };
 
-export type Dependency = {
+export type PnpmDependency = {
   name: string;
   version: string;
   path: string;
@@ -26,7 +26,7 @@ export const getPnpmVersion = async (): Promise<PnpmVersion> => {
 
 export const getPnpmProjectDependencies = async (
   projectDirectory: string,
-): Promise<Dependency[]> => {
+): Promise<PnpmDependency[]> => {
   const { stdout } = await execAsync("pnpm licenses list --json --prod", { cwd: projectDirectory });
 
   const parsed = JSON.parse(stdout) as PnpmLsJsonStdOut;

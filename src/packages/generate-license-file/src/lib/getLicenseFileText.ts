@@ -1,10 +1,10 @@
-import { resolveLicenses } from "./internal/resolveLicenses";
+import { ResolvedLicense, resolveLicenses } from "./internal/resolveLicenses";
 import { getLineEndingCharacters } from "./lineEndings";
 import { License } from "./models/license";
 import { AppendOption } from "./options/append";
 import { ExcludeOption } from "./options/exclude";
 import { LineEndingOption } from "./options/lineEnding";
-import { NameOption } from "./options/name";
+import { OmitVersionsOption } from "./options/omitVersions";
 import { IntersectionExpander } from "./options/optionsExpander";
 import { ReplaceOption } from "./options/replace";
 import { readFile } from "./utils/file.utils";
@@ -15,7 +15,7 @@ const CREDIT1 = "This file was generated with the generate-license-file npm pack
 const CREDIT2 = "https://www.npmjs.com/package/generate-license-file";
 
 export type GetLicenseFileTextOptions = IntersectionExpander<
-  LineEndingOption & ReplaceOption & ExcludeOption & AppendOption & NameOption
+  LineEndingOption & ReplaceOption & ExcludeOption & AppendOption & OmitVersionsOption
 >;
 
 /**
@@ -51,13 +51,22 @@ export async function getLicenseFileText(
   const EOL = getLineEndingCharacters(options?.lineEnding);
   const credit = getCredit(EOL);
 
-  const licenses: License[] = await resolveLicenses(pathsToPackageJsons, options);
+  const licenses: ResolvedLicense[] = await resolveLicenses(pathsToPackageJsons, options);
 
-  const sortedLicenses = licenses.sort((a, b) => a.content.localeCompare(b.content));
+  const sortedLicenses = licenses.sort((a, b) => a.licenseContent.localeCompare(b.licenseContent));
 
   let licenseFile = credit + EOL + EOL;
 
-  for (const license of sortedLicenses) {
+  for (const resolvedLicense of sortedLicenses) {
+    const dependencies = resolvedLicense.dependencies.map(dep => {
+      if (options?.omitVersions) {
+        return dep.name;
+      }
+
+      return `${dep.name}@${dep.version ?? "unknown"}`;
+    });
+
+    const license = new License(resolvedLicense.licenseContent, dependencies);
     licenseFile += license.format(EOL) + EOL + EOL + SUFFIX + EOL + EOL;
   }
 
