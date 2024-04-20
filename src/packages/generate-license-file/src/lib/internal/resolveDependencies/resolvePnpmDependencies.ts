@@ -36,17 +36,17 @@ export const resolveDependenciesForPnpmProject = async (
       const licenseContent = await resolveLicenseContent(dependencyPath, packageJson, replacements);
 
       if (licenseContent) {
-      const dependencies = licensesMap.get(licenseContent) ?? [];
+        const dependencies = licensesMap.get(licenseContent) ?? [];
 
-      const alreadyExists = dependencies.find(
-        dep => dep.name === packageJson.name && dep.version === packageJson.version,
-      );
+        const alreadyExists = dependencies.find(
+          dep => dep.name === dependency.name && dep.version === packageJson.version,
+        );
 
-      if (!alreadyExists) {
-        dependencies.push({ name: packageJson.name, version: packageJson.version });
-      }
+        if (!alreadyExists) {
+          dependencies.push({ name: dependency.name, version: packageJson.version });
+        }
 
-      licensesMap.set(licenseContent, dependencies);
+        licensesMap.set(licenseContent, dependencies);
       }
     }
   }
