@@ -17,6 +17,7 @@ export type CombinedConfig = {
   ci?: boolean;
   overwrite?: boolean;
   spinner?: boolean;
+  omitVersions?: boolean;
 };
 
 export interface ProgramOptions {
@@ -24,6 +25,7 @@ export interface ProgramOptions {
   output: string;
   eol?: LineEnding;
   showSpinner: boolean;
+  omitVersions: boolean;
 }
 
 export const mainCommand = new Command()
@@ -51,6 +53,7 @@ export const mainCommand = new Command()
     "--no-spinner",
     "Don't show the progress spinner while generating the license file. This is implicitly true if --ci is given",
   )
+  .option("--omit-versions", "Omit the package version numbers from the output.")
   .option("-v,--version", "Prints the installed version of generate-license-file")
   .action(async givenArgs => {
     if (givenArgs.version) {
@@ -68,6 +71,7 @@ export const mainCommand = new Command()
       inputs: givenArgs.input,
       output: givenArgs.output,
       overwrite: givenArgs.overwrite,
+      omitVersions: givenArgs.omitVersions,
     };
 
     const configFile = await loadConfigFile(givenArgs.config);
@@ -83,7 +87,8 @@ export const mainCommand = new Command()
       ...filteredCliArgs,
     };
 
-    const { inputs, showSpinner, output, eol } = await parseArgumentsIntoOptions(combinedConfig);
+    const { inputs, showSpinner, output, eol, omitVersions } =
+      await parseArgumentsIntoOptions(combinedConfig);
 
     if (showSpinner) {
       spinner.start();
@@ -94,6 +99,7 @@ export const mainCommand = new Command()
       replace: configFile?.replace,
       exclude: configFile?.exclude,
       append: configFile?.append,
+      omitVersions,
     });
 
     spinner.stop();
@@ -119,8 +125,9 @@ async function getOptionsOrThrow(config: CombinedConfig): Promise<ProgramOptions
   const output = await new Output().parse(config);
   const eol = await new Eol().parse(config);
   const showSpinner = config.spinner ?? true;
+  const omitVersions = config.omitVersions ?? false;
 
-  return { inputs, output, eol, showSpinner };
+  return { inputs, output, eol, showSpinner, omitVersions };
 }
 
 async function promptForMissingOptions(config: CombinedConfig): Promise<ProgramOptions> {
@@ -128,8 +135,9 @@ async function promptForMissingOptions(config: CombinedConfig): Promise<ProgramO
   const output = await new Output().resolve(config);
   const eol = await new Eol().resolve(config);
   const showSpinner = config.spinner ?? true;
+  const omitVersions = config.omitVersions ?? false;
 
-  return { inputs, output, eol, showSpinner };
+  return { inputs, output, eol, showSpinner, omitVersions };
 }
 
 function getMessageFromCaughtUnknown(e: unknown): string {

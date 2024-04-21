@@ -45,4 +45,12 @@ describe("getLicenseFileText", () => {
       );
     })
   );
+
+  it("should omit versions when omitVersions is true", async () => {
+    const result = await getLicenseFileText("./package.json", {
+      omitVersions: true,
+    });
+
+    expect(result).toMatchSnapshot();
+  });
 });

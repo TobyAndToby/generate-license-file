@@ -2,6 +2,7 @@
 import { resolveDependenciesForPnpmProject } from "./resolvePnpmDependencies";
 import { dirname, join } from "path";
 import { doesFileExist } from "../../utils/file.utils";
+import { Dependency, LicenseContent } from "../resolveLicenses";
 
 type ResolveLicensesOptions = {
   replace?: Record<string, string>;
@@ -12,7 +13,7 @@ type PackageManager = "npm" | "pnpm";
 
 export const resolveDependencies = async (
   packageJson: string,
-  licensesMap: Map<string, Set<string>>,
+  licensesMap: Map<LicenseContent, Dependency[]>,
   options?: ResolveLicensesOptions,
 ) => {
   const packageManager = await resolvePackageManager(packageJson);

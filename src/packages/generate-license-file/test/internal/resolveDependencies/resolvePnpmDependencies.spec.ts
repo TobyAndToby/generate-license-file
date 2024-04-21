@@ -1,7 +1,7 @@
 ﻿import {
   getPnpmVersion,
   getPnpmProjectDependencies,
-  Dependency,
+  PnpmDependency,
 } from "../../../src/lib/utils/pnpmCli.utils";
 import { resolveDependenciesForPnpmProject } from "../../../src/lib/internal/resolveDependencies/resolvePnpmDependencies";
 import { resolveLicenseContent } from "../../../src/lib/internal/resolveLicenseContent";
@@ -9,6 +9,7 @@ import { when } from "jest-when";
 import { doesFileExist, readFile } from "../../../src/lib/utils/file.utils";
 import { PackageJson } from "../../../src/lib/utils/packageJson.utils";
 import { join } from "path";
+import { Dependency, LicenseContent } from "../../../src/lib/internal/resolveLicenses";
 
 jest.mock("../../../src/lib/utils/pnpmCli.utils", () => ({
   getPnpmVersion: jest.fn(),
@@ -22,19 +23,19 @@ jest.mock("../../../src/lib/internal/resolveLicenseContent", () => ({
 }));
 
 describe("resolveDependenciesForPnpmProject", () => {
-  const dependency1: Dependency = {
+  const dependency1: PnpmDependency = {
     name: "dependency1",
     paths: ["/some/path/dependency1"],
   };
   const dependency1LicenseContent = "license content 1";
 
-  const dependency2: Dependency = {
+  const dependency2: PnpmDependency = {
     name: "dependency2",
     paths: ["/some/path/dependency2", "/some/other/path/dependency2"],
   };
   const dependency2LicenseContent = "license content 2";
 
-  const dependency3: Dependency = {
+  const dependency3: PnpmDependency = {
     name: "dependency3",
     paths: ["/some/path/dependency3"],
   };
@@ -182,13 +183,21 @@ describe("resolveDependenciesForPnpmProject", () => {
       mockedGetPnpmVersion.mockResolvedValue(pnpmVersion);
       mockedGetPnpmProjectDependencies.mockResolvedValue([dependency1, dependency2, dependency3]);
 
-      const licensesMap = new Map<string, Set<string>>();
+      const licensesMap = new Map<LicenseContent, Dependency[]>();
 
       await resolveDependenciesForPnpmProject("/some/path/package.json", licensesMap);
 
       expect(licensesMap.size).toBe(2);
-      expect(licensesMap.get(dependency1LicenseContent)?.has("dependency1@1.0.0")).toBe(true);
-      expect(licensesMap.get(dependency2LicenseContent)?.has("dependency2@2.0.0")).toBe(true);
+      expect(
+        licensesMap
+          .get(dependency1LicenseContent)
+          ?.find(d => d.name === "dependency1" && d.version === "1.0.0"),
+      ).toBeDefined();
+      expect(
+        licensesMap
+          .get(dependency2LicenseContent)
+          ?.find(d => d.name === "dependency2" && d.version === "2.0.0"),
+      ).toBeDefined();
       expect(licensesMap.get(dependency3LicenseContent)).toBeUndefined();
     });
 

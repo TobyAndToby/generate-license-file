@@ -2,13 +2,13 @@
 
 exports[`getProjectLicenses for a relative path should match snapshot 1`] = `
 [
-  License {
+  {
     "content": "MIT",
     "dependencies": [
       "dep-five@1.0.0",
     ],
   },
-  License {
+  {
     "content": "# Dep Four
 
 This license file is spelt \`LICENCE\`.
@@ -17,7 +17,7 @@ This license should be found.",
       "dep-four@1.0.0",
     ],
   },
-  License {
+  {
     "content": "# Dep One
 
 This license file is spelt \`LICENSE.md\`.
@@ -27,7 +27,7 @@ This license should be found.
       "dep-one@1.0.0",
     ],
   },
-  License {
+  {
     "content": "# Dep Three
 
 This license file is spelt \`LICENSE\`.
@@ -36,7 +36,7 @@ This license should be found.",
       "dep-three@1.0.0",
     ],
   },
-  License {
+  {
     "content": "# Dep Two
 
 This license file is spelt \`LICENCE.md\`.
@@ -52,13 +52,13 @@ This license should be found.
 
 exports[`getProjectLicenses for an absolute path should match snapshot 1`] = `
 [
-  License {
+  {
     "content": "MIT",
     "dependencies": [
       "dep-five@1.0.0",
     ],
   },
-  License {
+  {
     "content": "# Dep Four
 
 This license file is spelt \`LICENCE\`.
@@ -67,7 +67,7 @@ This license should be found.",
       "dep-four@1.0.0",
     ],
   },
-  License {
+  {
     "content": "# Dep One
 
 This license file is spelt \`LICENSE.md\`.
@@ -77,7 +77,7 @@ This license should be found.
       "dep-one@1.0.0",
     ],
   },
-  License {
+  {
     "content": "# Dep Three
 
 This license file is spelt \`LICENSE\`.
@@ -86,7 +86,7 @@ This license should be found.",
       "dep-three@1.0.0",
     ],
   },
-  License {
+  {
     "content": "# Dep Two
 
 This license file is spelt \`LICENCE.md\`.
@@ -95,6 +95,56 @@ This license should be found.
     "dependencies": [
       "dep-two@1.0.0",
       "dep-two-duplicate@1.0.0",
+    ],
+  },
+]
+`;
+
+exports[`getProjectLicenses should not include versions when omitVersions is true 1`] = `
+[
+  {
+    "content": "MIT",
+    "dependencies": [
+      "dep-five",
+    ],
+  },
+  {
+    "content": "# Dep Four
+
+This license file is spelt \`LICENCE\`.
+This license should be found.",
+    "dependencies": [
+      "dep-four",
+    ],
+  },
+  {
+    "content": "# Dep One
+
+This license file is spelt \`LICENSE.md\`.
+This license should be found.
+",
+    "dependencies": [
+      "dep-one",
+    ],
+  },
+  {
+    "content": "# Dep Three
+
+This license file is spelt \`LICENSE\`.
+This license should be found.",
+    "dependencies": [
+      "dep-three",
+    ],
+  },
+  {
+    "content": "# Dep Two
+
+This license file is spelt \`LICENCE.md\`.
+This license should be found.
+",
+    "dependencies": [
+      "dep-two",
+      "dep-two-duplicate",
     ],
   },
 ]

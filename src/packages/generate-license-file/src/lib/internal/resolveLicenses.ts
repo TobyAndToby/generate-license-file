@@ -1,4 +1,3 @@
-import { License } from "../models/license";
 import { resolveDependencies } from "./resolveDependencies";
 
 type ResolveLicensesOptions = {
@@ -6,11 +5,23 @@ type ResolveLicensesOptions = {
   exclude?: string[];
 };
 
+export type LicenseContent = string;
+
+export type Dependency = {
+  name: string;
+  version: string | undefined;
+};
+
+export type ResolvedLicense = {
+  licenseContent: LicenseContent;
+  dependencies: Dependency[];
+};
+
 export const resolveLicenses = async (
   packageJsons: string[],
   options?: ResolveLicensesOptions,
-): Promise<License[]> => {
-  const licensesMap: Map<string, Set<string>> = new Map<string, Set<string>>();
+): Promise<ResolvedLicense[]> => {
+  const licensesMap = new Map<LicenseContent, Dependency[]>();
 
   for (const packageJson of packageJsons) {
     await resolveDependencies(packageJson, licensesMap, options);
@@ -19,12 +30,13 @@ export const resolveLicenses = async (
   return flattenDependencyMapToLicenseArray(licensesMap);
 };
 
-const flattenDependencyMapToLicenseArray = (dependencyLicenses: Map<string, Set<string>>) => {
-  const licenses: License[] = [];
+const flattenDependencyMapToLicenseArray = (
+  dependencyLicenses: Map<LicenseContent, Dependency[]>,
+): ResolvedLicense[] => {
+  const licenses: ResolvedLicense[] = [];
 
-  for (const [license, dependencies] of dependencyLicenses) {
-    const dependencyArray = Array.from(dependencies.values());
-    licenses.push(new License(license, dependencyArray));
+  for (const [licenseContent, dependencies] of dependencyLicenses) {
+    licenses.push({ licenseContent, dependencies });
   }
 
   return licenses;

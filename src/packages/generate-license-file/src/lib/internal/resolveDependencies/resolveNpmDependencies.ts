@@ -1,6 +1,7 @@
 ﻿import Arborist, { Link, Node } from "@npmcli/arborist";
 import { resolveLicenseContent } from "../resolveLicenseContent";
 import { dirname, isAbsolute, join } from "path";
+import { Dependency, LicenseContent } from "../resolveLicenses";
 import { readPackageJson } from "../../utils/packageJson.utils";
 
 type ResolveLicensesOptions = {
@@ -10,7 +11,7 @@ type ResolveLicensesOptions = {
 
 export const resolveDependenciesForNpmProject = async (
   packageJson: string,
-  licensesMap: Map<string, Set<string>>,
+  licensesMap: Map<LicenseContent, Dependency[]>,
   options?: ResolveLicensesOptions,
 ) => {
   const replacements = options?.replace ?? {};
@@ -35,9 +36,17 @@ export const resolveDependenciesForNpmProject = async (
     const licenseContent = await resolveLicenseContent(node.realpath, packageJson, replacements);
 
     if (licenseContent) {
-      const set = licensesMap.get(licenseContent) ?? new Set<string>();
-      set.add(node.pkgid);
-      licensesMap.set(licenseContent, set);
+      const dependencies = licensesMap.get(licenseContent) ?? [];
+
+      const alreadyExists = dependencies.find(
+        dep => dep.name === node.package.name && dep.version === node.package.version,
+      );
+
+      if (!alreadyExists) {
+        dependencies.push({ name: node.package.name ?? node.name, version: node.package.version });
+      }
+
+      licensesMap.set(licenseContent, dependencies);
     }
 
     for (const child of node.children.values()) {

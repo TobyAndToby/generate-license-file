@@ -1,7 +1,5 @@
 import { GetLicenseFileTextOptions, getLicenseFileText } from "../src/lib/getLicenseFileText";
-import { resolveLicenses } from "../src/lib/internal/resolveLicenses";
-import { lineEndings, getLineEndingCharacters } from "../src/lib/lineEndings";
-import { License } from "../src/lib/models/license";
+import { ResolvedLicense, resolveLicenses } from "../src/lib/internal/resolveLicenses";
 import { readFile } from "../src/lib/utils/file.utils";
 import { when } from "jest-when";
 
@@ -53,84 +51,85 @@ describe("getLicenseFileText", () => {
     expect(mockedResolveLicenses).toHaveBeenCalledWith(["path"], options);
   });
 
-  it("should format each returned license", async () => {
-    const licenses = [getNewMockedLicense(), getNewMockedLicense(), getNewMockedLicense()];
+  it("should use crlf line endings when configured to", async () => {
+    const options: GetLicenseFileTextOptions = {
+      lineEnding: "crlf",
+    };
 
-    mockedResolveLicenses.mockResolvedValue(licenses);
+    const result = await getLicenseFileText("path", options);
 
-    await getLicenseFileText("path");
-
-    licenses.forEach(license => expect(license.format).toHaveBeenCalledTimes(1));
+    expect(result).toMatch(/\r\n/);
+    expect(result).not.toMatch(/[^\r]\n/);
   });
 
-  it.each([...lineEndings, undefined])(
-    `should format each returned license with the appropriate line ending for %s`,
-    async lineEnding => {
-      const expectedLineEndingValue = getLineEndingCharacters(lineEnding);
-      const licenses = [getNewMockedLicense(), getNewMockedLicense(), getNewMockedLicense()];
+  it("should use lf line endings when configured to", async () => {
+    const options: GetLicenseFileTextOptions = {
+      lineEnding: "lf",
+    };
 
-      mockedResolveLicenses.mockResolvedValue(licenses);
+    const result = await getLicenseFileText("path", options);
 
-      await getLicenseFileText("path", { lineEnding });
+    expect(result).toMatch(/\n/);
+    expect(result).not.toMatch(/\r\n/);
+  });
 
-      for (const license of licenses) {
-        const firstCallFirstArg = jest.mocked(license.format).mock.calls[0][0];
-        expect(firstCallFirstArg).toBe(expectedLineEndingValue);
-      }
-    },
-  );
-
-  it("should return the concatenated formatted licenses", async () => {
-    const licenses = [getNewMockedLicense(), getNewMockedLicense(), getNewMockedLicense()];
-    jest.mocked(licenses[0].format).mockReturnValue("first");
-    jest.mocked(licenses[1].format).mockReturnValue("second");
-    jest.mocked(licenses[2].format).mockReturnValue("third");
+  it("should sort the licenses by license content", async () => {
+    const licenses: ResolvedLicense[] = [
+      { licenseContent: "b: license", dependencies: [] },
+      { licenseContent: "c: license", dependencies: [] },
+      { licenseContent: "a: license", dependencies: [] },
+    ];
 
     mockedResolveLicenses.mockResolvedValue(licenses);
 
     const result = await getLicenseFileText("path");
 
-    expect(/.*?first.*?second.*?third.*/s.test(result)).toBeTruthy();
+    console.log({ result });
+
+    const indexOfLicense1 = result.indexOf("a: license");
+    const indexOfLicense2 = result.indexOf("b: license");
+    const indexOfLicense3 = result.indexOf("c: license");
+
+    expect(indexOfLicense1).toBeLessThan(indexOfLicense2);
+    expect(indexOfLicense2).toBeLessThan(indexOfLicense3);
   });
 
-  it("should return formatted licenses concatenated by dashes and EOLs", async () => {
-    const licenses = [getNewMockedLicense(), getNewMockedLicense(), getNewMockedLicense()];
-    jest.mocked(licenses[0].format).mockReturnValue("first");
-    jest.mocked(licenses[1].format).mockReturnValue("second");
-    jest.mocked(licenses[2].format).mockReturnValue("third");
+  it("should omit versions if the option is set", async () => {
+    const licenses: ResolvedLicense[] = [
+      {
+        licenseContent: "stuff",
+        dependencies: [
+          { name: "a", version: "1.0.0" },
+          { name: "b", version: "2.0.0" },
+        ],
+      },
+    ];
 
     mockedResolveLicenses.mockResolvedValue(licenses);
 
-    const result = await getLicenseFileText("path", { lineEnding: "lf" });
+    const result = await getLicenseFileText("path", { omitVersions: true });
 
-    expect(
-      /.*?first\n\n-----------\n\nsecond\n\n-----------\n\nthird\n\n-----------\n\n.*/s.test(
-        result,
-      ),
-    ).toBeTruthy();
+    expect(result).not.toMatch("1.0.0");
+    expect(result).not.toMatch("2.0.0");
   });
 
-  it("should return formatted licenses with the credit before and after", async () => {
-    const licenses = [getNewMockedLicense(), getNewMockedLicense(), getNewMockedLicense()];
-    jest.mocked(licenses[0].format).mockReturnValue("first");
-    jest.mocked(licenses[1].format).mockReturnValue("second");
-    jest.mocked(licenses[2].format).mockReturnValue("third");
+  it("should include versions if the omit option is not set", async () => {
+    const licenses: ResolvedLicense[] = [
+      {
+        licenseContent: "stuff",
+        dependencies: [
+          { name: "a", version: "1.0.0" },
+          { name: "b", version: "2.0.0" },
+        ],
+      },
+    ];
 
     mockedResolveLicenses.mockResolvedValue(licenses);
 
-    const result = await getLicenseFileText("path", { lineEnding: "lf" });
+    const result = await getLicenseFileText("path", { omitVersions: false });
 
-    expect(
-      result.startsWith(
-        "This file was generated with the generate-license-file npm package!\nhttps://www.npmjs.com/package/generate-license-file\n\n",
-      ),
-    ).toBeTruthy();
-
-    expect(
-      result.endsWith(
-        "\n\nThis file was generated with the generate-license-file npm package!\nhttps://www.npmjs.com/package/generate-license-file\n",
-      ),
-    ).toBeTruthy();
+    expect(result).toMatch("1.0.0");
+    expect(result).toMatch("2.0.0");
   });
 
   it("should append the given files", async () => {
@@ -143,14 +142,7 @@ describe("getLicenseFileText", () => {
 
     const result = await getLicenseFileText("path", { append: ["first", "second"] });
 
-    expect(result).toContain("first file content");
-    expect(result).toContain("second file content");
+    expect(result).toMatch("first file content");
+    expect(result).toMatch("second file content");
   });
 });
-
-const getNewMockedLicense = () => {
-  return {
-    content: "content",
-    format: jest.fn(),
-  } as unknown as License;
-};

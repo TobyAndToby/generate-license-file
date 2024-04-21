@@ -1,6 +1,5 @@
 import { GetProjectLicensesOptions, getProjectLicenses } from "../src/lib/getProjectLicenses";
-import { resolveLicenses } from "../src/lib/internal/resolveLicenses";
-import { License } from "../src/lib/models/license";
+import { ResolvedLicense, resolveLicenses } from "../src/lib/internal/resolveLicenses";
 
 jest.mock("../src/lib/internal/resolveLicenses", () => ({
   resolveLicenses: jest.fn(),
@@ -44,16 +43,77 @@ describe("getProjectLicenses", () => {
     expect(mockedResolveLicenses).toHaveBeenCalledWith(["path"], options);
   });
 
-  it("should return the response from resolveLicenses", async () => {
-    const licenses: License[] = [
-      new License("stuff", ["a", "b"]),
-      new License("also stuff", ["c", "d"]),
+  it("should return a license for each result", async () => {
+    const licenses: ResolvedLicense[] = [
+      {
+        licenseContent: "stuff",
+        dependencies: [
+          { name: "a", version: "1.0.0" },
+          { name: "b", version: "2.0.0" },
+        ],
+      },
+      {
+        licenseContent: "also stuff",
+        dependencies: [
+          { name: "c", version: "3.0.0" },
+          { name: "d", version: "4.0.0" },
+        ],
+      },
     ];
 
     mockedResolveLicenses.mockResolvedValue(licenses);
 
     const result = await getProjectLicenses("path");
 
-    expect(result).toStrictEqual(licenses);
+    for (let i = 0; i < licenses.length; i++) {
+      expect(result[i]).toEqual({
+        content: licenses[i].licenseContent,
+        dependencies: expect.anything(),
+      });
+    }
+  });
+
+  it("should omit versions if the option is set", async () => {
+    const licenses: ResolvedLicense[] = [
+      {
+        licenseContent: "stuff",
+        dependencies: [
+          { name: "a", version: "1.0.0" },
+          { name: "b", version: "2.0.0" },
+        ],
+      },
+    ];
+
+    mockedResolveLicenses.mockResolvedValue(licenses);
+
+    const options: GetProjectLicensesOptions = {
+      omitVersions: true,
+    };
+
+    const result = await getProjectLicenses("path", options);
+
+    expect(result[0].dependencies).toEqual(["a", "b"]);
+  });
+
+  it("should include versions if the omit option is not set", async () => {
+    const licenses: ResolvedLicense[] = [
+      {
+        licenseContent: "stuff",
+        dependencies: [
+          { name: "a", version: "1.0.0" },
+          { name: "b", version: "2.0.0" },
+        ],
+      },
+    ];
+
+    mockedResolveLicenses.mockResolvedValue(licenses);
+
+    const options: GetProjectLicensesOptions = {
+      omitVersions: false,
+    };
+
+    const result = await getProjectLicenses("path", options);
+
+    expect(result[0].dependencies).toEqual(["a@1.0.0", "b@2.0.0"]);
   });
 });

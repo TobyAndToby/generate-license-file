@@ -80,4 +80,13 @@ describe("generateLicenseFile", () => {
       });
     })
   );
+
+  it("should omit versions when omitVersions is true", async () => {
+    await generateLicenseFile("./package.json", "/output/path.txt", {
+      omitVersions: true,
+    });
+
+    const fileContent = mockedWriteFile.mock.calls[0][1];
+    expect(fileContent).toMatchSnapshot();
+  });
 });

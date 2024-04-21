@@ -25,7 +25,7 @@ const dependencyValidator = v8DependencyValidator.or(v9DependencyValidator).tran
 
 const pnpmLsJsonStdOutValidator = z.record(z.array(dependencyValidator));
 
-export type Dependency = z.infer<typeof dependencyValidator>;
+export type PnpmDependency = z.infer<typeof dependencyValidator>;
 
 export const getPnpmVersion = async (): Promise<PnpmVersion> => {
   const { stdout } = await execAsync("pnpm --version");
@@ -37,7 +37,7 @@ export const getPnpmVersion = async (): Promise<PnpmVersion> => {
 
 export const getPnpmProjectDependencies = async (
   projectDirectory: string,
-): Promise<Dependency[]> => {
+): Promise<PnpmDependency[]> => {
   const { stdout } = await execAsync("pnpm licenses list --json --prod", { cwd: projectDirectory });
 
   const parsedOutput = JSON.parse(stdout);
