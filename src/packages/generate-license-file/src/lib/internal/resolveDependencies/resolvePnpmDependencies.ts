@@ -3,6 +3,7 @@ import { dirname, join } from "path";
 import { getPnpmProjectDependencies, getPnpmVersion } from "../../utils/pnpmCli.utils";
 import { Dependency, LicenseContent } from "../resolveLicenses";
 import { readPackageJson } from "../../utils/packageJson.utils";
+import { findMatchingSemver } from "../findMatchingSemver";
 
 type ResolveLicensesOptions = {
   replace?: Record<string, string>;
@@ -16,7 +17,7 @@ export const resolveDependenciesForPnpmProject = async (
   options?: ResolveLicensesOptions,
 ) => {
   const replacements = options?.replace ?? {};
-  const exclude = options?.exclude ?? [];
+  const exclusions = options?.exclude ?? [];
 
   await verifyPnpmVersion();
 
@@ -27,9 +28,9 @@ export const resolveDependenciesForPnpmProject = async (
     for (const dependencyPath of dependency.paths) {
       const packageJson = await readPackageJson(join(dependencyPath, "package.json"));
 
-      const pkgId = `${packageJson.name}@${packageJson.version}`;
+      const foundExclude = findMatchingSemver(exclusions, packageJson);
 
-      if (exclude.includes(pkgId)) {
+      if (foundExclude) {
         continue;
       }
 

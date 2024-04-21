@@ -3,6 +3,7 @@ import { packageJsonLicense } from "./packageJsonLicense";
 import { licenseFile } from "./licenseFile";
 import { spdxExpression } from "./spdxExpression";
 import { readFile } from "../../utils/file.utils";
+import { findMatchingSemver } from "../findMatchingSemver";
 
 export interface ResolutionInputs {
   directory: string;
@@ -18,11 +19,13 @@ export const resolveLicenseContent = async (
   packageJson: PackageJson,
   replacements: Record<string, string>,
 ): Promise<string | null> => {
-  const replacementPath =
-    replacements[`${packageJson.name}@${packageJson.version}`] ||
-    replacements[`${packageJson.name}`];
+  // Reversing such that we can find the most specific replacement first.
+  const replacementIds = Object.keys(replacements).sort().reverse();
 
-  if (replacementPath) {
+  const foundReplacement = findMatchingSemver(replacementIds, packageJson);
+  if (foundReplacement) {
+    const replacementPath = replacements[foundReplacement];
+
     return await readFile(replacementPath, { encoding: "utf-8" });
   }
 

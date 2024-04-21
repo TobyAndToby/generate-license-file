@@ -3,6 +3,8 @@ import { resolveLicenseContent } from "../resolveLicenseContent";
 import { dirname, isAbsolute, join } from "path";
 import { Dependency, LicenseContent } from "../resolveLicenses";
 import { readPackageJson } from "../../utils/packageJson.utils";
+import { satisfies } from "semver";
+import { findMatchingSemver } from "../findMatchingSemver";
 
 type ResolveLicensesOptions = {
   replace?: Record<string, string>;
@@ -15,7 +17,7 @@ export const resolveDependenciesForNpmProject = async (
   options?: ResolveLicensesOptions,
 ) => {
   const replacements = options?.replace ?? {};
-  const exclude = options?.exclude ?? [];
+  const exclusions = options?.exclude ?? [];
 
   const path = resolvePath(packageJson);
 
@@ -27,11 +29,12 @@ export const resolveDependenciesForNpmProject = async (
       return;
     }
 
-    if (exclude.includes(node.pkgid)) {
+    const packageJson = await readPackageJson(join(node.realpath, "package.json"));
+
+    const foundExclude = findMatchingSemver(exclusions, packageJson);
+    if (foundExclude) {
       return;
     }
-
-    const packageJson = await readPackageJson(join(node.realpath, "package.json"));
 
     const licenseContent = await resolveLicenseContent(node.realpath, packageJson, replacements);
 

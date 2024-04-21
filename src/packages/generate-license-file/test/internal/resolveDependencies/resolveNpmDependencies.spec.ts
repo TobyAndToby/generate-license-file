@@ -165,37 +165,37 @@ describe("resolveNpmDependencies", () => {
     when(mockedResolveLicenseContent)
       .calledWith(child1Realpath, expect.anything(), expect.anything())
       .mockResolvedValue(child1LicenseContent);
-    setUpPackageJson(child1Realpath, { name: child1Name, version: "1.0.0" });
+    setUpPackageJson(child1Realpath, { name: child1Name, version: child1Version });
 
     when(mockedResolveLicenseContent)
       .calledWith(child1_1Realpath, expect.anything(), expect.anything())
       .mockResolvedValue(child1_1LicenseContent);
-    setUpPackageJson(child1_1Realpath, { name: child1_1Name, version: "1.0.0" });
+    setUpPackageJson(child1_1Realpath, { name: child1_1Name, version: child1_1Version });
 
     when(mockedResolveLicenseContent)
       .calledWith(child1_2Realpath, expect.anything(), expect.anything())
       .mockResolvedValue(child1_2LicenseContent);
-    setUpPackageJson(child1_2Realpath, { name: child1_2Name, version: "1.0.0" });
+    setUpPackageJson(child1_2Realpath, { name: child1_2Name, version: child1_2Version });
 
     when(mockedResolveLicenseContent)
       .calledWith(child2Realpath, expect.anything(), expect.anything())
       .mockResolvedValue(child2LicenseContent);
-    setUpPackageJson(child2Realpath, { name: child2Name, version: "1.0.0" });
+    setUpPackageJson(child2Realpath, { name: child2Name, version: child2Version });
 
     when(mockedResolveLicenseContent)
       .calledWith(child2_1Realpath, expect.anything(), expect.anything())
       .mockResolvedValue(child2_1LicenseContent);
-    setUpPackageJson(child2_1Realpath, { name: child2_1Name, version: "1.0.0" });
+    setUpPackageJson(child2_1Realpath, { name: child2_1Name, version: child2_1Version });
 
     when(mockedResolveLicenseContent)
       .calledWith(child3Realpath, expect.anything(), expect.anything())
       .mockResolvedValue(child3LicenseContent);
-    setUpPackageJson(child3Realpath, { name: child3Name, version: "1.0.0" });
+    setUpPackageJson(child3Realpath, { name: child3Name, version: child3Version });
 
     when(mockedResolveLicenseContent)
       .calledWith(child3_1Realpath, expect.anything(), expect.anything())
       .mockResolvedValue(child3_1LicenseContent);
-    setUpPackageJson(child3_1Realpath, { name: child3_1Name, version: "1.0.0" });
+    setUpPackageJson(child3_1Realpath, { name: child3_1Name, version: child3_1Version });
   });
 
   afterAll(() => jest.restoreAllMocks());
