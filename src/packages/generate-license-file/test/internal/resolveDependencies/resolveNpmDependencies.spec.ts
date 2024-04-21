@@ -316,6 +316,23 @@ describe("resolveNpmDependencies", () => {
       const child1_2LicenseContentMap = licensesMap.get(child1_2LicenseContent);
       expect(child1_2LicenseContentMap?.find(c => c.name === child1_2Name)).toBeDefined();
     });
+
+    it("should not include the dependency in the result if specified by name only", async () => {
+      const licensesMap = new Map<LicenseContent, Dependency[]>();
+
+      await resolveDependenciesForNpmProject("/some/path/package.json", licensesMap, {
+        exclude: [`${child1_1Name}`],
+      });
+
+      const child1LicenseContentMap = licensesMap.get(child1LicenseContent);
+      expect(child1LicenseContentMap?.find(c => c.name === child1Name)).toBeDefined();
+
+      const child1_1LicenseContentMap = licensesMap.get(child1_1LicenseContent);
+      expect(child1_1LicenseContentMap).toBeUndefined();
+
+      const child1_2LicenseContentMap = licensesMap.get(child1_2LicenseContent);
+      expect(child1_2LicenseContentMap?.find(c => c.name === child1_2Name)).toBeDefined();
+    });
   });
 
   const setUpPackageJson = (directory: string, packageJson: PackageJson): void => {
