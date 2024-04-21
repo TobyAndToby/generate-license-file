@@ -2,7 +2,12 @@
   "private": true,
   "name": "monorepo",
   "version": "0.0.0",
-  "scripts": {},
+  "scripts": {
+    "lint": "nx run-many -t lint",
+    "build": "nx run-many -t build",
+    "test": "nx run-many -t test",
+    "test:e2e": "nx run-many -t e2e"
+  },
   "dependencies": {
     "@commander-js/extra-typings": "^12.0.0",
     "@npmcli/arborist": "^7.0.0",

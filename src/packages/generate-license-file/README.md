@@ -12,10 +12,10 @@ A CLI and code library to generate a text file containing all of the licenses fo
 
 ## Installation and Usage (CLI)
 
-```
-$ npm install generate-license-file --save-dev
+```bash
+npm install generate-license-file --save-dev
 
-$ npx generate-license-file --input package.json --output third-party-licenses.txt --overwrite
+npx generate-license-file --input package.json --output third-party-licenses.txt --overwrite
 ```
 
 | Argument       | Description                                                                                                                                                       |
@@ -36,7 +36,7 @@ For a full description of the CLI arguments and their usages please see the rele
 ## Installation and Usage (Library API)
 
 ```bash
-$ npm install generate-license-file --save-dev
+npm install generate-license-file --save-dev
 ```
 
 #### TypeScript
@@ -93,7 +93,25 @@ E.g. `.glf.json`, `.glfrc.yml`, `.generatelicensefile.jsonc`, `.config/glf.js`, 
 If you want to call your config file something else then you can pass it to the CLI via the `--config` argument:
 
 ```bash
-$ npx generate-license-file --config ./my-config.json
+npx generate-license-file --config ./my-config.json
+```
+
+# Contributing and Building From Source
+
+generate-license-file is an NX Monorepo. We have aliased common commands in the scripts section of the `src/package.json` to make working with the project easier.
+
+Each package in the monorepo (under `src/packages/`) contains a README with further information. The main library and CLI is under `packages/generate-license-file`.
+
+```bash
+# cwd: src/
+
+npm run lint
+
+npm run test  # unit tests
+
+npm run test:e2e  # e2e tests
+
+npm run build  # will build all packages into src/dist/[package name]
 ```
 
 # License
