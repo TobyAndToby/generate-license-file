@@ -27,11 +27,14 @@ export const resolveDependenciesForNpmProject = async (
       return;
     }
 
-    if (exclude.includes(node.pkgid)) {
+    const packageJson = await readPackageJson(join(node.realpath, "package.json"));
+
+    if (
+      exclude.includes(`${packageJson.name}@${packageJson.version}`) ||
+      exclude.includes(`${packageJson.name}`)
+    ) {
       return;
     }
-
-    const packageJson = await readPackageJson(join(node.realpath, "package.json"));
 
     const licenseContent = await resolveLicenseContent(node.realpath, packageJson, replacements);
 

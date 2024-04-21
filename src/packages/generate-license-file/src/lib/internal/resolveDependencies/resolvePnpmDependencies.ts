@@ -27,9 +27,10 @@ export const resolveDependenciesForPnpmProject = async (
     for (const dependencyPath of dependency.paths) {
       const packageJson = await readPackageJson(join(dependencyPath, "package.json"));
 
-      const pkgId = `${packageJson.name}@${packageJson.version}`;
-
-      if (exclude.includes(pkgId)) {
+      if (
+        exclude.includes(`${packageJson.name}@${packageJson.version}`) ||
+        exclude.includes(`${packageJson.name}`)
+      ) {
         continue;
       }
 
