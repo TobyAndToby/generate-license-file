@@ -99,3 +99,53 @@ This license should be found.
   },
 ]
 `;
+
+exports[`getProjectLicenses should not include versions when omitVersions is true 1`] = `
+[
+  {
+    "content": "MIT",
+    "dependencies": [
+      "dep-five",
+    ],
+  },
+  {
+    "content": "# Dep Four
+
+This license file is spelt \`LICENCE\`.
+This license should be found.",
+    "dependencies": [
+      "dep-four",
+    ],
+  },
+  {
+    "content": "# Dep One
+
+This license file is spelt \`LICENSE.md\`.
+This license should be found.
+",
+    "dependencies": [
+      "dep-one",
+    ],
+  },
+  {
+    "content": "# Dep Three
+
+This license file is spelt \`LICENSE\`.
+This license should be found.",
+    "dependencies": [
+      "dep-three",
+    ],
+  },
+  {
+    "content": "# Dep Two
+
+This license file is spelt \`LICENCE.md\`.
+This license should be found.
+",
+    "dependencies": [
+      "dep-two",
+      "dep-two-duplicate",
+    ],
+  },
+]
+`;
