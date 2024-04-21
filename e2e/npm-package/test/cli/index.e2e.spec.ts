@@ -149,6 +149,17 @@ describe("cli", () => {
       });
     });
 
+    describe("omit-versions", () => {
+      it("should match snapshot when --omit-versions is given", async () => {
+        await execAsync(
+          `npx generate-license-file --input ${input} --output ${output} --omit-versions`
+        );
+
+        const result = await fs.readFile(output, "utf8");
+        expect(result).toMatchSnapshot();
+      });
+    });
+
     describe("version", () => {
       beforeEach(() => (requiresUnlink = false));
 
