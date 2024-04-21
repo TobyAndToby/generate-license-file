@@ -100,7 +100,7 @@ npx generate-license-file --config ./my-config.json
 
 generate-license-file is an NX Monorepo. We have aliased common commands in the scripts section of the `src/package.json` to make working with the project easier.
 
-Each package is fairly self-explanatory, but all contain README's with further information in their respective directory. The main library and CLI is under `packages/generate-license-file`.
+Each package in the monorepo (under `src/packages/`) contains a README with further information. The main library and CLI is under `packages/generate-license-file`.
 
 ```bash
 # cwd: src/
