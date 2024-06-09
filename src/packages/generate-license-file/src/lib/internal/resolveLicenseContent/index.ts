@@ -3,6 +3,7 @@ import { packageJsonLicense } from "./packageJsonLicense";
 import { licenseFile } from "./licenseFile";
 import { spdxExpression } from "./spdxExpression";
 import { replacementFile } from "./replacementFile";
+import { replacementHttp } from "./replacementHttp";
 
 export interface ResolutionInputs {
   directory: string;
@@ -13,7 +14,7 @@ export type Resolution = (inputs: ResolutionInputs) => Promise<string | null>;
 const resolutions: Resolution[] = [packageJsonLicense, licenseFile, spdxExpression];
 
 export type ReplacementResolution = (location: string) => Promise<string | null>;
-const replacementResolutions: ReplacementResolution[] = [replacementFile];
+const replacementResolutions: ReplacementResolution[] = [replacementHttp, replacementFile];
 
 export const resolveLicenseContent = async (
   directory: string,
