@@ -19,20 +19,20 @@ export const resolveLicenseContent = async (
   directory: string,
   packageJson: PackageJson,
   replacements: Record<string, string>,
-): Promise<string | null> => {
+): Promise<string> => {
   const replacementPath =
     replacements[`${packageJson.name}@${packageJson.version}`] ||
     replacements[`${packageJson.name}`];
 
   if (replacementPath) {
-    return tryReplacementResolutions(replacementPath);
+    return runReplacementResolutions(replacementPath, packageJson);
   }
 
   const resolutionInputs: ResolutionInputs = { directory, packageJson };
-  return tryResolutions(resolutionInputs);
+  return runResolutions(resolutionInputs, packageJson);
 };
 
-const tryReplacementResolutions = async (replacementPath: string) => {
+const runReplacementResolutions = async (replacementPath: string, packageJson: PackageJson) => {
   for (const resolution of replacementResolutions) {
     const result = await resolution(replacementPath);
 
@@ -41,10 +41,12 @@ const tryReplacementResolutions = async (replacementPath: string) => {
     }
   }
 
-  return null;
+  throw new Error(
+    `Could not find replacement content at ${replacementPath} for ${packageJson.name}@${packageJson.version}`,
+  );
 };
 
-const tryResolutions = async (inputs: ResolutionInputs) => {
+const runResolutions = async (inputs: ResolutionInputs, packageJson: PackageJson) => {
   for (const resolution of resolutions) {
     const result = await resolution(inputs);
 
@@ -53,5 +55,5 @@ const tryResolutions = async (inputs: ResolutionInputs) => {
     }
   }
 
-  return null;
+  throw new Error(`Could not find license content for ${packageJson.name}@${packageJson.version}`);
 };

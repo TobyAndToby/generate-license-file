@@ -3,6 +3,7 @@ import { resolveLicenseContent } from "../resolveLicenseContent";
 import { dirname, isAbsolute, join } from "path";
 import { Dependency, LicenseContent } from "../resolveLicenses";
 import { readPackageJson } from "../../utils/packageJson.utils";
+import logger from "../../utils/console.utils";
 
 type ResolveLicensesOptions = {
   replace?: Record<string, string>;
@@ -36,9 +37,9 @@ export const resolveDependenciesForNpmProject = async (
       return;
     }
 
-    const licenseContent = await resolveLicenseContent(node.realpath, packageJson, replacements);
+    try {
+      const licenseContent = await resolveLicenseContent(node.realpath, packageJson, replacements);
 
-    if (licenseContent) {
       const dependencies = licensesMap.get(licenseContent) ?? [];
 
       const alreadyExists = dependencies.find(
@@ -50,6 +51,14 @@ export const resolveDependenciesForNpmProject = async (
       }
 
       licensesMap.set(licenseContent, dependencies);
+    } catch (error) {
+      const warningLines = [
+        `Unable to determine license content for ${packageJson.name}@${packageJson.version} with error:`,
+        error instanceof Error ? error.message : error?.toString(),
+        "", // Empty line for spacing
+      ];
+
+      logger.warn(warningLines.join("\n"));
     }
 
     for (const child of node.children.values()) {

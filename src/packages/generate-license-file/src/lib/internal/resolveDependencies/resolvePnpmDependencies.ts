@@ -3,6 +3,7 @@ import { dirname, join } from "path";
 import { getPnpmProjectDependencies, getPnpmVersion } from "../../utils/pnpmCli.utils";
 import { Dependency, LicenseContent } from "../resolveLicenses";
 import { readPackageJson } from "../../utils/packageJson.utils";
+import logger from "../../utils/console.utils";
 
 type ResolveLicensesOptions = {
   replace?: Record<string, string>;
@@ -34,9 +35,13 @@ export const resolveDependenciesForPnpmProject = async (
         continue;
       }
 
-      const licenseContent = await resolveLicenseContent(dependencyPath, packageJson, replacements);
+      try {
+        const licenseContent = await resolveLicenseContent(
+          dependencyPath,
+          packageJson,
+          replacements,
+        );
 
-      if (licenseContent) {
         const dependencies = licensesMap.get(licenseContent) ?? [];
 
         const alreadyExists = dependencies.find(
@@ -48,6 +53,14 @@ export const resolveDependenciesForPnpmProject = async (
         }
 
         licensesMap.set(licenseContent, dependencies);
+      } catch (error) {
+        const warningLines = [
+          `Unable to determine license content for ${packageJson.name}@${packageJson.version} with error:`,
+          error instanceof Error ? error.message : error?.toString(),
+          "", // Empty line for spacing
+        ];
+
+        logger.warn(warningLines.join("\n"));
       }
     }
   }
