@@ -4,19 +4,6 @@ exports[`cli should match snapshot when a package is replaced 1`] = `
 "This file was generated with the generate-license-file npm package!
 https://www.npmjs.com/package/generate-license-file
 
-The following npm package may be included in this product:
-
- - dep-four@1.0.0
-
-This package contains the following license and notice below:
-
-# Dep Four
-
-This license file is spelt \`LICENCE\`.
-This license should be found.
-
------------
-
 The following npm packages may be included in this product:
 
  - dep-two-duplicate@1.0.0
@@ -28,6 +15,22 @@ These packages each contain the following license and notice below:
 
 This license file is spelt \`LICENCE.md\`.
 This license should be found.
+
+-----------
+
+The following npm package may be included in this product:
+
+ - dep-four@1.0.0
+
+This package contains the following license and notice below:
+
+# Remote license
+
+This file is NOT an actual license for this package.
+
+It is used as a resource for our e2e's, as a file we can fetch over the network, and have control over.
+
+This content should appear in the generated license file output!
 
 -----------
 

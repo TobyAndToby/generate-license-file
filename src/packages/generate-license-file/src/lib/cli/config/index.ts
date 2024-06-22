@@ -17,17 +17,20 @@ export const loadConfigFile = async (path?: string): Promise<ConfigSchema> => {
 const findAndParseConfig = async (directory: string): Promise<ConfigSchema> => {
   const configFile = await findConfig(directory);
 
-  return parseConfig(configFile, directory);
+  return await parseConfig(configFile, directory);
 };
 
 const loadAndParseConfig = async (filePath: string) => {
   const configFile = await loadConfig(filePath);
   const directory = dirname(filePath);
 
-  return parseConfig(configFile, directory);
+  return await parseConfig(configFile, directory);
 };
 
-const parseConfig = (configFile: ConfigFile | undefined, directory: string): ConfigSchema => {
+const parseConfig = async (
+  configFile: ConfigFile | undefined,
+  directory: string,
+): Promise<ConfigSchema> => {
   const config = parseSchema(configFile?.config);
 
   if (config === undefined) {
@@ -37,12 +40,16 @@ const parseConfig = (configFile: ConfigFile | undefined, directory: string): Con
   for (const replacement in config?.replace) {
     const replacementPath = config.replace[replacement];
 
-    if (isAbsolute(replacementPath)) {
-      continue;
-    }
-
+    // The replacement value could be multiple things (e.g. file path, or a
+    // URL). If it's a file path, then at this stage the CLI is aware of the
+    // execution directory and needs to make the path absolute before handing
+    // it off to the library implementation. Otherwise, pass the raw replacement
+    // value into the library so it can handle it however it wants.
     const absolutePath = join(directory, replacementPath);
-    config.replace[replacement] = absolutePath;
+
+    if (await doesFileExist(absolutePath)) {
+      config.replace[replacement] = absolutePath;
+    }
   }
 
   if (config.append) {
