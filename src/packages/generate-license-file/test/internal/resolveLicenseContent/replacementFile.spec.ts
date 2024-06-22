@@ -1,4 +1,4 @@
-import { replacementFile } from "packages/generate-license-file/src/lib/internal/resolveLicenseContent/replacementFile";
+import { replacementFile } from "../../../src/lib/internal/resolveLicenseContent/replacementFile";
 import { readFile, doesFileExist } from "../../../src/lib/utils/file.utils";
 
 jest.mock("../../../src/lib/utils/file.utils");
