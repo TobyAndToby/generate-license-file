@@ -70,7 +70,7 @@ module.exports = {
 </TabItem>
 </Tabs>
 
-:::info Tip
+:::tip
 JavaScript allows for more dynamic usages
 
 ```js
@@ -129,9 +129,20 @@ The replace option allows you to replace the license content for a specific depe
 
 Packages can be specified using the format `package@version` or `package`, where the latter will match all versions of a given package. If both are specified, then the configuration with a matching version will take precedence.
 
-:::tip
+:::info
 
 While it might be more convenient to use the package name without the version, it is recommended to use the version where possible to guarentee you always know exactly which package you are replacing the license for.
+
+:::
+
+The replacement value can be:
+
+- A relative or absolute file path to a location on disk
+- A URL to a remote file on the internet
+
+:::tip
+
+An advantage to using a file path over a URL is that the generated output will always be the same for any given commit.
 
 :::
 
@@ -143,7 +154,8 @@ While it might be more convenient to use the package name without the version, i
   "replace": {
     "lodash@1.2.3": "./licenses/lodash.txt",
     "react@1.2.3": "./node_modules/react/LICENSE",
-    "axios": "./node_modules/axios/LICENSE"
+    "axios": "./node_modules/axios/LICENSE",
+    "express": "https://spdx.org/licenses/MIT.txt"
   }
 }
 ```
@@ -157,6 +169,7 @@ replace:
   lodash@1.2.3: ./licenses/lodash.txt
   react@1.2.3: ./node_modules/react/LICENSE
   axios: ./node_modules/axios/LICENSE
+  express: https://spdx.org/licenses/MIT.txt
 ```
 
 </TabItem>
@@ -169,6 +182,7 @@ module.exports = {
     "lodash@1.2.3": "./licenses/lodash.txt",
     "react@1.2.3": "./node_modules/react/LICENSE",
     axios: "./node_modules/axios/LICENSE",
+    express: "https://spdx.org/licenses/MIT.txt",
   },
 };
 ```
