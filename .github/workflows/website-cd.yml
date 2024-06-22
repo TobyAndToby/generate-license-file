@@ -5,30 +5,65 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+env:
+  CWD: ./website
+
 jobs:
   ci:
     name: Run Website CI
     uses: ./.github/workflows/website-ci.yml
     secrets: inherit
 
-  deploy:
-    needs:
-      - ci
-
-    name: Deploy
+  build:
+    name: Build Website
 
     runs-on: ubuntu-latest
 
     steps:
-      - name: Download Website Build
-        uses: actions/download-artifact@v4
-        with:
-          name: Website
+      - uses: actions/checkout@v4
 
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./
-          user_name: github-actions[bot]
-          user_email: 41898282+github-actions[bot]@users.noreply.github.com
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: ${{ env.CWD }}/package-lock.json
+
+      - name: Install dependencies
+        working-directory: ${{ env.CWD }}
+        run: npm ci
+
+      - name: Build Website
+        working-directory: ${{ env.CWD }}
+        run: npm run build
+
+      - name: Upload Build
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ${{ env.CWD }}/build/
+
+  deploy:
+    name: Deploy Website
+
+    needs:
+      - ci
+
+    runs-on: ubuntu-latest
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
