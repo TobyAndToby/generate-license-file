@@ -1,4 +1,4 @@
-import { replacementHttp } from "packages/generate-license-file/src/lib/internal/resolveLicenseContent/replacementHttp";
+import { replacementHttp } from "../../../src/lib/internal/resolveLicenseContent/replacementHttp";
 import { fetchString } from "../../../src/lib/utils/http.utils";
 
 jest.mock("../../../src/lib/utils/http.utils");
