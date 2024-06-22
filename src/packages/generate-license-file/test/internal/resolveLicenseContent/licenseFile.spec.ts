@@ -1,11 +1,11 @@
 import { glob } from "glob";
+import { when } from "jest-when";
+import { ResolutionInputs } from "../../../src/lib/internal/resolveLicenseContent";
 import {
   extensionDenyList,
   licenseFile,
 } from "../../../src/lib/internal/resolveLicenseContent/licenseFile";
-import { when } from "jest-when";
 import { readFile } from "../../../src/lib/utils/file.utils";
-import { ResolutionInputs } from "../../../src/lib/internal/resolveLicenseContent";
 
 jest.mock("glob", () => ({
   glob: jest.fn(),

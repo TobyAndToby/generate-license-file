@@ -1,6 +1,6 @@
 import { Compilation, Compiler } from "webpack";
-import { LicenseFilePlugin } from "./licenseFilePlugin";
 import { asyncProcessAssetTapFactory } from "./asyncProcessAssetTapFactory";
+import { LicenseFilePlugin } from "./licenseFilePlugin";
 import { Options } from "./options";
 
 export type CompilationTap = (compilation: Compilation) => void;

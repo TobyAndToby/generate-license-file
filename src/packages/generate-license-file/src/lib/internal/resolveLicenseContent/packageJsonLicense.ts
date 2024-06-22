@@ -1,8 +1,8 @@
-import { doesFileExist, readFile } from "../../utils/file.utils";
-import logger from "../../utils/console.utils";
 import { join } from "path";
-import { Resolution } from "./index";
+import logger from "../../utils/console.utils";
+import { doesFileExist, readFile } from "../../utils/file.utils";
 import { PackageJson, PackageJsonLicense } from "../../utils/packageJson.utils";
+import { Resolution } from "./index";
 
 // This file specifically handles cases where the package.json links
 // to a license file that is on disk and is a part of the package.

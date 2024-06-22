@@ -1,6 +1,6 @@
 ﻿import { z } from "zod";
-import { execAsync } from "./exec.utils";
 import consoleUtils from "./console.utils";
+import { execAsync } from "./exec.utils";
 
 export type PnpmVersion = {
   major: number;

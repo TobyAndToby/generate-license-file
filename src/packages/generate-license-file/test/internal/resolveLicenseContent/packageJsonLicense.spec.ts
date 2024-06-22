@@ -1,9 +1,9 @@
-import { join } from "path";
-import { packageJsonLicense } from "../../../src/lib/internal/resolveLicenseContent/packageJsonLicense";
-import { ResolutionInputs } from "../../../src/lib/internal/resolveLicenseContent";
-import { doesFileExist, readFile } from "../../../src/lib/utils/file.utils";
-import logger from "../../../src/lib/utils/console.utils";
 import { when } from "jest-when";
+import { join } from "path";
+import { ResolutionInputs } from "../../../src/lib/internal/resolveLicenseContent";
+import { packageJsonLicense } from "../../../src/lib/internal/resolveLicenseContent/packageJsonLicense";
+import logger from "../../../src/lib/utils/console.utils";
+import { doesFileExist, readFile } from "../../../src/lib/utils/file.utils";
 
 jest.mock("../../../src/lib/utils/file.utils");
 jest.mock("../../../src/lib/utils/console.utils");

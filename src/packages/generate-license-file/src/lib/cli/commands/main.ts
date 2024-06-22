@@ -1,14 +1,14 @@
 import { Command } from "@commander-js/extra-typings";
-import { loadConfigFile } from "../config";
-import { Inputs } from "../args/inputs";
-import { Output } from "../args/output";
-import { Eol } from "../args/eol";
-import { LineEnding } from "../../lineEndings";
-import { generateLicenseFile } from "../../generateLicenseFile";
-import { spinner } from "../spinner";
 import { join } from "path";
+import { generateLicenseFile } from "../../generateLicenseFile";
+import { LineEnding } from "../../lineEndings";
 import logger from "../../utils/console.utils";
 import { readPackageJson } from "../../utils/packageJson.utils";
+import { Eol } from "../args/eol";
+import { Inputs } from "../args/inputs";
+import { Output } from "../args/output";
+import { loadConfigFile } from "../config";
+import { spinner } from "../spinner";
 
 export type CombinedConfig = {
   inputs?: string[];

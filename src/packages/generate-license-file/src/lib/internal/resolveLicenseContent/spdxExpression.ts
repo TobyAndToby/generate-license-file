@@ -1,6 +1,6 @@
-import { Resolution } from "./index";
 import logger from "../../utils/console.utils";
 import { PackageJson, PackageJsonLicense } from "../../utils/packageJson.utils";
+import { Resolution } from "./index";
 
 // This file specifically handles cases where the package.json contains an SPDX license expression.
 

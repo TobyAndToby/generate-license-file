@@ -1,5 +1,5 @@
-import { spdxExpression } from "../../../src/lib/internal/resolveLicenseContent/spdxExpression";
 import { ResolutionInputs } from "../../../src/lib/internal/resolveLicenseContent";
+import { spdxExpression } from "../../../src/lib/internal/resolveLicenseContent/spdxExpression";
 import logger from "../../../src/lib/utils/console.utils";
 
 jest.mock("../../../src/lib/utils/console.utils");

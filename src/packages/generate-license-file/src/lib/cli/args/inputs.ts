@@ -1,7 +1,7 @@
 import { doesFileExist } from "../../utils/file.utils";
-import { Argument } from "./argument";
 import { CombinedConfig } from "../commands/main";
 import { spinner } from "../spinner";
+import { Argument } from "./argument";
 
 export class Inputs extends Argument<string[]> {
   private question = "Package.json location: ";

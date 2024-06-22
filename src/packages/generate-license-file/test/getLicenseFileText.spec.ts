@@ -1,7 +1,7 @@
-import { GetLicenseFileTextOptions, getLicenseFileText } from "../src/lib/getLicenseFileText";
+import { when } from "jest-when";
+import { getLicenseFileText, GetLicenseFileTextOptions } from "../src/lib/getLicenseFileText";
 import { ResolvedLicense, resolveLicenses } from "../src/lib/internal/resolveLicenses";
 import { readFile } from "../src/lib/utils/file.utils";
-import { when } from "jest-when";
 
 jest.mock("../src/lib/internal/resolveLicenses", () => ({
   resolveLicenses: jest.fn(),

@@ -1,9 +1,9 @@
-﻿import { resolveLicenseContent } from "../resolveLicenseContent";
-import { dirname, join } from "path";
-import { getPnpmProjectDependencies, getPnpmVersion } from "../../utils/pnpmCli.utils";
-import { Dependency, LicenseContent } from "../resolveLicenses";
-import { readPackageJson } from "../../utils/packageJson.utils";
+﻿import { dirname, join } from "path";
 import logger from "../../utils/console.utils";
+import { readPackageJson } from "../../utils/packageJson.utils";
+import { getPnpmProjectDependencies, getPnpmVersion } from "../../utils/pnpmCli.utils";
+import { resolveLicenseContent } from "../resolveLicenseContent";
+import { Dependency, LicenseContent } from "../resolveLicenses";
 
 type ResolveLicensesOptions = {
   replace?: Record<string, string>;

@@ -1,4 +1,4 @@
-import { GetProjectLicensesOptions, getProjectLicenses } from "../src/lib/getProjectLicenses";
+import { getProjectLicenses, GetProjectLicensesOptions } from "../src/lib/getProjectLicenses";
 import { ResolvedLicense, resolveLicenses } from "../src/lib/internal/resolveLicenses";
 
 jest.mock("../src/lib/internal/resolveLicenses", () => ({

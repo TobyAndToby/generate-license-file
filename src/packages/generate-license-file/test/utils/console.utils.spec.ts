@@ -1,5 +1,5 @@
-import consoleUtils from "../../src/lib/utils/console.utils";
 import { spinner } from "../../src/lib/cli/spinner";
+import consoleUtils from "../../src/lib/utils/console.utils";
 
 jest.mock("../../src/lib/cli/spinner", () => ({
   spinner: {

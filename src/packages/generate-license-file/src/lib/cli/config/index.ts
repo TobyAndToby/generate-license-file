@@ -1,7 +1,7 @@
-import { ConfigSchema, parseSchema } from "./schema";
+import { dirname, isAbsolute, join } from "path";
 import { doesFileExist } from "../../utils/file.utils";
 import { ConfigFile, findConfig, loadConfig } from "./configFile";
-import { dirname, isAbsolute, join } from "path";
+import { ConfigSchema, parseSchema } from "./schema";
 
 export const loadConfigFile = async (path?: string): Promise<ConfigSchema> => {
   if (path && (await doesFileExist(path))) {

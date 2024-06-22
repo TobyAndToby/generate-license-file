@@ -1,5 +1,5 @@
 import { ReplacementResolution } from ".";
-import { readFile, doesFileExist } from "../../utils/file.utils";
+import { doesFileExist, readFile } from "../../utils/file.utils";
 
 export const replacementFile: ReplacementResolution = async location => {
   if (!(await doesFileExist(location))) {
