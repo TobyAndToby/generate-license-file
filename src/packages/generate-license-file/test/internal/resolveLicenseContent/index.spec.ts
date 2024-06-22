@@ -1,28 +1,32 @@
 import { when } from "jest-when";
 import { resolveLicenseContent } from "../../../src/lib/internal/resolveLicenseContent";
 import { replacementFile } from "../../../src/lib/internal/resolveLicenseContent/replacementFile";
+import { replacementHttp } from "../../../src/lib/internal/resolveLicenseContent/replacementHttp";
 import { packageJsonLicense } from "../../../src/lib/internal/resolveLicenseContent/packageJsonLicense";
 import { licenseFile } from "../../../src/lib/internal/resolveLicenseContent/licenseFile";
 import { spdxExpression } from "../../../src/lib/internal/resolveLicenseContent/spdxExpression";
 import { PackageJson } from "../../../src/lib/utils/packageJson.utils";
 
-jest.mock("../../../src/lib/internal/resolveLicenseContent/replacementFile");
 jest.mock("../../../src/lib/internal/resolveLicenseContent/packageJsonLicense");
 jest.mock("../../../src/lib/internal/resolveLicenseContent/licenseFile");
 jest.mock("../../../src/lib/internal/resolveLicenseContent/spdxExpression");
 
-describe("resolveLicenseContent", () => {
-  const mockedReplacementFile = jest.mocked(replacementFile);
+jest.mock("../../../src/lib/internal/resolveLicenseContent/replacementHttp");
+jest.mock("../../../src/lib/internal/resolveLicenseContent/replacementFile");
 
+describe("resolveLicenseContent", () => {
   const mockedPackageJsonLicenseResolution = jest.mocked(packageJsonLicense);
   const mockedLicenseFileResolution = jest.mocked(licenseFile);
   const mockedSpdxExpressionResolution = jest.mocked(spdxExpression);
+
+  const mockedReplacementHttp = jest.mocked(replacementHttp);
+  const mockedReplacementFile = jest.mocked(replacementFile);
 
   beforeEach(jest.resetAllMocks);
   afterAll(jest.restoreAllMocks);
 
   describe("when a 'name' replacement is given for a package", () => {
-    it("should return the content of the replacement file", async () => {
+    it("should call all of the replacement resolvers in order if they all return null", async () => {
       const packageJson: PackageJson = {
         name: "some-package",
         version: "1.2.3",
@@ -31,13 +35,79 @@ describe("resolveLicenseContent", () => {
       const replacements: Record<string, string> = {
         "some-package": "/some/replacement/path",
       };
-      when(mockedReplacementFile)
+
+      when(mockedReplacementHttp).calledWith("/some/replacement/path").mockResolvedValue(null);
+      when(mockedReplacementFile).calledWith("/some/replacement/path").mockResolvedValue(null);
+
+      await expect(() =>
+        resolveLicenseContent("/some/directory", packageJson, replacements),
+      ).rejects.toThrow();
+
+      expect(mockedReplacementHttp).toHaveBeenCalledTimes(1);
+      expect(mockedReplacementFile).toHaveBeenCalledTimes(1);
+    });
+
+    it("should not call later resolvers if an earlier resolver returns a non-null value", async () => {
+      const packageJson: PackageJson = {
+        name: "some-package",
+        version: "1.2.3",
+      };
+
+      const replacements: Record<string, string> = {
+        "some-package": "/some/replacement/path",
+      };
+
+      when(mockedReplacementHttp)
         .calledWith("/some/replacement/path")
-        .mockResolvedValue("the replacement content");
+        .mockResolvedValue("a not null value");
+      when(mockedReplacementFile).calledWith("/some/replacement/path").mockResolvedValue(null);
+
+      await resolveLicenseContent("/some/directory", packageJson, replacements);
+
+      expect(mockedReplacementHttp).toHaveBeenCalledTimes(1);
+      expect(mockedReplacementFile).toHaveBeenCalledTimes(0);
+    });
+
+    it("should return the content of the first resolver that returns a non-null value", async () => {
+      const someContent = "some content";
+
+      const packageJson: PackageJson = {
+        name: "some-package",
+        version: "1.2.3",
+      };
+
+      const replacements: Record<string, string> = {
+        "some-package": "/some/replacement/path",
+      };
+
+      when(mockedReplacementHttp)
+        .calledWith("/some/replacement/path")
+        .mockResolvedValue(someContent);
+      when(mockedReplacementFile).calledWith("/some/replacement/path").mockResolvedValue(null);
 
       const result = await resolveLicenseContent("/some/directory", packageJson, replacements);
 
-      expect(result).toBe("the replacement content");
+      expect(result).toBe(someContent);
+    });
+
+    it("should throw if all replacement resolvers return null", async () => {
+      const packageJson: PackageJson = {
+        name: "some-package",
+        version: "1.2.3",
+      };
+
+      const replacements: Record<string, string> = {
+        "some-package": "/some/replacement/path",
+      };
+
+      when(mockedReplacementHttp).calledWith("/some/replacement/path").mockResolvedValue(null);
+      when(mockedReplacementFile).calledWith("/some/replacement/path").mockResolvedValue(null);
+
+      await expect(() =>
+        resolveLicenseContent("/some/directory", packageJson, replacements),
+      ).rejects.toThrow(
+        "Could not find replacement content at /some/replacement/path for some-package@1.2.3",
+      );
     });
   });
 
@@ -51,13 +121,16 @@ describe("resolveLicenseContent", () => {
       const replacements: Record<string, string> = {
         "some-package@1.2.3": "/some/replacement/path",
       };
-      when(mockedReplacementFile)
-        .calledWith("/some/replacement/path")
-        .mockResolvedValue("the replacement content");
 
-      const result = await resolveLicenseContent("/some/directory", packageJson, replacements);
+      when(mockedReplacementHttp).calledWith("/some/replacement/path").mockResolvedValue(null);
+      when(mockedReplacementFile).calledWith("/some/replacement/path").mockResolvedValue(null);
 
-      expect(result).toBe("the replacement content");
+      await expect(() =>
+        resolveLicenseContent("/some/directory", packageJson, replacements),
+      ).rejects.toThrow();
+
+      expect(mockedReplacementFile).toHaveBeenCalledTimes(1);
+      expect(mockedReplacementHttp).toHaveBeenCalledTimes(1);
     });
 
     it("should should be prioritised over a 'name' replacement", async () => {
