@@ -6,6 +6,7 @@ import { Dependency, LicenseContent } from "../../../src/lib/internal/resolveLic
 import { PackageJson } from "../../../src/lib/utils/packageJson.utils";
 import { join } from "path";
 import { doesFileExist, readFile } from "../../../src/lib/utils/file.utils";
+import logger from "../../../src/lib/utils/console.utils";
 
 jest.mock("@npmcli/arborist", () => ({
   __esModule: true,
@@ -13,12 +14,14 @@ jest.mock("@npmcli/arborist", () => ({
 }));
 
 jest.mock("../../../src/lib/utils/file.utils");
+jest.mock("../../../src/lib/utils/console.utils");
 
 jest.mock("../../../src/lib/internal/resolveLicenseContent", () => ({
   resolveLicenseContent: jest.fn(),
 }));
 
 describe("resolveNpmDependencies", () => {
+  const mockedLogger = jest.mocked(logger);
   const mockedReadFile = jest.mocked(readFile);
   const mockedDoesFileExist = jest.mocked(doesFileExist);
 
@@ -257,6 +260,22 @@ describe("resolveNpmDependencies", () => {
     const replacements3 = mockedResolveLicenseContent.mock.calls[2][2];
     expect(replacements3).toBe(replacements);
   });
+
+  it.each([new Error("Something went wrong"), "Something went wrong"])(
+    "should warning log if resolveLicenseContent throws an error",
+    async error => {
+      when(mockedResolveLicenseContent)
+        .calledWith(child1Realpath, expect.anything(), expect.anything())
+        .mockRejectedValue(error);
+
+      await resolveDependenciesForNpmProject("/some/path/package.json", new Map());
+
+      expect(mockedLogger.warn).toHaveBeenCalledTimes(1);
+      expect(mockedLogger.warn).toHaveBeenCalledWith(
+        `Unable to determine license content for ${child1Name}@${child1Version} with error:\nSomething went wrong\n`,
+      );
+    },
+  );
 
   describe("when no options are provided", () => {
     it("should include non-dev dependencies in the result", async () => {
