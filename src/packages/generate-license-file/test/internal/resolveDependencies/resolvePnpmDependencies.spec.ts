@@ -8,6 +8,7 @@ import { resolveLicenseContent } from "../../../src/lib/internal/resolveLicenseC
 import { when } from "jest-when";
 import { doesFileExist, readFile } from "../../../src/lib/utils/file.utils";
 import { PackageJson } from "../../../src/lib/utils/packageJson.utils";
+import logger from "../../../src/lib/utils/console.utils";
 import { join } from "path";
 import { Dependency, LicenseContent } from "../../../src/lib/internal/resolveLicenses";
 
@@ -17,6 +18,7 @@ jest.mock("../../../src/lib/utils/pnpmCli.utils", () => ({
 }));
 
 jest.mock("../../../src/lib/utils/file.utils");
+jest.mock("../../../src/lib/utils/console.utils");
 
 jest.mock("../../../src/lib/internal/resolveLicenseContent", () => ({
   resolveLicenseContent: jest.fn(),
@@ -39,8 +41,8 @@ describe("resolveDependenciesForPnpmProject", () => {
     name: "dependency3",
     paths: ["/some/path/dependency3"],
   };
-  const dependency3LicenseContent = null as unknown as string;
 
+  const mockedLogger = jest.mocked(logger);
   const mockedReadFile = jest.mocked(readFile);
   const mockedDoesFileExist = jest.mocked(doesFileExist);
   const mockedGetPnpmVersion = jest.mocked(getPnpmVersion);
@@ -67,7 +69,9 @@ describe("resolveDependenciesForPnpmProject", () => {
 
     when(mockedResolveLicenseContent)
       .calledWith(dependency3.paths[0], expect.anything(), expect.anything())
-      .mockResolvedValue(dependency3LicenseContent);
+      .mockImplementation(() => {
+        throw new Error("Cannot find license content");
+      });
     setUpPackageJson(dependency3.paths[0], { name: dependency3.name, version: "1.0.0" });
   });
 
@@ -198,8 +202,27 @@ describe("resolveDependenciesForPnpmProject", () => {
           .get(dependency2LicenseContent)
           ?.find(d => d.name === "dependency2" && d.version === "2.0.0"),
       ).toBeDefined();
-      expect(licensesMap.get(dependency3LicenseContent)).toBeUndefined();
     });
+
+    it.each([new Error("Something went wrong"), "Something went wrong"])(
+      "should warning log if resolveLicenseContent throws an error",
+      async error => {
+        mockedGetPnpmVersion.mockResolvedValue(pnpmVersion);
+        mockedGetPnpmProjectDependencies.mockResolvedValue([dependency1, dependency2, dependency3]);
+
+        when(mockedResolveLicenseContent)
+          .calledWith(dependency1.paths[0], expect.anything(), expect.anything())
+          .mockRejectedValue(error);
+
+        const licensesMap = new Map<LicenseContent, Dependency[]>();
+
+        await resolveDependenciesForPnpmProject("/some/path/package.json", licensesMap);
+
+        expect(mockedLogger.warn).toHaveBeenCalledWith(
+          `Unable to determine license content for ${dependency1.name}@1.0.0 with error:\nSomething went wrong\n`,
+        );
+      },
+    );
 
     describe("when the dependency is in the exclude list", () => {
       it("should not call resolveLicenseContent", async () => {

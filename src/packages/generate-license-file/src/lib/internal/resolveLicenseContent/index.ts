@@ -2,7 +2,8 @@ import { PackageJson } from "../../utils/packageJson.utils";
 import { packageJsonLicense } from "./packageJsonLicense";
 import { licenseFile } from "./licenseFile";
 import { spdxExpression } from "./spdxExpression";
-import { readFile } from "../../utils/file.utils";
+import { replacementFile } from "./replacementFile";
+import { replacementHttp } from "./replacementHttp";
 
 export interface ResolutionInputs {
   directory: string;
@@ -10,29 +11,50 @@ export interface ResolutionInputs {
 }
 
 export type Resolution = (inputs: ResolutionInputs) => Promise<string | null>;
-
 const resolutions: Resolution[] = [packageJsonLicense, licenseFile, spdxExpression];
+
+export type ReplacementResolution = (location: string) => Promise<string | null>;
+const replacementResolutions: ReplacementResolution[] = [replacementHttp, replacementFile];
 
 export const resolveLicenseContent = async (
   directory: string,
   packageJson: PackageJson,
   replacements: Record<string, string>,
-): Promise<string | null> => {
+): Promise<string> => {
   const replacementPath =
     replacements[`${packageJson.name}@${packageJson.version}`] ||
     replacements[`${packageJson.name}`];
 
   if (replacementPath) {
-    return await readFile(replacementPath, { encoding: "utf-8" });
+    return runReplacementResolutions(replacementPath, packageJson);
   }
 
-  for (const resolution of resolutions) {
-    const result = await resolution({ directory, packageJson });
+  const resolutionInputs: ResolutionInputs = { directory, packageJson };
+  return runResolutions(resolutionInputs, packageJson);
+};
+
+const runReplacementResolutions = async (replacementPath: string, packageJson: PackageJson) => {
+  for (const resolution of replacementResolutions) {
+    const result = await resolution(replacementPath);
 
     if (result) {
       return result;
     }
   }
 
-  return null;
+  throw new Error(
+    `Could not find replacement content at ${replacementPath} for ${packageJson.name}@${packageJson.version}`,
+  );
+};
+
+const runResolutions = async (inputs: ResolutionInputs, packageJson: PackageJson) => {
+  for (const resolution of resolutions) {
+    const result = await resolution(inputs);
+
+    if (result) {
+      return result;
+    }
+  }
+
+  throw new Error(`Could not find license content for ${packageJson.name}@${packageJson.version}`);
 };

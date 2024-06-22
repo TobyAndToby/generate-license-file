@@ -8,5 +8,7 @@ module.exports = {
 
     "dep-three": "./some-path-that-we-dont-want-to-use.txt",
     "dep-three@1.0.0": "./name-and-version-replacement-content.txt",
+    "dep-four":
+      "https://raw.githubusercontent.com/TobyAndToby/generate-license-file/main/e2e/.remote-licenses/license.md",
   },
 };
