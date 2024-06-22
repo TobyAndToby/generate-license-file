@@ -17,4 +17,5 @@ module.exports = {
   arrowParens: "avoid",
   singleQuote: false,
   trailingComma: "all",
+  plugins: ["prettier-plugin-organize-imports"],
 };

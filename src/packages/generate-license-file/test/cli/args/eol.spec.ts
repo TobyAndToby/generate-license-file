@@ -1,7 +1,7 @@
 import { prompt } from "enquirer";
 import { Eol } from "../../../src/lib/cli/args/eol";
-import { lineEndings } from "../../../src/lib/lineEndings";
 import { CombinedConfig } from "../../../src/lib/cli/commands/main";
+import { lineEndings } from "../../../src/lib/lineEndings";
 
 jest.mock("enquirer", () => ({
   prompt: jest.fn(),

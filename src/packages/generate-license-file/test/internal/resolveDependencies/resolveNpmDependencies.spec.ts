@@ -1,12 +1,12 @@
 ﻿import Arborist from "@npmcli/arborist";
+import { when } from "jest-when";
+import { join } from "path";
 import { resolveDependenciesForNpmProject } from "../../../src/lib/internal/resolveDependencies/resolveNpmDependencies";
 import { resolveLicenseContent } from "../../../src/lib/internal/resolveLicenseContent";
-import { when } from "jest-when";
 import { Dependency, LicenseContent } from "../../../src/lib/internal/resolveLicenses";
-import { PackageJson } from "../../../src/lib/utils/packageJson.utils";
-import { join } from "path";
-import { doesFileExist, readFile } from "../../../src/lib/utils/file.utils";
 import logger from "../../../src/lib/utils/console.utils";
+import { doesFileExist, readFile } from "../../../src/lib/utils/file.utils";
+import { PackageJson } from "../../../src/lib/utils/packageJson.utils";
 
 jest.mock("@npmcli/arborist", () => ({
   __esModule: true,

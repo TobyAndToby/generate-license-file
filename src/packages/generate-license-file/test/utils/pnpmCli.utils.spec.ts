@@ -1,5 +1,5 @@
-﻿import { getPnpmProjectDependencies, getPnpmVersion } from "../../src/lib/utils/pnpmCli.utils";
-import { execAsync } from "../../src/lib/utils/exec.utils";
+﻿import { execAsync } from "../../src/lib/utils/exec.utils";
+import { getPnpmProjectDependencies, getPnpmVersion } from "../../src/lib/utils/pnpmCli.utils";
 
 jest.mock("../../src/lib/utils/exec.utils", () => ({
   execAsync: jest.fn(),

@@ -1,9 +1,9 @@
 ﻿import Arborist, { Link, Node } from "@npmcli/arborist";
-import { resolveLicenseContent } from "../resolveLicenseContent";
 import { dirname, isAbsolute, join } from "path";
-import { Dependency, LicenseContent } from "../resolveLicenses";
-import { readPackageJson } from "../../utils/packageJson.utils";
 import logger from "../../utils/console.utils";
+import { readPackageJson } from "../../utils/packageJson.utils";
+import { resolveLicenseContent } from "../resolveLicenseContent";
+import { Dependency, LicenseContent } from "../resolveLicenses";
 
 type ResolveLicensesOptions = {
   replace?: Record<string, string>;

@@ -1,8 +1,8 @@
 import { getLicenseFileText, GetLicenseFileTextOptions } from "generate-license-file";
 import { join } from "path/posix";
 import { Compilation, Compiler, WebpackError } from "webpack";
-import { LicenseFilePlugin } from "./licenseFilePlugin";
 import { devImplementation } from "./devImplementation";
+import { LicenseFilePlugin } from "./licenseFilePlugin";
 import { Options } from "./options";
 
 export type AssetProcessingAsyncTap = (_: unknown, resolve: (error?: WebpackError) => void) => void;

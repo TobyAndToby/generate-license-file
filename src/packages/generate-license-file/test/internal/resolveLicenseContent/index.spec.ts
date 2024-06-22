@@ -1,9 +1,9 @@
 import { when } from "jest-when";
 import { resolveLicenseContent } from "../../../src/lib/internal/resolveLicenseContent";
+import { licenseFile } from "../../../src/lib/internal/resolveLicenseContent/licenseFile";
+import { packageJsonLicense } from "../../../src/lib/internal/resolveLicenseContent/packageJsonLicense";
 import { replacementFile } from "../../../src/lib/internal/resolveLicenseContent/replacementFile";
 import { replacementHttp } from "../../../src/lib/internal/resolveLicenseContent/replacementHttp";
-import { packageJsonLicense } from "../../../src/lib/internal/resolveLicenseContent/packageJsonLicense";
-import { licenseFile } from "../../../src/lib/internal/resolveLicenseContent/licenseFile";
 import { spdxExpression } from "../../../src/lib/internal/resolveLicenseContent/spdxExpression";
 import { PackageJson } from "../../../src/lib/utils/packageJson.utils";
 

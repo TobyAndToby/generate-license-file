@@ -1,8 +1,8 @@
-﻿import { resolveDependenciesForNpmProject } from "./resolveNpmDependencies";
-import { resolveDependenciesForPnpmProject } from "./resolvePnpmDependencies";
-import { dirname, join } from "path";
+﻿import { dirname, join } from "path";
 import { doesFileExist } from "../../utils/file.utils";
 import { Dependency, LicenseContent } from "../resolveLicenses";
+import { resolveDependenciesForNpmProject } from "./resolveNpmDependencies";
+import { resolveDependenciesForPnpmProject } from "./resolvePnpmDependencies";
 
 type ResolveLicensesOptions = {
   replace?: Record<string, string>;

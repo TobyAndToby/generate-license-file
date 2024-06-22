@@ -1,8 +1,8 @@
 import { resolveLicenses } from "./internal/resolveLicenses";
 import { ILicense } from "./models/license";
 import { ExcludeOption } from "./options/exclude";
-import { IntersectionExpander } from "./options/optionsExpander";
 import { OmitVersionsOption } from "./options/omitVersions";
+import { IntersectionExpander } from "./options/optionsExpander";
 import { ReplaceOption } from "./options/replace";
 
 export type GetProjectLicensesOptions = IntersectionExpander<

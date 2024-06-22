@@ -1,4 +1,4 @@
-import { Options as CosmiconfigOptions, cosmiconfig } from "cosmiconfig";
+import { cosmiconfig, Options as CosmiconfigOptions } from "cosmiconfig";
 import { json5Parse } from "./parsers/json5";
 
 export type ConfigFile = { path: string; config: unknown };

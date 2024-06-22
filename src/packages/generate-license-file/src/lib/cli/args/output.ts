@@ -1,6 +1,6 @@
 import { doesFileExist } from "../../utils/file.utils";
-import { Argument } from "./argument";
 import { CombinedConfig } from "../commands/main";
+import { Argument } from "./argument";
 
 export class Output extends Argument<string> {
   private question = "Output location: ";

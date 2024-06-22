@@ -1,9 +1,9 @@
 import { PackageJson } from "../../utils/packageJson.utils";
-import { packageJsonLicense } from "./packageJsonLicense";
 import { licenseFile } from "./licenseFile";
-import { spdxExpression } from "./spdxExpression";
+import { packageJsonLicense } from "./packageJsonLicense";
 import { replacementFile } from "./replacementFile";
 import { replacementHttp } from "./replacementHttp";
+import { spdxExpression } from "./spdxExpression";
 
 export interface ResolutionInputs {
   directory: string;

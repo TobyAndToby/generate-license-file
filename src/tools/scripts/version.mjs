@@ -1,7 +1,7 @@
 import devkit from "@nx/devkit";
 import chalk from "chalk";
-import { join } from "path";
 import fs from "fs/promises";
+import { join } from "path";
 
 const { createProjectGraphAsync, readCachedProjectGraph } = devkit;
 

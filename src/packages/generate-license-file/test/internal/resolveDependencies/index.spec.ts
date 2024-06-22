@@ -1,9 +1,9 @@
-﻿import { doesFileExist } from "../../../src/lib/utils/file.utils";
+﻿import { when } from "jest-when";
+import { join } from "path";
+import { resolveDependencies } from "../../../src/lib/internal/resolveDependencies";
 import { resolveDependenciesForNpmProject } from "../../../src/lib/internal/resolveDependencies/resolveNpmDependencies";
 import { resolveDependenciesForPnpmProject } from "../../../src/lib/internal/resolveDependencies/resolvePnpmDependencies";
-import { when } from "jest-when";
-import { resolveDependencies } from "../../../src/lib/internal/resolveDependencies";
-import { join } from "path";
+import { doesFileExist } from "../../../src/lib/utils/file.utils";
 
 jest.mock("../../../src/lib/utils/file.utils", () => ({
   doesFileExist: jest.fn(),

@@ -1,7 +1,7 @@
 import { prompt } from "enquirer";
 import { Output } from "../../../src/lib/cli/args/output";
-import { doesFileExist } from "../../../src/lib/utils/file.utils";
 import { CombinedConfig } from "../../../src/lib/cli/commands/main";
+import { doesFileExist } from "../../../src/lib/utils/file.utils";
 
 jest.mock("../../../src/lib/utils/file.utils", () => ({
   doesFileExist: jest.fn(),

@@ -1,9 +1,8 @@
 import { glob } from "glob";
-import { relative } from "path";
-import { Resolution } from "./index";
+import { extname, relative } from "path";
 import logger from "../../utils/console.utils";
 import { readFile } from "../../utils/file.utils";
-import { extname } from "path";
+import { Resolution } from "./index";
 
 // This file specifically handles cases where we're able to find
 // a license file on disk that is a part of the package but it's

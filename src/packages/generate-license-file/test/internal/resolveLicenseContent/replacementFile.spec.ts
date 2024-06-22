@@ -1,5 +1,5 @@
 import { replacementFile } from "../../../src/lib/internal/resolveLicenseContent/replacementFile";
-import { readFile, doesFileExist } from "../../../src/lib/utils/file.utils";
+import { doesFileExist, readFile } from "../../../src/lib/utils/file.utils";
 
 jest.mock("../../../src/lib/utils/file.utils");
 
