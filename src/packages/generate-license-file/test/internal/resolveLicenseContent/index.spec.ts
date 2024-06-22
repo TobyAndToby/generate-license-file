@@ -1,18 +1,18 @@
 import { when } from "jest-when";
 import { resolveLicenseContent } from "../../../src/lib/internal/resolveLicenseContent";
-import { readFile } from "../../../src/lib/utils/file.utils";
+import { replacementFile } from "../../../src/lib/internal/resolveLicenseContent/replacementFile";
 import { packageJsonLicense } from "../../../src/lib/internal/resolveLicenseContent/packageJsonLicense";
 import { licenseFile } from "../../../src/lib/internal/resolveLicenseContent/licenseFile";
 import { spdxExpression } from "../../../src/lib/internal/resolveLicenseContent/spdxExpression";
 import { PackageJson } from "../../../src/lib/utils/packageJson.utils";
 
-jest.mock("../../../src/lib/utils/file.utils");
+jest.mock("../../../src/lib/internal/resolveLicenseContent/replacementFile");
 jest.mock("../../../src/lib/internal/resolveLicenseContent/packageJsonLicense");
 jest.mock("../../../src/lib/internal/resolveLicenseContent/licenseFile");
 jest.mock("../../../src/lib/internal/resolveLicenseContent/spdxExpression");
 
 describe("resolveLicenseContent", () => {
-  const mockedReadFile = jest.mocked(readFile);
+  const mockedReplacementFile = jest.mocked(replacementFile);
 
   const mockedPackageJsonLicenseResolution = jest.mocked(packageJsonLicense);
   const mockedLicenseFileResolution = jest.mocked(licenseFile);
@@ -31,8 +31,8 @@ describe("resolveLicenseContent", () => {
       const replacements: Record<string, string> = {
         "some-package": "/some/replacement/path",
       };
-      when(mockedReadFile)
-        .calledWith("/some/replacement/path", { encoding: "utf-8" })
+      when(mockedReplacementFile)
+        .calledWith("/some/replacement/path")
         .mockResolvedValue("the replacement content");
 
       const result = await resolveLicenseContent("/some/directory", packageJson, replacements);
@@ -51,8 +51,8 @@ describe("resolveLicenseContent", () => {
       const replacements: Record<string, string> = {
         "some-package@1.2.3": "/some/replacement/path",
       };
-      when(mockedReadFile)
-        .calledWith("/some/replacement/path", { encoding: "utf-8" })
+      when(mockedReplacementFile)
+        .calledWith("/some/replacement/path")
         .mockResolvedValue("the replacement content");
 
       const result = await resolveLicenseContent("/some/directory", packageJson, replacements);
@@ -70,11 +70,11 @@ describe("resolveLicenseContent", () => {
         "some-package": "/some/less/specific/replacement/path",
         "some-package@1.2.3": "/some/more/specific/replacement/path",
       };
-      when(mockedReadFile)
-        .calledWith("/some/less/specific/replacement/path", { encoding: "utf-8" })
+      when(mockedReplacementFile)
+        .calledWith("/some/less/specific/replacement/path")
         .mockResolvedValue("the less specific replacement content");
-      when(mockedReadFile)
-        .calledWith("/some/more/specific/replacement/path", { encoding: "utf-8" })
+      when(mockedReplacementFile)
+        .calledWith("/some/more/specific/replacement/path")
         .mockResolvedValue("the more specific replacement content");
 
       const result = await resolveLicenseContent("/some/directory", packageJson, replacements);
@@ -96,7 +96,9 @@ describe("resolveLicenseContent", () => {
 
       const resolutions: Record<string, string> = {};
 
-      const _ = await resolveLicenseContent("/some/directory", packageJson, resolutions);
+      await expect(() =>
+        resolveLicenseContent("/some/directory", packageJson, resolutions),
+      ).rejects.toThrow();
 
       expect(mockedPackageJsonLicenseResolution).toHaveBeenCalledTimes(1);
       expect(mockedPackageJsonLicenseResolution).toHaveBeenCalledWith({
@@ -117,7 +119,7 @@ describe("resolveLicenseContent", () => {
       });
     });
 
-    it("should return null if all resolvers return null", async () => {
+    it("should throw if all resolvers return null", async () => {
       mockedPackageJsonLicenseResolution.mockResolvedValue(null);
       mockedLicenseFileResolution.mockResolvedValue(null);
       mockedSpdxExpressionResolution.mockResolvedValue(null);
@@ -129,9 +131,9 @@ describe("resolveLicenseContent", () => {
 
       const resolutions: Record<string, string> = {};
 
-      const result = await resolveLicenseContent("/some/directory", packageJson, resolutions);
-
-      expect(result).toBeNull();
+      await expect(() =>
+        resolveLicenseContent("/some/directory", packageJson, resolutions),
+      ).rejects.toThrow("Could not find license content for some-package@1.2.3");
     });
 
     describe("when a resolver returns a non-null value", () => {

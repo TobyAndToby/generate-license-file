@@ -39,7 +39,6 @@ describe("resolveDependenciesForPnpmProject", () => {
     name: "dependency3",
     paths: ["/some/path/dependency3"],
   };
-  const dependency3LicenseContent = null as unknown as string;
 
   const mockedReadFile = jest.mocked(readFile);
   const mockedDoesFileExist = jest.mocked(doesFileExist);
@@ -67,7 +66,9 @@ describe("resolveDependenciesForPnpmProject", () => {
 
     when(mockedResolveLicenseContent)
       .calledWith(dependency3.paths[0], expect.anything(), expect.anything())
-      .mockResolvedValue(dependency3LicenseContent);
+      .mockImplementation(() => {
+        throw new Error("Cannot find license content");
+      });
     setUpPackageJson(dependency3.paths[0], { name: dependency3.name, version: "1.0.0" });
   });
 
@@ -198,7 +199,6 @@ describe("resolveDependenciesForPnpmProject", () => {
           .get(dependency2LicenseContent)
           ?.find(d => d.name === "dependency2" && d.version === "2.0.0"),
       ).toBeDefined();
-      expect(licensesMap.get(dependency3LicenseContent)).toBeUndefined();
     });
 
     describe("when the dependency is in the exclude list", () => {
