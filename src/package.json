@@ -31,7 +31,7 @@
     "@nx/js": "19.3.1",
     "@nx/workspace": "19.3.1",
     "@swc/cli": "0.4.0",
-    "@swc/core": "1.7.2",
+    "@swc/core": "1.7.3",
     "@swc/jest": "0.2.36",
     "@types/jest": "29.5.12",
     "@types/jest-when": "^3.5.2",
