@@ -8,7 +8,7 @@ export type { GetProjectLicensesOptions } from "./lib/getProjectLicenses";
 export type { LineEnding } from "./lib/lineEndings";
 export type { ILicense } from "./lib/models/license";
 
-// The following is included to insure that Nx doesn't remove "commander"
+// The following is included to ensure that Nx doesn't remove "commander"
 // as a dependency from packages/generate-license-file/package.json.
 //
 // This is necessary because the @nx/dependency-checks eslint rule will
