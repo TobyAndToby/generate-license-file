@@ -15,7 +15,10 @@
       "url": "https://github.com/tobybessant"
     }
   ],
-  "files": ["src", "bin"],
+  "files": [
+    "src",
+    "bin"
+  ],
   "keywords": [
     "cli",
     "license",
