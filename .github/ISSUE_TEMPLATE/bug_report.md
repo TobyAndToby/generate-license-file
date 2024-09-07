@@ -11,8 +11,8 @@ assignees: ''
 A clear and concise description of what the bug is.
 
 **How are you using generate-license-file?**
-- [ ] CLI
-- [ ] Library
+CLI
+Library
 
 **What version of generate-license-file are you using?**
 [e.g. 3.5.1]
