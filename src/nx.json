@@ -39,5 +39,6 @@
   "workspaceLayout": {
     "appsDir": "packages",
     "libsDir": "packages"
-  }
+  },
+  "useLegacyCache": true
 }
