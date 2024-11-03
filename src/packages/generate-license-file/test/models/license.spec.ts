@@ -80,6 +80,22 @@ describe("License", () => {
       expect(result.includes(theNoticeContent)).toBeTruthy();
     });
 
+    it("should contain all notice contents if there are multiple", () => {
+      const theNoticeContent1 = "The notice content 1";
+      const theNoticeContent2 = "The notice content 2";
+
+      const license = new License("", [theNoticeContent1, theNoticeContent2], dependencies);
+
+      const result = license.format("\n");
+      const resultLines = result.split("\n");
+
+      const noticeOneIndex = resultLines.indexOf(theNoticeContent1);
+      const noticeTwoIndex = resultLines.indexOf(theNoticeContent2);
+
+      // The second notice should be after the first notice.
+      expect(noticeTwoIndex).toBeGreaterThan(noticeOneIndex);
+    });
+
     it.each(lineEndings)(
       "should normalise the line endings in the license content to %s",
       lineEnding => {
