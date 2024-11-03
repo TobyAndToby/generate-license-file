@@ -49,8 +49,6 @@ export class License implements ILicense {
     if (this.notices.length > 0) {
       const noticeContent = this.notices.map(notice => notice.trim()).join(lineEnding);
 
-      console.log(noticeContent);
-
       // Append the notices to the formatted text, preparing content for output to ensure
       // the line endings inside each notice content are consistent.
       formattedText +=

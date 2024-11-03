@@ -84,8 +84,6 @@ describe("getLicenseFileText", () => {
 
     const result = await getLicenseFileText("path");
 
-    console.log({ result });
-
     const indexOfLicense1 = result.indexOf("a: license");
     const indexOfLicense2 = result.indexOf("b: license");
     const indexOfLicense3 = result.indexOf("c: license");
