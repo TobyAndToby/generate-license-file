@@ -7,6 +7,7 @@ exports[`getProjectLicenses for a relative path should match snapshot 1`] = `
     "dependencies": [
       "dep-five@1.0.0",
     ],
+    "notices": [],
   },
   {
     "content": "# Dep Four
@@ -16,6 +17,7 @@ This license should be found.",
     "dependencies": [
       "dep-four@1.0.0",
     ],
+    "notices": [],
   },
   {
     "content": "# Dep One
@@ -26,6 +28,20 @@ This license should be found.
     "dependencies": [
       "dep-one@1.0.0",
     ],
+    "notices": [],
+  },
+  {
+    "content": "# Dep Seven
+
+This license should be found.
+",
+    "dependencies": [
+      "dep-seven@1.0.0",
+    ],
+    "notices": [
+      "This is the notice file bundled with dependency seven.
+",
+    ],
   },
   {
     "content": "# Dep Three
@@ -35,6 +51,7 @@ This license should be found.",
     "dependencies": [
       "dep-three@1.0.0",
     ],
+    "notices": [],
   },
   {
     "content": "# Dep Two
@@ -46,6 +63,7 @@ This license should be found.
       "dep-two@1.0.0",
       "dep-two-duplicate@1.0.0",
     ],
+    "notices": [],
   },
 ]
 `;
@@ -57,6 +75,7 @@ exports[`getProjectLicenses for an absolute path should match snapshot 1`] = `
     "dependencies": [
       "dep-five@1.0.0",
     ],
+    "notices": [],
   },
   {
     "content": "# Dep Four
@@ -66,6 +85,7 @@ This license should be found.",
     "dependencies": [
       "dep-four@1.0.0",
     ],
+    "notices": [],
   },
   {
     "content": "# Dep One
@@ -76,6 +96,20 @@ This license should be found.
     "dependencies": [
       "dep-one@1.0.0",
     ],
+    "notices": [],
+  },
+  {
+    "content": "# Dep Seven
+
+This license should be found.
+",
+    "dependencies": [
+      "dep-seven@1.0.0",
+    ],
+    "notices": [
+      "This is the notice file bundled with dependency seven.
+",
+    ],
   },
   {
     "content": "# Dep Three
@@ -85,6 +119,7 @@ This license should be found.",
     "dependencies": [
       "dep-three@1.0.0",
     ],
+    "notices": [],
   },
   {
     "content": "# Dep Two
@@ -96,6 +131,7 @@ This license should be found.
       "dep-two@1.0.0",
       "dep-two-duplicate@1.0.0",
     ],
+    "notices": [],
   },
 ]
 `;
@@ -107,6 +143,7 @@ exports[`getProjectLicenses should not include versions when omitVersions is tru
     "dependencies": [
       "dep-five",
     ],
+    "notices": [],
   },
   {
     "content": "# Dep Four
@@ -116,6 +153,7 @@ This license should be found.",
     "dependencies": [
       "dep-four",
     ],
+    "notices": [],
   },
   {
     "content": "# Dep One
@@ -126,6 +164,20 @@ This license should be found.
     "dependencies": [
       "dep-one",
     ],
+    "notices": [],
+  },
+  {
+    "content": "# Dep Seven
+
+This license should be found.
+",
+    "dependencies": [
+      "dep-seven",
+    ],
+    "notices": [
+      "This is the notice file bundled with dependency seven.
+",
+    ],
   },
   {
     "content": "# Dep Three
@@ -135,6 +187,7 @@ This license should be found.",
     "dependencies": [
       "dep-three",
     ],
+    "notices": [],
   },
   {
     "content": "# Dep Two
@@ -146,6 +199,7 @@ This license should be found.
       "dep-two",
       "dep-two-duplicate",
     ],
+    "notices": [],
   },
 ]
 `;

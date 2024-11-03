@@ -9,7 +9,7 @@ The following npm packages may be included in this product:
  - dep-two-duplicate@1.0.0
  - dep-two@1.0.0
 
-These packages each contain the following license and notice below:
+These packages each contain the following license:
 
 # Dep Two
 
@@ -22,7 +22,7 @@ The following npm package may be included in this product:
 
  - dep-four@1.0.0
 
-This package contains the following license and notice below:
+This package contains the following license:
 
 # Remote license
 
@@ -38,7 +38,7 @@ The following npm package may be included in this product:
 
  - dep-three@1.0.0
 
-This package contains the following license and notice below:
+This package contains the following license:
 
 I am the name-and-version replacement content.
 
@@ -48,7 +48,7 @@ The following npm package may be included in this product:
 
  - dep-one@1.0.0
 
-This package contains the following license and notice below:
+This package contains the following license:
 
 I am the name-only replacement content.
 
@@ -58,7 +58,7 @@ The following npm package may be included in this product:
 
  - dep-five@1.0.0
 
-This package contains the following license and notice below:
+This package contains the following license:
 
 MIT
 

@@ -75,16 +75,14 @@ describe("getLicenseFileText", () => {
 
   it("should sort the licenses by license content", async () => {
     const licenses: ResolvedLicense[] = [
-      { licenseContent: "b: license", dependencies: [] },
-      { licenseContent: "c: license", dependencies: [] },
-      { licenseContent: "a: license", dependencies: [] },
+      { licenseContent: "b: license", notices: [], dependencies: [] },
+      { licenseContent: "c: license", notices: [], dependencies: [] },
+      { licenseContent: "a: license", notices: [], dependencies: [] },
     ];
 
     mockedResolveLicenses.mockResolvedValue(licenses);
 
     const result = await getLicenseFileText("path");
-
-    console.log({ result });
 
     const indexOfLicense1 = result.indexOf("a: license");
     const indexOfLicense2 = result.indexOf("b: license");
@@ -98,6 +96,7 @@ describe("getLicenseFileText", () => {
     const licenses: ResolvedLicense[] = [
       {
         licenseContent: "stuff",
+        notices: [],
         dependencies: [
           { name: "a", version: "1.0.0" },
           { name: "b", version: "2.0.0" },
@@ -117,6 +116,7 @@ describe("getLicenseFileText", () => {
     const licenses: ResolvedLicense[] = [
       {
         licenseContent: "stuff",
+        notices: [],
         dependencies: [
           { name: "a", version: "1.0.0" },
           { name: "b", version: "2.0.0" },

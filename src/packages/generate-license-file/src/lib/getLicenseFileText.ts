@@ -66,7 +66,11 @@ export async function getLicenseFileText(
       return `${dep.name}@${dep.version ?? "unknown"}`;
     });
 
-    const license = new License(resolvedLicense.licenseContent, dependencies);
+    const license = new License(
+      resolvedLicense.licenseContent,
+      resolvedLicense.notices,
+      dependencies,
+    );
     licenseFile += license.format(EOL) + EOL + EOL + SUFFIX + EOL + EOL;
   }
 

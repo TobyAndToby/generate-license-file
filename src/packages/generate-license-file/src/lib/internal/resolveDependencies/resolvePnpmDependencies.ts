@@ -3,7 +3,8 @@ import logger from "../../utils/console.utils";
 import { readPackageJson } from "../../utils/packageJson.utils";
 import { getPnpmProjectDependencies, getPnpmVersion } from "../../utils/pnpmCli.utils";
 import { resolveLicenseContent } from "../resolveLicenseContent";
-import { Dependency, LicenseContent } from "../resolveLicenses";
+import { LicenseNoticeKey, ResolvedLicense } from "../resolveLicenses";
+import { resolveNotices } from "../resolveNoticeContent";
 
 type ResolveLicensesOptions = {
   replace?: Record<string, string>;
@@ -13,7 +14,7 @@ type ResolveLicensesOptions = {
 
 export const resolveDependenciesForPnpmProject = async (
   packageJson: string,
-  licensesMap: Map<LicenseContent, Dependency[]>,
+  licensesMap: Map<LicenseNoticeKey, ResolvedLicense>,
   options?: ResolveLicensesOptions,
 ) => {
   const replacements = options?.replace ?? {};
@@ -41,18 +42,29 @@ export const resolveDependenciesForPnpmProject = async (
           packageJson,
           replacements,
         );
+        const notices = await resolveNotices(dependencyPath);
 
-        const dependencies = licensesMap.get(licenseContent) ?? [];
+        const noticeKey = notices.length === 0 ? "" : notices.join("\n");
+        const licenseNoticePair: LicenseNoticeKey = `${licenseContent}:${noticeKey ?? ""}`;
 
-        const alreadyExists = dependencies.find(
+        const resolvedLicense: ResolvedLicense = licensesMap.get(licenseNoticePair) ?? {
+          dependencies: [],
+          licenseContent,
+          notices,
+        };
+
+        const alreadyExists = resolvedLicense.dependencies.find(
           dep => dep.name === dependency.name && dep.version === packageJson.version,
         );
 
         if (!alreadyExists) {
-          dependencies.push({ name: dependency.name, version: packageJson.version });
+          resolvedLicense.dependencies.push({
+            name: dependency.name,
+            version: packageJson.version,
+          });
         }
 
-        licensesMap.set(licenseContent, dependencies);
+        licensesMap.set(licenseNoticePair, resolvedLicense);
       } catch (error) {
         const warningLines = [
           `Unable to determine license content for ${packageJson.name}@${packageJson.version} with error:`,

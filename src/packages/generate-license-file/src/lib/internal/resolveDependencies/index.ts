@@ -1,6 +1,6 @@
 ﻿import { dirname, join } from "path";
 import { doesFileExist } from "../../utils/file.utils";
-import { Dependency, LicenseContent } from "../resolveLicenses";
+import { LicenseNoticeKey, ResolvedLicense } from "../resolveLicenses";
 import { resolveDependenciesForNpmProject } from "./resolveNpmDependencies";
 import { resolveDependenciesForPnpmProject } from "./resolvePnpmDependencies";
 
@@ -13,7 +13,7 @@ type PackageManager = "npm" | "pnpm";
 
 export const resolveDependencies = async (
   packageJson: string,
-  licensesMap: Map<LicenseContent, Dependency[]>,
+  licensesMap: Map<LicenseNoticeKey, ResolvedLicense>,
   options?: ResolveLicensesOptions,
 ) => {
   const packageManager = await resolvePackageManager(packageJson);

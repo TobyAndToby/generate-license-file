@@ -8,7 +8,7 @@ The following npm package may be included in this product:
 
  - dep-four@1.0.0
 
-This package contains the following license and notice below:
+This package contains the following license:
 
 # Dep Four
 
@@ -22,7 +22,7 @@ The following npm packages may be included in this product:
  - dep-one@1.0.0
  - dep-six@1.0.0
 
-These packages each contain the following license and notice below:
+These packages each contain the following license:
 
 # Dep One
 
@@ -33,9 +33,25 @@ This license should be found.
 
 The following npm package may be included in this product:
 
+ - dep-seven@1.0.0
+
+This package contains the following license:
+
+# Dep Seven
+
+This license should be found.
+
+With the following notices:
+
+This is the notice file bundled with dependency seven.
+
+-----------
+
+The following npm package may be included in this product:
+
  - dep-three@1.0.0
 
-This package contains the following license and notice below:
+This package contains the following license:
 
 # Dep Three
 
@@ -49,7 +65,7 @@ The following npm packages may be included in this product:
  - dep-two-duplicate@1.0.0
  - dep-two@1.0.0
 
-These packages each contain the following license and notice below:
+These packages each contain the following license:
 
 # Dep Two
 
@@ -62,7 +78,7 @@ The following npm package may be included in this product:
 
  - dep-five@1.0.0
 
-This package contains the following license and notice below:
+This package contains the following license:
 
 MIT
 
