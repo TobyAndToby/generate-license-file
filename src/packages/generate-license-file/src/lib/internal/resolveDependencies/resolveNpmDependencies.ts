@@ -40,7 +40,7 @@ export const resolveDependenciesForNpmProject = async (
 
     try {
       const licenseContent = await resolveLicenseContent(node.realpath, packageJson, replacements);
-      const noticeContent = await resolveNoticeContent(node.realpath);
+      const noticeContent = await resolveNoticeContent({ directory: node.realpath, packageJson });
 
       const licenseNoticePair: LicenseNoticePair = `${licenseContent}:${noticeContent ?? ""}`;
 

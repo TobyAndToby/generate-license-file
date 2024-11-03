@@ -42,7 +42,10 @@ export const resolveDependenciesForPnpmProject = async (
           packageJson,
           replacements,
         );
-        const noticeContent = await resolveNoticeContent(dependencyPath);
+        const noticeContent = await resolveNoticeContent({
+          directory: dependencyPath,
+          packageJson,
+        });
 
         const licenseNoticePair: LicenseNoticePair = `${licenseContent}:${noticeContent ?? ""}`;
 

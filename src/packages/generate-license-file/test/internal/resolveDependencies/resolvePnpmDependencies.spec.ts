@@ -1,9 +1,9 @@
 ﻿import { when } from "jest-when";
-import { resolveNoticeContent } from "packages/generate-license-file/src/lib/internal/resolveNoticeContent";
 import { join } from "path";
 import { resolveDependenciesForPnpmProject } from "../../../src/lib/internal/resolveDependencies/resolvePnpmDependencies";
 import { resolveLicenseContent } from "../../../src/lib/internal/resolveLicenseContent";
 import { LicenseNoticePair, ResolvedLicense } from "../../../src/lib/internal/resolveLicenses";
+import { resolveNoticeContent } from "../../../src/lib/internal/resolveNoticeContent";
 import logger from "../../../src/lib/utils/console.utils";
 import { doesFileExist, readFile } from "../../../src/lib/utils/file.utils";
 import { PackageJson } from "../../../src/lib/utils/packageJson.utils";
