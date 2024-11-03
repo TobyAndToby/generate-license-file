@@ -11,7 +11,8 @@
     "dep-one": "file:../.dependencies/dep-1",
     "dep-three": "file:../.dependencies/dep-3",
     "dep-two": "file:../.dependencies/dep-2",
-    "dep-two-duplicate": "file:../.dependencies/dep-2-duplicate"
+    "dep-two-duplicate": "file:../.dependencies/dep-2-duplicate",
+    "dep-seven": "file:../.dependencies/dep-7"
   },
   "devDependencies": {
     "@generate-license-file/e2e-helpers": "file:../../src/dist/packages/e2e-helpers",

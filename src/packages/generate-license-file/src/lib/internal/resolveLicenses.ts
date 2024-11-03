@@ -6,6 +6,8 @@ type ResolveLicensesOptions = {
 };
 
 export type LicenseContent = string;
+export type NoticeContent = string;
+export type LicenseNoticePair = `${LicenseContent}:${NoticeContent}`;
 
 export type Dependency = {
   name: string;
@@ -14,6 +16,7 @@ export type Dependency = {
 
 export type ResolvedLicense = {
   licenseContent: LicenseContent;
+  noticeContent: NoticeContent | null;
   dependencies: Dependency[];
 };
 
@@ -21,23 +24,11 @@ export const resolveLicenses = async (
   packageJsons: string[],
   options?: ResolveLicensesOptions,
 ): Promise<ResolvedLicense[]> => {
-  const licensesMap = new Map<LicenseContent, Dependency[]>();
+  const licensesMap = new Map<LicenseNoticePair, ResolvedLicense>();
 
   for (const packageJson of packageJsons) {
     await resolveDependencies(packageJson, licensesMap, options);
   }
 
-  return flattenDependencyMapToLicenseArray(licensesMap);
-};
-
-const flattenDependencyMapToLicenseArray = (
-  dependencyLicenses: Map<LicenseContent, Dependency[]>,
-): ResolvedLicense[] => {
-  const licenses: ResolvedLicense[] = [];
-
-  for (const [licenseContent, dependencies] of dependencyLicenses) {
-    licenses.push({ licenseContent, dependencies });
-  }
-
-  return licenses;
+  return Array.from(licensesMap.values());
 };

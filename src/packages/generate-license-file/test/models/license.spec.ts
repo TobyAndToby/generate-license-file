@@ -13,7 +13,7 @@ describe("License", () => {
     const prefix = "The following npm packages may be included in this product:";
 
     it("should prefix the license", () => {
-      const license = new License("", []);
+      const license = new License("", null, []);
 
       const result = license.format("\n");
 
@@ -23,7 +23,7 @@ describe("License", () => {
     it.each(lineEndings)("should use the %s line ending twice after the prefix", lineEnding => {
       const eol = getLineEndingCharacters(lineEnding);
 
-      const license = new License("", []);
+      const license = new License("", null, []);
 
       const result = license.format(eol);
       const resultWithoutPrefix = result.substring(prefix.length);
@@ -32,7 +32,7 @@ describe("License", () => {
     });
 
     it("should list all of the dependencies", () => {
-      const license = new License("", dependencies);
+      const license = new License("", null, dependencies);
 
       const result = license.format("\n");
       const resultLines = result.split("\n");
@@ -50,7 +50,7 @@ describe("License", () => {
 
         const lastDep = "last dep";
         const lastDepOnly = [lastDep];
-        const license = new License("", lastDepOnly);
+        const license = new License("", null, lastDepOnly);
 
         const result = license.format(eol);
         const indexOfLastDependency = result.lastIndexOf(lastDep);
@@ -63,7 +63,7 @@ describe("License", () => {
     it("should end with the license content", () => {
       const theLicenseContent = "The license content";
 
-      const license = new License(theLicenseContent, dependencies);
+      const license = new License(theLicenseContent, null, dependencies);
 
       const result = license.format("\n");
 
@@ -78,7 +78,7 @@ describe("License", () => {
         const originalLicenseContent = `The\rlicense\nfile\r\ncontent`;
         const expectedLicenseContent = `The${eol}license${eol}file${eol}content`;
 
-        const license = new License(originalLicenseContent, dependencies);
+        const license = new License(originalLicenseContent, null, dependencies);
 
         const result = license.format(eol);
 

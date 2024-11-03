@@ -15,7 +15,7 @@ export const extensionDenyList = [".js", ".ts", ".sh", ".ps1"];
 export const licenseFile: Resolution = async inputs => {
   const { directory, packageJson } = inputs;
 
-  const licenseFiles = await glob("{license,licence,copying,notice}{,-*,.*}", {
+  const licenseFiles = await glob("{license,licence,copying}{,-*,.*}", {
     nocase: true,
     nodir: true,
     absolute: true,

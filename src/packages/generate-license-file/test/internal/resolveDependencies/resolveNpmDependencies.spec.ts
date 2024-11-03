@@ -3,7 +3,7 @@ import { when } from "jest-when";
 import { join } from "path";
 import { resolveDependenciesForNpmProject } from "../../../src/lib/internal/resolveDependencies/resolveNpmDependencies";
 import { resolveLicenseContent } from "../../../src/lib/internal/resolveLicenseContent";
-import { Dependency, LicenseContent } from "../../../src/lib/internal/resolveLicenses";
+import { LicenseNoticePair, ResolvedLicense } from "../../../src/lib/internal/resolveLicenses";
 import logger from "../../../src/lib/utils/console.utils";
 import { doesFileExist, readFile } from "../../../src/lib/utils/file.utils";
 import { PackageJson } from "../../../src/lib/utils/packageJson.utils";
@@ -29,36 +29,43 @@ describe("resolveNpmDependencies", () => {
   const child1Version = "1.0.0";
   const child1Realpath = "/some/path/child1";
   const child1LicenseContent = "license contents for child1 and child1.2";
+  const child1LicenseNoticePair: LicenseNoticePair = `${child1LicenseContent}:`;
 
   const child1_1Name = "child1.1";
   const child1_1Version = "1.1.0";
   const child1_1Realpath = "/some/path/child1.1";
   const child1_1LicenseContent = "license contents for child1.1";
+  const child1_1LicenseNoticePair: LicenseNoticePair = `${child1_1LicenseContent}:`;
 
   const child1_2Name = "child1.2";
   const child1_2Version = "1.2.0";
   const child1_2Realpath = "/some/path/child1.2";
   const child1_2LicenseContent = child1LicenseContent;
+  const child1_2LicenseNoticePair: LicenseNoticePair = `${child1_2LicenseContent}:`;
 
   const child2Name = "child2";
   const child2Version = "2.0.0";
   const child2Realpath = "/some/path/child2";
   const child2LicenseContent = "license contents for child2";
+  const child2LicenseNoticePair: LicenseNoticePair = `${child2LicenseContent}:`;
 
   const child2_1Name = "child2.1";
   const child2_1Version = "2.1.0";
   const child2_1Realpath = "/some/path/child2.1";
   const child2_1LicenseContent = "license contents for child2.1";
+  const child2_1LicenseNoticePair: LicenseNoticePair = `${child2_1LicenseContent}:`;
 
   const child3Name = "child3";
   const child3Version = "3.0.0";
   const child3Realpath = "/some/path/child3";
   const child3LicenseContent = "license contents for child3";
+  const child3LicenseNoticePair: LicenseNoticePair = `${child3LicenseContent}:`;
 
   const child3_1Name = "child3.1";
   const child3_1Version = "3.1.0";
   const child3_1Realpath = "/some/path/child3.1";
   const child3_1LicenseContent = "license contents for child3.1";
+  const child3_1LicenseNoticePair: LicenseNoticePair = `${child3_1LicenseContent}:`;
 
   // A node tree where:
   // - child1 is a 'normal' dependency
@@ -279,78 +286,86 @@ describe("resolveNpmDependencies", () => {
 
   describe("when no options are provided", () => {
     it("should include non-dev dependencies in the result", async () => {
-      const licensesMap = new Map<LicenseContent, Dependency[]>();
+      const licensesMap = new Map<LicenseNoticePair, ResolvedLicense>();
 
       await resolveDependenciesForNpmProject("/some/path/package.json", licensesMap);
 
-      const child1LicenseContentMap = licensesMap.get(child1LicenseContent);
-      expect(child1LicenseContentMap?.find(c => c.name === child1Name)).toBeDefined();
+      const child1LicenseContentMap = licensesMap.get(child1LicenseNoticePair);
+      expect(child1LicenseContentMap?.dependencies.find(c => c.name === child1Name)).toBeDefined();
 
-      const child1_1LicenseContentMap = licensesMap.get(child1_1LicenseContent);
-      expect(child1_1LicenseContentMap?.find(c => c.name === child1_1Name)).toBeDefined();
+      const child1_1LicenseContentMap = licensesMap.get(child1_1LicenseNoticePair);
+      expect(
+        child1_1LicenseContentMap?.dependencies.find(c => c.name === child1_1Name),
+      ).toBeDefined();
 
-      const child1_2LicenseContentMap = licensesMap.get(child1_2LicenseContent);
-      expect(child1_2LicenseContentMap?.find(c => c.name === child1_2Name)).toBeDefined();
+      const child1_2LicenseContentMap = licensesMap.get(child1_2LicenseNoticePair);
+      expect(
+        child1_2LicenseContentMap?.dependencies.find(c => c.name === child1_2Name),
+      ).toBeDefined();
     });
 
     it("should not include dev dependencies in the result", async () => {
-      const licensesMap = new Map<LicenseContent, Dependency[]>();
+      const licensesMap = new Map<LicenseNoticePair, ResolvedLicense>();
 
       await resolveDependenciesForNpmProject("/some/path/package.json", licensesMap);
 
-      const child2LicenseContentMap = licensesMap.get(child2LicenseContent);
+      const child2LicenseContentMap = licensesMap.get(child2LicenseNoticePair);
       expect(child2LicenseContentMap).toBeUndefined();
 
-      const child2_1LicenseContentMap = licensesMap.get(child2_1LicenseContent);
+      const child2_1LicenseContentMap = licensesMap.get(child2_1LicenseNoticePair);
       expect(child2_1LicenseContentMap).toBeUndefined();
     });
 
     it("should not include peer dependencies in the result", async () => {
-      const licensesMap = new Map<LicenseContent, Dependency[]>();
+      const licensesMap = new Map<LicenseNoticePair, ResolvedLicense>();
 
       await resolveDependenciesForNpmProject("/some/path/package.json", licensesMap);
 
-      const child3LicenseContentMap = licensesMap.get(child3LicenseContent);
+      const child3LicenseContentMap = licensesMap.get(child3LicenseNoticePair);
       expect(child3LicenseContentMap).toBeUndefined();
 
-      const child3_1LicenseContentMap = licensesMap.get(child3_1LicenseContent);
+      const child3_1LicenseContentMap = licensesMap.get(child3_1LicenseNoticePair);
       expect(child3_1LicenseContentMap).toBeUndefined();
     });
   });
 
   describe("when a dependency is in the exclude list", () => {
     it("should not include the dependency in the result", async () => {
-      const licensesMap = new Map<LicenseContent, Dependency[]>();
+      const licensesMap = new Map<LicenseNoticePair, ResolvedLicense>();
 
       await resolveDependenciesForNpmProject("/some/path/package.json", licensesMap, {
         exclude: [`${child1_1Name}@${child1_1Version}`],
       });
 
-      const child1LicenseContentMap = licensesMap.get(child1LicenseContent);
-      expect(child1LicenseContentMap?.find(c => c.name === child1Name)).toBeDefined();
+      const child1LicenseContentMap = licensesMap.get(child1LicenseNoticePair);
+      expect(child1LicenseContentMap?.dependencies.find(c => c.name === child1Name)).toBeDefined();
 
-      const child1_1LicenseContentMap = licensesMap.get(child1_1LicenseContent);
+      const child1_1LicenseContentMap = licensesMap.get(child1_1LicenseNoticePair);
       expect(child1_1LicenseContentMap).toBeUndefined();
 
-      const child1_2LicenseContentMap = licensesMap.get(child1_2LicenseContent);
-      expect(child1_2LicenseContentMap?.find(c => c.name === child1_2Name)).toBeDefined();
+      const child1_2LicenseContentMap = licensesMap.get(child1_2LicenseNoticePair);
+      expect(
+        child1_2LicenseContentMap?.dependencies.find(c => c.name === child1_2Name),
+      ).toBeDefined();
     });
 
     it("should not include the dependency in the result if specified by name only", async () => {
-      const licensesMap = new Map<LicenseContent, Dependency[]>();
+      const licensesMap = new Map<LicenseNoticePair, ResolvedLicense>();
 
       await resolveDependenciesForNpmProject("/some/path/package.json", licensesMap, {
         exclude: [`${child1_1Name}`],
       });
 
-      const child1LicenseContentMap = licensesMap.get(child1LicenseContent);
-      expect(child1LicenseContentMap?.find(c => c.name === child1Name)).toBeDefined();
+      const child1LicenseContentMap = licensesMap.get(child1LicenseNoticePair);
+      expect(child1LicenseContentMap?.dependencies.find(c => c.name === child1Name)).toBeDefined();
 
-      const child1_1LicenseContentMap = licensesMap.get(child1_1LicenseContent);
+      const child1_1LicenseContentMap = licensesMap.get(child1_1LicenseNoticePair);
       expect(child1_1LicenseContentMap).toBeUndefined();
 
-      const child1_2LicenseContentMap = licensesMap.get(child1_2LicenseContent);
-      expect(child1_2LicenseContentMap?.find(c => c.name === child1_2Name)).toBeDefined();
+      const child1_2LicenseContentMap = licensesMap.get(child1_2LicenseNoticePair);
+      expect(
+        child1_2LicenseContentMap?.dependencies.find(c => c.name === child1_2Name),
+      ).toBeDefined();
     });
   });
 
