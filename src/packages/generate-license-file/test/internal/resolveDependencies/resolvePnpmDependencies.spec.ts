@@ -2,8 +2,8 @@
 import { join } from "path";
 import { resolveDependenciesForPnpmProject } from "../../../src/lib/internal/resolveDependencies/resolvePnpmDependencies";
 import { resolveLicenseContent } from "../../../src/lib/internal/resolveLicenseContent";
-import { LicenseNoticePair, ResolvedLicense } from "../../../src/lib/internal/resolveLicenses";
-import { resolveNoticeContent } from "../../../src/lib/internal/resolveNoticeContent";
+import { LicenseNoticeKey, ResolvedLicense } from "../../../src/lib/internal/resolveLicenses";
+import { resolveNotices } from "../../../src/lib/internal/resolveNoticeContent";
 import logger from "../../../src/lib/utils/console.utils";
 import { doesFileExist, readFile } from "../../../src/lib/utils/file.utils";
 import { PackageJson } from "../../../src/lib/utils/packageJson.utils";
@@ -26,7 +26,7 @@ jest.mock("../../../src/lib/internal/resolveLicenseContent", () => ({
 }));
 
 jest.mock("../../../src/lib/internal/resolveNoticeContent", () => ({
-  resolveNoticeContent: jest.fn(),
+  resolveNotices: jest.fn(),
 }));
 
 describe("resolveDependenciesForPnpmProject", () => {
@@ -35,14 +35,14 @@ describe("resolveDependenciesForPnpmProject", () => {
     paths: ["/some/path/dependency1"],
   };
   const dependency1LicenseContent = "license content 1";
-  const dependency1LicenseNoticePair: LicenseNoticePair = `${dependency1LicenseContent}:`;
+  const dependency1LicenseNoticePair: LicenseNoticeKey = `${dependency1LicenseContent}:`;
 
   const dependency2: PnpmDependency = {
     name: "dependency2",
     paths: ["/some/path/dependency2", "/some/other/path/dependency2"],
   };
   const dependency2LicenseContent = "license content 2";
-  const dependency2LicenseNoticePair: LicenseNoticePair = `${dependency2LicenseContent}:`;
+  const dependency2LicenseNoticePair: LicenseNoticeKey = `${dependency2LicenseContent}:`;
 
   const dependency3: PnpmDependency = {
     name: "dependency3",
@@ -55,7 +55,7 @@ describe("resolveDependenciesForPnpmProject", () => {
   const mockedGetPnpmVersion = jest.mocked(getPnpmVersion);
   const mockedGetPnpmProjectDependencies = jest.mocked(getPnpmProjectDependencies);
   const mockedResolveLicenseContent = jest.mocked(resolveLicenseContent);
-  const mockedResolveNoticeContent = jest.mocked(resolveNoticeContent);
+  const mockedResolveNotices = jest.mocked(resolveNotices);
 
   beforeEach(() => {
     jest.resetAllMocks();
@@ -81,7 +81,7 @@ describe("resolveDependenciesForPnpmProject", () => {
         throw new Error("Cannot find license content");
       });
 
-    mockedResolveNoticeContent.mockResolvedValue(null);
+    mockedResolveNotices.mockResolvedValue([]);
 
     setUpPackageJson(dependency3.paths[0], { name: dependency3.name, version: "1.0.0" });
   });
@@ -198,7 +198,7 @@ describe("resolveDependenciesForPnpmProject", () => {
       mockedGetPnpmVersion.mockResolvedValue(pnpmVersion);
       mockedGetPnpmProjectDependencies.mockResolvedValue([dependency1, dependency2, dependency3]);
 
-      const licensesMap = new Map<LicenseNoticePair, ResolvedLicense>();
+      const licensesMap = new Map<LicenseNoticeKey, ResolvedLicense>();
 
       await resolveDependenciesForPnpmProject("/some/path/package.json", licensesMap);
 
@@ -225,7 +225,7 @@ describe("resolveDependenciesForPnpmProject", () => {
           .calledWith(dependency1.paths[0], expect.anything(), expect.anything())
           .mockRejectedValue(error);
 
-        const licensesMap = new Map<LicenseNoticePair, ResolvedLicense>();
+        const licensesMap = new Map<LicenseNoticeKey, ResolvedLicense>();
 
         await resolveDependenciesForPnpmProject("/some/path/package.json", licensesMap);
 

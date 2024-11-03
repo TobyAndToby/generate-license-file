@@ -68,7 +68,7 @@ export async function getLicenseFileText(
 
     const license = new License(
       resolvedLicense.licenseContent,
-      resolvedLicense.noticeContent,
+      resolvedLicense.notices,
       dependencies,
     );
     licenseFile += license.format(EOL) + EOL + EOL + SUFFIX + EOL + EOL;

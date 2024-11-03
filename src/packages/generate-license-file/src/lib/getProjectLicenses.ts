@@ -35,7 +35,7 @@ export async function getProjectLicenses(
 
     results.push({
       content: license.licenseContent,
-      notices: license.noticeContent,
+      notices: license.notices,
       dependencies,
     });
   }

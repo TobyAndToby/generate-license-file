@@ -20,7 +20,7 @@ export interface ILicense {
   /**
    * Notices for the license.
    */
-  notices: string | null;
+  notices: string[];
 
   /**
    * List of node packages that this license applies to.
@@ -30,10 +30,10 @@ export interface ILicense {
 
 export class License implements ILicense {
   public content: string;
-  public notices: string | null;
+  public notices: string[];
   public dependencies: string[];
 
-  public constructor(content: string, notices: string | null, dependencies: string[]) {
+  public constructor(content: string, notices: string[], dependencies: string[]) {
     this.content = content;
     this.notices = notices;
     this.dependencies = dependencies;
@@ -46,9 +46,15 @@ export class License implements ILicense {
       this.midfix(lineEnding) +
       prepareContentForOutput(this.content.trim(), lineEnding);
 
-    if (this.notices !== null) {
+    if (this.notices.length > 0) {
+      const noticeContent = this.notices.map(notice => notice.trim()).join(lineEnding);
+
+      console.log(noticeContent);
+
+      // Append the notices to the formatted text, preparing content for output to ensure
+      // the line endings inside each notice content are consistent.
       formattedText +=
-        this.noticesPrefix(lineEnding) + prepareContentForOutput(this.notices.trim(), lineEnding);
+        this.noticesPrefix(lineEnding) + prepareContentForOutput(noticeContent, lineEnding);
     }
 
     return formattedText;

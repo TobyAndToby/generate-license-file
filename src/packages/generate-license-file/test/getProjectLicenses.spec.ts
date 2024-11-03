@@ -47,7 +47,7 @@ describe("getProjectLicenses", () => {
     const licenses: ResolvedLicense[] = [
       {
         licenseContent: "stuff",
-        noticeContent: "notice",
+        notices: [],
         dependencies: [
           { name: "a", version: "1.0.0" },
           { name: "b", version: "2.0.0" },
@@ -55,7 +55,7 @@ describe("getProjectLicenses", () => {
       },
       {
         licenseContent: "also stuff",
-        noticeContent: "notice",
+        notices: [],
         dependencies: [
           { name: "c", version: "3.0.0" },
           { name: "d", version: "4.0.0" },
@@ -70,7 +70,7 @@ describe("getProjectLicenses", () => {
     for (let i = 0; i < licenses.length; i++) {
       expect(result[i]).toEqual({
         content: licenses[i].licenseContent,
-        notices: licenses[i].noticeContent,
+        notices: licenses[i].notices,
         dependencies: expect.anything(),
       });
     }
@@ -80,7 +80,7 @@ describe("getProjectLicenses", () => {
     const licenses: ResolvedLicense[] = [
       {
         licenseContent: "stuff",
-        noticeContent: "notice",
+        notices: [],
         dependencies: [
           { name: "a", version: "1.0.0" },
           { name: "b", version: "2.0.0" },
@@ -103,7 +103,7 @@ describe("getProjectLicenses", () => {
     const licenses: ResolvedLicense[] = [
       {
         licenseContent: "stuff",
-        noticeContent: "notice",
+        notices: [],
         dependencies: [
           { name: "a", version: "1.0.0" },
           { name: "b", version: "2.0.0" },

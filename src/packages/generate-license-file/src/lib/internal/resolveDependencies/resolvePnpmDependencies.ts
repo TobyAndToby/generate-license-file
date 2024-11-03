@@ -3,8 +3,8 @@ import logger from "../../utils/console.utils";
 import { readPackageJson } from "../../utils/packageJson.utils";
 import { getPnpmProjectDependencies, getPnpmVersion } from "../../utils/pnpmCli.utils";
 import { resolveLicenseContent } from "../resolveLicenseContent";
-import { LicenseNoticePair, ResolvedLicense } from "../resolveLicenses";
-import { resolveNoticeContent } from "../resolveNoticeContent";
+import { LicenseNoticeKey, ResolvedLicense } from "../resolveLicenses";
+import { resolveNotices } from "../resolveNoticeContent";
 
 type ResolveLicensesOptions = {
   replace?: Record<string, string>;
@@ -14,7 +14,7 @@ type ResolveLicensesOptions = {
 
 export const resolveDependenciesForPnpmProject = async (
   packageJson: string,
-  licensesMap: Map<LicenseNoticePair, ResolvedLicense>,
+  licensesMap: Map<LicenseNoticeKey, ResolvedLicense>,
   options?: ResolveLicensesOptions,
 ) => {
   const replacements = options?.replace ?? {};
@@ -42,17 +42,15 @@ export const resolveDependenciesForPnpmProject = async (
           packageJson,
           replacements,
         );
-        const noticeContent = await resolveNoticeContent({
-          directory: dependencyPath,
-          packageJson,
-        });
+        const notices = await resolveNotices(dependencyPath);
 
-        const licenseNoticePair: LicenseNoticePair = `${licenseContent}:${noticeContent ?? ""}`;
+        const noticeKey = notices.length === 0 ? "" : notices.join("\n");
+        const licenseNoticePair: LicenseNoticeKey = `${licenseContent}:${noticeKey ?? ""}`;
 
         const resolvedLicense: ResolvedLicense = licensesMap.get(licenseNoticePair) ?? {
           dependencies: [],
           licenseContent,
-          noticeContent,
+          notices,
         };
 
         const alreadyExists = resolvedLicense.dependencies.find(

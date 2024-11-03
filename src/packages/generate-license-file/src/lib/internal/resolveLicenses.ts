@@ -6,8 +6,8 @@ type ResolveLicensesOptions = {
 };
 
 export type LicenseContent = string;
-export type NoticeContent = string;
-export type LicenseNoticePair = `${LicenseContent}:${NoticeContent}`;
+export type NoticeKey = string;
+export type LicenseNoticeKey = `${LicenseContent}:${NoticeKey}`;
 
 export type Dependency = {
   name: string;
@@ -16,7 +16,7 @@ export type Dependency = {
 
 export type ResolvedLicense = {
   licenseContent: LicenseContent;
-  noticeContent: NoticeContent | null;
+  notices: string[];
   dependencies: Dependency[];
 };
 
@@ -24,7 +24,7 @@ export const resolveLicenses = async (
   packageJsons: string[],
   options?: ResolveLicensesOptions,
 ): Promise<ResolvedLicense[]> => {
-  const licensesMap = new Map<LicenseNoticePair, ResolvedLicense>();
+  const licensesMap = new Map<LicenseNoticeKey, ResolvedLicense>();
 
   for (const packageJson of packageJsons) {
     await resolveDependencies(packageJson, licensesMap, options);
