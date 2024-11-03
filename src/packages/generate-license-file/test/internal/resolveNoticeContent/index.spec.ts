@@ -1,7 +1,6 @@
 import { glob } from "glob";
 import { when } from "jest-when";
 import { resolveNotices } from "../../../src/lib/internal/resolveNoticeContent";
-import logger from "../../../src/lib/utils/console.utils";
 import { readFile } from "../../../src/lib/utils/file.utils";
 
 jest.mock("glob", () => ({
@@ -14,7 +13,6 @@ jest.mock("../../../src/lib/utils/console.utils"); // Stops logger.warn from bei
 describe("resolveNoticeContent", () => {
   const mockedGlob = jest.mocked(glob);
   const mockedReadFile = jest.mocked(readFile);
-  const mockedWarn = jest.mocked(logger.warn);
 
   const directory = "/some/directory";
 
