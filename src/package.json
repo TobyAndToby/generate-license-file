@@ -30,7 +30,7 @@
     "@nx/jest": "20.0.7",
     "@nx/js": "20.0.7",
     "@nx/workspace": "20.0.7",
-    "@swc/cli": "0.5.1",
+    "@swc/cli": "0.5.2",
     "@swc/core": "1.9.3",
     "@swc/jest": "0.2.37",
     "@types/jest": "29.5.14",
