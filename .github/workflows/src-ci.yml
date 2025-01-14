@@ -178,8 +178,8 @@ jobs:
       fail-fast: false
       matrix:
         pnpm:
-          - 8
           - 9
+          - 10
 
     name: E2E (pnpm ${{ matrix.pnpm }})
 

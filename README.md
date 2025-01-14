@@ -108,6 +108,8 @@ Each package in the monorepo (under `src/packages/`) contains a README with furt
 ```bash
 # cwd: src/
 
+npm install
+
 npm run lint
 
 npm run test  # unit tests
