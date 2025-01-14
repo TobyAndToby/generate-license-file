@@ -79,6 +79,7 @@ export const resolveDependenciesForPnpmProject = async (
 };
 
 const allowedPnpmMinorVersions: Record<number, number> = {
+  10: 0,
   9: 0,
   8: 0,
   7: 33,
