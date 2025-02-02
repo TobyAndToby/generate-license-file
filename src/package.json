@@ -9,19 +9,19 @@
     "test:e2e": "nx run-many -t e2e"
   },
   "dependencies": {
-    "@commander-js/extra-typings": "^12.0.0",
+    "@commander-js/extra-typings": "^13.1.0",
     "@npmcli/arborist": "^9.0.0",
     "@types/npmcli__arborist": "^6.0.0",
     "cli-spinners": "^2.6.0",
-    "commander": "^12.0.0",
+    "commander": "^13.1.0",
     "cosmiconfig": "^9.0.0",
-    "enquirer": "^2.3.6",
+    "enquirer": "^2.4.1",
     "glob": "^11.0.0",
     "json5": "^2.2.3",
     "ora": "^5.4.1",
     "tslib": "^2.8.1",
     "webpack": "^5.75.0",
-    "zod": "^3.21.4"
+    "zod": "^3.24.1"
   },
   "devDependencies": {
     "@nx/eslint": "20.0.7",
