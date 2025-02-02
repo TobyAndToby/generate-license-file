@@ -42,10 +42,10 @@
     "generate-license-file": "bin/generate-license-file"
   },
   "dependencies": {
-    "@commander-js/extra-typings": "^12.0.0",
+    "@commander-js/extra-typings": "^13.1.0",
     "@npmcli/arborist": "^9.0.0",
     "cli-spinners": "^2.6.0",
-    "commander": "^12.0.0",
+    "commander": "^13.1.0",
     "cosmiconfig": "^9.0.0",
     "enquirer": "^2.3.6",
     "json5": "^2.2.3",
