@@ -131,9 +131,9 @@ jobs:
           - name: Windows
             value: windows-latest
         node:
-          - 18
           - 20
-          - 21
+          - 22
+          - 23
 
     name: E2E (Node ${{ matrix.node }} on ${{ matrix.os.name }})
 
@@ -179,7 +179,7 @@ jobs:
       matrix:
         pnpm:
           - 9
-          - 10
+          - 10.0.0
 
     name: E2E (pnpm ${{ matrix.pnpm }})
 
