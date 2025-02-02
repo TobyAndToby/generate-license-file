@@ -178,7 +178,7 @@ jobs:
       fail-fast: false
       matrix:
         pnpm:
-          - 9
+          - 9.15.4
           - 10.0.0
 
     name: E2E (pnpm ${{ matrix.pnpm }})
