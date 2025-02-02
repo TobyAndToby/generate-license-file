@@ -9,7 +9,7 @@
     "test:e2e": "nx run-many -t e2e"
   },
   "dependencies": {
-    "@commander-js/extra-typings": "^12.0.0",
+    "@commander-js/extra-typings": "^13.0.0",
     "@npmcli/arborist": "^9.0.0",
     "@swc/helpers": "0.5.15",
     "@types/npmcli__arborist": "^5.6.1",
