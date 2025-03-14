@@ -47,11 +47,6 @@ const config = {
           content: "LVR-C5uuH8bBRQHrbHnLl3_PCk1wxWfD5hnWgseIRuE",
         },
       ],
-      announcementBar: {
-        backgroundColor: "#0070f3",
-        content: "<b>Version 3.0.0 just released! 🎉</b>",
-        textColor: "#FFF",
-      },
       navbar: {
         title: "Generate License File",
         logo: {
