@@ -131,6 +131,7 @@ jobs:
           - name: Windows
             value: windows-latest
         node:
+          - 18
           - 20
           - 22
           - 23
