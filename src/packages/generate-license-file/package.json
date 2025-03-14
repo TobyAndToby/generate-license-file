@@ -43,7 +43,7 @@
   },
   "dependencies": {
     "@commander-js/extra-typings": "^13.1.0",
-    "@npmcli/arborist": "^9.0.0",
+    "@npmcli/arborist": "^8.0.0",
     "cli-spinners": "^2.6.0",
     "commander": "^13.1.0",
     "cosmiconfig": "^9.0.0",
@@ -52,6 +52,6 @@
     "ora": "^5.4.1",
     "tslib": "^2.3.0",
     "zod": "^3.21.4",
-    "glob": "^11.0.0"
+    "glob": "^10.4.5"
   }
 }
