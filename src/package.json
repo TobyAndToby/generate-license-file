@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@commander-js/extra-typings": "^13.1.0",
-    "@npmcli/arborist": "^9.0.0",
+    "@npmcli/arborist": "^9.1.1",
     "@types/npmcli__arborist": "^6.0.0",
     "cli-spinners": "^2.6.0",
     "commander": "^13.1.0",
