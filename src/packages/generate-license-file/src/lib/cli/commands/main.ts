@@ -94,6 +94,8 @@ export const mainCommand = new Command()
       spinner.start();
     }
 
+    const stopwatch = performance.now();
+
     await generateLicenseFile(inputs, output, {
       lineEnding: eol,
       replace: configFile?.replace,
@@ -101,6 +103,9 @@ export const mainCommand = new Command()
       append: configFile?.append,
       omitVersions,
     });
+
+    const elapsedTime = performance.now() - stopwatch;
+    logger.log("License file generated in " + elapsedTime.toFixed(2) + "ms ✨");
 
     spinner.stop();
   });

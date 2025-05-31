@@ -1,0 +1,23 @@
+{
+  "private": true,
+  "name": "optional-dependencies",
+  "version": "1.0.0",
+  "scripts": {
+    "e2e": "jest"
+  },
+  "dependencies": {
+    "dep-one": "file:../.dependencies/dep-1"
+  },
+  "optionalDependencies": {
+    "dep-two": "file:../.dependencies/dep-2"
+  },
+  "devDependencies": {
+    "@generate-license-file/e2e-helpers": "file:../../src/dist/packages/e2e-helpers",
+    "@types/jest": "^29.0.0",
+    "@types/node": "^22.0.0",
+    "generate-license-file": "file:../../src/dist/packages/generate-license-file",
+    "jest": "^29.0.0",
+    "ts-jest": "^29.0.0",
+    "typescript": "^5.0.0"
+  }
+}
