@@ -89,7 +89,7 @@ E.g. `.glf.json`, `.glfrc.yml`, `.generatelicensefile.jsonc`, `.config/glf.js`, 
   "exclude": ["your-package", "my-package@1.2.0", "/.*prettier.*/i"],
 
   // Omit the version number in the output file
-  "omitVersion": false
+  "omitVersions": false
 }
 ```
 
