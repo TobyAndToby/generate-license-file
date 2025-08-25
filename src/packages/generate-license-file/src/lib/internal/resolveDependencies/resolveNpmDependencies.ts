@@ -1,7 +1,7 @@
 ﻿import Arborist, { Link, Node } from "@npmcli/arborist";
 import { dirname, isAbsolute, join } from "path";
 import logger from "../../utils/console.utils";
-import { maybeReadPackageJson, readPackageJson } from "../../utils/packageJson.utils";
+import { maybeReadPackageJson } from "../../utils/packageJson.utils";
 import { resolveLicenseContent } from "../resolveLicenseContent";
 import { LicenseNoticeKey, ResolvedLicense } from "../resolveLicenses";
 import { resolveNotices } from "../resolveNoticeContent";
@@ -37,7 +37,7 @@ export const resolveDependenciesForNpmProject = async (
         return;
       }
 
-      throw new Error(`Missing package.json for ${node.name}`);
+      throw new Error(`Missing package.json for required package (${node.realpath})`);
     }
 
     if (
