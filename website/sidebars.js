@@ -47,6 +47,7 @@ const sidebars = {
       label: "Migration Guides",
       collapsed: false,
       items: [
+        { type: "doc", id: "v3-to-v4", label: "V3 to V4" },
         { type: "doc", id: "v2-to-v3", label: "V2 to V3" },
         { type: "doc", id: "v1-to-v2", label: "V1 to V2" },
       ],
