@@ -1,5 +1,5 @@
 import { doesFileExist, readFile } from "../../src/lib/utils/file.utils";
-import { readPackageJson } from "../../src/lib/utils/packageJson.utils";
+import { PackageJson, readPackageJson } from "../../src/lib/utils/packageJson.utils";
 
 jest.mock("../../src/lib/utils/file.utils", () => ({
   doesFileExist: jest.fn(),
@@ -41,15 +41,25 @@ describe("Package.json Utils", () => {
       });
     });
 
+    it("should return a PackageJson instance", async () => {
+      mockedDoesFileExist.mockResolvedValue(true);
+
+      const result = await readPackageJson(pathToPackageJson);
+
+      expect(result).toBeInstanceOf(PackageJson);
+    });
+
     it("should return the json parsed result from readFile", async () => {
       mockedDoesFileExist.mockResolvedValue(true);
 
       const result = await readPackageJson(pathToPackageJson);
 
-      expect(result).toStrictEqual({
-        name: "test-project",
-        version: "1.2.3",
-      });
+      expect(result).toStrictEqual(
+        expect.objectContaining({
+          name: "test-project",
+          version: "1.2.3",
+        }),
+      );
     });
   });
 });

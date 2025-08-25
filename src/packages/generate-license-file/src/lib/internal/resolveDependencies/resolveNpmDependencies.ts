@@ -5,6 +5,7 @@ import { readPackageJson } from "../../utils/packageJson.utils";
 import { resolveLicenseContent } from "../resolveLicenseContent";
 import { LicenseNoticeKey, ResolvedLicense } from "../resolveLicenses";
 import { resolveNotices } from "../resolveNoticeContent";
+import { expandExcludes } from "./expandExcludes";
 
 type ResolveLicensesOptions = {
   replace?: Record<string, string>;
@@ -17,7 +18,7 @@ export const resolveDependenciesForNpmProject = async (
   options?: ResolveLicensesOptions,
 ) => {
   const replacements = options?.replace ?? {};
-  const exclude = options?.exclude ?? [];
+  const exclude = expandExcludes(options?.exclude);
 
   const path = resolvePath(packageJson);
 
@@ -31,10 +32,7 @@ export const resolveDependenciesForNpmProject = async (
 
     const packageJson = await readPackageJson(join(node.realpath, "package.json"));
 
-    if (
-      exclude.includes(`${packageJson.name}@${packageJson.version}`) ||
-      exclude.includes(`${packageJson.name}`)
-    ) {
+    if (exclude.some(excludeRule => excludeRule.match(packageJson))) {
       return;
     }
 

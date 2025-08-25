@@ -1,6 +1,7 @@
 ﻿---
 title: Config File
 description: Overview and example usages of the generate license file CLI config file
+toc_max_heading_level: 4
 ---
 
 import Tabs from "@theme/Tabs";
@@ -84,9 +85,11 @@ module.exports = {
 
 :::
 
-The more advanced features that a config file can contain allow you to edit the contents of the generated output file.
+### Advanced Options
 
-### Append
+The config file also allows for more complex configurations that are not available as CLI flags.
+
+#### Append
 
 The append option allows you to append files to the end of the generated output file. This is useful if your project
 contains other types of licensed material other than node_modules dependencies that you want to include like fonts or images.
@@ -122,7 +125,7 @@ module.exports = {
 </TabItem>
 </Tabs>
 
-### Replace
+#### Replace
 
 The replace option allows you to replace the license content for a specific dependency. This is useful in situations like:
 
@@ -208,17 +211,19 @@ module.exports = {
 </div>
 </details>
 
-### Exclude
+#### Exclude
 
-The exclude option allows you to exclude a dependency from the generated output file. This is useful if a dependency
+The exclude option allows you to exclude dependencies from the generated output file. This is useful for cases like when a dependency
 accidentally lists one of it's own dev-dependencies as a normal dependency and you want to exclude that dev-dependency.
+
+Values can be specified using the format `package@version` or `package`, where the latter will match all versions of a given package. You can also use regular expressions by wrapping the expression in forward slashes `/.../` and adding any relevant flags after the closing slash.
 
 <Tabs groupId="file-formats">
 <TabItem value="json" label="JSON" default>
 
 ```json
 {
-  "exclude": ["lodash@1.2.3"]
+  "exclude": ["lodash", "lodash@1.2.0", "/lodash-.*/i"]
 }
 ```
 
@@ -228,7 +233,9 @@ accidentally lists one of it's own dev-dependencies as a normal dependency and y
 
 ```yaml
 exclude:
-  - lodash@1.2.3
+  - lodash
+  - lodash@1.2.0
+  - /lodash-.*/i
 ```
 
 </TabItem>
@@ -237,7 +244,7 @@ exclude:
 
 ```js
 module.exports = {
-  exclude: ["lodash@1.2.3"],
+  exclude: ["lodash", "lodash@1.2.0", "/lodash-.*/i"],
 };
 ```
 
