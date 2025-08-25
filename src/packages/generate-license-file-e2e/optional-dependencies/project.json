@@ -8,7 +8,7 @@
     "e2e": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "npm ci && npm run e2e",
+        "command": "npm ci --omit=optional && npm run e2e",
         "cwd": "../e2e/optional-dependencies"
       },
       "dependsOn": ["^build"]
