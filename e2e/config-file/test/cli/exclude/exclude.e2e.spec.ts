@@ -6,7 +6,6 @@ import { output as outputFileName } from "./config.js";
 const execAsync = promisify(exec);
 
 describe("cli", () => {
-  beforeEach(async () => {});
 
   it("should match snapshot when content is excluded", async () => {
     const configPath = "./test/cli/exclude/config.js";

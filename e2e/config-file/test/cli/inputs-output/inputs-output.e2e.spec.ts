@@ -6,7 +6,6 @@ import { output as outputFileName } from "./config.js";
 const execAsync = promisify(exec);
 
 describe("cli", () => {
-  beforeEach(async () => {});
 
   it("should match snapshot when inputs and outputs are provided via config file", async () => {
     const configPath = "./test/cli/inputs-output/config.js";
