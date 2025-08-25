@@ -180,6 +180,16 @@ This license should be found.
     ],
   },
   {
+    "content": "# Dep Three
+
+This license file is spelt \`LICENSE\`.
+This license should be found.",
+    "dependencies": [
+      "dep-three",
+    ],
+    "notices": [],
+  },
+  {
     "content": "# Dep Two
 
 This license file is spelt \`LICENCE.md\`.
@@ -188,16 +198,6 @@ This license should be found.
     "dependencies": [
       "dep-two",
       "dep-two-duplicate",
-    ],
-    "notices": [],
-  },
-  {
-    "content": "# Dep Three
-
-This license file is spelt \`LICENSE\`.
-This license should be found.",
-    "dependencies": [
-      "dep-three",
     ],
     "notices": [],
   },
