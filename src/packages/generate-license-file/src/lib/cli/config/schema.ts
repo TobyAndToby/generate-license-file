@@ -19,6 +19,7 @@ export const configSchema = z
     replace: z.record(z.string().nonempty(), z.string().nonempty()).optional(),
     exclude: z.string().nonempty().array().optional(),
     append: z.string().nonempty().array().optional(),
+    omitVersions: z.boolean().optional(),
   })
   .optional();
 

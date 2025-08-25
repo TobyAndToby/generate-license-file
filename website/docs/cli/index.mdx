@@ -118,6 +118,18 @@ Using `--ci` will implicitly set `--no-spinner`.
 npx generate-license-file --no-spinner
 ```
 
+## --omit-versions
+
+<ArgumentInfo type="boolean" />
+
+By default, the CLI includes version numbers in the package names in the generated output file (e.g., "package@1.2.3").
+
+If you want to omit the version numbers and only include the package names (e.g., "package"), you can provide the `--omit-versions` flag.
+
+```bash
+npx generate-license-file --omit-versions
+```
+
 ## --version
 
 <ArgumentInfo type="boolean" aliases={["-v"]} />
