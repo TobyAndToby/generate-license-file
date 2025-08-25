@@ -12,10 +12,12 @@ export interface PackageJsonLicense {
   url?: string;
 }
 
+class PackageJsonNotFoundError extends Error {}
+
 export const readPackageJson = async (pathToPackageJson: string): Promise<PackageJson> => {
   const doesPackageJsonExist = await doesFileExist(pathToPackageJson);
   if (!doesPackageJsonExist) {
-    throw new Error(`Cannot find the file: '${pathToPackageJson}'`);
+    throw new PackageJsonNotFoundError(`Cannot find the file: '${pathToPackageJson}'`);
   }
 
   const packageJsonAsString: string = await readFile(pathToPackageJson, { encoding: "utf-8" });
@@ -29,6 +31,10 @@ export const maybeReadPackageJson = async (
   try {
     return await readPackageJson(pathToPackageJson);
   } catch (error) {
-    return null;
+    if(error instanceof PackageJsonNotFoundError){
+      return null;
+    }
+
+    throw error;
   }
 };
