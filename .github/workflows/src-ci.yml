@@ -17,7 +17,7 @@ on:
         type: string
 
 env:
-  NODE_VERSION: 20
+  NODE_VERSION: 22
   CWD: ./src
 
 jobs:
@@ -133,7 +133,7 @@ jobs:
         node:
           - 20
           - 22
-          - 23
+          - 24
 
     name: E2E (Node ${{ matrix.node }} on ${{ matrix.os.name }})
 
