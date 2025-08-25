@@ -31,7 +31,7 @@ export const maybeReadPackageJson = async (
   try {
     return await readPackageJson(pathToPackageJson);
   } catch (error) {
-    if(error instanceof PackageJsonNotFoundError){
+    if (error instanceof PackageJsonNotFoundError) {
       return null;
     }
 
