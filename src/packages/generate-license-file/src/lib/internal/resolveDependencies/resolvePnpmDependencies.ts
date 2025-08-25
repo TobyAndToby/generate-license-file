@@ -5,11 +5,11 @@ import { getPnpmProjectDependencies, getPnpmVersion } from "../../utils/pnpmCli.
 import { resolveLicenseContent } from "../resolveLicenseContent";
 import { LicenseNoticeKey, ResolvedLicense } from "../resolveLicenses";
 import { resolveNotices } from "../resolveNoticeContent";
+import { expandExcludes } from "./expandExcludes";
 
 type ResolveLicensesOptions = {
   replace?: Record<string, string>;
   exclude?: string[];
-  omitVersion?: boolean;
 };
 
 export const resolveDependenciesForPnpmProject = async (
@@ -18,7 +18,7 @@ export const resolveDependenciesForPnpmProject = async (
   options?: ResolveLicensesOptions,
 ) => {
   const replacements = options?.replace ?? {};
-  const exclude = options?.exclude ?? [];
+  const exclude = expandExcludes(options?.exclude);
 
   await verifyPnpmVersion();
 
@@ -29,10 +29,7 @@ export const resolveDependenciesForPnpmProject = async (
     for (const dependencyPath of dependency.paths) {
       const packageJson = await readPackageJson(join(dependencyPath, "package.json"));
 
-      if (
-        exclude.includes(`${packageJson.name}@${packageJson.version}`) ||
-        exclude.includes(`${packageJson.name}`)
-      ) {
+      if (exclude.some(excludeRule => excludeRule.match(packageJson))) {
         continue;
       }
 

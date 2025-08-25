@@ -6,7 +6,6 @@ import { LicenseNoticeKey, ResolvedLicense } from "../../../src/lib/internal/res
 import { resolveNotices } from "../../../src/lib/internal/resolveNoticeContent";
 import logger from "../../../src/lib/utils/console.utils";
 import { doesFileExist, readFile } from "../../../src/lib/utils/file.utils";
-import { PackageJson } from "../../../src/lib/utils/packageJson.utils";
 import {
   getPnpmProjectDependencies,
   getPnpmVersion,
@@ -63,17 +62,17 @@ describe("resolveDependenciesForPnpmProject", () => {
     when(mockedResolveLicenseContent)
       .calledWith(dependency1.paths[0], expect.anything(), expect.anything())
       .mockResolvedValue(dependency1LicenseContent);
-    setUpPackageJson(dependency1.paths[0], { name: dependency1.name, version: "1.0.0" });
+    setUpPackageJson(dependency1.paths[0], dependency1.name, "1.0.0");
 
     when(mockedResolveLicenseContent)
       .calledWith(dependency2.paths[0], expect.anything(), expect.anything())
       .mockResolvedValue(dependency2LicenseContent);
-    setUpPackageJson(dependency2.paths[0], { name: dependency2.name, version: "1.0.0" });
+    setUpPackageJson(dependency2.paths[0], dependency2.name, "1.0.0");
 
     when(mockedResolveLicenseContent)
       .calledWith(dependency2.paths[1], expect.anything(), expect.anything())
       .mockResolvedValue(dependency2LicenseContent);
-    setUpPackageJson(dependency2.paths[1], { name: dependency2.name, version: "2.0.0" });
+    setUpPackageJson(dependency2.paths[1], dependency2.name, "2.0.0");
 
     when(mockedResolveLicenseContent)
       .calledWith(dependency3.paths[0], expect.anything(), expect.anything())
@@ -83,7 +82,7 @@ describe("resolveDependenciesForPnpmProject", () => {
 
     mockedResolveNotices.mockResolvedValue([]);
 
-    setUpPackageJson(dependency3.paths[0], { name: dependency3.name, version: "1.0.0" });
+    setUpPackageJson(dependency3.paths[0], dependency3.name, "1.0.0");
   });
 
   afterAll(() => jest.restoreAllMocks());
@@ -269,9 +268,9 @@ describe("resolveDependenciesForPnpmProject", () => {
     });
   });
 
-  const setUpPackageJson = (directory: string, packageJson: PackageJson): void => {
+  const setUpPackageJson = (directory: string, name: string, version: string): void => {
     const fullPackageJsonPath = join(directory, "package.json");
-    const packageJsonContent = JSON.stringify(packageJson);
+    const packageJsonContent = JSON.stringify({ name, version });
 
     when(mockedDoesFileExist).calledWith(fullPackageJsonPath).mockResolvedValue(true);
     when(mockedReadFile)
