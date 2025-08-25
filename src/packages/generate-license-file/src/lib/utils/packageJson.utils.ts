@@ -23,7 +23,9 @@ export const readPackageJson = async (pathToPackageJson: string): Promise<Packag
   return JSON.parse(packageJsonAsString);
 };
 
-export const maybeReadPackageJson = async (pathToPackageJson: string): Promise<PackageJson | null> => {
+export const maybeReadPackageJson = async (
+  pathToPackageJson: string,
+): Promise<PackageJson | null> => {
   try {
     return await readPackageJson(pathToPackageJson);
   } catch (error) {
