@@ -27,10 +27,7 @@ describe("resolveLicenseContent", () => {
 
   describe("when a 'name' replacement is given for a package", () => {
     it("should call all of the replacement resolvers in order if they all return null", async () => {
-      const packageJson: PackageJson = {
-        name: "some-package",
-        version: "1.2.3",
-      };
+      const packageJson = new PackageJson("some-package", "1.2.3");
 
       const replacements: Record<string, string> = {
         "some-package": "/some/replacement/path",
@@ -48,10 +45,7 @@ describe("resolveLicenseContent", () => {
     });
 
     it("should not call later resolvers if an earlier resolver returns a non-null value", async () => {
-      const packageJson: PackageJson = {
-        name: "some-package",
-        version: "1.2.3",
-      };
+      const packageJson = new PackageJson("some-package", "1.2.3");
 
       const replacements: Record<string, string> = {
         "some-package": "/some/replacement/path",
@@ -71,10 +65,7 @@ describe("resolveLicenseContent", () => {
     it("should return the content of the first resolver that returns a non-null value", async () => {
       const someContent = "some content";
 
-      const packageJson: PackageJson = {
-        name: "some-package",
-        version: "1.2.3",
-      };
+      const packageJson = new PackageJson("some-package", "1.2.3");
 
       const replacements: Record<string, string> = {
         "some-package": "/some/replacement/path",
@@ -91,10 +82,7 @@ describe("resolveLicenseContent", () => {
     });
 
     it("should throw if all replacement resolvers return null", async () => {
-      const packageJson: PackageJson = {
-        name: "some-package",
-        version: "1.2.3",
-      };
+      const packageJson = new PackageJson("some-package", "1.2.3");
 
       const replacements: Record<string, string> = {
         "some-package": "/some/replacement/path",
@@ -113,10 +101,7 @@ describe("resolveLicenseContent", () => {
 
   describe("when a 'name@version' replacement is given for a package", () => {
     it("should return the content of the replacement file", async () => {
-      const packageJson: PackageJson = {
-        name: "some-package",
-        version: "1.2.3",
-      };
+      const packageJson = new PackageJson("some-package", "1.2.3");
 
       const replacements: Record<string, string> = {
         "some-package@1.2.3": "/some/replacement/path",
@@ -134,10 +119,7 @@ describe("resolveLicenseContent", () => {
     });
 
     it("should should be prioritised over a 'name' replacement", async () => {
-      const packageJson: PackageJson = {
-        name: "some-package",
-        version: "1.2.3",
-      };
+      const packageJson = new PackageJson("some-package", "1.2.3");
 
       const replacements: Record<string, string> = {
         "some-package": "/some/less/specific/replacement/path",
@@ -162,10 +144,7 @@ describe("resolveLicenseContent", () => {
       mockedLicenseFileResolution.mockResolvedValue(null);
       mockedSpdxExpressionResolution.mockResolvedValue(null);
 
-      const packageJson: PackageJson = {
-        name: "some-package",
-        version: "1.2.3",
-      };
+      const packageJson = new PackageJson("some-package", "1.2.3");
 
       const resolutions: Record<string, string> = {};
 
@@ -197,10 +176,7 @@ describe("resolveLicenseContent", () => {
       mockedLicenseFileResolution.mockResolvedValue(null);
       mockedSpdxExpressionResolution.mockResolvedValue(null);
 
-      const packageJson: PackageJson = {
-        name: "some-package",
-        version: "1.2.3",
-      };
+      const packageJson = new PackageJson("some-package", "1.2.3");
 
       const resolutions: Record<string, string> = {};
 
@@ -215,10 +191,7 @@ describe("resolveLicenseContent", () => {
         mockedLicenseFileResolution.mockResolvedValue("the license file content");
         mockedSpdxExpressionResolution.mockResolvedValue(null);
 
-        const packageJson: PackageJson = {
-          name: "some-package",
-          version: "1.2.3",
-        };
+        const packageJson = new PackageJson("some-package", "1.2.3");
 
         const resolutions: Record<string, string> = {};
 
@@ -232,10 +205,7 @@ describe("resolveLicenseContent", () => {
         mockedLicenseFileResolution.mockResolvedValue("the license file content");
         mockedSpdxExpressionResolution.mockResolvedValue(null);
 
-        const packageJson: PackageJson = {
-          name: "some-package",
-          version: "1.2.3",
-        };
+        const packageJson = new PackageJson("some-package", "1.2.3");
 
         const resolutions: Record<string, string> = {};
 

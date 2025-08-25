@@ -1,10 +1,18 @@
 import { doesFileExist, readFile } from "./file.utils";
 
-export interface PackageJson {
-  name?: string;
-  version?: string;
-  license?: string | PackageJsonLicense | PackageJsonLicense[];
-  licenses?: PackageJsonLicense[];
+export class PackageJson {
+  private _identifier: string | undefined;
+
+  constructor(
+    public readonly name?: string,
+    public readonly version?: string,
+    public readonly license?: string | PackageJsonLicense | PackageJsonLicense[],
+    public readonly licenses?: PackageJsonLicense[],
+  ) {}
+
+  public get identifier(): string {
+    return (this._identifier ??= `${this.name ?? "unknown"}@${this.version ?? "unknown"}`);
+  }
 }
 
 export interface PackageJsonLicense {
@@ -19,6 +27,12 @@ export const readPackageJson = async (pathToPackageJson: string): Promise<Packag
   }
 
   const packageJsonAsString: string = await readFile(pathToPackageJson, { encoding: "utf-8" });
+  const packageJsonData = JSON.parse(packageJsonAsString);
 
-  return JSON.parse(packageJsonAsString);
+  return new PackageJson(
+    packageJsonData.name,
+    packageJsonData.version,
+    packageJsonData.license,
+    packageJsonData.licenses,
+  );
 };

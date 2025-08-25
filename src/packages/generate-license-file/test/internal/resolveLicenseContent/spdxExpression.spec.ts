@@ -1,6 +1,7 @@
 import { ResolutionInputs } from "../../../src/lib/internal/resolveLicenseContent";
 import { spdxExpression } from "../../../src/lib/internal/resolveLicenseContent/spdxExpression";
 import logger from "../../../src/lib/utils/console.utils";
+import { PackageJson } from "../../../src/lib/utils/packageJson.utils";
 
 jest.mock("../../../src/lib/utils/console.utils");
 
@@ -12,7 +13,7 @@ describe("spdxExpression", () => {
 
   it("should return null if the package.json does not have a license or a licenses field", async () => {
     const inputs: ResolutionInputs = {
-      packageJson: {},
+      packageJson: new PackageJson(),
       directory: "/some/directory",
     };
 
@@ -24,9 +25,7 @@ describe("spdxExpression", () => {
   describe("when the license field is a string", () => {
     it("should return null if the license field is empty", async () => {
       const inputs: ResolutionInputs = {
-        packageJson: {
-          license: "",
-        },
+        packageJson: new PackageJson(undefined, undefined, ""),
         directory: "/some/directory",
       };
 
@@ -39,9 +38,7 @@ describe("spdxExpression", () => {
       "should return the license field if it is not empty",
       async expression => {
         const inputs: ResolutionInputs = {
-          packageJson: {
-            license: expression,
-          },
+          packageJson: new PackageJson(undefined, undefined, expression),
           directory: "/some/directory",
         };
 
@@ -53,11 +50,7 @@ describe("spdxExpression", () => {
 
     it("should warning log if the license field contains ' OR '", async () => {
       const inputs: ResolutionInputs = {
-        packageJson: {
-          name: "some-package",
-          version: "1.0.0",
-          license: "MIT OR Apache-2.0",
-        },
+        packageJson: new PackageJson("some-package", "1.0.0", "MIT OR Apache-2.0"),
         directory: "/some/directory",
       };
 
@@ -76,9 +69,7 @@ describe("spdxExpression", () => {
   describe("when the license field is an array", () => {
     it("should return null if the license field is empty", async () => {
       const inputs: ResolutionInputs = {
-        packageJson: {
-          license: [],
-        },
+        packageJson: new PackageJson(undefined, undefined, []),
         directory: "/some/directory",
       };
 
@@ -90,9 +81,7 @@ describe("spdxExpression", () => {
     describe("when the license field contains a single object", () => {
       it("should return null if the license field contains an object with no type", async () => {
         const inputs: ResolutionInputs = {
-          packageJson: {
-            license: [{ url: "https://some.url" }],
-          },
+          packageJson: new PackageJson(undefined, undefined, [{ url: "https://some.url" }]),
           directory: "/some/directory",
         };
 
@@ -105,9 +94,9 @@ describe("spdxExpression", () => {
         const license = "MIT";
 
         const inputs: ResolutionInputs = {
-          packageJson: {
-            license: [{ type: license, url: "https://some.url" }],
-          },
+          packageJson: new PackageJson(undefined, undefined, [
+            { type: license, url: "https://some.url" },
+          ]),
           directory: "/some/directory",
         };
 
@@ -120,14 +109,10 @@ describe("spdxExpression", () => {
     describe("when the license field contains multiple objects", () => {
       it("should warn", () => {
         const inputs: ResolutionInputs = {
-          packageJson: {
-            name: "some-package",
-            version: "1.0.0",
-            license: [
-              { type: "MIT", url: "https://some.url" },
-              { type: "Apache-2.0", url: "https://some.url" },
-            ],
-          },
+          packageJson: new PackageJson("some-package", "1.0.0", [
+            { type: "MIT", url: "https://some.url" },
+            { type: "Apache-2.0", url: "https://some.url" },
+          ]),
           directory: "/some/directory",
         };
 
@@ -143,9 +128,7 @@ describe("spdxExpression", () => {
   describe("when the license field is an object", () => {
     it("should return null if the license field contains an empty object", async () => {
       const inputs: ResolutionInputs = {
-        packageJson: {
-          license: {},
-        },
+        packageJson: new PackageJson(undefined, undefined, {}),
         directory: "/some/directory",
       };
 
@@ -156,9 +139,7 @@ describe("spdxExpression", () => {
 
     it("should return null if the license field contains an object with no type", async () => {
       const inputs: ResolutionInputs = {
-        packageJson: {
-          license: { url: "https://some.url" },
-        },
+        packageJson: new PackageJson(undefined, undefined, { url: "https://some.url" }),
         directory: "/some/directory",
       };
 
@@ -171,9 +152,10 @@ describe("spdxExpression", () => {
       const license = "MIT";
 
       const inputs: ResolutionInputs = {
-        packageJson: {
-          license: { type: license, url: "https://some.url" },
-        },
+        packageJson: new PackageJson(undefined, undefined, {
+          type: license,
+          url: "https://some.url",
+        }),
         directory: "/some/directory",
       };
 
@@ -186,9 +168,7 @@ describe("spdxExpression", () => {
   describe("when the licenses field is an array", () => {
     it("should return null if the licenses field is empty", async () => {
       const inputs: ResolutionInputs = {
-        packageJson: {
-          licenses: [],
-        },
+        packageJson: new PackageJson(undefined, undefined, undefined, []),
         directory: "/some/directory",
       };
 
@@ -200,9 +180,9 @@ describe("spdxExpression", () => {
     describe("when the licenses field contains a single object", () => {
       it("should return null if the licenses field contains an object with no type", async () => {
         const inputs: ResolutionInputs = {
-          packageJson: {
-            licenses: [{ url: "https://some.url" }],
-          },
+          packageJson: new PackageJson(undefined, undefined, undefined, [
+            { url: "https://some.url" },
+          ]),
           directory: "/some/directory",
         };
 
@@ -215,9 +195,9 @@ describe("spdxExpression", () => {
         const license = "MIT";
 
         const inputs: ResolutionInputs = {
-          packageJson: {
-            licenses: [{ type: license, url: "https://some.url" }],
-          },
+          packageJson: new PackageJson(undefined, undefined, undefined, [
+            { type: license, url: "https://some.url" },
+          ]),
           directory: "/some/directory",
         };
 
@@ -230,14 +210,10 @@ describe("spdxExpression", () => {
     describe("when the licenses field contains multiple objects", () => {
       it("should warn", () => {
         const inputs: ResolutionInputs = {
-          packageJson: {
-            name: "some-package",
-            version: "1.0.0",
-            licenses: [
-              { type: "MIT", url: "https://some.url" },
-              { type: "Apache-2.0", url: "https://some.other.url" },
-            ],
-          },
+          packageJson: new PackageJson("some-package", "1.0.0", undefined, [
+            { type: "MIT", url: "https://some.url" },
+            { type: "Apache-2.0", url: "https://some.other.url" },
+          ]),
           directory: "/some/directory",
         };
 

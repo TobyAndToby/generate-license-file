@@ -6,6 +6,7 @@ import {
   licenseFile,
 } from "../../../src/lib/internal/resolveLicenseContent/licenseFile";
 import { readFile } from "../../../src/lib/utils/file.utils";
+import { PackageJson } from "../../../src/lib/utils/packageJson.utils";
 
 jest.mock("glob", () => ({
   glob: jest.fn(),
@@ -20,10 +21,7 @@ describe("licenseFile", () => {
 
   const resolutionInputs: ResolutionInputs = {
     directory: "/some/directory",
-    packageJson: {
-      name: "some-package",
-      version: "1.0.0",
-    },
+    packageJson: new PackageJson("some-package", "1.0.0"),
   };
 
   beforeEach(() => {

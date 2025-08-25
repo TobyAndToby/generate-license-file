@@ -6,7 +6,6 @@ import { resolveLicenseContent } from "../../../src/lib/internal/resolveLicenseC
 import { LicenseNoticeKey, ResolvedLicense } from "../../../src/lib/internal/resolveLicenses";
 import logger from "../../../src/lib/utils/console.utils";
 import { doesFileExist, readFile } from "../../../src/lib/utils/file.utils";
-import { PackageJson } from "../../../src/lib/utils/packageJson.utils";
 
 jest.mock("@npmcli/arborist", () => ({
   __esModule: true,
@@ -175,37 +174,37 @@ describe("resolveNpmDependencies", () => {
     when(mockedResolveLicenseContent)
       .calledWith(child1Realpath, expect.anything(), expect.anything())
       .mockResolvedValue(child1LicenseContent);
-    setUpPackageJson(child1Realpath, { name: child1Name, version: child1Version });
+    setUpPackageJson(child1Realpath, child1Name, child1Version);
 
     when(mockedResolveLicenseContent)
       .calledWith(child1_1Realpath, expect.anything(), expect.anything())
       .mockResolvedValue(child1_1LicenseContent);
-    setUpPackageJson(child1_1Realpath, { name: child1_1Name, version: child1_1Version });
+    setUpPackageJson(child1_1Realpath, child1_1Name, child1_1Version);
 
     when(mockedResolveLicenseContent)
       .calledWith(child1_2Realpath, expect.anything(), expect.anything())
       .mockResolvedValue(child1_2LicenseContent);
-    setUpPackageJson(child1_2Realpath, { name: child1_2Name, version: child1_2Version });
+    setUpPackageJson(child1_2Realpath, child1_2Name, child1_2Version);
 
     when(mockedResolveLicenseContent)
       .calledWith(child2Realpath, expect.anything(), expect.anything())
       .mockResolvedValue(child2LicenseContent);
-    setUpPackageJson(child2Realpath, { name: child2Name, version: child2Version });
+    setUpPackageJson(child2Realpath, child2Name, child2Version);
 
     when(mockedResolveLicenseContent)
       .calledWith(child2_1Realpath, expect.anything(), expect.anything())
       .mockResolvedValue(child2_1LicenseContent);
-    setUpPackageJson(child2_1Realpath, { name: child2_1Name, version: child2_1Version });
+    setUpPackageJson(child2_1Realpath, child2_1Name, child2_1Version);
 
     when(mockedResolveLicenseContent)
       .calledWith(child3Realpath, expect.anything(), expect.anything())
       .mockResolvedValue(child3LicenseContent);
-    setUpPackageJson(child3Realpath, { name: child3Name, version: child3Version });
+    setUpPackageJson(child3Realpath, child3Name, child3Version);
 
     when(mockedResolveLicenseContent)
       .calledWith(child3_1Realpath, expect.anything(), expect.anything())
       .mockResolvedValue(child3_1LicenseContent);
-    setUpPackageJson(child3_1Realpath, { name: child3_1Name, version: child3_1Version });
+    setUpPackageJson(child3_1Realpath, child3_1Name, child3_1Version);
   });
 
   afterAll(() => jest.restoreAllMocks());
@@ -369,9 +368,9 @@ describe("resolveNpmDependencies", () => {
     });
   });
 
-  const setUpPackageJson = (directory: string, packageJson: PackageJson): void => {
+  const setUpPackageJson = (directory: string, name: string, version: string): void => {
     const fullPackageJsonPath = join(directory, "package.json");
-    const packageJsonContent = JSON.stringify(packageJson);
+    const packageJsonContent = JSON.stringify({ name, version });
 
     when(mockedDoesFileExist).calledWith(fullPackageJsonPath).mockResolvedValue(true);
     when(mockedReadFile)
