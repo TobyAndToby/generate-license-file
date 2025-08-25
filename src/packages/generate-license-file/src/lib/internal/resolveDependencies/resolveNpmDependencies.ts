@@ -1,7 +1,7 @@
 ﻿import Arborist, { Link, Node } from "@npmcli/arborist";
 import { dirname, isAbsolute, join } from "path";
 import logger from "../../utils/console.utils";
-import { readPackageJson } from "../../utils/packageJson.utils";
+import { maybeReadPackageJson } from "../../utils/packageJson.utils";
 import { resolveLicenseContent } from "../resolveLicenseContent";
 import { LicenseNoticeKey, ResolvedLicense } from "../resolveLicenses";
 import { resolveNotices } from "../resolveNoticeContent";
@@ -30,7 +30,16 @@ export const resolveDependenciesForNpmProject = async (
       return;
     }
 
-    const packageJson = await readPackageJson(join(node.realpath, "package.json"));
+    const packageJson = await maybeReadPackageJson(join(node.realpath, "package.json"));
+
+    if (packageJson == null) {
+      // We can drop the node if the package is optional and wasn't found on disk.
+      if (node.optional) {
+        return;
+      }
+
+      throw new Error(`Missing package.json for required package (${node.realpath})`);
+    }
 
     if (exclude.some(excludeRule => excludeRule.match(packageJson))) {
       return;

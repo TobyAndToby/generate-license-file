@@ -328,6 +328,87 @@ describe("resolveNpmDependencies", () => {
     });
   });
 
+  describe("when an optional dependency is missing on disk", () => {
+    const optionalName = "child-optional";
+    const optionalVersion = "4.0.0";
+    const optionalRealpath = "/some/path/child-optional";
+
+    it("should skip it without throwing and not include it in the results", async () => {
+      const licensesMap = new Map<LicenseNoticeKey, ResolvedLicense>();
+
+      const optionalNode = {
+        pkgid: `${optionalName}@${optionalVersion}`,
+        realpath: optionalRealpath,
+        package: { name: optionalName, version: optionalVersion },
+        children: new Map(),
+        dev: false,
+        peer: false,
+        optional: true,
+      } as unknown as Arborist.Node;
+
+      const topNodeWithOptional: Arborist.Node = {
+        children: new Map([
+          ...Array.from(topNode.children.entries()),
+          [optionalName, optionalNode as unknown as Arborist.Node],
+        ]),
+      } as Arborist.Node;
+
+      // Ensure the package.json for the optional node appears missing
+      when(mockedDoesFileExist)
+        .calledWith(join(optionalRealpath, "package.json"))
+        .mockResolvedValue(false);
+
+      mockedArborist.mockImplementationOnce(
+        () => ({ loadActual: async () => topNodeWithOptional }) as Arborist,
+      );
+
+      await expect(
+        resolveDependenciesForNpmProject("/some/path/package.json", licensesMap),
+      ).resolves.toBeUndefined();
+
+      // It should not have produced any license entries for the optional node
+      const keys = Array.from(licensesMap.keys());
+      expect(keys.some(k => k.includes(optionalName))).toBe(false);
+      // And no warning should be logged for this case
+      expect(mockedLogger.warn).not.toHaveBeenCalled();
+    });
+
+    it("should throw if a non-optional dependency is missing package.json", async () => {
+      const missingName = "child-missing";
+      const missingVersion = "5.0.0";
+      const missingRealpath = "/some/path/child-missing";
+
+      const missingNode = {
+        pkgid: `${missingName}@${missingVersion}`,
+        realpath: missingRealpath,
+        package: { name: missingName, version: missingVersion },
+        children: new Map(),
+        dev: false,
+        peer: false,
+        optional: false,
+      } as unknown as Arborist.Node;
+
+      const topNodeWithMissing: Arborist.Node = {
+        children: new Map([
+          ...Array.from(topNode.children.entries()),
+          [missingName, missingNode as unknown as Arborist.Node],
+        ]),
+      } as Arborist.Node;
+
+      when(mockedDoesFileExist)
+        .calledWith(join(missingRealpath, "package.json"))
+        .mockResolvedValue(false);
+
+      mockedArborist.mockImplementationOnce(
+        () => ({ loadActual: async () => topNodeWithMissing }) as Arborist,
+      );
+
+      await expect(
+        resolveDependenciesForNpmProject("/some/path/package.json", new Map()),
+      ).rejects.toThrow(`Missing package.json for required package (${missingRealpath})`);
+    });
+  });
+
   describe("when a dependency is in the exclude list", () => {
     it("should not include the dependency in the result", async () => {
       const licensesMap = new Map<LicenseNoticeKey, ResolvedLicense>();
