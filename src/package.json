@@ -13,7 +13,7 @@
     "@npmcli/arborist": "^9.0.0",
     "@types/npmcli__arborist": "^6.0.0",
     "cli-spinners": "^2.6.0",
-    "commander": "^13.1.0",
+    "commander": "^14.0.0",
     "cosmiconfig": "^9.0.0",
     "enquirer": "^2.4.1",
     "glob": "^11.0.0",
