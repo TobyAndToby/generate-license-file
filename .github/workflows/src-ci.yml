@@ -17,7 +17,7 @@ on:
         type: string
 
 env:
-  NODE_VERSION: 22
+  NODE_VERSION: 24
   CWD: ./src
 
 jobs:
