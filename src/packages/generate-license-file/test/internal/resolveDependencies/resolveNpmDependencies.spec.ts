@@ -1,4 +1,4 @@
-﻿import Arborist from "@npmcli/arborist";
+﻿import Arborist, { Edge } from "@npmcli/arborist";
 import { when } from "jest-when";
 import { join } from "path";
 import { resolveDependenciesForNpmProject } from "../../../src/lib/internal/resolveDependencies/resolveNpmDependencies";
@@ -97,12 +97,12 @@ describe("resolveNpmDependencies", () => {
   };
 
   const addEdge = (from: Arborist.Node, to: Arborist.Node) => {
-    from.edgesOut.set(to.name, { to } as any);
-    to.edgesIn.add({ from } as any);
+    from.edgesOut.set(to.name, { to } as Edge);
+    to.edgesIn.add({ from } as Edge);
   };
 
   const addRootEdge = (to: Arborist.Node) => {
-    to.edgesIn.add({ from: { isRoot: true } } as any);
+    to.edgesIn.add({ from: { isRoot: true } } as Edge);
   };
 
   const child1Node = createMockNode(child1Name, child1Version, child1Realpath, false, false);
