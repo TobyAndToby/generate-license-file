@@ -48,7 +48,7 @@ jobs:
         run: npm run build
 
       - name: Upload Build
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
           path: ${{ env.CWD }}/build/
 
