@@ -66,6 +66,10 @@ describe("resolveNpmDependencies", () => {
   const child3_1LicenseContent = "license contents for child3.1";
   const child3_1LicenseNoticePair: LicenseNoticeKey = `${child3_1LicenseContent}:`;
 
+  const dotDirName = ".dotdir";
+  const dotDirVersion = "0.0.0";
+  const dotDirRealpath = "/some/path/.dotdir";
+
   // A node tree where:
   // - child1 is a 'normal' dependency
   //   - It has two 'normal' dependencies
@@ -81,6 +85,7 @@ describe("resolveNpmDependencies", () => {
           pkgid: `${child1Name}@${child1Version}`,
           realpath: child1Realpath,
           package: { name: child1Name, version: child1Version },
+          name: child1Name,
           children: new Map([
             [
               child1_1Name,
@@ -88,6 +93,7 @@ describe("resolveNpmDependencies", () => {
                 pkgid: `${child1_1Name}@${child1_1Version}`,
                 realpath: child1_1Realpath,
                 package: { name: child1_1Name, version: child1_1Version },
+                name: child1_1Name,
                 children: new Map(),
                 dev: false,
                 peer: false,
@@ -99,6 +105,7 @@ describe("resolveNpmDependencies", () => {
                 pkgid: `${child1_2Name}@${child1_2Version}`,
                 realpath: child1_2Realpath,
                 package: { name: child1_2Name, version: child1_2Version },
+                name: child1_2Name,
                 children: new Map(),
                 dev: false,
                 peer: false,
@@ -115,6 +122,7 @@ describe("resolveNpmDependencies", () => {
           pkgid: `${child2Name}@${child2Version}`,
           realpath: child2Realpath,
           package: { name: child2Name, version: child2Version },
+          name: child2Name,
           children: new Map([
             [
               child2_1Name,
@@ -122,6 +130,7 @@ describe("resolveNpmDependencies", () => {
                 pkgid: `${child2_1Name}@${child2_1Version}`,
                 realpath: child2_1Realpath,
                 package: { name: child2_1Name, version: child2_1Version },
+                name: child2_1Name,
                 children: new Map(),
                 dev: false,
                 peer: false,
@@ -138,6 +147,7 @@ describe("resolveNpmDependencies", () => {
           pkgid: `${child3Name}@${child3Version}`,
           realpath: child3Realpath,
           package: { name: child3Name, version: child3Version },
+          name: child3Name,
           children: new Map([
             [
               child3_1Name,
@@ -145,6 +155,7 @@ describe("resolveNpmDependencies", () => {
                 pkgid: `${child3_1Name}@${child3_1Version}`,
                 realpath: child3_1Realpath,
                 package: { name: child3_1Name, version: child3_1Version },
+                name: child3_1Name,
                 children: new Map(),
                 dev: false,
                 peer: false,
@@ -153,6 +164,19 @@ describe("resolveNpmDependencies", () => {
           ]),
           dev: false,
           peer: true,
+        },
+      ],
+      [
+        dotDirName,
+        {
+          pkgid: `${dotDirName}@${dotDirVersion}`,
+          realpath: dotDirRealpath,
+          package: { name: dotDirName, version: dotDirVersion },
+          name: dotDirName,
+          children: new Map(),
+          dev: false,
+          peer: false,
+          optional: false,
         },
       ],
     ]),
@@ -340,6 +364,7 @@ describe("resolveNpmDependencies", () => {
         pkgid: `${optionalName}@${optionalVersion}`,
         realpath: optionalRealpath,
         package: { name: optionalName, version: optionalVersion },
+        name: optionalName,
         children: new Map(),
         dev: false,
         peer: false,
@@ -382,6 +407,7 @@ describe("resolveNpmDependencies", () => {
         pkgid: `${missingName}@${missingVersion}`,
         realpath: missingRealpath,
         package: { name: missingName, version: missingVersion },
+        name: missingName,
         children: new Map(),
         dev: false,
         peer: false,
@@ -446,6 +472,22 @@ describe("resolveNpmDependencies", () => {
       expect(
         child1_2LicenseContentMap?.dependencies.find(c => c.name === child1_2Name),
       ).toBeDefined();
+    });
+  });
+  describe("when a directory inside node_modules starts with '.'", () => {
+    it("should skip it without attempting to read its package.json", async () => {
+      const licensesMap = new Map<LicenseNoticeKey, ResolvedLicense>();
+      await resolveDependenciesForNpmProject("/some/path/package.json", licensesMap);
+
+      const keys = Array.from(licensesMap.keys());
+      expect(keys.some(k => k.includes(dotDirName))).toBe(false);
+      expect(
+        mockedDoesFileExist.mock.calls.some(call => (call[0] as string).includes(dotDirRealpath)),
+      ).toBe(false);
+      expect(
+        mockedReadFile.mock.calls.some(call => (call[0] as string).includes(dotDirRealpath)),
+      ).toBe(false);
+      expect(mockedLogger.warn).not.toHaveBeenCalled();
     });
   });
 
