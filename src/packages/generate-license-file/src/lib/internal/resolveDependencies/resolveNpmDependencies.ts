@@ -25,7 +25,14 @@ export const resolveDependenciesForNpmProject = async (
   const arborist = new Arborist({ path });
   const topNode = await arborist.loadActual();
 
+  const visitedNodes = new Set<Node | Link>();
+
   const parseNode = async (node: Node | Link) => {
+    if (visitedNodes.has(node)) {
+      return;
+    }
+    visitedNodes.add(node);
+
     if (node.dev || node.peer || node.name.startsWith(".")) {
       return;
     }
@@ -80,13 +87,19 @@ export const resolveDependenciesForNpmProject = async (
       logger.warn(warningLines.join("\n"));
     }
 
-    for (const child of node.children.values()) {
-      await parseNode(child);
+    for (const edgeOut of node.edgesOut.values()) {
+      const edgeNode = edgeOut.to;
+      if (edgeNode) {
+        await parseNode(edgeNode);
+      }
     }
   };
 
   for (const child of topNode.children.values()) {
-    await parseNode(child);
+    const isTopLevel = isTopLevelDependency(child);
+    if (isTopLevel) {
+      await parseNode(child);
+    }
   }
 };
 
@@ -94,4 +107,14 @@ const resolvePath = (path: string): string => {
   const absolutePackageJson = isAbsolute(path) ? path : join(process.cwd(), path);
 
   return dirname(absolutePackageJson);
+};
+
+const isTopLevelDependency = (node: Node | Link): boolean => {
+  for (const edge of node.edgesIn) {
+    if (edge.from?.isRoot) {
+      return true;
+    }
+  }
+
+  return false;
 };

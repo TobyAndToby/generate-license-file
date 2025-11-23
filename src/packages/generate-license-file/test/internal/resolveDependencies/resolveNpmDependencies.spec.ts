@@ -1,4 +1,4 @@
-﻿import Arborist from "@npmcli/arborist";
+﻿import Arborist, { Edge } from "@npmcli/arborist";
 import { when } from "jest-when";
 import { join } from "path";
 import { resolveDependenciesForNpmProject } from "../../../src/lib/internal/resolveDependencies/resolveNpmDependencies";
@@ -66,102 +66,103 @@ describe("resolveNpmDependencies", () => {
   const child3_1LicenseContent = "license contents for child3.1";
   const child3_1LicenseNoticePair: LicenseNoticeKey = `${child3_1LicenseContent}:`;
 
-  // A node tree where:
+  // We create a node tree where:
   // - child1 is a 'normal' dependency
   //   - It has two 'normal' dependencies
   // - child2 is a dev dependency
   //   - It has one 'normal' dependency (but it won't show in results because it's parent is a dev dependency)
   // - child3 is a peer dependency
   //   - It has one 'normal' dependency (but it won't show in results because it's parent is a peer dependency)
+
+  const createMockNode = (
+    name: string,
+    version: string,
+    realpath: string,
+    dev: boolean,
+    peer: boolean,
+    optional = false,
+  ) => {
+    return {
+      pkgid: `${name}@${version}`,
+      realpath,
+      package: { name, version },
+      name,
+      children: new Map(),
+      dev,
+      peer,
+      optional,
+      edgesIn: new Set(),
+      edgesOut: new Map(),
+    } as unknown as Arborist.Node;
+  };
+
+  const addEdge = (from: Arborist.Node, to: Arborist.Node) => {
+    from.edgesOut.set(to.name, { to } as Edge);
+    to.edgesIn.add({ from } as Edge);
+  };
+
+  const addRootEdge = (to: Arborist.Node) => {
+    to.edgesIn.add({ from: { isRoot: true } } as Edge);
+  };
+
+  const child1Node = createMockNode(child1Name, child1Version, child1Realpath, false, false);
+  const child1_1Node = createMockNode(
+    child1_1Name,
+    child1_1Version,
+    child1_1Realpath,
+    false,
+    false,
+  );
+  const child1_2Node = createMockNode(
+    child1_2Name,
+    child1_2Version,
+    child1_2Realpath,
+    false,
+    false,
+  );
+
+  const child2Node = createMockNode(child2Name, child2Version, child2Realpath, true, false);
+  const child2_1Node = createMockNode(
+    child2_1Name,
+    child2_1Version,
+    child2_1Realpath,
+    false,
+    false,
+  );
+
+  const child3Node = createMockNode(child3Name, child3Version, child3Realpath, false, true);
+  const child3_1Node = createMockNode(
+    child3_1Name,
+    child3_1Version,
+    child3_1Realpath,
+    false,
+    false,
+  );
+
+  // child1 is a top level dependency (from root)
+  addRootEdge(child1Node);
+
+  // child1 has dependencies child1.1 and child1.2
+  addEdge(child1Node, child1_1Node);
+  addEdge(child1Node, child1_2Node);
+
+  // child2 is a top level dev dependency
+  addRootEdge(child2Node);
+
+  // child2 has dependency child2.1
+  addEdge(child2Node, child2_1Node);
+
+  // child3 is a top level peer dependency
+  addRootEdge(child3Node);
+
+  // child3 has dependency child3.1
+  addEdge(child3Node, child3_1Node);
+
   const topNode: Arborist.Node = {
     children: new Map([
-      [
-        child1Name,
-        {
-          pkgid: `${child1Name}@${child1Version}`,
-          realpath: child1Realpath,
-          package: { name: child1Name, version: child1Version },
-          name: child1Name,
-          children: new Map([
-            [
-              child1_1Name,
-              {
-                pkgid: `${child1_1Name}@${child1_1Version}`,
-                realpath: child1_1Realpath,
-                package: { name: child1_1Name, version: child1_1Version },
-                name: child1_1Name,
-                children: new Map(),
-                dev: false,
-                peer: false,
-              },
-            ],
-            [
-              child1_2Name,
-              {
-                pkgid: `${child1_2Name}@${child1_2Version}`,
-                realpath: child1_2Realpath,
-                package: { name: child1_2Name, version: child1_2Version },
-                name: child1_2Name,
-                children: new Map(),
-                dev: false,
-                peer: false,
-              },
-            ],
-          ]),
-          dev: false,
-          peer: false,
-        },
-      ],
-      [
-        child2Name,
-        {
-          pkgid: `${child2Name}@${child2Version}`,
-          realpath: child2Realpath,
-          package: { name: child2Name, version: child2Version },
-          name: child2Name,
-          children: new Map([
-            [
-              child2_1Name,
-              {
-                pkgid: `${child2_1Name}@${child2_1Version}`,
-                realpath: child2_1Realpath,
-                package: { name: child2_1Name, version: child2_1Version },
-                name: child2_1Name,
-                children: new Map(),
-                dev: false,
-                peer: false,
-              },
-            ],
-          ]),
-          dev: true,
-          peer: false,
-        },
-      ],
-      [
-        child3Name,
-        {
-          pkgid: `${child3Name}@${child3Version}`,
-          realpath: child3Realpath,
-          package: { name: child3Name, version: child3Version },
-          name: child3Name,
-          children: new Map([
-            [
-              child3_1Name,
-              {
-                pkgid: `${child3_1Name}@${child3_1Version}`,
-                realpath: child3_1Realpath,
-                package: { name: child3_1Name, version: child3_1Version },
-                name: child3_1Name,
-                children: new Map(),
-                dev: false,
-                peer: false,
-              },
-            ],
-          ]),
-          dev: false,
-          peer: true,
-        },
-      ],
+      [child1Name, child1Node],
+      [child2Name, child2Node],
+      [child3Name, child3Node],
     ]),
   } as Arborist.Node;
 
@@ -343,21 +344,20 @@ describe("resolveNpmDependencies", () => {
     it("should skip it without throwing and not include it in the results", async () => {
       const licensesMap = new Map<LicenseNoticeKey, ResolvedLicense>();
 
-      const optionalNode = {
-        pkgid: `${optionalName}@${optionalVersion}`,
-        realpath: optionalRealpath,
-        package: { name: optionalName, version: optionalVersion },
-        name: optionalName,
-        children: new Map(),
-        dev: false,
-        peer: false,
-        optional: true,
-      } as unknown as Arborist.Node;
+      const optionalNode = createMockNode(
+        optionalName,
+        optionalVersion,
+        optionalRealpath,
+        false,
+        false,
+        true,
+      );
+      addRootEdge(optionalNode);
 
       const topNodeWithOptional: Arborist.Node = {
         children: new Map([
           ...Array.from(topNode.children.entries()),
-          [optionalName, optionalNode as unknown as Arborist.Node],
+          [optionalName, optionalNode],
         ]),
       } as Arborist.Node;
 
@@ -386,16 +386,15 @@ describe("resolveNpmDependencies", () => {
       const missingVersion = "5.0.0";
       const missingRealpath = "/some/path/child-missing";
 
-      const missingNode = {
-        pkgid: `${missingName}@${missingVersion}`,
-        realpath: missingRealpath,
-        package: { name: missingName, version: missingVersion },
-        name: missingName,
-        children: new Map(),
-        dev: false,
-        peer: false,
-        optional: false,
-      } as unknown as Arborist.Node;
+      const missingNode = createMockNode(
+        missingName,
+        missingVersion,
+        missingRealpath,
+        false,
+        false,
+        false,
+      );
+      addRootEdge(missingNode);
 
       const topNodeWithMissing: Arborist.Node = {
         children: new Map([
@@ -465,16 +464,15 @@ describe("resolveNpmDependencies", () => {
     it("should skip it without attempting to read its package.json", async () => {
       const licensesMap = new Map<LicenseNoticeKey, ResolvedLicense>();
 
-      const dotDirNode = {
-        pkgid: `${dotDirName}@${dotDirVersion}`,
-        realpath: dotDirRealpath,
-        package: { name: dotDirName, version: dotDirVersion },
-        name: dotDirName,
-        children: new Map(),
-        dev: false,
-        peer: false,
-        optional: true,
-      } as unknown as Arborist.Node;
+      const dotDirNode = createMockNode(
+        dotDirName,
+        dotDirVersion,
+        dotDirRealpath,
+        false,
+        false,
+        true,
+      );
+      addRootEdge(dotDirNode);
 
       const topNodeWithDotName: Arborist.Node = {
         children: new Map([
