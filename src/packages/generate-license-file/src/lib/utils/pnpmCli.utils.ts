@@ -23,7 +23,7 @@ const dependencyValidator = v8DependencyValidator.or(v9DependencyValidator).tran
   paths: "paths" in dep ? dep.paths : [dep.path],
 }));
 
-const pnpmLsJsonStdOutValidator = z.record(z.array(dependencyValidator));
+const pnpmLsJsonStdOutValidator = z.record(z.string(), z.array(dependencyValidator));
 
 export type PnpmDependency = z.infer<typeof dependencyValidator>;
 
@@ -49,5 +49,5 @@ export const getPnpmProjectDependencies = async (
     throw new Error("Failed to parse pnpm licenses list output");
   }
 
-  return Object.values(commandOutput.data).flatMap(dependencies => dependencies);
+  return Object.values(commandOutput.data).flatMap((dependencies: PnpmDependency[]) => dependencies);
 };
