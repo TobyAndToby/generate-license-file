@@ -9,11 +9,11 @@
     "test:e2e": "nx run-many -t e2e"
   },
   "dependencies": {
-    "@commander-js/extra-typings": "^13.1.0",
+    "@commander-js/extra-typings": "^14.0.0",
     "@npmcli/arborist": "^9.0.0",
     "@types/npmcli__arborist": "^6.0.0",
     "cli-spinners": "^2.6.0",
-    "commander": "^13.1.0",
+    "commander": "^14.0.2",
     "cosmiconfig": "^9.0.0",
     "enquirer": "^2.4.1",
     "glob": "^11.1.0",
