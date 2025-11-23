@@ -66,13 +66,14 @@ describe("resolveNpmDependencies", () => {
   const child3_1LicenseContent = "license contents for child3.1";
   const child3_1LicenseNoticePair: LicenseNoticeKey = `${child3_1LicenseContent}:`;
 
-  // A node tree where:
+  // We create a node tree where:
   // - child1 is a 'normal' dependency
   //   - It has two 'normal' dependencies
   // - child2 is a dev dependency
   //   - It has one 'normal' dependency (but it won't show in results because it's parent is a dev dependency)
   // - child3 is a peer dependency
   //   - It has one 'normal' dependency (but it won't show in results because it's parent is a peer dependency)
+
   const createMockNode = (
     name: string,
     version: string,
