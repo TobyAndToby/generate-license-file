@@ -66,10 +66,6 @@ describe("resolveNpmDependencies", () => {
   const child3_1LicenseContent = "license contents for child3.1";
   const child3_1LicenseNoticePair: LicenseNoticeKey = `${child3_1LicenseContent}:`;
 
-  const dotDirName = ".dotdir";
-  const dotDirVersion = "0.0.0";
-  const dotDirRealpath = "/some/path/.dotdir";
-
   // A node tree where:
   // - child1 is a 'normal' dependency
   //   - It has two 'normal' dependencies
@@ -164,19 +160,6 @@ describe("resolveNpmDependencies", () => {
           ]),
           dev: false,
           peer: true,
-        },
-      ],
-      [
-        dotDirName,
-        {
-          pkgid: `${dotDirName}@${dotDirVersion}`,
-          realpath: dotDirRealpath,
-          package: { name: dotDirName, version: dotDirVersion },
-          name: dotDirName,
-          children: new Map(),
-          dev: false,
-          peer: false,
-          optional: false,
         },
       ],
     ]),
@@ -475,8 +458,35 @@ describe("resolveNpmDependencies", () => {
     });
   });
   describe("when a directory inside node_modules starts with '.'", () => {
+    const dotDirName = ".dotdir";
+    const dotDirVersion = "0.0.0";
+    const dotDirRealpath = "/some/path/.dotdir";
+
     it("should skip it without attempting to read its package.json", async () => {
       const licensesMap = new Map<LicenseNoticeKey, ResolvedLicense>();
+
+      const dotDirNode = {
+        pkgid: `${dotDirName}@${dotDirVersion}`,
+        realpath: dotDirRealpath,
+        package: { name: dotDirName, version: dotDirVersion },
+        name: dotDirName,
+        children: new Map(),
+        dev: false,
+        peer: false,
+        optional: true,
+      } as unknown as Arborist.Node;
+
+      const topNodeWithDotName: Arborist.Node = {
+        children: new Map([
+          ...Array.from(topNode.children.entries()),
+          [dotDirName, dotDirNode as unknown as Arborist.Node],
+        ]),
+      } as Arborist.Node;
+
+      mockedArborist.mockImplementationOnce(
+        () => ({ loadActual: async () => topNodeWithDotName }) as Arborist,
+      );
+
       await resolveDependenciesForNpmProject("/some/path/package.json", licensesMap);
 
       const keys = Array.from(licensesMap.keys());
