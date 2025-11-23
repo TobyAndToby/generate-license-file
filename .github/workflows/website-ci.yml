@@ -10,7 +10,7 @@ on:
   workflow_call:
 
 env:
-  NODE_VERSION: 22
+  NODE_VERSION: 24
   CWD: ./website
 
 jobs:

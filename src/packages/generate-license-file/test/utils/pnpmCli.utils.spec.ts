@@ -5,7 +5,7 @@ jest.mock("../../src/lib/utils/exec.utils", () => ({
   execAsync: jest.fn(),
 }));
 
-type MockExecStdOut = { stdout: string | Buffer; stderr: string | Buffer };
+type MockExecStdOut = { stdout: string | NonSharedBuffer; stderr: string | NonSharedBuffer };
 
 describe("pnpmCli.utils", () => {
   const mockedExecAsync = jest.mocked(execAsync);
