@@ -49,5 +49,7 @@ export const getPnpmProjectDependencies = async (
     throw new Error("Failed to parse pnpm licenses list output");
   }
 
-  return Object.values(commandOutput.data).flatMap((dependencies: PnpmDependency[]) => dependencies);
+  return Object.values(commandOutput.data).flatMap(
+    (dependencies: PnpmDependency[]) => dependencies,
+  );
 };
