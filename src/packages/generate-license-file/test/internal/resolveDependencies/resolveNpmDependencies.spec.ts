@@ -5,7 +5,7 @@ import { resolveDependenciesForNpmProject } from "../../../src/lib/internal/reso
 import { resolveLicenseContent } from "../../../src/lib/internal/resolveLicenseContent";
 import { LicenseNoticeKey, ResolvedLicense } from "../../../src/lib/internal/resolveLicenses";
 import logger from "../../../src/lib/utils/console.utils";
-import { doesFileExist, readFile } from "../../../src/lib/utils/file.utils";
+import { doesFileExist, doesFolderExist, readFile } from "../../../src/lib/utils/file.utils";
 
 jest.mock("@npmcli/arborist", () => ({
   __esModule: true,
@@ -23,6 +23,7 @@ describe("resolveNpmDependencies", () => {
   const mockedLogger = jest.mocked(logger);
   const mockedReadFile = jest.mocked(readFile);
   const mockedDoesFileExist = jest.mocked(doesFileExist);
+  const mockedDoesFolderExist = jest.mocked(doesFolderExist);
 
   const child1Name = "child1";
   const child1Version = "1.0.0";
@@ -213,6 +214,10 @@ describe("resolveNpmDependencies", () => {
       .calledWith(child3_1Realpath, expect.anything(), expect.anything())
       .mockResolvedValue(child3_1LicenseContent);
     setUpPackageJson(child3_1Realpath, child3_1Name, child3_1Version);
+
+    when(mockedDoesFolderExist)
+      .calledWith(expect.stringContaining("node_modules"))
+      .mockResolvedValue(true);
   });
 
   afterAll(() => jest.restoreAllMocks());
