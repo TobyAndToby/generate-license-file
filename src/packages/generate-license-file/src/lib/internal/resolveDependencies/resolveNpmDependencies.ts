@@ -2,6 +2,7 @@
 import { dirname, isAbsolute, join } from "path";
 import logger from "../../utils/console.utils";
 import { maybeReadPackageJson } from "../../utils/packageJson.utils";
+import { resolveNodeModulesPath } from "../../utils/path.utils";
 import { resolveLicenseContent } from "../resolveLicenseContent";
 import { LicenseNoticeKey, ResolvedLicense } from "../resolveLicenses";
 import { resolveNotices } from "../resolveNoticeContent";
@@ -20,9 +21,12 @@ export const resolveDependenciesForNpmProject = async (
   const replacements = options?.replace ?? {};
   const exclude = expandExcludes(options?.exclude);
 
-  const path = resolvePath(packageJson);
+  const projectPath = resolvePath(packageJson);
 
-  const arborist = new Arborist({ path });
+  const nodeModulesPath = await resolveNodeModulesPath(projectPath);
+  const dirContainingNodeModules = dirname(nodeModulesPath);
+
+  const arborist = new Arborist({ path: dirContainingNodeModules });
   const topNode = await arborist.loadActual();
 
   const visitedNodes = new Set<Node | Link>();
@@ -96,7 +100,7 @@ export const resolveDependenciesForNpmProject = async (
   };
 
   for (const child of topNode.children.values()) {
-    const isTopLevel = isTopLevelDependency(child);
+    const isTopLevel = isTopLevelDependency(child, projectPath);
     if (isTopLevel) {
       await parseNode(child);
     }
@@ -109,9 +113,9 @@ const resolvePath = (path: string): string => {
   return dirname(absolutePackageJson);
 };
 
-const isTopLevelDependency = (node: Node | Link): boolean => {
+const isTopLevelDependency = (node: Node | Link, packageJsonDir: string): boolean => {
   for (const edge of node.edgesIn) {
-    if (edge.from?.isRoot) {
+    if (edge.from?.path === packageJsonDir) {
       return true;
     }
   }
