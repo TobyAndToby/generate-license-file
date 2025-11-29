@@ -1,0 +1,78 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`cli nested-a package json should match snapshot 1`] = `
+"This file was generated with the generate-license-file npm package!
+https://www.npmjs.com/package/generate-license-file
+
+The following npm package may be included in this product:
+
+ - dep-one@1.0.0
+
+This package contains the following license:
+
+# Dep One
+
+This license file is spelt \`LICENSE.md\`.
+This license should be found.
+
+-----------
+
+This file was generated with the generate-license-file npm package!
+https://www.npmjs.com/package/generate-license-file
+"
+`;
+
+exports[`cli nested-b package json should match snapshot 1`] = `
+"This file was generated with the generate-license-file npm package!
+https://www.npmjs.com/package/generate-license-file
+
+The following npm package may be included in this product:
+
+ - dep-two@1.0.0
+
+This package contains the following license:
+
+# Dep Two
+
+This license file is spelt \`LICENCE.md\`.
+This license should be found.
+
+-----------
+
+This file was generated with the generate-license-file npm package!
+https://www.npmjs.com/package/generate-license-file
+"
+`;
+
+exports[`cli top-level package json should match snapshot 1`] = `
+"This file was generated with the generate-license-file npm package!
+https://www.npmjs.com/package/generate-license-file
+
+The following npm package may be included in this product:
+
+ - dep-three@1.0.0
+
+This package contains the following license:
+
+# Dep Three
+
+This license file is spelt \`LICENSE\`.
+This license should be found.
+
+-----------
+
+The following npm packages may be included in this product:
+
+ - nested-a@1.0.0
+ - nested-b@1.0.0
+
+These packages each contain the following license:
+
+ISC
+
+-----------
+
+This file was generated with the generate-license-file npm package!
+https://www.npmjs.com/package/generate-license-file
+"
+`;
