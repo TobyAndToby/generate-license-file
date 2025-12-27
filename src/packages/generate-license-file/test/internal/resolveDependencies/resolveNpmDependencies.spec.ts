@@ -5,7 +5,7 @@ import { resolveDependenciesForNpmProject } from "../../../src/lib/internal/reso
 import { resolveLicenseContent } from "../../../src/lib/internal/resolveLicenseContent";
 import { LicenseNoticeKey, ResolvedLicense } from "../../../src/lib/internal/resolveLicenses";
 import logger from "../../../src/lib/utils/console.utils";
-import { doesFileExist, readFile } from "../../../src/lib/utils/file.utils";
+import { doesFileExist, doesFolderExist, readFile } from "../../../src/lib/utils/file.utils";
 
 jest.mock("@npmcli/arborist", () => ({
   __esModule: true,
@@ -23,6 +23,7 @@ describe("resolveNpmDependencies", () => {
   const mockedLogger = jest.mocked(logger);
   const mockedReadFile = jest.mocked(readFile);
   const mockedDoesFileExist = jest.mocked(doesFileExist);
+  const mockedDoesFolderExist = jest.mocked(doesFolderExist);
 
   const child1Name = "child1";
   const child1Version = "1.0.0";
@@ -96,13 +97,17 @@ describe("resolveNpmDependencies", () => {
     } as unknown as Arborist.Node;
   };
 
+  // Directory of the project package.json used to determine top-level dependencies
+  const projectPackageJsonDir = "/some/path";
+
   const addEdge = (from: Arborist.Node, to: Arborist.Node) => {
     from.edgesOut.set(to.name, { to } as Edge);
     to.edgesIn.add({ from } as Edge);
   };
 
   const addRootEdge = (to: Arborist.Node) => {
-    to.edgesIn.add({ from: { isRoot: true } } as Edge);
+    // Mark incoming edge from the project root directory so isTopLevelDependency() returns true
+    to.edgesIn.add({ from: { path: projectPackageJsonDir } } as Edge);
   };
 
   const child1Node = createMockNode(child1Name, child1Version, child1Realpath, false, false);
@@ -213,6 +218,10 @@ describe("resolveNpmDependencies", () => {
       .calledWith(child3_1Realpath, expect.anything(), expect.anything())
       .mockResolvedValue(child3_1LicenseContent);
     setUpPackageJson(child3_1Realpath, child3_1Name, child3_1Version);
+
+    when(mockedDoesFolderExist)
+      .calledWith(expect.stringContaining("node_modules"))
+      .mockResolvedValue(true);
   });
 
   afterAll(() => jest.restoreAllMocks());
@@ -456,6 +465,7 @@ describe("resolveNpmDependencies", () => {
       ).toBeDefined();
     });
   });
+
   describe("when a directory inside node_modules starts with '.'", () => {
     const dotDirName = ".dotdir";
     const dotDirVersion = "0.0.0";
@@ -496,6 +506,90 @@ describe("resolveNpmDependencies", () => {
         mockedReadFile.mock.calls.some(call => (call[0] as string).includes(dotDirRealpath)),
       ).toBe(false);
       expect(mockedLogger.warn).not.toHaveBeenCalled();
+    });
+  });
+
+  describe("when the node_modules directory is in a parent directory", () => {
+    it("should search parent folders and call Arborist with parent path", async () => {
+      mockedDoesFolderExist.mockImplementation(async p => {
+        if (p === "/some/path/node_modules") return false;
+        if (p === "/some/node_modules") return true;
+        return false;
+      });
+
+      await resolveDependenciesForNpmProject("/some/path/package.json", new Map());
+
+      expect(mockedArborist).toHaveBeenCalledWith({ path: "/some" });
+    });
+
+    it("should only include dependencies whose incoming edge path matches the package.json directory", async () => {
+      mockedDoesFolderExist.mockImplementation(async p => {
+        if (p === "/some/path/node_modules") return false;
+        if (p === "/some/node_modules") return true;
+        return false;
+      });
+
+      const tChild1 = createMockNode(child1Name, child1Version, child1Realpath, false, false);
+      const tChild1_1 = createMockNode(
+        child1_1Name,
+        child1_1Version,
+        child1_1Realpath,
+        false,
+        false,
+      );
+      const tChild1_2 = createMockNode(
+        child1_2Name,
+        child1_2Version,
+        child1_2Realpath,
+        false,
+        false,
+      );
+
+      // Mark tChild1 as top-level for the target project path
+      tChild1.edgesIn = new Set([{ from: { path: "/some/path" } } as Edge]);
+      // Children are connected via edges from tChild1
+      addEdge(tChild1 as unknown as Arborist.Node, tChild1_1 as unknown as Arborist.Node);
+      addEdge(tChild1 as unknown as Arborist.Node, tChild1_2 as unknown as Arborist.Node);
+
+      // Another top-level dependency originating from a different project path
+      const otherName = "other";
+      const otherVersion = "9.0.0";
+      const otherRealpath = "/some/path/other";
+      const otherNode = createMockNode(otherName, otherVersion, otherRealpath, false, false);
+      otherNode.edgesIn = new Set([{ from: { path: "/different/root" } } as Edge]);
+
+      const topNodeWithOther: Arborist.Node = {
+        children: new Map([
+          [child1Name, tChild1 as unknown as Arborist.Node],
+          [child1_1Name, tChild1_1 as unknown as Arborist.Node],
+          [child1_2Name, tChild1_2 as unknown as Arborist.Node],
+          [otherName, otherNode as unknown as Arborist.Node],
+        ]),
+      } as Arborist.Node;
+
+      mockedArborist.mockImplementationOnce(
+        () => ({ loadActual: async () => topNodeWithOther }) as Arborist,
+      );
+
+      when(mockedResolveLicenseContent)
+        .calledWith(otherRealpath, expect.anything(), expect.anything())
+        .mockResolvedValue("license contents for other");
+      setUpPackageJson(otherRealpath, otherName, otherVersion);
+
+      const licensesMap = new Map<LicenseNoticeKey, ResolvedLicense>();
+      await resolveDependenciesForNpmProject("/some/path/package.json", licensesMap);
+
+      // Expect child1 and its children included
+      const child1Entry = licensesMap.get(child1LicenseNoticePair);
+      expect(child1Entry?.dependencies.find(d => d.name === child1Name)).toBeDefined();
+      const child1_1Entry = licensesMap.get(child1_1LicenseNoticePair);
+      expect(child1_1Entry?.dependencies.find(d => d.name === child1_1Name)).toBeDefined();
+      const child1_2Entry = licensesMap.get(child1_2LicenseNoticePair);
+      expect(child1_2Entry?.dependencies.find(d => d.name === child1_2Name)).toBeDefined();
+
+      // Expect 'other' NOT included because its incoming edge path doesn't match projectPackageJsonDir
+      const keys = Array.from(licensesMap.keys());
+      expect(keys.some(k => k.includes(otherName))).toBe(false);
     });
   });
 
