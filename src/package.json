@@ -20,7 +20,7 @@
     "json5": "^2.2.3",
     "ora": "^5.4.1",
     "tslib": "^2.8.1",
-    "webpack": "^5.75.0",
+    "webpack": "^5.105.0",
     "zod": "^4.0.0"
   },
   "devDependencies": {
