@@ -15,8 +15,7 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  NODE_VERSION: 24
-  CWD: ./website
+  BUN_VERSION: 1.3.11
 
 jobs:
   ci:
@@ -32,25 +31,21 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v6
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
         with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: npm
-          cache-dependency-path: ${{ env.CWD }}/package-lock.json
+          bun-version: ${{ env.BUN_VERSION }}
 
       - name: Install dependencies
-        working-directory: ${{ env.CWD }}
-        run: npm ci
+        run: bun install --frozen-lockfile
 
       - name: Build Website
-        working-directory: ${{ env.CWD }}
-        run: npm run build
+        run: turbo run build --filter='@generate-license-file/website'
 
       - name: Upload Build
         uses: actions/upload-pages-artifact@v4
         with:
-          path: ${{ env.CWD }}/build/
+          path: apps/website/build/
 
   deploy:
     name: Deploy Website
