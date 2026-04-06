@@ -2,11 +2,13 @@ import fs from "node:fs/promises";
 import { generateLicenseFile } from "generate-license-file";
 import { afterAll, beforeEach, describe, expect, it, vi } from "vitest";
 
-vi.mock("node:fs/promises", async importOriginal => ({
-  ...(await importOriginal()),
-  writeFile: vi.fn(),
-  mkdir: vi.fn(),
-}));
+vi.mock("node:fs/promises", async importOriginal => {
+  const actual = await importOriginal<typeof import("node:fs/promises")>();
+  return {
+    ...actual,
+    default: { ...actual, writeFile: vi.fn(), mkdir: vi.fn() },
+  };
+});
 
 describe("generateLicenseFile", () => {
   const mockedWriteFile = vi.mocked(fs.writeFile);

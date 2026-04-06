@@ -10,6 +10,14 @@
       "inputs": ["src/**", "test/**", "tsconfig*.json", "vitest.config.ts"],
       "cache": true
     },
+    "dev": {
+      "persistent": true,
+      "cache": false
+    },
+    "serve": {
+      "persistent": true,
+      "cache": false
+    },
     "lint": {
       "inputs": ["src/**", "test/**", "{workspaceRoot}/biome.json"],
       "cache": true
@@ -24,14 +32,6 @@
     },
     "@generate-license-file-e2e/npm-monorepo#e2e": {
       "dependsOn": ["generate-license-file#build"],
-      "cache": false
-    },
-    "dev": {
-      "persistent": true,
-      "cache": false
-    },
-    "serve": {
-      "persistent": true,
       "cache": false
     },
     "@generate-license-file/website#build": {

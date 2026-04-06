@@ -39,7 +39,9 @@ This license should be found.
     "dependencies": [
       "dep-seven@1.0.0",
     ],
-    "notices": [],
+    "notices": [
+      "This is the notice file bundled with dependency seven.",
+    ],
   },
   {
     "content": "# Dep Three
@@ -106,7 +108,9 @@ This license should be found.
     "dependencies": [
       "dep-seven@1.0.0",
     ],
-    "notices": [],
+    "notices": [
+      "This is the notice file bundled with dependency seven.",
+    ],
   },
   {
     "content": "# Dep Three
@@ -173,7 +177,9 @@ This license should be found.
     "dependencies": [
       "dep-seven",
     ],
-    "notices": [],
+    "notices": [
+      "This is the notice file bundled with dependency seven.",
+    ],
   },
   {
     "content": "# Dep Three

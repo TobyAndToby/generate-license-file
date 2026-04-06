@@ -1,13 +1,15 @@
-import { describeEachLineEnding, describeRelativeAndAbsolutePaths } from "@generate-license-file/e2e-helpers";
 import fs from "node:fs/promises";
+import { describeEachLineEnding, describeRelativeAndAbsolutePaths } from "@generate-license-file/e2e-helpers";
 import { generateLicenseFile, type LineEnding } from "generate-license-file";
 import { afterAll, beforeEach, describe, expect, it, vi } from "vitest";
 
-vi.mock("node:fs/promises", async importOriginal => ({
-  ...(await importOriginal()),
-  writeFile: vi.fn(),
-  mkdir: vi.fn(),
-}));
+vi.mock("node:fs/promises", async importOriginal => {
+  const actual = await importOriginal<typeof import("node:fs/promises")>();
+  return {
+    ...actual,
+    default: { ...actual, writeFile: vi.fn(), mkdir: vi.fn() },
+  };
+});
 
 const allLineEndings: LineEnding[] = ["crlf", "lf"];
 
@@ -70,7 +72,7 @@ describe("generateLicenseFile", () => {
 
       it("should create the output directory if it does not exist", async () => {
         const outputDirectory = "/output/path";
-        const outputPath = outputDirectory + "/filename.txt";
+        const outputPath = `${outputDirectory}/filename.txt`;
 
         await generateLicenseFile(packageJsonPath, outputPath, { lineEnding });
 
