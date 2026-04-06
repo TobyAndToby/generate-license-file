@@ -1,15 +1,15 @@
-import { prompt } from "enquirer";
+import enquirer from "enquirer";
 import { afterAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { Eol } from "../../../src/lib/cli/args/eol";
 import type { CombinedConfig } from "../../../src/lib/cli/commands/main";
 import { lineEndings } from "../../../src/lib/lineEndings";
 
 vi.mock("enquirer", () => ({
-  prompt: vi.fn(),
+  default: { prompt: vi.fn() },
 }));
 
 describe("Eol", () => {
-  const mockedPrompt = vi.mocked(prompt);
+  const mockedPrompt = vi.mocked(enquirer.prompt);
 
   let eol: Eol;
 

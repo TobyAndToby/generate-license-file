@@ -1,11 +1,12 @@
 ﻿import { dirname, isAbsolute, join } from "node:path";
-import Arborist, { type Link, type Node } from "@npmcli/arborist";
+import type { Link, Node } from "@npmcli/arborist";
 import logger from "../../utils/console.utils";
 import { maybeReadPackageJson } from "../../utils/packageJson.utils";
 import { resolveLicenseContent } from "../resolveLicenseContent";
 import type { LicenseNoticeKey, ResolvedLicense } from "../resolveLicenses";
 import { resolveNotices } from "../resolveNoticeContent";
 import { expandExcludes } from "./expandExcludes";
+import { loadArboristTree } from "./loadArboristTree";
 
 type ResolveLicensesOptions = {
   replace?: Record<string, string>;
@@ -22,8 +23,7 @@ export const resolveDependenciesForNpmProject = async (
 
   const path = resolvePath(packageJson);
 
-  const arborist = new Arborist({ path });
-  const topNode = await arborist.loadActual();
+  const topNode = await loadArboristTree(path);
 
   const visitedNodes = new Set<Node | Link>();
 

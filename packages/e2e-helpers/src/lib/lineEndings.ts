@@ -1,4 +1,5 @@
 import type { LineEnding } from "generate-license-file";
+import { describe } from "vitest";
 
 type DescribeEachLineEndingCallback = (lineEnding: LineEnding, lineEndingLiteral: string) => void;
 

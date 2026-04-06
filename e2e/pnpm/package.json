@@ -2,7 +2,17 @@
   "private": true,
   "name": "@generate-license-file-e2e/pnpm",
   "version": "0.0.0",
+  "packageManager": "pnpm@8.15.0",
   "scripts": {
-    "e2e": "npm ci --prefix ../../e2e/pnpm && npm run e2e --prefix ../../e2e/pnpm"
+    "e2e": "vitest run",
+    "lint": "biome check ."
+  },
+  "dependencies": {
+    "dep-one": "file:../test-dependencies/dep-one",
+    "dep-two": "file:../test-dependencies/dep-two",
+    "dep-two-duplicate": "file:../test-dependencies/dep-two-duplicate",
+    "dep-three": "file:../test-dependencies/dep-three",
+    "dep-four": "file:../test-dependencies/dep-four",
+    "dep-five": "file:../test-dependencies/dep-five"
   }
 }

@@ -1,3 +1,4 @@
 #!/usr/bin/env node
 
-require("../dist/cli.cjs").main(process.argv);
+import { main } from "../dist/cli.mjs";
+main(process.argv);

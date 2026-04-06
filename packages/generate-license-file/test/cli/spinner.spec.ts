@@ -7,7 +7,7 @@ const { mockDotsSpinner, mockOra } = vi.hoisted(() => ({
 }));
 
 vi.mock("cli-spinners", () => ({
-  dots: mockDotsSpinner,
+  default: { dots: mockDotsSpinner },
 }));
 
 vi.mock("ora", () => ({ default: mockOra }));

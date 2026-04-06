@@ -17,28 +17,111 @@
     "e2e/config-file": {
       "name": "@generate-license-file-e2e/config-file",
       "version": "0.0.0",
+      "dependencies": {
+        "dep-five": "workspace:*",
+        "dep-four": "workspace:*",
+        "dep-one": "workspace:*",
+        "dep-three": "workspace:*",
+        "dep-two": "workspace:*",
+        "dep-two-duplicate": "workspace:*",
+      },
+      "devDependencies": {
+        "generate-license-file": "workspace:*",
+      },
     },
     "e2e/multiple-inputs": {
       "name": "@generate-license-file-e2e/multiple-inputs",
       "version": "0.0.0",
+      "dependencies": {
+        "dep-six": "workspace:*",
+        "dep-three": "workspace:*",
+      },
+      "devDependencies": {
+        "generate-license-file": "workspace:*",
+      },
     },
     "e2e/npm-package": {
       "name": "@generate-license-file-e2e/npm-package",
       "version": "0.0.0",
+      "dependencies": {
+        "dep-five": "workspace:*",
+        "dep-four": "workspace:*",
+        "dep-one": "workspace:*",
+        "dep-seven": "workspace:*",
+        "dep-three": "workspace:*",
+        "dep-two": "workspace:*",
+        "dep-two-duplicate": "workspace:*",
+      },
+      "devDependencies": {
+        "@generate-license-file/e2e-helpers": "workspace:*",
+        "generate-license-file": "workspace:*",
+      },
     },
     "e2e/optional-dependencies": {
       "name": "@generate-license-file-e2e/optional-dependencies",
       "version": "0.0.0",
+      "dependencies": {
+        "dep-one": "workspace:*",
+      },
+      "devDependencies": {
+        "generate-license-file": "workspace:*",
+      },
+      "optionalDependencies": {
+        "dep-two": "workspace:*",
+      },
     },
     "e2e/pnpm": {
       "name": "@generate-license-file-e2e/pnpm",
       "version": "0.0.0",
+      "dependencies": {
+        "dep-five": "file:../test-dependencies/dep-five",
+        "dep-four": "file:../test-dependencies/dep-four",
+        "dep-one": "file:../test-dependencies/dep-one",
+        "dep-three": "file:../test-dependencies/dep-three",
+        "dep-two": "file:../test-dependencies/dep-two",
+        "dep-two-duplicate": "file:../test-dependencies/dep-two-duplicate",
+      },
+    },
+    "e2e/test-dependencies/dep-five": {
+      "name": "dep-five",
+      "version": "1.0.0",
+    },
+    "e2e/test-dependencies/dep-four": {
+      "name": "dep-four",
+      "version": "1.0.0",
+    },
+    "e2e/test-dependencies/dep-one": {
+      "name": "dep-one",
+      "version": "1.0.0",
+    },
+    "e2e/test-dependencies/dep-seven": {
+      "name": "dep-seven",
+      "version": "1.0.0",
+    },
+    "e2e/test-dependencies/dep-six": {
+      "name": "dep-six",
+      "version": "1.0.0",
+    },
+    "e2e/test-dependencies/dep-three": {
+      "name": "dep-three",
+      "version": "1.0.0",
+    },
+    "e2e/test-dependencies/dep-two": {
+      "name": "dep-two",
+      "version": "1.0.0",
+    },
+    "e2e/test-dependencies/dep-two-duplicate": {
+      "name": "dep-two-duplicate",
+      "version": "1.0.0",
     },
     "packages/e2e-helpers": {
       "name": "@generate-license-file/e2e-helpers",
       "version": "0.0.1",
       "dependencies": {
         "generate-license-file": "workspace:*",
+      },
+      "devDependencies": {
+        "vitest": "^4.1.2",
       },
     },
     "packages/generate-license-file": {
@@ -49,7 +132,7 @@
       "dependencies": {
         "@commander-js/extra-typings": "^14.0.0",
         "@npmcli/arborist": "^9.0.0",
-        "cli-spinners": "^2.6.0",
+        "cli-spinners": "^3.4.0",
         "commander": "^14.0.2",
         "cosmiconfig": "^9.0.0",
         "enquirer": "^2.4.1",
@@ -398,7 +481,7 @@
 
     "cli-cursor": ["cli-cursor@3.1.0", "", { "dependencies": { "restore-cursor": "^3.1.0" } }, "sha512-I/zHAwsKf9FqGoXM4WWRACob9+SNukZTd94DWF57E4toouRulbCxcUh6RKUEOQlYTHJnzkPMySvPNaaSLNfLZw=="],
 
-    "cli-spinners": ["cli-spinners@2.9.2", "", {}, "sha512-ywqV+5MmyL4E7ybXgKys4DugZbX0FC6LnwrhjuykIjnK9k8OQacQ7axGKnjDXWNhns0xot3bZI5h55H8yo9cJg=="],
+    "cli-spinners": ["cli-spinners@3.4.0", "", {}, "sha512-bXfOC4QcT1tKXGorxL3wbJm6XJPDqEnij2gQ2m7ESQuE+/z9YFIWnl/5RpTiKWbMq3EVKR4fRLJGn6DVfu0mpw=="],
 
     "clone": ["clone@1.0.4", "", {}, "sha512-JQHZ2QMW6l3aH/j6xCqQThY/9OH4D/9ls34cgkUBiEeocRTU04tHfKPBsUK1PqZCUQM7GiA0IIXJSuXHI64Kbg=="],
 
@@ -427,6 +510,22 @@
     "defu": ["defu@6.1.6", "", {}, "sha512-f8mefEW4WIVg4LckePx3mALjQSPQgFlg9U8yaPdlsbdYcHQyj9n2zL2LJEA52smeYxOvmd/nB7TpMtHGMTHcug=="],
 
     "delayed-stream": ["delayed-stream@1.0.0", "", {}, "sha512-ZySD7Nf91aLB0RxL4KGrKHBXl7Eds1DAmEdcoVawXnLD7SDhpNgtuII2aAkg7a7QS41jxPSZ17p4VdGnMHk3MQ=="],
+
+    "dep-five": ["dep-five@workspace:e2e/test-dependencies/dep-five"],
+
+    "dep-four": ["dep-four@workspace:e2e/test-dependencies/dep-four"],
+
+    "dep-one": ["dep-one@workspace:e2e/test-dependencies/dep-one"],
+
+    "dep-seven": ["dep-seven@workspace:e2e/test-dependencies/dep-seven"],
+
+    "dep-six": ["dep-six@workspace:e2e/test-dependencies/dep-six"],
+
+    "dep-three": ["dep-three@workspace:e2e/test-dependencies/dep-three"],
+
+    "dep-two": ["dep-two@workspace:e2e/test-dependencies/dep-two"],
+
+    "dep-two-duplicate": ["dep-two-duplicate@workspace:e2e/test-dependencies/dep-two-duplicate"],
 
     "detect-libc": ["detect-libc@2.1.2", "", {}, "sha512-Btj2BOOO83o3WyH59e8MgXsxEQVcarkUOpEYrubB0urwnN10yQ364rsiByU11nZlqWYZm05i/of7io4mzihBtQ=="],
 
@@ -830,6 +929,18 @@
 
     "@babel/code-frame/@babel/helper-validator-identifier": ["@babel/helper-validator-identifier@7.28.5", "", {}, "sha512-qSs4ifwzKJSV39ucNjsvc6WVHs6b7S03sOh2OcHF9UHfVPqWWALUsNUVzhSBiItjRZoLHx7nIarVjqKVusUZ1Q=="],
 
+    "@generate-license-file-e2e/pnpm/dep-five": ["dep-five@file:e2e/test-dependencies/dep-five", {}],
+
+    "@generate-license-file-e2e/pnpm/dep-four": ["dep-four@file:e2e/test-dependencies/dep-four", {}],
+
+    "@generate-license-file-e2e/pnpm/dep-one": ["dep-one@file:e2e/test-dependencies/dep-one", {}],
+
+    "@generate-license-file-e2e/pnpm/dep-three": ["dep-three@file:e2e/test-dependencies/dep-three", {}],
+
+    "@generate-license-file-e2e/pnpm/dep-two": ["dep-two@file:e2e/test-dependencies/dep-two", {}],
+
+    "@generate-license-file-e2e/pnpm/dep-two-duplicate": ["dep-two-duplicate@file:e2e/test-dependencies/dep-two-duplicate", {}],
+
     "@npmcli/metavuln-calculator/json-parse-even-better-errors": ["json-parse-even-better-errors@5.0.0", "", {}, "sha512-ZF1nxZ28VhQouRWhUcVlUIN3qwSgPuswK05s/HIaoetAoE/9tngVmCHjSxmSQPav1nd+lPtTL0YZ/2AFdR/iYQ=="],
 
     "@npmcli/package-json/json-parse-even-better-errors": ["json-parse-even-better-errors@5.0.0", "", {}, "sha512-ZF1nxZ28VhQouRWhUcVlUIN3qwSgPuswK05s/HIaoetAoE/9tngVmCHjSxmSQPav1nd+lPtTL0YZ/2AFdR/iYQ=="],
@@ -843,6 +954,8 @@
     "minipass-flush/minipass": ["minipass@3.3.6", "", { "dependencies": { "yallist": "^4.0.0" } }, "sha512-DxiNidxSEK+tHG6zOIklvNOwm3hvCrbUrdtzY74U6HKTJxvIDfOUL5W5P2Ghd3DTkhhKPYGqeNUIh5qcM4YBfw=="],
 
     "minipass-pipeline/minipass": ["minipass@3.3.6", "", { "dependencies": { "yallist": "^4.0.0" } }, "sha512-DxiNidxSEK+tHG6zOIklvNOwm3hvCrbUrdtzY74U6HKTJxvIDfOUL5W5P2Ghd3DTkhhKPYGqeNUIh5qcM4YBfw=="],
+
+    "ora/cli-spinners": ["cli-spinners@2.9.2", "", {}, "sha512-ywqV+5MmyL4E7ybXgKys4DugZbX0FC6LnwrhjuykIjnK9k8OQacQ7axGKnjDXWNhns0xot3bZI5h55H8yo9cJg=="],
 
     "parse-conflict-json/json-parse-even-better-errors": ["json-parse-even-better-errors@5.0.0", "", {}, "sha512-ZF1nxZ28VhQouRWhUcVlUIN3qwSgPuswK05s/HIaoetAoE/9tngVmCHjSxmSQPav1nd+lPtTL0YZ/2AFdR/iYQ=="],
 

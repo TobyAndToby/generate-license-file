@@ -1,5 +1,7 @@
-import { prompt } from "enquirer";
+import enquirer from "enquirer";
 import type { CombinedConfig } from "../commands/main";
+
+const { prompt } = enquirer;
 
 export type MultipleChoiceOptions<T> = {
   [key: string]: T;

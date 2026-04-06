@@ -1,4 +1,4 @@
-import { prompt } from "enquirer";
+import enquirer from "enquirer";
 import { afterAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { Output } from "../../../src/lib/cli/args/output";
 import type { CombinedConfig } from "../../../src/lib/cli/commands/main";
@@ -9,12 +9,12 @@ vi.mock("../../../src/lib/utils/file.utils", () => ({
 }));
 
 vi.mock("enquirer", () => ({
-  prompt: vi.fn(),
+  default: { prompt: vi.fn() },
 }));
 
 describe("Output", () => {
   const mockDoesFileExist = vi.mocked(doesFileExist);
-  const mockPrompt = vi.mocked(prompt);
+  const mockPrompt = vi.mocked(enquirer.prompt);
 
   let output: Output;
 

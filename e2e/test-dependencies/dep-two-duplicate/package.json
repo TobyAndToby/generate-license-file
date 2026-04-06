@@ -1,0 +1,6 @@
+{
+  "private": true,
+  "name": "dep-two-duplicate",
+  "version": "1.0.0",
+  "dependencies": {}
+}

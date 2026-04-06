@@ -17,6 +17,10 @@
     "e2e": {
       "dependsOn": ["^build"],
       "cache": false
+    },
+    "@generate-license-file-e2e/pnpm#e2e": {
+      "dependsOn": ["generate-license-file#build"],
+      "cache": false
     }
   }
 }

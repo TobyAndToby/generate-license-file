@@ -3,6 +3,20 @@
   "name": "@generate-license-file-e2e/npm-package",
   "version": "0.0.0",
   "scripts": {
-    "e2e": "npm ci --prefix ../../e2e/npm-package && npm run e2e --prefix ../../e2e/npm-package"
+    "e2e": "vitest run",
+    "lint": "biome check ."
+  },
+  "dependencies": {
+    "dep-one": "workspace:*",
+    "dep-two": "workspace:*",
+    "dep-two-duplicate": "workspace:*",
+    "dep-three": "workspace:*",
+    "dep-four": "workspace:*",
+    "dep-five": "workspace:*",
+    "dep-seven": "workspace:*"
+  },
+  "devDependencies": {
+    "generate-license-file": "workspace:*",
+    "@generate-license-file/e2e-helpers": "workspace:*"
   }
 }

@@ -1,4 +1,5 @@
 import path from "node:path";
+import { describe } from "vitest";
 
 type DescribeCallback = (packageJsonPath: string) => void;
 

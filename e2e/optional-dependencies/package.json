@@ -3,6 +3,16 @@
   "name": "@generate-license-file-e2e/optional-dependencies",
   "version": "0.0.0",
   "scripts": {
-    "e2e": "npm ci --prefix ../../e2e/optional-dependencies && npm run e2e --prefix ../../e2e/optional-dependencies"
+    "e2e": "vitest run",
+    "lint": "biome check ."
+  },
+  "dependencies": {
+    "dep-one": "workspace:*"
+  },
+  "optionalDependencies": {
+    "dep-two": "workspace:*"
+  },
+  "devDependencies": {
+    "generate-license-file": "workspace:*"
   }
 }

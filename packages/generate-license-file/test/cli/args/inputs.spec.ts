@@ -1,4 +1,4 @@
-import { prompt } from "enquirer";
+import enquirer from "enquirer";
 import { afterAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { Inputs } from "../../../src/lib/cli/args/inputs";
 import type { CombinedConfig } from "../../../src/lib/cli/commands/main";
@@ -19,11 +19,11 @@ vi.mock("../../../src/lib/cli/spinner.ts", () => ({
 }));
 
 vi.mock("enquirer", () => ({
-  prompt: vi.fn(),
+  default: { prompt: vi.fn() },
 }));
 
 describe("Inputs", () => {
-  const mockedPrompt = vi.mocked(prompt);
+  const mockedPrompt = vi.mocked(enquirer.prompt);
   const mockedDoesFileExist = vi.mocked(doesFileExist);
   const mockedFailSpinner = vi.mocked(spinner.fail);
   const mockedWarnSpinner = vi.mocked(spinner.warn);
