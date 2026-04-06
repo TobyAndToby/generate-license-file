@@ -1,25 +1,26 @@
+import { vi, describe, it, expect, beforeEach, afterAll } from "vitest";
 import { doesFileExist, readFile } from "../../src/lib/utils/file.utils";
 import { PackageJson, readPackageJson } from "../../src/lib/utils/packageJson.utils";
 
-jest.mock("../../src/lib/utils/file.utils", () => ({
-  doesFileExist: jest.fn(),
-  readFile: jest.fn(),
+vi.mock("../../src/lib/utils/file.utils", () => ({
+  doesFileExist: vi.fn(),
+  readFile: vi.fn(),
 }));
 
 describe("Package.json Utils", () => {
-  const mockedDoesFileExist = jest.mocked(doesFileExist);
-  const mockedReadFile = jest.mocked(readFile);
+  const mockedDoesFileExist = vi.mocked(doesFileExist);
+  const mockedReadFile = vi.mocked(readFile);
 
   const pathToPackageJson = "./path/to/package.json";
 
   beforeEach(() => {
-    jest.resetAllMocks();
+    vi.resetAllMocks();
 
     mockedReadFile.mockResolvedValue(`{ "name": "test-project", "version": "1.2.3" }`);
   });
 
   afterAll(() => {
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   describe("readPackageJson", () => {

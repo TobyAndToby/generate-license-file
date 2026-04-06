@@ -1,4 +1,5 @@
-import { when } from "../../../test-utils/when";
+import { vi, describe, it, expect, beforeEach, afterAll } from "vitest";
+import { when } from "vitest-when";
 import { resolveLicenseContent } from "../../../src/lib/internal/resolveLicenseContent";
 import { licenseFile } from "../../../src/lib/internal/resolveLicenseContent/licenseFile";
 import { packageJsonLicense } from "../../../src/lib/internal/resolveLicenseContent/packageJsonLicense";
@@ -7,23 +8,23 @@ import { replacementHttp } from "../../../src/lib/internal/resolveLicenseContent
 import { spdxExpression } from "../../../src/lib/internal/resolveLicenseContent/spdxExpression";
 import { PackageJson } from "../../../src/lib/utils/packageJson.utils";
 
-jest.mock("../../../src/lib/internal/resolveLicenseContent/packageJsonLicense");
-jest.mock("../../../src/lib/internal/resolveLicenseContent/licenseFile");
-jest.mock("../../../src/lib/internal/resolveLicenseContent/spdxExpression");
+vi.mock("../../../src/lib/internal/resolveLicenseContent/packageJsonLicense");
+vi.mock("../../../src/lib/internal/resolveLicenseContent/licenseFile");
+vi.mock("../../../src/lib/internal/resolveLicenseContent/spdxExpression");
 
-jest.mock("../../../src/lib/internal/resolveLicenseContent/replacementHttp");
-jest.mock("../../../src/lib/internal/resolveLicenseContent/replacementFile");
+vi.mock("../../../src/lib/internal/resolveLicenseContent/replacementHttp");
+vi.mock("../../../src/lib/internal/resolveLicenseContent/replacementFile");
 
 describe("resolveLicenseContent", () => {
-  const mockedPackageJsonLicenseResolution = jest.mocked(packageJsonLicense);
-  const mockedLicenseFileResolution = jest.mocked(licenseFile);
-  const mockedSpdxExpressionResolution = jest.mocked(spdxExpression);
+  const mockedPackageJsonLicenseResolution = vi.mocked(packageJsonLicense);
+  const mockedLicenseFileResolution = vi.mocked(licenseFile);
+  const mockedSpdxExpressionResolution = vi.mocked(spdxExpression);
 
-  const mockedReplacementHttp = jest.mocked(replacementHttp);
-  const mockedReplacementFile = jest.mocked(replacementFile);
+  const mockedReplacementHttp = vi.mocked(replacementHttp);
+  const mockedReplacementFile = vi.mocked(replacementFile);
 
-  beforeEach(jest.resetAllMocks);
-  afterAll(jest.restoreAllMocks);
+  beforeEach(vi.resetAllMocks);
+  afterAll(vi.restoreAllMocks);
 
   describe("when a 'name' replacement is given for a package", () => {
     it("should call all of the replacement resolvers in order if they all return null", async () => {
@@ -33,8 +34,8 @@ describe("resolveLicenseContent", () => {
         "some-package": "/some/replacement/path",
       };
 
-      when(mockedReplacementHttp).calledWith("/some/replacement/path").mockResolvedValue(null);
-      when(mockedReplacementFile).calledWith("/some/replacement/path").mockResolvedValue(null);
+      when(mockedReplacementHttp).calledWith("/some/replacement/path").thenResolve(null);
+      when(mockedReplacementFile).calledWith("/some/replacement/path").thenResolve(null);
 
       await expect(() =>
         resolveLicenseContent("/some/directory", packageJson, replacements),
@@ -53,8 +54,8 @@ describe("resolveLicenseContent", () => {
 
       when(mockedReplacementHttp)
         .calledWith("/some/replacement/path")
-        .mockResolvedValue("a not null value");
-      when(mockedReplacementFile).calledWith("/some/replacement/path").mockResolvedValue(null);
+        .thenResolve("a not null value");
+      when(mockedReplacementFile).calledWith("/some/replacement/path").thenResolve(null);
 
       await resolveLicenseContent("/some/directory", packageJson, replacements);
 
@@ -73,8 +74,8 @@ describe("resolveLicenseContent", () => {
 
       when(mockedReplacementHttp)
         .calledWith("/some/replacement/path")
-        .mockResolvedValue(someContent);
-      when(mockedReplacementFile).calledWith("/some/replacement/path").mockResolvedValue(null);
+        .thenResolve(someContent);
+      when(mockedReplacementFile).calledWith("/some/replacement/path").thenResolve(null);
 
       const result = await resolveLicenseContent("/some/directory", packageJson, replacements);
 
@@ -88,8 +89,8 @@ describe("resolveLicenseContent", () => {
         "some-package": "/some/replacement/path",
       };
 
-      when(mockedReplacementHttp).calledWith("/some/replacement/path").mockResolvedValue(null);
-      when(mockedReplacementFile).calledWith("/some/replacement/path").mockResolvedValue(null);
+      when(mockedReplacementHttp).calledWith("/some/replacement/path").thenResolve(null);
+      when(mockedReplacementFile).calledWith("/some/replacement/path").thenResolve(null);
 
       await expect(() =>
         resolveLicenseContent("/some/directory", packageJson, replacements),
@@ -107,8 +108,8 @@ describe("resolveLicenseContent", () => {
         "some-package@1.2.3": "/some/replacement/path",
       };
 
-      when(mockedReplacementHttp).calledWith("/some/replacement/path").mockResolvedValue(null);
-      when(mockedReplacementFile).calledWith("/some/replacement/path").mockResolvedValue(null);
+      when(mockedReplacementHttp).calledWith("/some/replacement/path").thenResolve(null);
+      when(mockedReplacementFile).calledWith("/some/replacement/path").thenResolve(null);
 
       await expect(() =>
         resolveLicenseContent("/some/directory", packageJson, replacements),
@@ -127,10 +128,10 @@ describe("resolveLicenseContent", () => {
       };
       when(mockedReplacementFile)
         .calledWith("/some/less/specific/replacement/path")
-        .mockResolvedValue("the less specific replacement content");
+        .thenResolve("the less specific replacement content");
       when(mockedReplacementFile)
         .calledWith("/some/more/specific/replacement/path")
-        .mockResolvedValue("the more specific replacement content");
+        .thenResolve("the more specific replacement content");
 
       const result = await resolveLicenseContent("/some/directory", packageJson, replacements);
 

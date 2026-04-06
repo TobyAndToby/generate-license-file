@@ -1,20 +1,21 @@
+import { vi, describe, it, expect, beforeEach, afterAll } from "vitest";
 import { getProjectLicenses, GetProjectLicensesOptions } from "../src/lib/getProjectLicenses";
 import { ResolvedLicense, resolveLicenses } from "../src/lib/internal/resolveLicenses";
 
-jest.mock("../src/lib/internal/resolveLicenses", () => ({
-  resolveLicenses: jest.fn(),
+vi.mock("../src/lib/internal/resolveLicenses", () => ({
+  resolveLicenses: vi.fn(),
 }));
 
 describe("getProjectLicenses", () => {
-  const mockedResolveLicenses = jest.mocked(resolveLicenses);
+  const mockedResolveLicenses = vi.mocked(resolveLicenses);
 
   beforeEach(() => {
-    jest.resetAllMocks();
+    vi.resetAllMocks();
 
     mockedResolveLicenses.mockResolvedValue([]);
   });
 
-  afterAll(jest.restoreAllMocks);
+  afterAll(vi.restoreAllMocks);
 
   it("should call resolveLicenses", async () => {
     const _ = await getProjectLicenses("path");

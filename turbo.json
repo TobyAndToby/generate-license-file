@@ -7,7 +7,7 @@
       "outputs": ["dist/**"]
     },
     "test": {
-      "inputs": ["src/**", "test/**", "test-utils/**", "tsconfig*.json"],
+      "inputs": ["src/**", "test/**", "tsconfig*.json", "vitest.config.ts"],
       "cache": true
     },
     "lint": {

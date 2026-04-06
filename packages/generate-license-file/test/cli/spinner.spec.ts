@@ -1,42 +1,43 @@
-import ora, { Options } from "ora";
+import { vi, describe, it, expect, beforeEach, afterAll } from "vitest";
+import type { Options } from "ora";
 
-const mockDotsSpinner = {};
-jest.mock("cli-spinners", () => ({
+const { mockDotsSpinner, mockOra } = vi.hoisted(() => ({
+  mockDotsSpinner: {} as object,
+  mockOra: vi.fn(),
+}));
+
+vi.mock("cli-spinners", () => ({
   dots: mockDotsSpinner,
 }));
 
-jest.mock("ora", () => jest.fn());
+vi.mock("ora", () => ({ default: mockOra }));
 
 describe("spinner", () => {
-  const mockedOra = jest.mocked(ora);
-
   beforeEach(() => {
-    jest.resetAllMocks();
+    vi.resetAllMocks();
   });
 
   afterAll(() => {
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
-  it("should use the dots spinner", () => {
-    jest.isolateModules(() => {
-      require("../../src/lib/cli/spinner");
-    });
+  it("should use the dots spinner", async () => {
+    vi.resetModules();
+    await import("../../src/lib/cli/spinner");
 
-    expect(mockedOra).toHaveBeenCalledTimes(1);
+    expect(mockOra).toHaveBeenCalledTimes(1);
 
-    const firstCallFirstArg = mockedOra.mock.calls[0][0] as Options;
+    const firstCallFirstArg = mockOra.mock.calls[0][0] as Options;
     expect(firstCallFirstArg.spinner).toBe(mockDotsSpinner);
   });
 
-  it("should use the text 'Resolving licenses...'", () => {
-    jest.isolateModules(() => {
-      require("../../src/lib/cli/spinner");
-    });
+  it("should use the text 'Resolving licenses...'", async () => {
+    vi.resetModules();
+    await import("../../src/lib/cli/spinner");
 
-    expect(mockedOra).toHaveBeenCalledTimes(1);
+    expect(mockOra).toHaveBeenCalledTimes(1);
 
-    const firstCallFirstArg = mockedOra.mock.calls[0][0] as Options;
+    const firstCallFirstArg = mockOra.mock.calls[0][0] as Options;
     expect(firstCallFirstArg.text).toBe("Resolving licenses...");
   });
 });

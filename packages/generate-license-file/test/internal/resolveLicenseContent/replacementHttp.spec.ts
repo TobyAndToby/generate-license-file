@@ -1,16 +1,17 @@
+import { vi, describe, it, expect, beforeEach, afterAll } from "vitest";
 import { replacementHttp } from "../../../src/lib/internal/resolveLicenseContent/replacementHttp";
 import { fetchString } from "../../../src/lib/utils/http.utils";
 
-jest.mock("../../../src/lib/utils/http.utils");
+vi.mock("../../../src/lib/utils/http.utils");
 
 describe("replacementHttp", () => {
-  const mockFetchString = jest.mocked(fetchString);
+  const mockFetchString = vi.mocked(fetchString);
 
   beforeEach(() => {
-    jest.resetAllMocks();
+    vi.resetAllMocks();
   });
 
-  afterAll(() => jest.restoreAllMocks());
+  afterAll(() => vi.restoreAllMocks());
 
   it("should not fetch the content if the location is not a url", async () => {
     const location = "not a url";

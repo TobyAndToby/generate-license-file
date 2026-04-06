@@ -1,18 +1,19 @@
+import { vi, describe, it, expect, beforeEach, afterAll } from "vitest";
 import { Compiler } from "webpack";
 import { compilationTapFactory } from "../src/lib/compilationTapFactory";
 import { defaultOptions } from "../src/lib/defaultOptions";
 import { LicenseFilePlugin } from "../src/lib/licenseFilePlugin";
 import { Options } from "../src/lib/options";
 
-jest.mock("../src/lib/compilationTapFactory", () => {
+vi.mock("../src/lib/compilationTapFactory", () => {
   return {
-    compilationTapFactory: jest.fn(),
+    compilationTapFactory: vi.fn(),
   };
 });
 
 describe("LicenseFilePlugin", () => {
-  const mockCompilationTapFactory = jest.mocked(compilationTapFactory);
-  const mockTap = jest.fn();
+  const mockCompilationTapFactory = vi.mocked(compilationTapFactory);
+  const mockTap = vi.fn();
 
   let compiler: Compiler;
 
@@ -30,7 +31,7 @@ describe("LicenseFilePlugin", () => {
   });
 
   afterAll(() => {
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   describe("apply", () => {

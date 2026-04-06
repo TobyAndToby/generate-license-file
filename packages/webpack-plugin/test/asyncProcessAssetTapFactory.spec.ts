@@ -1,3 +1,4 @@
+import { vi, describe, it, expect, beforeEach } from "vitest";
 import { getLicenseFileText, LineEnding } from "generate-license-file";
 import { Compilation, Compiler, sources } from "webpack";
 import { asyncProcessAssetTapFactory } from "../src/lib/asyncProcessAssetTapFactory";
@@ -5,22 +6,22 @@ import { devImplementation } from "../src/lib/devImplementation";
 import { Options } from "../src/lib/options";
 import { waitForNextEventLoop } from "./utils/waitForNextEventLoop";
 
-jest.mock("generate-license-file", () => {
+vi.mock("generate-license-file", () => {
   return {
-    getLicenseFileText: jest.fn(),
+    getLicenseFileText: vi.fn(),
   };
 });
 
-jest.mock("../src/lib/devImplementation", () => {
+vi.mock("../src/lib/devImplementation", () => {
   return {
-    devImplementation: jest.fn(),
+    devImplementation: vi.fn(),
   };
 });
 
 describe("asyncProcessAssetTapFactory", () => {
-  const mockGetLicenseFileText = jest.mocked(getLicenseFileText);
-  const mockDevImplementation = jest.mocked(devImplementation);
-  const mockEmitAsset = jest.fn();
+  const mockGetLicenseFileText = vi.mocked(getLicenseFileText);
+  const mockDevImplementation = vi.mocked(devImplementation);
+  const mockEmitAsset = vi.fn();
 
   let options: Options;
   let compiler: Compiler;
@@ -195,7 +196,7 @@ describe("asyncProcessAssetTapFactory", () => {
       });
 
       it("should call the resolve function", async () => {
-        const resolveFunction = jest.fn();
+        const resolveFunction = vi.fn();
 
         const assetProcessingAsyncTap = asyncProcessAssetTapFactory(options, compiler, compilation);
         assetProcessingAsyncTap(undefined, resolveFunction);
@@ -206,7 +207,7 @@ describe("asyncProcessAssetTapFactory", () => {
       });
 
       it("should call the resolve function with no arguments", async () => {
-        const resolveFunction = jest.fn();
+        const resolveFunction = vi.fn();
 
         const assetProcessingAsyncTap = asyncProcessAssetTapFactory(options, compiler, compilation);
         assetProcessingAsyncTap(undefined, resolveFunction);
@@ -264,7 +265,7 @@ describe("asyncProcessAssetTapFactory", () => {
       );
 
       it("should call the resolve function", async () => {
-        const resolveFunction = jest.fn();
+        const resolveFunction = vi.fn();
 
         const assetProcessingAsyncTap = asyncProcessAssetTapFactory(options, compiler, compilation);
         assetProcessingAsyncTap(undefined, resolveFunction);
@@ -275,7 +276,7 @@ describe("asyncProcessAssetTapFactory", () => {
       });
 
       it("should call the resolve function with the webpackError", async () => {
-        const resolveFunction = jest.fn();
+        const resolveFunction = vi.fn();
 
         const assetProcessingAsyncTap = asyncProcessAssetTapFactory(options, compiler, compilation);
         assetProcessingAsyncTap(undefined, resolveFunction);

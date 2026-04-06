@@ -1,4 +1,5 @@
-import { when } from "../../../test-utils/when";
+import { vi, describe, it, expect, beforeEach, afterAll } from "vitest";
+import { when } from "vitest-when";
 import { join } from "path";
 import { ResolutionInputs } from "../../../src/lib/internal/resolveLicenseContent";
 import { packageJsonLicense } from "../../../src/lib/internal/resolveLicenseContent/packageJsonLicense";
@@ -6,16 +7,16 @@ import logger from "../../../src/lib/utils/console.utils";
 import { doesFileExist, readFile } from "../../../src/lib/utils/file.utils";
 import { PackageJson } from "../../../src/lib/utils/packageJson.utils";
 
-jest.mock("../../../src/lib/utils/file.utils");
-jest.mock("../../../src/lib/utils/console.utils");
+vi.mock("../../../src/lib/utils/file.utils");
+vi.mock("../../../src/lib/utils/console.utils");
 
 describe("packageJsonLicense", () => {
-  const mockedDoesFileExist = jest.mocked(doesFileExist);
-  const mockedReadFile = jest.mocked(readFile);
-  const mockedWarn = jest.mocked(logger.warn);
+  const mockedDoesFileExist = vi.mocked(doesFileExist);
+  const mockedReadFile = vi.mocked(readFile);
+  const mockedWarn = vi.mocked(logger.warn);
 
-  beforeEach(jest.resetAllMocks);
-  afterAll(jest.restoreAllMocks);
+  beforeEach(vi.resetAllMocks);
+  afterAll(vi.restoreAllMocks);
 
   it("should return null if the package.json does not have a license or a licenses field", async () => {
     const inputs: ResolutionInputs = {
@@ -80,7 +81,7 @@ describe("packageJsonLicense", () => {
     it("should return null if the license file does not exist", async () => {
       const expectedPath = join("/some/directory", "license.txt");
 
-      when(mockedDoesFileExist).calledWith(expectedPath).mockResolvedValue(false);
+      when(mockedDoesFileExist).calledWith(expectedPath).thenResolve(false);
 
       const inputs: ResolutionInputs = {
         packageJson: new PackageJson(undefined, undefined, "SEE LICENSE IN license.txt"),
@@ -97,10 +98,10 @@ describe("packageJsonLicense", () => {
     it("should return null if the license file cannot be read", async () => {
       const expectedPath = join("/some/directory", "license.txt");
 
-      when(mockedDoesFileExist).calledWith(expectedPath).mockResolvedValue(true);
+      when(mockedDoesFileExist).calledWith(expectedPath).thenResolve(true);
       when(mockedReadFile)
         .calledWith(expectedPath, { encoding: "utf-8" })
-        .mockRejectedValue(new Error("Could not read file"));
+        .thenReject(new Error("Could not read file"));
 
       const inputs: ResolutionInputs = {
         packageJson: new PackageJson(undefined, undefined, "SEE LICENSE IN license.txt"),
@@ -118,10 +119,10 @@ describe("packageJsonLicense", () => {
     it("should return the license file contents if the license file exists and can be read", async () => {
       const expectedPath = join("/some/directory", "license.txt");
 
-      when(mockedDoesFileExist).calledWith(expectedPath).mockResolvedValue(true);
+      when(mockedDoesFileExist).calledWith(expectedPath).thenResolve(true);
       when(mockedReadFile)
         .calledWith(expectedPath, { encoding: "utf-8" })
-        .mockResolvedValue("license contents");
+        .thenResolve("license contents");
 
       const inputs: ResolutionInputs = {
         packageJson: new PackageJson(undefined, undefined, "SEE LICENSE IN license.txt"),
@@ -143,10 +144,10 @@ describe("packageJsonLicense", () => {
     ])("should ignore punctuation wrapping the license file path", async licenseFile => {
       const expectedPath = join("/some/directory", "license.txt");
 
-      when(mockedDoesFileExist).calledWith(expectedPath).mockResolvedValue(true);
+      when(mockedDoesFileExist).calledWith(expectedPath).thenResolve(true);
       when(mockedReadFile)
         .calledWith(expectedPath, { encoding: "utf-8" })
-        .mockResolvedValue("license contents");
+        .thenResolve("license contents");
 
       const inputs: ResolutionInputs = {
         packageJson: new PackageJson(undefined, undefined, licenseFile),

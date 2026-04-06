@@ -1,20 +1,21 @@
+import { vi, describe, it, expect, beforeEach, afterAll } from "vitest";
 ﻿import { execAsync } from "../../src/lib/utils/exec.utils";
 import { getPnpmProjectDependencies, getPnpmVersion } from "../../src/lib/utils/pnpmCli.utils";
 
-jest.mock("../../src/lib/utils/exec.utils", () => ({
-  execAsync: jest.fn(),
+vi.mock("../../src/lib/utils/exec.utils", () => ({
+  execAsync: vi.fn(),
 }));
 
 type MockExecStdOut = { stdout: string | NonSharedBuffer; stderr: string | NonSharedBuffer };
 
 describe("pnpmCli.utils", () => {
-  const mockedExecAsync = jest.mocked(execAsync);
+  const mockedExecAsync = vi.mocked(execAsync);
 
   beforeEach(() => {
-    jest.resetAllMocks();
+    vi.resetAllMocks();
   });
 
-  afterAll(() => jest.restoreAllMocks());
+  afterAll(() => vi.restoreAllMocks());
 
   describe("getPnpmVersion", () => {
     it("should call the pnpm cli with the correct arguments", async () => {

@@ -1,29 +1,30 @@
+import { vi, describe, it, expect, beforeEach, afterAll } from "vitest";
 import { generateLicenseFile } from "../src/lib/generateLicenseFile";
 import { getLicenseFileText } from "../src/lib/getLicenseFileText";
 import { lineEndings } from "../src/lib/lineEndings";
 import { writeFileAsync } from "../src/lib/utils/file.utils";
 
-jest.mock("../src/lib/getLicenseFileText", () => ({
-  getLicenseFileText: jest.fn(),
+vi.mock("../src/lib/getLicenseFileText", () => ({
+  getLicenseFileText: vi.fn(),
 }));
 
-jest.mock("../src/lib/utils/file.utils", () => ({
-  writeFileAsync: jest.fn(),
+vi.mock("../src/lib/utils/file.utils", () => ({
+  writeFileAsync: vi.fn(),
 }));
 
 const fakeLicenseFileText = "fake license file text";
 
 describe("generateLicenseFile", () => {
-  const mockGetLicenseFileText = jest.mocked(getLicenseFileText);
-  const mockWriteFileAsync = jest.mocked(writeFileAsync);
+  const mockGetLicenseFileText = vi.mocked(getLicenseFileText);
+  const mockWriteFileAsync = vi.mocked(writeFileAsync);
 
   beforeEach(() => {
-    jest.resetAllMocks();
+    vi.resetAllMocks();
     mockGetLicenseFileText.mockResolvedValue(fakeLicenseFileText);
   });
 
   afterAll(() => {
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   describe("when one path is given", () => {

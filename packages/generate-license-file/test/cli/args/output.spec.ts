@@ -1,30 +1,31 @@
+import { vi, describe, it, expect, beforeEach, afterAll } from "vitest";
 import { prompt } from "enquirer";
 import { Output } from "../../../src/lib/cli/args/output";
 import { CombinedConfig } from "../../../src/lib/cli/commands/main";
 import { doesFileExist } from "../../../src/lib/utils/file.utils";
 
-jest.mock("../../../src/lib/utils/file.utils", () => ({
-  doesFileExist: jest.fn(),
+vi.mock("../../../src/lib/utils/file.utils", () => ({
+  doesFileExist: vi.fn(),
 }));
 
-jest.mock("enquirer", () => ({
-  prompt: jest.fn(),
+vi.mock("enquirer", () => ({
+  prompt: vi.fn(),
 }));
 
 describe("Output", () => {
-  const mockDoesFileExist = jest.mocked(doesFileExist);
-  const mockPrompt = jest.mocked(prompt);
+  const mockDoesFileExist = vi.mocked(doesFileExist);
+  const mockPrompt = vi.mocked(prompt);
 
   let output: Output;
 
   beforeEach(() => {
-    jest.resetAllMocks();
+    vi.resetAllMocks();
 
     output = new Output();
   });
 
   afterAll(() => {
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   describe("resolve", () => {

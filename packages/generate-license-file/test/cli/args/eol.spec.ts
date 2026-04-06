@@ -1,25 +1,26 @@
+import { vi, describe, it, expect, beforeEach, afterAll } from "vitest";
 import { prompt } from "enquirer";
 import { Eol } from "../../../src/lib/cli/args/eol";
 import { CombinedConfig } from "../../../src/lib/cli/commands/main";
 import { lineEndings } from "../../../src/lib/lineEndings";
 
-jest.mock("enquirer", () => ({
-  prompt: jest.fn(),
+vi.mock("enquirer", () => ({
+  prompt: vi.fn(),
 }));
 
 describe("Eol", () => {
-  const mockedPrompt = jest.mocked(prompt);
+  const mockedPrompt = vi.mocked(prompt);
 
   let eol: Eol;
 
   beforeEach(() => {
     eol = new Eol();
 
-    jest.resetAllMocks();
+    vi.resetAllMocks();
   });
 
   afterAll(() => {
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   describe("resolve", () => {

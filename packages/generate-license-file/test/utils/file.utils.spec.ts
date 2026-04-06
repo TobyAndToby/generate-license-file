@@ -1,3 +1,4 @@
+import { vi, describe, it, expect, beforeEach, afterAll } from "vitest";
 import { Stats } from "fs";
 import * as fs from "fs/promises";
 import {
@@ -7,18 +8,26 @@ import {
   writeFileAsync,
 } from "../../src/lib/utils/file.utils";
 
-jest.mock("fs/promises", () => ({
-  stat: jest.fn(),
-  readFile: jest.fn(),
-  writeFile: jest.fn(),
-  mkdir: jest.fn(),
+const { fsMock } = vi.hoisted(() => {
+  const fsMock = {
+    stat: vi.fn(),
+    readFile: vi.fn(),
+    writeFile: vi.fn(),
+    mkdir: vi.fn(),
+  };
+  return { fsMock };
+});
+
+vi.mock("fs/promises", () => ({
+  default: fsMock,
+  ...fsMock,
 }));
 
 describe("File Utils", () => {
-  const mockedFs = jest.mocked(fs);
+  const mockedFs = vi.mocked(fs);
 
-  beforeEach(() => jest.resetAllMocks());
-  afterAll(() => jest.restoreAllMocks());
+  beforeEach(() => vi.resetAllMocks());
+  afterAll(() => vi.restoreAllMocks());
 
   describe("doesFileExist", () => {
     it("should return true when the given item exists and is a file", async () => {

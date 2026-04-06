@@ -1,25 +1,26 @@
+import { vi, describe, it, expect, beforeEach, afterAll, beforeAll } from "vitest";
 import { spinner } from "../../src/lib/cli/spinner";
 import consoleUtils from "../../src/lib/utils/console.utils";
 
-jest.mock("../../src/lib/cli/spinner", () => ({
+vi.mock("../../src/lib/cli/spinner", () => ({
   spinner: {
     isSpinning: false,
-    start: jest.fn(),
-    stop: jest.fn(),
+    start: vi.fn(),
+    stop: vi.fn(),
   },
 }));
 
 describe("ConsoleUtils", () => {
-  const mockSpinner = jest.mocked(spinner);
+  const mockSpinner = vi.mocked(spinner);
 
   let originalLog: typeof global.console.log;
   let originalWarn: typeof global.console.warn;
   let originalError: typeof global.console.error;
 
-  const mockLog = jest.fn();
-  const mockWarn = jest.fn();
+  const mockLog = vi.fn();
+  const mockWarn = vi.fn();
 
-  const mockError = jest.fn();
+  const mockError = vi.fn();
 
   beforeAll(() => {
     originalLog = global.console.log;
@@ -32,7 +33,7 @@ describe("ConsoleUtils", () => {
   });
 
   beforeEach(() => {
-    jest.resetAllMocks();
+    vi.resetAllMocks();
   });
 
   afterAll(() => {

@@ -1,25 +1,26 @@
-import { when } from "../test-utils/when";
+import { vi, describe, it, expect, beforeEach, afterAll } from "vitest";
+import { when } from "vitest-when";
 import { getLicenseFileText, GetLicenseFileTextOptions } from "../src/lib/getLicenseFileText";
 import { ResolvedLicense, resolveLicenses } from "../src/lib/internal/resolveLicenses";
 import { readFile } from "../src/lib/utils/file.utils";
 
-jest.mock("../src/lib/internal/resolveLicenses", () => ({
-  resolveLicenses: jest.fn(),
+vi.mock("../src/lib/internal/resolveLicenses", () => ({
+  resolveLicenses: vi.fn(),
 }));
 
-jest.mock("../src/lib/utils/file.utils");
+vi.mock("../src/lib/utils/file.utils");
 
 describe("getLicenseFileText", () => {
-  const mockedResolveLicenses = jest.mocked(resolveLicenses);
-  const mockedReadFile = jest.mocked(readFile);
+  const mockedResolveLicenses = vi.mocked(resolveLicenses);
+  const mockedReadFile = vi.mocked(readFile);
 
   beforeEach(() => {
-    jest.resetAllMocks();
+    vi.resetAllMocks();
 
     mockedResolveLicenses.mockResolvedValue([]);
   });
 
-  afterAll(jest.restoreAllMocks);
+  afterAll(vi.restoreAllMocks);
 
   describe("when one path is given", () => {
     it("should call resolveLicenses with the given path in an array", async () => {
@@ -135,10 +136,10 @@ describe("getLicenseFileText", () => {
   it("should append the given files", async () => {
     when(mockedReadFile)
       .calledWith("first", { encoding: "utf-8" })
-      .mockResolvedValue("first file content");
+      .thenResolve("first file content");
     when(mockedReadFile)
       .calledWith("second", { encoding: "utf-8" })
-      .mockResolvedValue("second file content");
+      .thenResolve("second file content");
 
     const result = await getLicenseFileText("path", { append: ["first", "second"] });
 

@@ -1,3 +1,4 @@
+import { describe, it, expect } from "vitest";
 import { getLineEndingCharacters, lineEndings } from "../../src/lib/lineEndings";
 import { License } from "../../src/lib/models/license";
 

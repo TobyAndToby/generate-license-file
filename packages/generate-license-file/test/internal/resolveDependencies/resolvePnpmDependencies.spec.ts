@@ -1,4 +1,5 @@
-﻿import { when } from "../../../test-utils/when";
+import { vi, describe, it, expect, beforeEach, afterAll } from "vitest";
+﻿import { when } from "vitest-when";
 import { join } from "path";
 import { resolveDependenciesForPnpmProject } from "../../../src/lib/internal/resolveDependencies/resolvePnpmDependencies";
 import { resolveLicenseContent } from "../../../src/lib/internal/resolveLicenseContent";
@@ -12,20 +13,20 @@ import {
   PnpmDependency,
 } from "../../../src/lib/utils/pnpmCli.utils";
 
-jest.mock("../../../src/lib/utils/pnpmCli.utils", () => ({
-  getPnpmVersion: jest.fn(),
-  getPnpmProjectDependencies: jest.fn(),
+vi.mock("../../../src/lib/utils/pnpmCli.utils", () => ({
+  getPnpmVersion: vi.fn(),
+  getPnpmProjectDependencies: vi.fn(),
 }));
 
-jest.mock("../../../src/lib/utils/file.utils");
-jest.mock("../../../src/lib/utils/console.utils");
+vi.mock("../../../src/lib/utils/file.utils");
+vi.mock("../../../src/lib/utils/console.utils");
 
-jest.mock("../../../src/lib/internal/resolveLicenseContent", () => ({
-  resolveLicenseContent: jest.fn(),
+vi.mock("../../../src/lib/internal/resolveLicenseContent", () => ({
+  resolveLicenseContent: vi.fn(),
 }));
 
-jest.mock("../../../src/lib/internal/resolveNoticeContent", () => ({
-  resolveNotices: jest.fn(),
+vi.mock("../../../src/lib/internal/resolveNoticeContent", () => ({
+  resolveNotices: vi.fn(),
 }));
 
 describe("resolveDependenciesForPnpmProject", () => {
@@ -48,44 +49,42 @@ describe("resolveDependenciesForPnpmProject", () => {
     paths: ["/some/path/dependency3"],
   };
 
-  const mockedLogger = jest.mocked(logger);
-  const mockedReadFile = jest.mocked(readFile);
-  const mockedDoesFileExist = jest.mocked(doesFileExist);
-  const mockedGetPnpmVersion = jest.mocked(getPnpmVersion);
-  const mockedGetPnpmProjectDependencies = jest.mocked(getPnpmProjectDependencies);
-  const mockedResolveLicenseContent = jest.mocked(resolveLicenseContent);
-  const mockedResolveNotices = jest.mocked(resolveNotices);
+  const mockedLogger = vi.mocked(logger);
+  const mockedReadFile = vi.mocked(readFile);
+  const mockedDoesFileExist = vi.mocked(doesFileExist);
+  const mockedGetPnpmVersion = vi.mocked(getPnpmVersion);
+  const mockedGetPnpmProjectDependencies = vi.mocked(getPnpmProjectDependencies);
+  const mockedResolveLicenseContent = vi.mocked(resolveLicenseContent);
+  const mockedResolveNotices = vi.mocked(resolveNotices);
 
   beforeEach(() => {
-    jest.resetAllMocks();
+    vi.resetAllMocks();
 
     when(mockedResolveLicenseContent)
       .calledWith(dependency1.paths[0], expect.anything(), expect.anything())
-      .mockResolvedValue(dependency1LicenseContent);
+      .thenResolve(dependency1LicenseContent);
     setUpPackageJson(dependency1.paths[0], dependency1.name, "1.0.0");
 
     when(mockedResolveLicenseContent)
       .calledWith(dependency2.paths[0], expect.anything(), expect.anything())
-      .mockResolvedValue(dependency2LicenseContent);
+      .thenResolve(dependency2LicenseContent);
     setUpPackageJson(dependency2.paths[0], dependency2.name, "1.0.0");
 
     when(mockedResolveLicenseContent)
       .calledWith(dependency2.paths[1], expect.anything(), expect.anything())
-      .mockResolvedValue(dependency2LicenseContent);
+      .thenResolve(dependency2LicenseContent);
     setUpPackageJson(dependency2.paths[1], dependency2.name, "2.0.0");
 
     when(mockedResolveLicenseContent)
       .calledWith(dependency3.paths[0], expect.anything(), expect.anything())
-      .mockImplementation(() => {
-        throw new Error("Cannot find license content");
-      });
+      .thenThrow(new Error("Cannot find license content"));
 
     mockedResolveNotices.mockResolvedValue([]);
 
     setUpPackageJson(dependency3.paths[0], dependency3.name, "1.0.0");
   });
 
-  afterAll(() => jest.restoreAllMocks());
+  afterAll(() => vi.restoreAllMocks());
 
   describe("when the pnpm version is less than 7.33.0", () => {
     it("should throw an error", async () => {
@@ -222,7 +221,7 @@ describe("resolveDependenciesForPnpmProject", () => {
 
         when(mockedResolveLicenseContent)
           .calledWith(dependency1.paths[0], expect.anything(), expect.anything())
-          .mockRejectedValue(error);
+          .thenReject(error);
 
         const licensesMap = new Map<LicenseNoticeKey, ResolvedLicense>();
 
@@ -272,9 +271,9 @@ describe("resolveDependenciesForPnpmProject", () => {
     const fullPackageJsonPath = join(directory, "package.json");
     const packageJsonContent = JSON.stringify({ name, version });
 
-    when(mockedDoesFileExist).calledWith(fullPackageJsonPath).mockResolvedValue(true);
+    when(mockedDoesFileExist).calledWith(fullPackageJsonPath).thenResolve(true);
     when(mockedReadFile)
       .calledWith(fullPackageJsonPath, { encoding: "utf-8" })
-      .mockResolvedValue(packageJsonContent);
+      .thenResolve(packageJsonContent);
   };
 });

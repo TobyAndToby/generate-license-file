@@ -1,17 +1,18 @@
+import { vi, describe, it, expect, beforeEach, afterAll } from "vitest";
 import { replacementFile } from "../../../src/lib/internal/resolveLicenseContent/replacementFile";
 import { doesFileExist, readFile } from "../../../src/lib/utils/file.utils";
 
-jest.mock("../../../src/lib/utils/file.utils");
+vi.mock("../../../src/lib/utils/file.utils");
 
 describe("replacementFile", () => {
-  const mockDoesFileExist = jest.mocked(doesFileExist);
-  const mockReadFile = jest.mocked(readFile);
+  const mockDoesFileExist = vi.mocked(doesFileExist);
+  const mockReadFile = vi.mocked(readFile);
 
   beforeEach(() => {
-    jest.resetAllMocks();
+    vi.resetAllMocks();
   });
 
-  afterAll(() => jest.restoreAllMocks());
+  afterAll(() => vi.restoreAllMocks());
 
   it("should not read the file if it does not exist", async () => {
     mockDoesFileExist.mockResolvedValue(false);

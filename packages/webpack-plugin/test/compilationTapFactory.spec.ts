@@ -1,11 +1,12 @@
+import { vi, describe, it, expect, beforeEach, afterAll } from "vitest";
 import { Compilation, Compiler } from "webpack";
 import { asyncProcessAssetTapFactory } from "../src/lib/asyncProcessAssetTapFactory";
 import { CompilationTap, compilationTapFactory } from "../src/lib/compilationTapFactory";
 import { Options } from "../src/lib/options";
 
-jest.mock("../src/lib/asyncProcessAssetTapFactory", () => {
+vi.mock("../src/lib/asyncProcessAssetTapFactory", () => {
   return {
-    asyncProcessAssetTapFactory: jest.fn(),
+    asyncProcessAssetTapFactory: vi.fn(),
   };
 });
 
@@ -22,7 +23,7 @@ describe("compilationTapFactory", () => {
   });
 
   afterAll(() => {
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   it("should return a compilation tap function", () => {
@@ -31,8 +32,8 @@ describe("compilationTapFactory", () => {
   });
 
   describe("the compilation tap function", () => {
-    const mockAsyncProcessAssetTapFactory = jest.mocked(asyncProcessAssetTapFactory);
-    const mockTapAsync = jest.fn();
+    const mockAsyncProcessAssetTapFactory = vi.mocked(asyncProcessAssetTapFactory);
+    const mockTapAsync = vi.fn();
     let compilationTap: CompilationTap;
 
     let compilation: Compilation;

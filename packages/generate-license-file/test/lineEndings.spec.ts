@@ -1,19 +1,20 @@
+import { vi, describe, it, expect, beforeEach, afterAll } from "vitest";
 import os from "os";
 import { getLineEndingCharacters, isLineEnding } from "../src/lib/lineEndings";
 
 const mockSystemEOL = "EOL";
 
-jest.mock("os");
+vi.mock("os");
 
 describe("lineEndings", () => {
-  const mockedOs = jest.mocked(os);
+  const mockedOs = vi.mocked(os);
 
   beforeEach(() => {
-    jest.resetAllMocks();
+    vi.resetAllMocks();
     mockedOs.EOL = mockSystemEOL;
   });
 
-  afterAll(jest.restoreAllMocks);
+  afterAll(vi.restoreAllMocks);
 
   describe("isLineEnding", () => {
     it("should return true for 'crlf'", () => {

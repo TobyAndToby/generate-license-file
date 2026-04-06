@@ -57,7 +57,7 @@
   },
   "scripts": {
     "build": "tsdown",
-    "test": "bun test",
+    "test": "vitest run",
     "lint": "biome check src test"
   },
   "dependencies": {

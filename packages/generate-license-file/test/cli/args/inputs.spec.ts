@@ -1,42 +1,43 @@
+import { vi, describe, it, expect, beforeEach, afterAll } from "vitest";
 import { prompt } from "enquirer";
 import { Inputs } from "../../../src/lib/cli/args/inputs";
 import { CombinedConfig } from "../../../src/lib/cli/commands/main";
 import { spinner } from "../../../src/lib/cli/spinner";
 import { doesFileExist } from "../../../src/lib/utils/file.utils";
 
-jest.mock("../../../src/lib/utils/file.utils", () => ({
-  doesFileExist: jest.fn(),
+vi.mock("../../../src/lib/utils/file.utils", () => ({
+  doesFileExist: vi.fn(),
 }));
 
-jest.mock("../../../src/lib/cli/spinner.ts", () => ({
+vi.mock("../../../src/lib/cli/spinner.ts", () => ({
   spinner: {
-    start: jest.fn(),
-    stop: jest.fn(),
-    warn: jest.fn(),
-    fail: jest.fn(),
+    start: vi.fn(),
+    stop: vi.fn(),
+    warn: vi.fn(),
+    fail: vi.fn(),
   },
 }));
 
-jest.mock("enquirer", () => ({
-  prompt: jest.fn(),
+vi.mock("enquirer", () => ({
+  prompt: vi.fn(),
 }));
 
 describe("Inputs", () => {
-  const mockedPrompt = jest.mocked(prompt);
-  const mockedDoesFileExist = jest.mocked(doesFileExist);
-  const mockedFailSpinner = jest.mocked(spinner.fail);
-  const mockedWarnSpinner = jest.mocked(spinner.warn);
+  const mockedPrompt = vi.mocked(prompt);
+  const mockedDoesFileExist = vi.mocked(doesFileExist);
+  const mockedFailSpinner = vi.mocked(spinner.fail);
+  const mockedWarnSpinner = vi.mocked(spinner.warn);
 
   let inputs: Inputs;
 
   beforeEach(() => {
     inputs = new Inputs();
 
-    jest.resetAllMocks();
+    vi.resetAllMocks();
   });
 
   afterAll(() => {
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   describe("resolve", () => {

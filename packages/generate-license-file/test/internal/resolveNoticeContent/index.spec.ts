@@ -1,23 +1,24 @@
+import { vi, describe, it, expect, beforeEach, afterAll } from "vitest";
 import { glob } from "glob";
-import { when } from "../../../test-utils/when";
+import { when } from "vitest-when";
 import { resolveNotices } from "../../../src/lib/internal/resolveNoticeContent";
 import { readFile } from "../../../src/lib/utils/file.utils";
 
-jest.mock("glob", () => ({
-  glob: jest.fn(),
+vi.mock("glob", () => ({
+  glob: vi.fn(),
 }));
 
-jest.mock("../../../src/lib/utils/file.utils");
-jest.mock("../../../src/lib/utils/console.utils"); // Stops logger.warn from being called
+vi.mock("../../../src/lib/utils/file.utils");
+vi.mock("../../../src/lib/utils/console.utils"); // Stops logger.warn from being called
 
 describe("resolveNoticeContent", () => {
-  const mockedGlob = jest.mocked(glob);
-  const mockedReadFile = jest.mocked(readFile);
+  const mockedGlob = vi.mocked(glob);
+  const mockedReadFile = vi.mocked(readFile);
 
   const directory = "/some/directory";
 
-  beforeEach(jest.resetAllMocks);
-  afterAll(jest.restoreAllMocks);
+  beforeEach(vi.resetAllMocks);
+  afterAll(vi.restoreAllMocks);
 
   it("should return empty array if no license files are found", async () => {
     mockedGlob.mockResolvedValue([]);
@@ -34,7 +35,7 @@ describe("resolveNoticeContent", () => {
     mockedGlob.mockResolvedValue([noticeFilePath]);
     when(mockedReadFile)
       .calledWith(noticeFilePath, { encoding: "utf-8" })
-      .mockResolvedValue("Notice contents");
+      .thenResolve("Notice contents");
 
     const result = await resolveNotices(directory);
 
@@ -50,10 +51,10 @@ describe("resolveNoticeContent", () => {
     mockedGlob.mockResolvedValue([noticeFilePath1, noticeFilePath2]);
     when(mockedReadFile)
       .calledWith(noticeFilePath1, { encoding: "utf-8" })
-      .mockResolvedValue("Notice contents 1");
+      .thenResolve("Notice contents 1");
     when(mockedReadFile)
       .calledWith(noticeFilePath2, { encoding: "utf-8" })
-      .mockResolvedValue("Notice contents 2");
+      .thenResolve("Notice contents 2");
 
     const result = await resolveNotices(directory);
 

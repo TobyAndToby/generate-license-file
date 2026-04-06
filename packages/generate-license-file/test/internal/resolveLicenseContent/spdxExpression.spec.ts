@@ -1,15 +1,16 @@
+import { vi, describe, it, expect, beforeEach, afterAll } from "vitest";
 import { ResolutionInputs } from "../../../src/lib/internal/resolveLicenseContent";
 import { spdxExpression } from "../../../src/lib/internal/resolveLicenseContent/spdxExpression";
 import logger from "../../../src/lib/utils/console.utils";
 import { PackageJson } from "../../../src/lib/utils/packageJson.utils";
 
-jest.mock("../../../src/lib/utils/console.utils");
+vi.mock("../../../src/lib/utils/console.utils");
 
 describe("spdxExpression", () => {
-  const mockedWarn = jest.mocked(logger.warn);
+  const mockedWarn = vi.mocked(logger.warn);
 
-  beforeEach(jest.resetAllMocks);
-  afterAll(jest.restoreAllMocks);
+  beforeEach(vi.resetAllMocks);
+  afterAll(vi.restoreAllMocks);
 
   it("should return null if the package.json does not have a license or a licenses field", async () => {
     const inputs: ResolutionInputs = {

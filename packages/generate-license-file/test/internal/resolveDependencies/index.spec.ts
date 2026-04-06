@@ -1,26 +1,27 @@
-﻿import { when } from "../../../test-utils/when";
+import { vi, describe, it, expect, beforeEach, afterAll } from "vitest";
+﻿import { when } from "vitest-when";
 import { join } from "path";
 import { resolveDependencies } from "../../../src/lib/internal/resolveDependencies";
 import { resolveDependenciesForNpmProject } from "../../../src/lib/internal/resolveDependencies/resolveNpmDependencies";
 import { resolveDependenciesForPnpmProject } from "../../../src/lib/internal/resolveDependencies/resolvePnpmDependencies";
 import { doesFileExist } from "../../../src/lib/utils/file.utils";
 
-jest.mock("../../../src/lib/utils/file.utils", () => ({
-  doesFileExist: jest.fn(),
+vi.mock("../../../src/lib/utils/file.utils", () => ({
+  doesFileExist: vi.fn(),
 }));
 
-jest.mock("../../../src/lib/internal/resolveDependencies/resolveNpmDependencies", () => ({
-  resolveDependenciesForNpmProject: jest.fn(),
+vi.mock("../../../src/lib/internal/resolveDependencies/resolveNpmDependencies", () => ({
+  resolveDependenciesForNpmProject: vi.fn(),
 }));
 
-jest.mock("../../../src/lib/internal/resolveDependencies/resolvePnpmDependencies", () => ({
-  resolveDependenciesForPnpmProject: jest.fn(),
+vi.mock("../../../src/lib/internal/resolveDependencies/resolvePnpmDependencies", () => ({
+  resolveDependenciesForPnpmProject: vi.fn(),
 }));
 
 describe("resolveDependencies", () => {
-  const mockedDoesFileExist = jest.mocked(doesFileExist);
-  const mockedResolveDependenciesForNpmProject = jest.mocked(resolveDependenciesForNpmProject);
-  const mockedResolveDependenciesForPnpmProject = jest.mocked(resolveDependenciesForPnpmProject);
+  const mockedDoesFileExist = vi.mocked(doesFileExist);
+  const mockedResolveDependenciesForNpmProject = vi.mocked(resolveDependenciesForNpmProject);
+  const mockedResolveDependenciesForPnpmProject = vi.mocked(resolveDependenciesForPnpmProject);
 
   const projectDirectory = "/some/directory";
   const packageJson = join(projectDirectory, "package.json");
@@ -30,10 +31,10 @@ describe("resolveDependencies", () => {
   const options = { exclude: ["some-package"] };
 
   beforeEach(() => {
-    jest.resetAllMocks();
+    vi.resetAllMocks();
   });
 
-  afterAll(() => jest.restoreAllMocks());
+  afterAll(() => vi.restoreAllMocks());
 
   describe("for npm projects", () => {
     beforeEach(() => mockPnpmLockFileToNotExist());
@@ -78,10 +79,10 @@ describe("resolveDependencies", () => {
   });
 
   const mockPnpmLockFileToExist = () => {
-    when(mockedDoesFileExist).calledWith(pnpmLockFile).mockResolvedValue(true);
+    when(mockedDoesFileExist).calledWith(pnpmLockFile).thenResolve(true);
   };
 
   const mockPnpmLockFileToNotExist = () => {
-    when(mockedDoesFileExist).calledWith(pnpmLockFile).mockResolvedValue(false);
+    when(mockedDoesFileExist).calledWith(pnpmLockFile).thenResolve(false);
   };
 });

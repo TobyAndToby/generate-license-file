@@ -1,5 +1,6 @@
+import { vi, describe, it, expect, beforeEach, afterAll } from "vitest";
 import { glob } from "glob";
-import { when } from "../../../test-utils/when";
+import { when } from "vitest-when";
 import { ResolutionInputs } from "../../../src/lib/internal/resolveLicenseContent";
 import {
   extensionDenyList,
@@ -8,16 +9,16 @@ import {
 import { readFile } from "../../../src/lib/utils/file.utils";
 import { PackageJson } from "../../../src/lib/utils/packageJson.utils";
 
-jest.mock("glob", () => ({
-  glob: jest.fn(),
+vi.mock("glob", () => ({
+  glob: vi.fn(),
 }));
 
-jest.mock("../../../src/lib/utils/file.utils");
-jest.mock("../../../src/lib/utils/console.utils"); // Stops logger.warn from being called
+vi.mock("../../../src/lib/utils/file.utils");
+vi.mock("../../../src/lib/utils/console.utils"); // Stops logger.warn from being called
 
 describe("licenseFile", () => {
-  const mockedGlob = jest.mocked(glob);
-  const mockedReadFile = jest.mocked(readFile);
+  const mockedGlob = vi.mocked(glob);
+  const mockedReadFile = vi.mocked(readFile);
 
   const resolutionInputs: ResolutionInputs = {
     directory: "/some/directory",
@@ -25,11 +26,11 @@ describe("licenseFile", () => {
   };
 
   beforeEach(() => {
-    jest.resetModules();
+    vi.resetModules();
   });
 
   afterAll(() => {
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   it("should return null if no license files are found", async () => {
@@ -46,7 +47,7 @@ describe("licenseFile", () => {
     mockedGlob.mockResolvedValue([licenseFilePath, "/some/other/file.txt"]);
     when(mockedReadFile)
       .calledWith(licenseFilePath, { encoding: "utf-8" })
-      .mockResolvedValue("license contents");
+      .thenResolve("license contents");
 
     const result = await licenseFile(resolutionInputs);
 
