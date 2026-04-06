@@ -1,4 +1,4 @@
-import { LineEnding } from "generate-license-file";
+import type { LineEnding } from "generate-license-file";
 
 export interface Options {
   /**

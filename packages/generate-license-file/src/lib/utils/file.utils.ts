@@ -1,8 +1,8 @@
-import { Stats } from "fs";
-import fs from "fs/promises";
-import { dirname } from "path";
+import type { Stats } from "node:fs";
+import fs from "node:fs/promises";
+import { dirname } from "node:path";
 
-export { readFile } from "fs/promises";
+export { readFile } from "node:fs/promises";
 
 const UTF8 = "utf-8";
 

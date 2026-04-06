@@ -1,6 +1,6 @@
-﻿import { dirname, join } from "path";
+﻿import { dirname, join } from "node:path";
 import { doesFileExist } from "../../utils/file.utils";
-import { LicenseNoticeKey, ResolvedLicense } from "../resolveLicenses";
+import type { LicenseNoticeKey, ResolvedLicense } from "../resolveLicenses";
 import { resolveDependenciesForNpmProject } from "./resolveNpmDependencies";
 import { resolveDependenciesForPnpmProject } from "./resolvePnpmDependencies";
 

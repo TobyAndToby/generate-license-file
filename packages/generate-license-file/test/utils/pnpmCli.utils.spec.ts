@@ -1,5 +1,5 @@
-import { vi, describe, it, expect, beforeEach, afterAll } from "vitest";
-﻿import { execAsync } from "../../src/lib/utils/exec.utils";
+import { afterAll, beforeEach, describe, expect, it, vi } from "vitest";
+import { execAsync } from "../../src/lib/utils/exec.utils";
 import { getPnpmProjectDependencies, getPnpmVersion } from "../../src/lib/utils/pnpmCli.utils";
 
 vi.mock("../../src/lib/utils/exec.utils", () => ({
@@ -109,10 +109,7 @@ describe("pnpmCli.utils", () => {
           },
           {
             name: "dep2",
-            paths: [
-              "/path/to/project/node_modules/dep2",
-              "/path/to/project/node_modules/dep2/again",
-            ],
+            paths: ["/path/to/project/node_modules/dep2", "/path/to/project/node_modules/dep2/again"],
           },
         ],
       });

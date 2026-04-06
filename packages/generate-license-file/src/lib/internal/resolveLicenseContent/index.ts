@@ -1,4 +1,4 @@
-import { PackageJson } from "../../utils/packageJson.utils";
+import type { PackageJson } from "../../utils/packageJson.utils";
 import { licenseFile } from "./licenseFile";
 import { packageJsonLicense } from "./packageJsonLicense";
 import { replacementFile } from "./replacementFile";
@@ -22,8 +22,7 @@ export const resolveLicenseContent = async (
   replacements: Record<string, string>,
 ): Promise<string> => {
   const replacementPath =
-    replacements[`${packageJson.name}@${packageJson.version}`] ||
-    replacements[`${packageJson.name}`];
+    replacements[`${packageJson.name}@${packageJson.version}`] || replacements[`${packageJson.name}`];
 
   if (replacementPath) {
     return runReplacementResolutions(replacementPath, packageJson);

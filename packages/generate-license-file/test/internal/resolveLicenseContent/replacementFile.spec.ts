@@ -1,4 +1,4 @@
-import { vi, describe, it, expect, beforeEach, afterAll } from "vitest";
+import { afterAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { replacementFile } from "../../../src/lib/internal/resolveLicenseContent/replacementFile";
 import { doesFileExist, readFile } from "../../../src/lib/utils/file.utils";
 

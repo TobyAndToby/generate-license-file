@@ -1,7 +1,7 @@
-import { vi, describe, it, expect, beforeEach, afterAll } from "vitest";
 import { prompt } from "enquirer";
+import { afterAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { Eol } from "../../../src/lib/cli/args/eol";
-import { CombinedConfig } from "../../../src/lib/cli/commands/main";
+import type { CombinedConfig } from "../../../src/lib/cli/commands/main";
 import { lineEndings } from "../../../src/lib/lineEndings";
 
 vi.mock("enquirer", () => ({
@@ -32,7 +32,7 @@ describe("Eol", () => {
       expect(answer).toBeUndefined();
     });
 
-    lineEndings.forEach(lineEnding =>
+    lineEndings.forEach((lineEnding) => {
       it(`should return '${lineEnding}' if '--eol' is '${lineEnding}'`, async () => {
         const args: CombinedConfig = {
           eol: lineEnding,
@@ -41,8 +41,8 @@ describe("Eol", () => {
         const answer = await eol.resolve(args);
 
         expect(answer).toBe(lineEnding);
-      }),
-    );
+      });
+    });
 
     it("should prompt the user for a valid answer if an invalid line ending value is provided", async () => {
       mockedPrompt.mockResolvedValue({
@@ -116,7 +116,7 @@ describe("Eol", () => {
       { key: "CRLF", value: "crlf" },
       { key: "LF", value: "lf" },
       { key: "System default", value: undefined },
-    ].forEach(testCase =>
+    ].forEach((testCase) => {
       it(`should return ${testCase.value} if the user selects ${testCase.key} from the multiple choice prompt`, async () => {
         mockedPrompt.mockResolvedValue({
           value: testCase.key,
@@ -129,8 +129,8 @@ describe("Eol", () => {
         const answer = await eol.resolve(args);
 
         expect(answer).toBe(testCase.value);
-      }),
-    );
+      });
+    });
   });
 
   describe("parse", () => {
@@ -142,7 +142,7 @@ describe("Eol", () => {
       expect(answer).toBeUndefined();
     });
 
-    lineEndings.forEach(lineEnding =>
+    lineEndings.forEach((lineEnding) => {
       it(`should return '${lineEnding}' if '--eol' is '${lineEnding}'`, async () => {
         const args: CombinedConfig = {
           eol: lineEnding,
@@ -151,8 +151,8 @@ describe("Eol", () => {
         const answer = await eol.parse(args);
 
         expect(answer).toBe(lineEnding);
-      }),
-    );
+      });
+    });
 
     it("should throw if '--eol' is invalid", async () => {
       const args: CombinedConfig = {

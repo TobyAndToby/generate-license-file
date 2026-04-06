@@ -1,4 +1,4 @@
-import { LineEndingCharacters } from "../lineEndings";
+import type { LineEndingCharacters } from "../lineEndings";
 
 const lineEndingRegex = /\r\n|\r|\n/g;
 

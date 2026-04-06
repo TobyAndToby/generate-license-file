@@ -1,6 +1,6 @@
-import { vi, describe, it, expect, beforeEach, afterAll } from "vitest";
-import { getProjectLicenses, GetProjectLicensesOptions } from "../src/lib/getProjectLicenses";
-import { ResolvedLicense, resolveLicenses } from "../src/lib/internal/resolveLicenses";
+import { afterAll, beforeEach, describe, expect, it, vi } from "vitest";
+import { type GetProjectLicensesOptions, getProjectLicenses } from "../src/lib/getProjectLicenses";
+import { type ResolvedLicense, resolveLicenses } from "../src/lib/internal/resolveLicenses";
 
 vi.mock("../src/lib/internal/resolveLicenses", () => ({
   resolveLicenses: vi.fn(),

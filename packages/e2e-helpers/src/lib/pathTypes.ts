@@ -1,11 +1,8 @@
-import path from "path";
+import path from "node:path";
 
 type DescribeCallback = (packageJsonPath: string) => void;
 
-export const describeRelativeAndAbsolutePaths = (
-  relativePackageJsonPath: string,
-  callback: DescribeCallback,
-) => {
+export const describeRelativeAndAbsolutePaths = (relativePackageJsonPath: string, callback: DescribeCallback) => {
   describe("for a relative path", () => {
     callback(relativePackageJsonPath);
   });

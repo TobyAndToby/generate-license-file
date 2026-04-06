@@ -1,6 +1,6 @@
-import { isLineEnding, LineEnding } from "../../lineEndings";
-import { CombinedConfig } from "../commands/main";
-import { Argument, MultipleChoiceOptions } from "./argument";
+import { isLineEnding, type LineEnding } from "../../lineEndings";
+import type { CombinedConfig } from "../commands/main";
+import { Argument, type MultipleChoiceOptions } from "./argument";
 
 export class Eol extends Argument<LineEnding | undefined> {
   private readonly choices: MultipleChoiceOptions<LineEnding | undefined> = {

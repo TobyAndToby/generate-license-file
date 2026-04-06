@@ -1,4 +1,4 @@
-import { LineEnding } from "../lineEndings";
+import type { LineEnding } from "../lineEndings";
 
 export type LineEndingOption = {
   /**

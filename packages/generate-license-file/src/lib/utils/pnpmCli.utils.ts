@@ -18,7 +18,7 @@ const v9DependencyValidator = z.object({
   paths: z.string().array(),
 });
 
-const dependencyValidator = v8DependencyValidator.or(v9DependencyValidator).transform(dep => ({
+const dependencyValidator = v8DependencyValidator.or(v9DependencyValidator).transform((dep) => ({
   name: dep.name,
   paths: "paths" in dep ? dep.paths : [dep.path],
 }));
@@ -35,9 +35,7 @@ export const getPnpmVersion = async (): Promise<PnpmVersion> => {
   return { major, minor, patch };
 };
 
-export const getPnpmProjectDependencies = async (
-  projectDirectory: string,
-): Promise<PnpmDependency[]> => {
+export const getPnpmProjectDependencies = async (projectDirectory: string): Promise<PnpmDependency[]> => {
   const { stdout } = await execAsync("pnpm licenses list --json --prod", { cwd: projectDirectory });
 
   const parsedOutput = JSON.parse(stdout);
@@ -45,11 +43,9 @@ export const getPnpmProjectDependencies = async (
 
   if (!commandOutput.success) {
     const errors = JSON.stringify(commandOutput.error.flatten());
-    consoleUtils.error("Failed to parse pnpm licenses list output: " + errors);
+    consoleUtils.error(`Failed to parse pnpm licenses list output: ${errors}`);
     throw new Error("Failed to parse pnpm licenses list output");
   }
 
-  return Object.values(commandOutput.data).flatMap(
-    (dependencies: PnpmDependency[]) => dependencies,
-  );
+  return Object.values(commandOutput.data).flatMap((dependencies: PnpmDependency[]) => dependencies);
 };

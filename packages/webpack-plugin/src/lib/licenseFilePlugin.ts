@@ -1,7 +1,7 @@
-import { Compiler } from "webpack";
+import type { Compiler } from "webpack";
 import { compilationTapFactory } from "./compilationTapFactory";
 import { defaultOptions } from "./defaultOptions";
-import { Options } from "./options";
+import type { Options } from "./options";
 
 /**
  * Webpack plugin to generate a text file asset containing all of the licenses for your production third-party dependencies.

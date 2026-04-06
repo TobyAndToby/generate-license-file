@@ -1,4 +1,4 @@
-import { vi, describe, it, expect, beforeEach, afterAll } from "vitest";
+import { afterAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { replacementHttp } from "../../../src/lib/internal/resolveLicenseContent/replacementHttp";
 import { fetchString } from "../../../src/lib/utils/http.utils";
 
@@ -29,17 +29,14 @@ describe("replacementHttp", () => {
     expect(result).toBeNull();
   });
 
-  it.each(["http", "www"])(
-    "should fetch the content if the location is a url beginning with %s",
-    async prefix => {
-      const location = `${prefix}/anything/else`;
+  it.each(["http", "www"])("should fetch the content if the location is a url beginning with %s", async (prefix) => {
+    const location = `${prefix}/anything/else`;
 
-      await replacementHttp(location);
+    await replacementHttp(location);
 
-      expect(mockFetchString).toHaveBeenCalledTimes(1);
-      expect(mockFetchString).toHaveBeenCalledWith(location);
-    },
-  );
+    expect(mockFetchString).toHaveBeenCalledTimes(1);
+    expect(mockFetchString).toHaveBeenCalledWith(location);
+  });
 
   it("should return the content if the location is a url", async () => {
     const location = "www/anything/else";

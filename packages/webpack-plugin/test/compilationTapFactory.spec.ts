@@ -1,8 +1,8 @@
-import { vi, describe, it, expect, beforeEach, afterAll } from "vitest";
-import { Compilation, Compiler } from "webpack";
+import { afterAll, beforeEach, describe, expect, it, vi } from "vitest";
+import { Compilation, type Compiler } from "webpack";
 import { asyncProcessAssetTapFactory } from "../src/lib/asyncProcessAssetTapFactory";
-import { CompilationTap, compilationTapFactory } from "../src/lib/compilationTapFactory";
-import { Options } from "../src/lib/options";
+import { type CompilationTap, compilationTapFactory } from "../src/lib/compilationTapFactory";
+import type { Options } from "../src/lib/options";
 
 vi.mock("../src/lib/asyncProcessAssetTapFactory", () => {
   return {

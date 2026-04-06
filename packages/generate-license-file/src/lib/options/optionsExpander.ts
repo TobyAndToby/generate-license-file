@@ -53,5 +53,5 @@
 export type IntersectionExpander<T> = T extends (...args: infer A) => infer R
   ? (...args: IntersectionExpander<A>) => IntersectionExpander<R>
   : T extends infer O
-  ? { [K in keyof O]: O[K] }
-  : never;
+    ? { [K in keyof O]: O[K] }
+    : never;

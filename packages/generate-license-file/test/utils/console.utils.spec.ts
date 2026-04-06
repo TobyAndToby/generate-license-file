@@ -1,4 +1,4 @@
-import { vi, describe, it, expect, beforeEach, afterAll, beforeAll } from "vitest";
+import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { spinner } from "../../src/lib/cli/spinner";
 import consoleUtils from "../../src/lib/utils/console.utils";
 
@@ -185,7 +185,7 @@ describe("ConsoleUtils", () => {
 
   const setMockIsSpinning = (state: boolean) => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    // @ts-expect-error
     // noinspection JSConstantReassignment
     mockSpinner.isSpinning = state;
   };

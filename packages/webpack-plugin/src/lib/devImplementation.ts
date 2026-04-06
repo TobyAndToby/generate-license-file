@@ -1,4 +1,4 @@
-import { getLicenseFileText } from "generate-license-file";
+import type { getLicenseFileText } from "generate-license-file";
 
 export const devImplementation: typeof getLicenseFileText = () =>
   Promise.resolve(`In a production build this file will contain the licenses of your production dependencies.

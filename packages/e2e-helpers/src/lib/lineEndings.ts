@@ -1,4 +1,4 @@
-import { LineEnding } from "generate-license-file";
+import type { LineEnding } from "generate-license-file";
 
 type DescribeEachLineEndingCallback = (lineEnding: LineEnding, lineEndingLiteral: string) => void;
 
@@ -12,6 +12,6 @@ export const describeEachLineEnding = (callback: DescribeEachLineEndingCallback)
     const lineEnding = key as LineEnding;
     const value = lineEndings[lineEnding];
 
-    describe("for line ending " + key, () => callback(lineEnding, value));
+    describe(`for line ending ${key}`, () => callback(lineEnding, value));
   }
 };

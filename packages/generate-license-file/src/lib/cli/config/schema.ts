@@ -12,7 +12,7 @@ export const configSchema = z
       // gave true or undefined), and the usage of the overwrite flag in the output
       // resolution no longer worked. This overrides any false value with undefined
       // to restore output resolution.
-      .transform(o => (o ? o : undefined)),
+      .transform((o) => (o ? o : undefined)),
     spinner: z.boolean().optional(),
     ci: z.boolean().optional(),
     eol: z.union([z.literal("crlf"), z.literal("lf")]).optional(),

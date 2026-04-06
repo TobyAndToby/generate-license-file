@@ -1,5 +1,5 @@
 import { prompt } from "enquirer";
-import { CombinedConfig } from "../commands/main";
+import type { CombinedConfig } from "../commands/main";
 
 export type MultipleChoiceOptions<T> = {
   [key: string]: T;
@@ -32,10 +32,7 @@ export abstract class Argument<T> {
     return answer.value;
   }
 
-  protected async promptForMultipleChoice<T>(
-    question: string,
-    options: MultipleChoiceOptions<T>,
-  ): Promise<T> {
+  protected async promptForMultipleChoice<T>(question: string, options: MultipleChoiceOptions<T>): Promise<T> {
     const answer = await prompt<{ value: string }>({
       type: "select",
       name: "value",

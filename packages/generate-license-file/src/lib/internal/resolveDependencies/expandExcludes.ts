@@ -1,4 +1,4 @@
-import { PackageJson } from "../../utils/packageJson.utils";
+import type { PackageJson } from "../../utils/packageJson.utils";
 
 export interface IExclude {
   match(packageJson: PackageJson): boolean;
@@ -37,7 +37,7 @@ const isRegexPattern = (input: string): false | [string, string] => {
 export const expandExcludes = (patterns: string[] | undefined): IExclude[] => {
   if (!patterns) return [];
 
-  return patterns.map(pattern => {
+  return patterns.map((pattern) => {
     const regexMatch = isRegexPattern(pattern);
     if (regexMatch) {
       const [regexPattern, flags] = regexMatch;

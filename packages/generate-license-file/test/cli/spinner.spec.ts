@@ -1,5 +1,5 @@
-import { vi, describe, it, expect, beforeEach, afterAll } from "vitest";
 import type { Options } from "ora";
+import { afterAll, beforeEach, describe, expect, it, vi } from "vitest";
 
 const { mockDotsSpinner, mockOra } = vi.hoisted(() => ({
   mockDotsSpinner: {} as object,

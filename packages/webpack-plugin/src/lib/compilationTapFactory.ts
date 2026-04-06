@@ -1,14 +1,14 @@
-import { Compilation, Compiler } from "webpack";
+import { Compilation, type Compiler } from "webpack";
 import { asyncProcessAssetTapFactory } from "./asyncProcessAssetTapFactory";
 import { LicenseFilePlugin } from "./licenseFilePlugin";
-import { Options } from "./options";
+import type { Options } from "./options";
 
 export type CompilationTap = (compilation: Compilation) => void;
 
 export const compilationTapFactory = (options: Options, compiler: Compiler): CompilationTap => {
   const pluginName = LicenseFilePlugin.name;
 
-  return compilation => {
+  return (compilation) => {
     const processAssetTap = asyncProcessAssetTapFactory(options, compiler, compilation);
 
     const assetOptions = {

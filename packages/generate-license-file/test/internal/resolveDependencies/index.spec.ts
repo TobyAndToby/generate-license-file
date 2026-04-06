@@ -1,6 +1,6 @@
-import { vi, describe, it, expect, beforeEach, afterAll } from "vitest";
-﻿import { when } from "vitest-when";
-import { join } from "path";
+import { join } from "node:path";
+import { afterAll, beforeEach, describe, expect, it, vi } from "vitest";
+import { when } from "vitest-when";
 import { resolveDependencies } from "../../../src/lib/internal/resolveDependencies";
 import { resolveDependenciesForNpmProject } from "../../../src/lib/internal/resolveDependencies/resolveNpmDependencies";
 import { resolveDependenciesForPnpmProject } from "../../../src/lib/internal/resolveDependencies/resolvePnpmDependencies";
@@ -43,11 +43,7 @@ describe("resolveDependencies", () => {
       await resolveDependencies(packageJson, dependencies, options);
 
       expect(mockedResolveDependenciesForNpmProject).toHaveBeenCalledTimes(1);
-      expect(mockedResolveDependenciesForNpmProject).toHaveBeenCalledWith(
-        packageJson,
-        dependencies,
-        options,
-      );
+      expect(mockedResolveDependenciesForNpmProject).toHaveBeenCalledWith(packageJson, dependencies, options);
     });
 
     it("should not call resolveDependenciesForPnpmProject", async () => {
@@ -70,11 +66,7 @@ describe("resolveDependencies", () => {
       await resolveDependencies(packageJson, dependencies, options);
 
       expect(mockedResolveDependenciesForPnpmProject).toHaveBeenCalledTimes(1);
-      expect(mockedResolveDependenciesForPnpmProject).toHaveBeenCalledWith(
-        packageJson,
-        dependencies,
-        options,
-      );
+      expect(mockedResolveDependenciesForPnpmProject).toHaveBeenCalledWith(packageJson, dependencies, options);
     });
   });
 

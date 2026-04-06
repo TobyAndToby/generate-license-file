@@ -1,5 +1,5 @@
 import { doesFileExist } from "../../utils/file.utils";
-import { CombinedConfig } from "../commands/main";
+import type { CombinedConfig } from "../commands/main";
 import { spinner } from "../spinner";
 import { Argument } from "./argument";
 

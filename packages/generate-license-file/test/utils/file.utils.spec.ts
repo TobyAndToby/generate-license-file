@@ -1,12 +1,7 @@
-import { vi, describe, it, expect, beforeEach, afterAll } from "vitest";
-import { Stats } from "fs";
-import * as fs from "fs/promises";
-import {
-  doesFileExist,
-  doesFolderExist,
-  readFile,
-  writeFileAsync,
-} from "../../src/lib/utils/file.utils";
+import type { Stats } from "node:fs";
+import * as fs from "node:fs/promises";
+import { afterAll, beforeEach, describe, expect, it, vi } from "vitest";
+import { doesFileExist, doesFolderExist, readFile, writeFileAsync } from "../../src/lib/utils/file.utils";
 
 const { fsMock } = vi.hoisted(() => {
   const fsMock = {
@@ -100,11 +95,7 @@ describe("File Utils", () => {
       await writeFileAsync(filePath, "any file content");
 
       expect(mockedFs.writeFile).toHaveBeenCalledTimes(1);
-      expect(mockedFs.writeFile).toHaveBeenCalledWith(
-        filePath,
-        expect.anything(),
-        expect.anything(),
-      );
+      expect(mockedFs.writeFile).toHaveBeenCalledWith(filePath, expect.anything(), expect.anything());
     });
 
     it("should call fs.writeFile with the content", async () => {
@@ -117,11 +108,7 @@ describe("File Utils", () => {
       await writeFileAsync("path", fileContent);
 
       expect(mockedFs.writeFile).toHaveBeenCalledTimes(1);
-      expect(mockedFs.writeFile).toHaveBeenCalledWith(
-        expect.anything(),
-        fileContent,
-        expect.anything(),
-      );
+      expect(mockedFs.writeFile).toHaveBeenCalledWith(expect.anything(), fileContent, expect.anything());
     });
 
     it("should call fs.writeFileAsync with the utf8 encoding", async () => {
@@ -149,7 +136,7 @@ describe("File Utils", () => {
 
     it("should call fs.mkdir with the directory path if the directory does not exist", async () => {
       const directory = "/directory/that/does/not/exist";
-      const filePath = directory + "/third-party-licenses.txt";
+      const filePath = `${directory}/third-party-licenses.txt`;
 
       mockedFs.stat.mockRejectedValue("anything");
 
@@ -161,17 +148,14 @@ describe("File Utils", () => {
 
     it("should call fs.mkdir with recursive true if the directory does not exist", async () => {
       const directory = "/directory/that/does/not/exist";
-      const filePath = directory + "/third-party-licenses.txt";
+      const filePath = `${directory}/third-party-licenses.txt`;
 
       mockedFs.stat.mockRejectedValue("anything");
 
       await writeFileAsync(filePath, "any file content");
 
       expect(mockedFs.mkdir).toHaveBeenCalledTimes(1);
-      expect(mockedFs.mkdir).toHaveBeenCalledWith(
-        expect.anything(),
-        expect.objectContaining({ recursive: true }),
-      );
+      expect(mockedFs.mkdir).toHaveBeenCalledWith(expect.anything(), expect.objectContaining({ recursive: true }));
     });
   });
 

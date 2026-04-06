@@ -1,7 +1,7 @@
-import { dirname, isAbsolute, join } from "path";
+import { dirname, isAbsolute, join } from "node:path";
 import { doesFileExist } from "../../utils/file.utils";
-import { ConfigFile, findConfig, loadConfig } from "./configFile";
-import { ConfigSchema, parseSchema } from "./schema";
+import { type ConfigFile, findConfig, loadConfig } from "./configFile";
+import { type ConfigSchema, parseSchema } from "./schema";
 
 export const loadConfigFile = async (path?: string): Promise<ConfigSchema> => {
   if (path && (await doesFileExist(path))) {
@@ -27,10 +27,7 @@ const loadAndParseConfig = async (filePath: string) => {
   return await parseConfig(configFile, directory);
 };
 
-const parseConfig = async (
-  configFile: ConfigFile | undefined,
-  directory: string,
-): Promise<ConfigSchema> => {
+const parseConfig = async (configFile: ConfigFile | undefined, directory: string): Promise<ConfigSchema> => {
   const config = parseSchema(configFile?.config);
 
   if (config === undefined) {

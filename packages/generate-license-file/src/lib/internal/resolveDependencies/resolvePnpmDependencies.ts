@@ -1,9 +1,9 @@
-﻿import { dirname, join } from "path";
+﻿import { dirname, join } from "node:path";
 import logger from "../../utils/console.utils";
 import { readPackageJson } from "../../utils/packageJson.utils";
 import { getPnpmProjectDependencies, getPnpmVersion } from "../../utils/pnpmCli.utils";
 import { resolveLicenseContent } from "../resolveLicenseContent";
-import { LicenseNoticeKey, ResolvedLicense } from "../resolveLicenses";
+import type { LicenseNoticeKey, ResolvedLicense } from "../resolveLicenses";
 import { resolveNotices } from "../resolveNoticeContent";
 import { expandExcludes } from "./expandExcludes";
 
@@ -29,16 +29,12 @@ export const resolveDependenciesForPnpmProject = async (
     for (const dependencyPath of dependency.paths) {
       const packageJson = await readPackageJson(join(dependencyPath, "package.json"));
 
-      if (exclude.some(excludeRule => excludeRule.match(packageJson))) {
+      if (exclude.some((excludeRule) => excludeRule.match(packageJson))) {
         continue;
       }
 
       try {
-        const licenseContent = await resolveLicenseContent(
-          dependencyPath,
-          packageJson,
-          replacements,
-        );
+        const licenseContent = await resolveLicenseContent(dependencyPath, packageJson, replacements);
         const notices = await resolveNotices(dependencyPath);
 
         const noticeKey = notices.length === 0 ? "" : notices.join("\n");
@@ -51,7 +47,7 @@ export const resolveDependenciesForPnpmProject = async (
         };
 
         const alreadyExists = resolvedLicense.dependencies.find(
-          dep => dep.name === dependency.name && dep.version === packageJson.version,
+          (dep) => dep.name === dependency.name && dep.version === packageJson.version,
         );
 
         if (!alreadyExists) {

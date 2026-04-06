@@ -1,12 +1,12 @@
-import { ResolvedLicense, resolveLicenses } from "./internal/resolveLicenses";
+import { type ResolvedLicense, resolveLicenses } from "./internal/resolveLicenses";
 import { getLineEndingCharacters } from "./lineEndings";
 import { License } from "./models/license";
-import { AppendOption } from "./options/append";
-import { ExcludeOption } from "./options/exclude";
-import { LineEndingOption } from "./options/lineEnding";
-import { OmitVersionsOption } from "./options/omitVersions";
-import { IntersectionExpander } from "./options/optionsExpander";
-import { ReplaceOption } from "./options/replace";
+import type { AppendOption } from "./options/append";
+import type { ExcludeOption } from "./options/exclude";
+import type { LineEndingOption } from "./options/lineEnding";
+import type { OmitVersionsOption } from "./options/omitVersions";
+import type { IntersectionExpander } from "./options/optionsExpander";
+import type { ReplaceOption } from "./options/replace";
 import { readFile } from "./utils/file.utils";
 import { prepareContentForOutput } from "./utils/string.utils";
 
@@ -58,7 +58,7 @@ export async function getLicenseFileText(
   let licenseFile = credit + EOL + EOL;
 
   for (const resolvedLicense of sortedLicenses) {
-    const dependencies = resolvedLicense.dependencies.map(dep => {
+    const dependencies = resolvedLicense.dependencies.map((dep) => {
       if (options?.omitVersions) {
         return dep.name;
       }
@@ -66,11 +66,7 @@ export async function getLicenseFileText(
       return `${dep.name}@${dep.version ?? "unknown"}`;
     });
 
-    const license = new License(
-      resolvedLicense.licenseContent,
-      resolvedLicense.notices,
-      dependencies,
-    );
+    const license = new License(resolvedLicense.licenseContent, resolvedLicense.notices, dependencies);
     licenseFile += license.format(EOL) + EOL + EOL + SUFFIX + EOL + EOL;
   }
 

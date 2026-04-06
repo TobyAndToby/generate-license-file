@@ -1,4 +1,4 @@
-import os from "os";
+import os from "node:os";
 
 export const lineEndings = ["crlf", "lf"] as const;
 
@@ -21,8 +21,7 @@ const lineEndingsMap = {
 export type LineEndingCharacters = (typeof lineEndingsMap)[LineEnding];
 export const lineEndingCharacters = Object.values(lineEndingsMap);
 
-export const isLineEnding = (input: unknown): input is LineEnding =>
-  lineEndings.includes(input as LineEnding);
+export const isLineEnding = (input: unknown): input is LineEnding => lineEndings.includes(input as LineEnding);
 
 export const getLineEndingCharacters = (input: LineEnding | undefined): LineEndingCharacters => {
   if (input === undefined) {

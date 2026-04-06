@@ -1,7 +1,7 @@
-import { vi, describe, it, expect, beforeEach, afterAll } from "vitest";
+import { join } from "node:path";
+import { afterAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { when } from "vitest-when";
-import { join } from "path";
-import { ResolutionInputs } from "../../../src/lib/internal/resolveLicenseContent";
+import type { ResolutionInputs } from "../../../src/lib/internal/resolveLicenseContent";
 import { packageJsonLicense } from "../../../src/lib/internal/resolveLicenseContent/packageJsonLicense";
 import logger from "../../../src/lib/utils/console.utils";
 import { doesFileExist, readFile } from "../../../src/lib/utils/file.utils";
@@ -51,19 +51,19 @@ describe("packageJsonLicense", () => {
     expect(result).toBeNull();
   });
 
-  it.each(["http://some.url", "www.some.url"])(
-    "should return the license URL if the license field is a URL: %s",
-    async url => {
-      const inputs: ResolutionInputs = {
-        packageJson: new PackageJson(undefined, undefined, url),
-        directory: "/some/directory",
-      };
+  it.each([
+    "http://some.url",
+    "www.some.url",
+  ])("should return the license URL if the license field is a URL: %s", async (url) => {
+    const inputs: ResolutionInputs = {
+      packageJson: new PackageJson(undefined, undefined, url),
+      directory: "/some/directory",
+    };
 
-      const result = await packageJsonLicense(inputs);
+    const result = await packageJsonLicense(inputs);
 
-      expect(result).toEqual(url);
-    },
-  );
+    expect(result).toEqual(url);
+  });
 
   describe("when the license field is a 'see license in' expression", () => {
     it("should try to read the license file from the directory specified in the inputs", async () => {
@@ -99,9 +99,7 @@ describe("packageJsonLicense", () => {
       const expectedPath = join("/some/directory", "license.txt");
 
       when(mockedDoesFileExist).calledWith(expectedPath).thenResolve(true);
-      when(mockedReadFile)
-        .calledWith(expectedPath, { encoding: "utf-8" })
-        .thenReject(new Error("Could not read file"));
+      when(mockedReadFile).calledWith(expectedPath, { encoding: "utf-8" }).thenReject(new Error("Could not read file"));
 
       const inputs: ResolutionInputs = {
         packageJson: new PackageJson(undefined, undefined, "SEE LICENSE IN license.txt"),
@@ -120,9 +118,7 @@ describe("packageJsonLicense", () => {
       const expectedPath = join("/some/directory", "license.txt");
 
       when(mockedDoesFileExist).calledWith(expectedPath).thenResolve(true);
-      when(mockedReadFile)
-        .calledWith(expectedPath, { encoding: "utf-8" })
-        .thenResolve("license contents");
+      when(mockedReadFile).calledWith(expectedPath, { encoding: "utf-8" }).thenResolve("license contents");
 
       const inputs: ResolutionInputs = {
         packageJson: new PackageJson(undefined, undefined, "SEE LICENSE IN license.txt"),
@@ -141,13 +137,11 @@ describe("packageJsonLicense", () => {
       "SEE LICENSE IN 'license.txt'",
       'SEE LICENSE IN "license.txt"',
       "SEE LICENSE IN <license.txt>",
-    ])("should ignore punctuation wrapping the license file path", async licenseFile => {
+    ])("should ignore punctuation wrapping the license file path", async (licenseFile) => {
       const expectedPath = join("/some/directory", "license.txt");
 
       when(mockedDoesFileExist).calledWith(expectedPath).thenResolve(true);
-      when(mockedReadFile)
-        .calledWith(expectedPath, { encoding: "utf-8" })
-        .thenResolve("license contents");
+      when(mockedReadFile).calledWith(expectedPath, { encoding: "utf-8" }).thenResolve("license contents");
 
       const inputs: ResolutionInputs = {
         packageJson: new PackageJson(undefined, undefined, licenseFile),
@@ -162,19 +156,19 @@ describe("packageJsonLicense", () => {
       });
     });
 
-    it.each(["http://some.url", "www.some.url"])(
-      "should return the packages.json SPDX expression if the license file is a URL",
-      async url => {
-        const inputs: ResolutionInputs = {
-          packageJson: new PackageJson(undefined, undefined, `SEE LICENSE IN ${url}`),
-          directory: "/some/directory",
-        };
+    it.each([
+      "http://some.url",
+      "www.some.url",
+    ])("should return the packages.json SPDX expression if the license file is a URL", async (url) => {
+      const inputs: ResolutionInputs = {
+        packageJson: new PackageJson(undefined, undefined, `SEE LICENSE IN ${url}`),
+        directory: "/some/directory",
+      };
 
-        const result = await packageJsonLicense(inputs);
+      const result = await packageJsonLicense(inputs);
 
-        expect(result).toEqual(`SEE LICENSE IN ${url}`);
-      },
-    );
+      expect(result).toEqual(`SEE LICENSE IN ${url}`);
+    });
   });
 
   describe("when the license field is an object", () => {
@@ -282,10 +276,7 @@ describe("packageJsonLicense", () => {
         const url = "https://some.url";
 
         const inputs: ResolutionInputs = {
-          packageJson: new PackageJson(undefined, undefined, [
-            { url },
-            { url: "https://some.other.url" },
-          ]),
+          packageJson: new PackageJson(undefined, undefined, [{ url }, { url: "https://some.other.url" }]),
           directory: "/some/directory",
         };
 
@@ -296,10 +287,7 @@ describe("packageJsonLicense", () => {
 
       it("should return null if the first license has an empty URL", async () => {
         const inputs: ResolutionInputs = {
-          packageJson: new PackageJson(undefined, undefined, [
-            { url: "" },
-            { url: "https://some.other.url" },
-          ]),
+          packageJson: new PackageJson(undefined, undefined, [{ url: "" }, { url: "https://some.other.url" }]),
           directory: "/some/directory",
         };
 
@@ -310,10 +298,7 @@ describe("packageJsonLicense", () => {
 
       it("should return null if the first license has no URL", async () => {
         const inputs: ResolutionInputs = {
-          packageJson: new PackageJson(undefined, undefined, [
-            { url: undefined },
-            { url: "https://some.other.url" },
-          ]),
+          packageJson: new PackageJson(undefined, undefined, [{ url: undefined }, { url: "https://some.other.url" }]),
           directory: "/some/directory",
         };
 
@@ -392,10 +377,7 @@ describe("packageJsonLicense", () => {
         const url = "https://some.url";
 
         const inputs: ResolutionInputs = {
-          packageJson: new PackageJson(undefined, undefined, undefined, [
-            { url },
-            { url: "https://some.other.url" },
-          ]),
+          packageJson: new PackageJson(undefined, undefined, undefined, [{ url }, { url: "https://some.other.url" }]),
           directory: "/some/directory",
         };
 

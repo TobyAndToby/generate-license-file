@@ -1,8 +1,8 @@
+import { extname, relative } from "node:path";
 import { glob } from "glob";
-import { extname, relative } from "path";
 import logger from "../../utils/console.utils";
 import { readFile } from "../../utils/file.utils";
-import { Resolution } from "./index";
+import type { Resolution } from "./index";
 
 // This file specifically handles cases where we're able to find
 // a license file on disk that is a part of the package but it's
@@ -12,7 +12,7 @@ import { Resolution } from "./index";
 // but that may have the same name as a license file
 export const extensionDenyList = [".js", ".ts", ".sh", ".ps1"];
 
-export const licenseFile: Resolution = async inputs => {
+export const licenseFile: Resolution = async (inputs) => {
   const { directory, packageJson } = inputs;
 
   const licenseFiles = await glob("{license,licence,copying}{,-*,.*}", {
@@ -23,18 +23,14 @@ export const licenseFile: Resolution = async inputs => {
     maxDepth: 1,
   });
 
-  const filteredLicenseFiles = licenseFiles.filter(
-    file => !extensionDenyList.includes(extname(file)),
-  );
+  const filteredLicenseFiles = licenseFiles.filter((file) => !extensionDenyList.includes(extname(file)));
 
   if (filteredLicenseFiles.length === 0) {
     return null;
   }
 
   if (filteredLicenseFiles.length > 1) {
-    const relativeLicenseFiles = filteredLicenseFiles.map(
-      file => ` - ./${relative(directory, file)}`,
-    );
+    const relativeLicenseFiles = filteredLicenseFiles.map((file) => ` - ./${relative(directory, file)}`);
 
     const warningLines = [
       `Found multiple license files for ${packageJson.name}@${packageJson.version}:`,

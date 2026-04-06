@@ -11,7 +11,8 @@ export class PackageJson {
   ) {}
 
   public get identifier(): string {
-    return (this._identifier ??= `${this.name ?? "unknown"}@${this.version ?? "unknown"}`);
+    this._identifier ??= `${this.name ?? "unknown"}@${this.version ?? "unknown"}`;
+    return this._identifier;
   }
 }
 
@@ -39,9 +40,7 @@ export const readPackageJson = async (pathToPackageJson: string): Promise<Packag
   );
 };
 
-export const maybeReadPackageJson = async (
-  pathToPackageJson: string,
-): Promise<PackageJson | null> => {
+export const maybeReadPackageJson = async (pathToPackageJson: string): Promise<PackageJson | null> => {
   try {
     return await readPackageJson(pathToPackageJson);
   } catch (error) {

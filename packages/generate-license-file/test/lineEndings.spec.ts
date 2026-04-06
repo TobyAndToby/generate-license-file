@@ -1,5 +1,5 @@
-import { vi, describe, it, expect, beforeEach, afterAll } from "vitest";
-import os from "os";
+import os from "node:os";
+import { afterAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { getLineEndingCharacters, isLineEnding } from "../src/lib/lineEndings";
 
 const mockSystemEOL = "EOL";
@@ -53,13 +53,13 @@ describe("lineEndings", () => {
       expect(result).toBe(false);
     });
 
-    ["foo", "bar"].forEach(value =>
+    ["foo", "bar"].forEach((value) => {
       it(`should return false for unknown values (${value})`, () => {
         const result = isLineEnding(value);
 
         expect(result).toBe(false);
-      }),
-    );
+      });
+    });
   });
 
   describe("getLineEndingCharacters", () => {

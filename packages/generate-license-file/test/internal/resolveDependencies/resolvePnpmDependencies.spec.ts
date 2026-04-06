@@ -1,17 +1,13 @@
-import { vi, describe, it, expect, beforeEach, afterAll } from "vitest";
-﻿import { when } from "vitest-when";
-import { join } from "path";
+import { join } from "node:path";
+import { afterAll, beforeEach, describe, expect, it, vi } from "vitest";
+import { when } from "vitest-when";
 import { resolveDependenciesForPnpmProject } from "../../../src/lib/internal/resolveDependencies/resolvePnpmDependencies";
 import { resolveLicenseContent } from "../../../src/lib/internal/resolveLicenseContent";
-import { LicenseNoticeKey, ResolvedLicense } from "../../../src/lib/internal/resolveLicenses";
+import type { LicenseNoticeKey, ResolvedLicense } from "../../../src/lib/internal/resolveLicenses";
 import { resolveNotices } from "../../../src/lib/internal/resolveNoticeContent";
 import logger from "../../../src/lib/utils/console.utils";
 import { doesFileExist, readFile } from "../../../src/lib/utils/file.utils";
-import {
-  getPnpmProjectDependencies,
-  getPnpmVersion,
-  PnpmDependency,
-} from "../../../src/lib/utils/pnpmCli.utils";
+import { getPnpmProjectDependencies, getPnpmVersion, type PnpmDependency } from "../../../src/lib/utils/pnpmCli.utils";
 
 vi.mock("../../../src/lib/utils/pnpmCli.utils", () => ({
   getPnpmVersion: vi.fn(),
@@ -110,7 +106,7 @@ describe("resolveDependenciesForPnpmProject", () => {
   describe.each([
     { major: 7, minor: 33, patch: 0 },
     { major: 8, minor: 0, patch: 0 },
-  ])("when the pnpm version is a supported version (%p)", pnpmVersion => {
+  ])("when the pnpm version is a supported version (%p)", (pnpmVersion) => {
     it("should call getPnpmProjectDependencies", async () => {
       mockedGetPnpmVersion.mockResolvedValue(pnpmVersion);
       mockedGetPnpmProjectDependencies.mockResolvedValue([]);
@@ -204,34 +200,34 @@ describe("resolveDependenciesForPnpmProject", () => {
       expect(
         licensesMap
           .get(dependency1LicenseNoticePair)
-          ?.dependencies?.find(d => d.name === "dependency1" && d.version === "1.0.0"),
+          ?.dependencies?.find((d) => d.name === "dependency1" && d.version === "1.0.0"),
       ).toBeDefined();
       expect(
         licensesMap
           .get(dependency2LicenseNoticePair)
-          ?.dependencies?.find(d => d.name === "dependency2" && d.version === "2.0.0"),
+          ?.dependencies?.find((d) => d.name === "dependency2" && d.version === "2.0.0"),
       ).toBeDefined();
     });
 
-    it.each([new Error("Something went wrong"), "Something went wrong"])(
-      "should warning log if resolveLicenseContent throws an error",
-      async error => {
-        mockedGetPnpmVersion.mockResolvedValue(pnpmVersion);
-        mockedGetPnpmProjectDependencies.mockResolvedValue([dependency1, dependency2, dependency3]);
+    it.each([
+      new Error("Something went wrong"),
+      "Something went wrong",
+    ])("should warning log if resolveLicenseContent throws an error", async (error) => {
+      mockedGetPnpmVersion.mockResolvedValue(pnpmVersion);
+      mockedGetPnpmProjectDependencies.mockResolvedValue([dependency1, dependency2, dependency3]);
 
-        when(mockedResolveLicenseContent)
-          .calledWith(dependency1.paths[0], expect.anything(), expect.anything())
-          .thenReject(error);
+      when(mockedResolveLicenseContent)
+        .calledWith(dependency1.paths[0], expect.anything(), expect.anything())
+        .thenReject(error);
 
-        const licensesMap = new Map<LicenseNoticeKey, ResolvedLicense>();
+      const licensesMap = new Map<LicenseNoticeKey, ResolvedLicense>();
 
-        await resolveDependenciesForPnpmProject("/some/path/package.json", licensesMap);
+      await resolveDependenciesForPnpmProject("/some/path/package.json", licensesMap);
 
-        expect(mockedLogger.warn).toHaveBeenCalledWith(
-          `Unable to determine license content for ${dependency1.name}@1.0.0 with error:\nSomething went wrong\n`,
-        );
-      },
-    );
+      expect(mockedLogger.warn).toHaveBeenCalledWith(
+        `Unable to determine license content for ${dependency1.name}@1.0.0 with error:\nSomething went wrong\n`,
+      );
+    });
 
     describe("when the dependency is in the exclude list", () => {
       it("should not call resolveLicenseContent", async () => {
@@ -272,8 +268,6 @@ describe("resolveDependenciesForPnpmProject", () => {
     const packageJsonContent = JSON.stringify({ name, version });
 
     when(mockedDoesFileExist).calledWith(fullPackageJsonPath).thenResolve(true);
-    when(mockedReadFile)
-      .calledWith(fullPackageJsonPath, { encoding: "utf-8" })
-      .thenResolve(packageJsonContent);
+    when(mockedReadFile).calledWith(fullPackageJsonPath, { encoding: "utf-8" }).thenResolve(packageJsonContent);
   };
 });

@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.0.0/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.4.10/schema.json",
   "vcs": {
     "enabled": true,
     "clientKind": "git",
@@ -7,11 +7,11 @@
     "defaultBranch": "main"
   },
   "files": {
-    "ignore": ["**/node_modules/**", "**/dist/**", "**/coverage/**"]
+    "includes": ["**"]
   },
   "formatter": {
     "enabled": true,
-    "lineWidth": 100,
+    "lineWidth": 120,
     "indentStyle": "space",
     "indentWidth": 2,
     "lineEnding": "lf"
@@ -19,8 +19,7 @@
   "javascript": {
     "formatter": {
       "quoteStyle": "double",
-      "trailingCommas": "all",
-      "semicolons": "asNeeded"
+      "trailingCommas": "all"
     }
   },
   "linter": {
@@ -45,7 +44,7 @@
   },
   "overrides": [
     {
-      "include": ["**/*.spec.ts", "**/*.test.ts"],
+      "includes": ["**/*.spec.ts", "**/*.test.ts"],
       "linter": {
         "rules": {
           "suspicious": {

@@ -1,4 +1,4 @@
-import { vi, describe, it, expect, beforeEach, afterAll } from "vitest";
+import { afterAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { generateLicenseFile } from "../src/lib/generateLicenseFile";
 import { getLicenseFileText } from "../src/lib/getLicenseFileText";
 import { lineEndings } from "../src/lib/lineEndings";
@@ -49,15 +49,12 @@ describe("generateLicenseFile", () => {
     });
   });
 
-  it.each([...lineEndings, undefined])(
-    "should call getLicenseFileText with the line ending %s",
-    async lineEnding => {
-      await generateLicenseFile("path", "outputPath", { lineEnding });
+  it.each([...lineEndings, undefined])("should call getLicenseFileText with the line ending %s", async (lineEnding) => {
+    await generateLicenseFile("path", "outputPath", { lineEnding });
 
-      const firstCallSecondArg = mockGetLicenseFileText.mock.calls[0][1];
-      expect(firstCallSecondArg?.lineEnding).toBe(lineEnding);
-    },
-  );
+    const firstCallSecondArg = mockGetLicenseFileText.mock.calls[0][1];
+    expect(firstCallSecondArg?.lineEnding).toBe(lineEnding);
+  });
 
   it("should call writeFileAsync", async () => {
     await generateLicenseFile("path", "outputPath");

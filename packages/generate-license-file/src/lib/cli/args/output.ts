@@ -1,5 +1,5 @@
 import { doesFileExist } from "../../utils/file.utils";
-import { CombinedConfig } from "../commands/main";
+import type { CombinedConfig } from "../commands/main";
 import { Argument } from "./argument";
 
 export class Output extends Argument<string> {
@@ -19,9 +19,7 @@ export class Output extends Argument<string> {
       outputExists = await doesFileExist(output);
 
       if (outputExists && overwrite === undefined) {
-        overwrite = await this.promptForBoolean(
-          "This file already exists - do you want to overwrite it?",
-        );
+        overwrite = await this.promptForBoolean("This file already exists - do you want to overwrite it?");
       }
 
       if (outputExists && overwrite === false) {
@@ -43,9 +41,7 @@ export class Output extends Argument<string> {
     const outputExists = await doesFileExist(output);
 
     if (outputExists && !overwrite) {
-      throw new Error(
-        `Given --output file already exists at '${output}'. Use --overwrite to allow overwriting.`,
-      );
+      throw new Error(`Given --output file already exists at '${output}'. Use --overwrite to allow overwriting.`);
     }
 
     return output;

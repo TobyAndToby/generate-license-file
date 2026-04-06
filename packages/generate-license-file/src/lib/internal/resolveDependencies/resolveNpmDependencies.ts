@@ -1,9 +1,9 @@
-﻿import Arborist, { Link, Node } from "@npmcli/arborist";
-import { dirname, isAbsolute, join } from "path";
+﻿import { dirname, isAbsolute, join } from "node:path";
+import Arborist, { type Link, type Node } from "@npmcli/arborist";
 import logger from "../../utils/console.utils";
 import { maybeReadPackageJson } from "../../utils/packageJson.utils";
 import { resolveLicenseContent } from "../resolveLicenseContent";
-import { LicenseNoticeKey, ResolvedLicense } from "../resolveLicenses";
+import type { LicenseNoticeKey, ResolvedLicense } from "../resolveLicenses";
 import { resolveNotices } from "../resolveNoticeContent";
 import { expandExcludes } from "./expandExcludes";
 
@@ -48,7 +48,7 @@ export const resolveDependenciesForNpmProject = async (
       throw new Error(`Missing package.json for required package (${node.realpath})`);
     }
 
-    if (exclude.some(excludeRule => excludeRule.match(packageJson))) {
+    if (exclude.some((excludeRule) => excludeRule.match(packageJson))) {
       return;
     }
 
@@ -66,7 +66,7 @@ export const resolveDependenciesForNpmProject = async (
       };
 
       const alreadyExists = resolvedLicense.dependencies.find(
-        dep => dep.name === node.package.name && dep.version === node.package.version,
+        (dep) => dep.name === node.package.name && dep.version === node.package.version,
       );
 
       if (!alreadyExists) {

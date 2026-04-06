@@ -1,13 +1,11 @@
 import { resolveLicenses } from "./internal/resolveLicenses";
-import { ILicense } from "./models/license";
-import { ExcludeOption } from "./options/exclude";
-import { OmitVersionsOption } from "./options/omitVersions";
-import { IntersectionExpander } from "./options/optionsExpander";
-import { ReplaceOption } from "./options/replace";
+import type { ILicense } from "./models/license";
+import type { ExcludeOption } from "./options/exclude";
+import type { OmitVersionsOption } from "./options/omitVersions";
+import type { IntersectionExpander } from "./options/optionsExpander";
+import type { ReplaceOption } from "./options/replace";
 
-export type GetProjectLicensesOptions = IntersectionExpander<
-  ReplaceOption & ExcludeOption & OmitVersionsOption
->;
+export type GetProjectLicensesOptions = IntersectionExpander<ReplaceOption & ExcludeOption & OmitVersionsOption>;
 
 /**
  * Scans the project found at the given path and returns an array of objects each
@@ -25,7 +23,7 @@ export async function getProjectLicenses(
   const results: ILicense[] = [];
 
   for (const license of licenses) {
-    const dependencies = license.dependencies.map(dep => {
+    const dependencies = license.dependencies.map((dep) => {
       if (options?.omitVersions) {
         return dep.name;
       }

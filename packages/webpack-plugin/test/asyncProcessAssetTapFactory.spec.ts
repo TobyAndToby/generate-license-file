@@ -1,9 +1,9 @@
-import { vi, describe, it, expect, beforeEach } from "vitest";
-import { getLicenseFileText, LineEnding } from "generate-license-file";
-import { Compilation, Compiler, sources } from "webpack";
+import { getLicenseFileText, type LineEnding } from "generate-license-file";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import { type Compilation, type Compiler, sources } from "webpack";
 import { asyncProcessAssetTapFactory } from "../src/lib/asyncProcessAssetTapFactory";
 import { devImplementation } from "../src/lib/devImplementation";
-import { Options } from "../src/lib/options";
+import type { Options } from "../src/lib/options";
 import { waitForNextEventLoop } from "./utils/waitForNextEventLoop";
 
 vi.mock("generate-license-file", () => {
@@ -106,7 +106,7 @@ describe("asyncProcessAssetTapFactory", () => {
       expect(firstCallFirstArg).toBe(options.pathToPackageJson);
     });
 
-    (["lf", "crlf"] as LineEnding[]).forEach(lineEnding =>
+    (["lf", "crlf"] as LineEnding[]).forEach((lineEnding) => {
       it(`should call generate-license-file with the ${lineEnding} line ending `, () => {
         options.lineEnding = lineEnding;
 
@@ -115,8 +115,8 @@ describe("asyncProcessAssetTapFactory", () => {
 
         const firstCallSecondArg = mockGetLicenseFileText.mock.calls[0][1];
         expect(firstCallSecondArg).toStrictEqual(expect.objectContaining({ lineEnding }));
-      }),
-    );
+      });
+    });
 
     it("should call generate-license-file with the append option", () => {
       options.append = ["path/to/append.txt"];
@@ -135,9 +135,7 @@ describe("asyncProcessAssetTapFactory", () => {
       assetProcessingAsyncTap(undefined, () => undefined);
 
       const firstCallSecondArg = mockGetLicenseFileText.mock.calls[0][1];
-      expect(firstCallSecondArg).toStrictEqual(
-        expect.objectContaining({ exclude: options.exclude }),
-      );
+      expect(firstCallSecondArg).toStrictEqual(expect.objectContaining({ exclude: options.exclude }));
     });
 
     it("should call generate-license-file with the replace option", () => {
@@ -147,9 +145,7 @@ describe("asyncProcessAssetTapFactory", () => {
       assetProcessingAsyncTap(undefined, () => undefined);
 
       const firstCallSecondArg = mockGetLicenseFileText.mock.calls[0][1];
-      expect(firstCallSecondArg).toStrictEqual(
-        expect.objectContaining({ replace: options.replace }),
-      );
+      expect(firstCallSecondArg).toStrictEqual(expect.objectContaining({ replace: options.replace }));
     });
 
     describe("on success", () => {
@@ -169,7 +165,7 @@ describe("asyncProcessAssetTapFactory", () => {
         await waitForNextEventLoop();
 
         const firstCallFirstArg = mockEmitAsset.mock.calls[0][0];
-        expect(firstCallFirstArg).toBe(options.outputFolder + "/" + options.outputFileName);
+        expect(firstCallFirstArg).toBe(`${options.outputFolder}/${options.outputFileName}`);
       });
 
       it("should emit a new asset of type RawSource", async () => {
@@ -244,25 +240,19 @@ describe("asyncProcessAssetTapFactory", () => {
         expect(firstError.message).toBe(`LicenseFilePlugin: ${errorMessage}`);
       });
 
-      [null, undefined].forEach(falsyValue =>
+      [null, undefined].forEach((falsyValue) => {
         it(`should use the unknown error message if the given error is falsy (${falsyValue})`, async () => {
           mockGetLicenseFileText.mockRejectedValue(falsyValue);
 
-          const assetProcessingAsyncTap = asyncProcessAssetTapFactory(
-            options,
-            compiler,
-            compilation,
-          );
+          const assetProcessingAsyncTap = asyncProcessAssetTapFactory(options, compiler, compilation);
           assetProcessingAsyncTap(undefined, () => undefined);
 
           await waitForNextEventLoop();
 
           const firstError = compilation.errors[0];
-          expect(firstError.message).toBe(
-            `LicenseFilePlugin: Unknown Error! Check for error output above.`,
-          );
-        }),
-      );
+          expect(firstError.message).toBe(`LicenseFilePlugin: Unknown Error! Check for error output above.`);
+        });
+      });
 
       it("should call the resolve function", async () => {
         const resolveFunction = vi.fn();

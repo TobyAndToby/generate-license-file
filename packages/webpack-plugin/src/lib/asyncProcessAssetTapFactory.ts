@@ -1,9 +1,9 @@
-import { getLicenseFileText, GetLicenseFileTextOptions } from "generate-license-file";
-import { join } from "path/posix";
-import { Compilation, Compiler, WebpackError } from "webpack";
+import { join } from "node:path/posix";
+import { type GetLicenseFileTextOptions, getLicenseFileText } from "generate-license-file";
+import { type Compilation, type Compiler, WebpackError } from "webpack";
 import { devImplementation } from "./devImplementation";
 import { LicenseFilePlugin } from "./licenseFilePlugin";
-import { Options } from "./options";
+import type { Options } from "./options";
 
 export type AssetProcessingAsyncTap = (_: unknown, resolve: (error?: WebpackError) => void) => void;
 
@@ -16,16 +16,7 @@ export const asyncProcessAssetTapFactory = (
 ): AssetProcessingAsyncTap => {
   const pluginName = LicenseFilePlugin.name;
 
-  const {
-    outputFileName,
-    outputFolder,
-    isDev,
-    pathToPackageJson,
-    lineEnding,
-    append,
-    exclude,
-    replace,
-  } = options;
+  const { outputFileName, outputFolder, isDev, pathToPackageJson, lineEnding, append, exclude, replace } = options;
 
   const getLicenseFileTextOptions: GetLicenseFileTextOptions = {
     lineEnding,
@@ -40,12 +31,12 @@ export const asyncProcessAssetTapFactory = (
     const implementation = resolveImplementation(isDev);
 
     implementation(pathToPackageJson, getLicenseFileTextOptions)
-      .then(text => {
+      .then((text) => {
         const outputPath = join(outputFolder, outputFileName);
         compilation.emitAsset(outputPath, new RawSource(text));
         resolve();
       })
-      .catch(error => {
+      .catch((error) => {
         const errorMessage = `${pluginName}: ${error ?? unknownError}`;
         const webpackError = new WebpackError(errorMessage);
         compilation.errors.push(webpackError);

@@ -1,5 +1,5 @@
-import { vi, describe, it, expect, beforeEach, afterAll } from "vitest";
 import { glob } from "glob";
+import { afterAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { when } from "vitest-when";
 import { resolveNotices } from "../../../src/lib/internal/resolveNoticeContent";
 import { readFile } from "../../../src/lib/utils/file.utils";
@@ -33,9 +33,7 @@ describe("resolveNoticeContent", () => {
     const noticeFilePath = `${directory}/notice.txt`;
 
     mockedGlob.mockResolvedValue([noticeFilePath]);
-    when(mockedReadFile)
-      .calledWith(noticeFilePath, { encoding: "utf-8" })
-      .thenResolve("Notice contents");
+    when(mockedReadFile).calledWith(noticeFilePath, { encoding: "utf-8" }).thenResolve("Notice contents");
 
     const result = await resolveNotices(directory);
 
@@ -49,12 +47,8 @@ describe("resolveNoticeContent", () => {
     const noticeFilePath2 = `${directory}/notice2.txt`;
 
     mockedGlob.mockResolvedValue([noticeFilePath1, noticeFilePath2]);
-    when(mockedReadFile)
-      .calledWith(noticeFilePath1, { encoding: "utf-8" })
-      .thenResolve("Notice contents 1");
-    when(mockedReadFile)
-      .calledWith(noticeFilePath2, { encoding: "utf-8" })
-      .thenResolve("Notice contents 2");
+    when(mockedReadFile).calledWith(noticeFilePath1, { encoding: "utf-8" }).thenResolve("Notice contents 1");
+    when(mockedReadFile).calledWith(noticeFilePath2, { encoding: "utf-8" }).thenResolve("Notice contents 2");
 
     const result = await resolveNotices(directory);
 

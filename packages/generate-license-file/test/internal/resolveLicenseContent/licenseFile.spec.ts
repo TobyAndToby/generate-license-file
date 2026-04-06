@@ -1,11 +1,8 @@
-import { vi, describe, it, expect, beforeEach, afterAll } from "vitest";
 import { glob } from "glob";
+import { afterAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { when } from "vitest-when";
-import { ResolutionInputs } from "../../../src/lib/internal/resolveLicenseContent";
-import {
-  extensionDenyList,
-  licenseFile,
-} from "../../../src/lib/internal/resolveLicenseContent/licenseFile";
+import type { ResolutionInputs } from "../../../src/lib/internal/resolveLicenseContent";
+import { extensionDenyList, licenseFile } from "../../../src/lib/internal/resolveLicenseContent/licenseFile";
 import { readFile } from "../../../src/lib/utils/file.utils";
 import { PackageJson } from "../../../src/lib/utils/packageJson.utils";
 
@@ -45,9 +42,7 @@ describe("licenseFile", () => {
     const licenseFilePath = "/some/directory/license.txt";
 
     mockedGlob.mockResolvedValue([licenseFilePath, "/some/other/file.txt"]);
-    when(mockedReadFile)
-      .calledWith(licenseFilePath, { encoding: "utf-8" })
-      .thenResolve("license contents");
+    when(mockedReadFile).calledWith(licenseFilePath, { encoding: "utf-8" }).thenResolve("license contents");
 
     const result = await licenseFile(resolutionInputs);
 
@@ -56,14 +51,13 @@ describe("licenseFile", () => {
     expect(result).toBe("license contents");
   });
 
-  it.each(extensionDenyList)(
-    "should return null if all license files are in the extension deny list",
-    async extension => {
-      mockedGlob.mockResolvedValue([`/some/directory/license${extension}`]);
+  it.each(
+    extensionDenyList,
+  )("should return null if all license files are in the extension deny list", async (extension) => {
+    mockedGlob.mockResolvedValue([`/some/directory/license${extension}`]);
 
-      const result = await licenseFile(resolutionInputs);
+    const result = await licenseFile(resolutionInputs);
 
-      expect(result).toBeNull();
-    },
-  );
+    expect(result).toBeNull();
+  });
 });

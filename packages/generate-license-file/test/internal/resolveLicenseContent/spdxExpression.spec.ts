@@ -1,5 +1,5 @@
-import { vi, describe, it, expect, beforeEach, afterAll } from "vitest";
-import { ResolutionInputs } from "../../../src/lib/internal/resolveLicenseContent";
+import { afterAll, beforeEach, describe, expect, it, vi } from "vitest";
+import type { ResolutionInputs } from "../../../src/lib/internal/resolveLicenseContent";
 import { spdxExpression } from "../../../src/lib/internal/resolveLicenseContent/spdxExpression";
 import logger from "../../../src/lib/utils/console.utils";
 import { PackageJson } from "../../../src/lib/utils/packageJson.utils";
@@ -35,19 +35,20 @@ describe("spdxExpression", () => {
       expect(result).toBeNull();
     });
 
-    it.each(["Apache-2.0", "BSD-2-Clause", "MIT"])(
-      "should return the license field if it is not empty",
-      async expression => {
-        const inputs: ResolutionInputs = {
-          packageJson: new PackageJson(undefined, undefined, expression),
-          directory: "/some/directory",
-        };
+    it.each([
+      "Apache-2.0",
+      "BSD-2-Clause",
+      "MIT",
+    ])("should return the license field if it is not empty", async (expression) => {
+      const inputs: ResolutionInputs = {
+        packageJson: new PackageJson(undefined, undefined, expression),
+        directory: "/some/directory",
+      };
 
-        const result = await spdxExpression(inputs);
+      const result = await spdxExpression(inputs);
 
-        expect(result).toBe(expression);
-      },
-    );
+      expect(result).toBe(expression);
+    });
 
     it("should warning log if the license field contains ' OR '", async () => {
       const inputs: ResolutionInputs = {
@@ -95,9 +96,7 @@ describe("spdxExpression", () => {
         const license = "MIT";
 
         const inputs: ResolutionInputs = {
-          packageJson: new PackageJson(undefined, undefined, [
-            { type: license, url: "https://some.url" },
-          ]),
+          packageJson: new PackageJson(undefined, undefined, [{ type: license, url: "https://some.url" }]),
           directory: "/some/directory",
         };
 
@@ -181,9 +180,7 @@ describe("spdxExpression", () => {
     describe("when the licenses field contains a single object", () => {
       it("should return null if the licenses field contains an object with no type", async () => {
         const inputs: ResolutionInputs = {
-          packageJson: new PackageJson(undefined, undefined, undefined, [
-            { url: "https://some.url" },
-          ]),
+          packageJson: new PackageJson(undefined, undefined, undefined, [{ url: "https://some.url" }]),
           directory: "/some/directory",
         };
 
@@ -196,9 +193,7 @@ describe("spdxExpression", () => {
         const license = "MIT";
 
         const inputs: ResolutionInputs = {
-          packageJson: new PackageJson(undefined, undefined, undefined, [
-            { type: license, url: "https://some.url" },
-          ]),
+          packageJson: new PackageJson(undefined, undefined, undefined, [{ type: license, url: "https://some.url" }]),
           directory: "/some/directory",
         };
 

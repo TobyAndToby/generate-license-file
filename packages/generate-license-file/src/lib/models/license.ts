@@ -1,4 +1,4 @@
-import { LineEndingCharacters } from "../lineEndings";
+import type { LineEndingCharacters } from "../lineEndings";
 import { prepareContentForOutput } from "../utils/string.utils";
 
 const BULLET = " - ";
@@ -47,12 +47,11 @@ export class License implements ILicense {
       prepareContentForOutput(this.content.trim(), lineEnding);
 
     if (this.notices.length > 0) {
-      const noticeContent = this.notices.map(notice => notice.trim()).join(lineEnding);
+      const noticeContent = this.notices.map((notice) => notice.trim()).join(lineEnding);
 
       // Append the notices to the formatted text, preparing content for output to ensure
       // the line endings inside each notice content are consistent.
-      formattedText +=
-        this.noticesPrefix(lineEnding) + prepareContentForOutput(noticeContent, lineEnding);
+      formattedText += this.noticesPrefix(lineEnding) + prepareContentForOutput(noticeContent, lineEnding);
     }
 
     return formattedText;
@@ -73,7 +72,7 @@ export class License implements ILicense {
   private formatDependencies(EOL: string): string {
     const formattedText = this.dependencies
       .sort((a, b) => a.localeCompare(b))
-      .map(dependency => {
+      .map((dependency) => {
         return BULLET + dependency + EOL;
       });
 

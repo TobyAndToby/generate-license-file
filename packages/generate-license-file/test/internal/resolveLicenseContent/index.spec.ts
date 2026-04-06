@@ -1,4 +1,4 @@
-import { vi, describe, it, expect, beforeEach, afterAll } from "vitest";
+import { afterAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { when } from "vitest-when";
 import { resolveLicenseContent } from "../../../src/lib/internal/resolveLicenseContent";
 import { licenseFile } from "../../../src/lib/internal/resolveLicenseContent/licenseFile";
@@ -37,9 +37,7 @@ describe("resolveLicenseContent", () => {
       when(mockedReplacementHttp).calledWith("/some/replacement/path").thenResolve(null);
       when(mockedReplacementFile).calledWith("/some/replacement/path").thenResolve(null);
 
-      await expect(() =>
-        resolveLicenseContent("/some/directory", packageJson, replacements),
-      ).rejects.toThrow();
+      await expect(() => resolveLicenseContent("/some/directory", packageJson, replacements)).rejects.toThrow();
 
       expect(mockedReplacementHttp).toHaveBeenCalledTimes(1);
       expect(mockedReplacementFile).toHaveBeenCalledTimes(1);
@@ -52,9 +50,7 @@ describe("resolveLicenseContent", () => {
         "some-package": "/some/replacement/path",
       };
 
-      when(mockedReplacementHttp)
-        .calledWith("/some/replacement/path")
-        .thenResolve("a not null value");
+      when(mockedReplacementHttp).calledWith("/some/replacement/path").thenResolve("a not null value");
       when(mockedReplacementFile).calledWith("/some/replacement/path").thenResolve(null);
 
       await resolveLicenseContent("/some/directory", packageJson, replacements);
@@ -72,9 +68,7 @@ describe("resolveLicenseContent", () => {
         "some-package": "/some/replacement/path",
       };
 
-      when(mockedReplacementHttp)
-        .calledWith("/some/replacement/path")
-        .thenResolve(someContent);
+      when(mockedReplacementHttp).calledWith("/some/replacement/path").thenResolve(someContent);
       when(mockedReplacementFile).calledWith("/some/replacement/path").thenResolve(null);
 
       const result = await resolveLicenseContent("/some/directory", packageJson, replacements);
@@ -92,9 +86,7 @@ describe("resolveLicenseContent", () => {
       when(mockedReplacementHttp).calledWith("/some/replacement/path").thenResolve(null);
       when(mockedReplacementFile).calledWith("/some/replacement/path").thenResolve(null);
 
-      await expect(() =>
-        resolveLicenseContent("/some/directory", packageJson, replacements),
-      ).rejects.toThrow(
+      await expect(() => resolveLicenseContent("/some/directory", packageJson, replacements)).rejects.toThrow(
         "Could not find replacement content at /some/replacement/path for some-package@1.2.3",
       );
     });
@@ -111,9 +103,7 @@ describe("resolveLicenseContent", () => {
       when(mockedReplacementHttp).calledWith("/some/replacement/path").thenResolve(null);
       when(mockedReplacementFile).calledWith("/some/replacement/path").thenResolve(null);
 
-      await expect(() =>
-        resolveLicenseContent("/some/directory", packageJson, replacements),
-      ).rejects.toThrow();
+      await expect(() => resolveLicenseContent("/some/directory", packageJson, replacements)).rejects.toThrow();
 
       expect(mockedReplacementFile).toHaveBeenCalledTimes(1);
       expect(mockedReplacementHttp).toHaveBeenCalledTimes(1);
@@ -149,9 +139,7 @@ describe("resolveLicenseContent", () => {
 
       const resolutions: Record<string, string> = {};
 
-      await expect(() =>
-        resolveLicenseContent("/some/directory", packageJson, resolutions),
-      ).rejects.toThrow();
+      await expect(() => resolveLicenseContent("/some/directory", packageJson, resolutions)).rejects.toThrow();
 
       expect(mockedPackageJsonLicenseResolution).toHaveBeenCalledTimes(1);
       expect(mockedPackageJsonLicenseResolution).toHaveBeenCalledWith({
@@ -181,9 +169,9 @@ describe("resolveLicenseContent", () => {
 
       const resolutions: Record<string, string> = {};
 
-      await expect(() =>
-        resolveLicenseContent("/some/directory", packageJson, resolutions),
-      ).rejects.toThrow("Could not find license content for some-package@1.2.3");
+      await expect(() => resolveLicenseContent("/some/directory", packageJson, resolutions)).rejects.toThrow(
+        "Could not find license content for some-package@1.2.3",
+      );
     });
 
     describe("when a resolver returns a non-null value", () => {

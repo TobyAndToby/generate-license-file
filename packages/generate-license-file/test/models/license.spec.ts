@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
 import { getLineEndingCharacters, lineEndings } from "../../src/lib/lineEndings";
 import { License } from "../../src/lib/models/license";
 
@@ -21,7 +21,7 @@ describe("License", () => {
       expect(result.startsWith(prefix)).toBeTruthy();
     });
 
-    it.each(lineEndings)("should use the %s line ending twice after the prefix", lineEnding => {
+    it.each(lineEndings)("should use the %s line ending twice after the prefix", (lineEnding) => {
       const eol = getLineEndingCharacters(lineEnding);
 
       const license = new License("", [], []);
@@ -38,28 +38,25 @@ describe("License", () => {
       const result = license.format("\n");
       const resultLines = result.split("\n");
 
-      expect(resultLines[2]).toEqual(" - " + dependency1);
-      expect(resultLines[3]).toEqual(" - " + dependency2);
-      expect(resultLines[4]).toEqual(" - " + dependency3);
-      expect(resultLines[5]).toEqual(" - " + dependency4);
+      expect(resultLines[2]).toEqual(` - ${dependency1}`);
+      expect(resultLines[3]).toEqual(` - ${dependency2}`);
+      expect(resultLines[4]).toEqual(` - ${dependency3}`);
+      expect(resultLines[5]).toEqual(` - ${dependency4}`);
     });
 
-    it.each(lineEndings)(
-      "should use the %s line ending twice after the dependencies",
-      lineEnding => {
-        const eol = getLineEndingCharacters(lineEnding);
+    it.each(lineEndings)("should use the %s line ending twice after the dependencies", (lineEnding) => {
+      const eol = getLineEndingCharacters(lineEnding);
 
-        const lastDep = "last dep";
-        const lastDepOnly = [lastDep];
-        const license = new License("", [], lastDepOnly);
+      const lastDep = "last dep";
+      const lastDepOnly = [lastDep];
+      const license = new License("", [], lastDepOnly);
 
-        const result = license.format(eol);
-        const indexOfLastDependency = result.lastIndexOf(lastDep);
+      const result = license.format(eol);
+      const indexOfLastDependency = result.lastIndexOf(lastDep);
 
-        const resultWithoutDependencies = result.substring(indexOfLastDependency + lastDep.length);
-        expect(resultWithoutDependencies.startsWith(eol + eol)).toBeTruthy();
-      },
-    );
+      const resultWithoutDependencies = result.substring(indexOfLastDependency + lastDep.length);
+      expect(resultWithoutDependencies.startsWith(eol + eol)).toBeTruthy();
+    });
 
     it("should end with the license content", () => {
       const theLicenseContent = "The license content";
@@ -97,20 +94,17 @@ describe("License", () => {
       expect(noticeTwoIndex).toBeGreaterThan(noticeOneIndex);
     });
 
-    it.each(lineEndings)(
-      "should normalise the line endings in the license content to %s",
-      lineEnding => {
-        const eol = getLineEndingCharacters(lineEnding);
+    it.each(lineEndings)("should normalise the line endings in the license content to %s", (lineEnding) => {
+      const eol = getLineEndingCharacters(lineEnding);
 
-        const originalLicenseContent = `The\rlicense\nfile\r\ncontent`;
-        const expectedLicenseContent = `The${eol}license${eol}file${eol}content`;
+      const originalLicenseContent = `The\rlicense\nfile\r\ncontent`;
+      const expectedLicenseContent = `The${eol}license${eol}file${eol}content`;
 
-        const license = new License(originalLicenseContent, [], dependencies);
+      const license = new License(originalLicenseContent, [], dependencies);
 
-        const result = license.format(eol);
+      const result = license.format(eol);
 
-        expect(result.endsWith(expectedLicenseContent)).toBeTruthy();
-      },
-    );
+      expect(result.endsWith(expectedLicenseContent)).toBeTruthy();
+    });
   });
 });

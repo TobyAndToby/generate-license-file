@@ -1,9 +1,9 @@
-import { vi, describe, it, expect, beforeEach, afterAll } from "vitest";
-import { Compiler } from "webpack";
+import { afterAll, beforeEach, describe, expect, it, vi } from "vitest";
+import type { Compiler } from "webpack";
 import { compilationTapFactory } from "../src/lib/compilationTapFactory";
 import { defaultOptions } from "../src/lib/defaultOptions";
 import { LicenseFilePlugin } from "../src/lib/licenseFilePlugin";
-import { Options } from "../src/lib/options";
+import type { Options } from "../src/lib/options";
 
 vi.mock("../src/lib/compilationTapFactory", () => {
   return {

@@ -1,7 +1,7 @@
+import { join } from "node:path";
 import { Command } from "@commander-js/extra-typings";
-import { join } from "path";
 import { generateLicenseFile } from "../../generateLicenseFile";
-import { LineEnding } from "../../lineEndings";
+import type { LineEnding } from "../../lineEndings";
 import logger from "../../utils/console.utils";
 import { readPackageJson } from "../../utils/packageJson.utils";
 import { Eol } from "../args/eol";
@@ -30,9 +30,7 @@ export interface ProgramOptions {
 
 export const mainCommand = new Command()
   .name("generate-license-file")
-  .description(
-    "Generates a text file containing all of the licenses for your production dependencies",
-  )
+  .description("Generates a text file containing all of the licenses for your production dependencies")
   .helpOption("-h,--help", "Display help text")
   .option(
     "-c,--config <path>",
@@ -40,10 +38,7 @@ export const mainCommand = new Command()
   )
   .option("-i,--input <paths...>", "Specify one or more paths to package.json files to include")
   .option("-o,--output <path>", "Specify the path of the file to be created")
-  .option(
-    "--overwrite",
-    "Indicates that the output file should be overwritten if it already exists",
-  )
+  .option("--overwrite", "Indicates that the output file should be overwritten if it already exists")
   .option(
     "--eol <eol>",
     "Specify a particular line ending to use in the output file. Otherwise, the line ending of the current OS will be used",
@@ -55,7 +50,7 @@ export const mainCommand = new Command()
   )
   .option("--omit-versions", "Omit the package version numbers from the output.")
   .option("-v,--version", "Prints the installed version of generate-license-file")
-  .action(async givenArgs => {
+  .action(async (givenArgs) => {
     if (givenArgs.version) {
       await printPackageVersion();
       return;
@@ -78,17 +73,14 @@ export const mainCommand = new Command()
 
     // Filter out undefined values in the CLI args, so they do not
     // potentially override values provided in the config file.
-    const filteredCliArgs = Object.fromEntries(
-      Object.entries(cliArgs).filter(([, v]) => v !== undefined),
-    );
+    const filteredCliArgs = Object.fromEntries(Object.entries(cliArgs).filter(([, v]) => v !== undefined));
 
     const combinedConfig = {
       ...configFile,
       ...filteredCliArgs,
     };
 
-    const { inputs, showSpinner, output, eol, omitVersions } =
-      await parseArgumentsIntoOptions(combinedConfig);
+    const { inputs, showSpinner, output, eol, omitVersions } = await parseArgumentsIntoOptions(combinedConfig);
 
     if (showSpinner) {
       spinner.start();

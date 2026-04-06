@@ -1,10 +1,10 @@
-import { vi, describe, it, expect, beforeEach, afterAll } from "vitest";
-﻿import Arborist, { Edge } from "@npmcli/arborist";
+import { join } from "node:path";
+import Arborist, { type Edge } from "@npmcli/arborist";
+import { afterAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { when } from "vitest-when";
-import { join } from "path";
 import { resolveDependenciesForNpmProject } from "../../../src/lib/internal/resolveDependencies/resolveNpmDependencies";
 import { resolveLicenseContent } from "../../../src/lib/internal/resolveLicenseContent";
-import { LicenseNoticeKey, ResolvedLicense } from "../../../src/lib/internal/resolveLicenses";
+import type { LicenseNoticeKey, ResolvedLicense } from "../../../src/lib/internal/resolveLicenses";
 import logger from "../../../src/lib/utils/console.utils";
 import { doesFileExist, readFile } from "../../../src/lib/utils/file.utils";
 
@@ -106,38 +106,14 @@ describe("resolveNpmDependencies", () => {
   };
 
   const child1Node = createMockNode(child1Name, child1Version, child1Realpath, false, false);
-  const child1_1Node = createMockNode(
-    child1_1Name,
-    child1_1Version,
-    child1_1Realpath,
-    false,
-    false,
-  );
-  const child1_2Node = createMockNode(
-    child1_2Name,
-    child1_2Version,
-    child1_2Realpath,
-    false,
-    false,
-  );
+  const child1_1Node = createMockNode(child1_1Name, child1_1Version, child1_1Realpath, false, false);
+  const child1_2Node = createMockNode(child1_2Name, child1_2Version, child1_2Realpath, false, false);
 
   const child2Node = createMockNode(child2Name, child2Version, child2Realpath, true, false);
-  const child2_1Node = createMockNode(
-    child2_1Name,
-    child2_1Version,
-    child2_1Realpath,
-    false,
-    false,
-  );
+  const child2_1Node = createMockNode(child2_1Name, child2_1Version, child2_1Realpath, false, false);
 
   const child3Node = createMockNode(child3Name, child3Version, child3Realpath, false, true);
-  const child3_1Node = createMockNode(
-    child3_1Name,
-    child3_1Version,
-    child3_1Realpath,
-    false,
-    false,
-  );
+  const child3_1Node = createMockNode(child3_1Name, child3_1Version, child3_1Realpath, false, false);
 
   // child1 is a top level dependency (from root)
   addRootEdge(child1Node);
@@ -174,9 +150,7 @@ describe("resolveNpmDependencies", () => {
 
     mockedArborist.mockImplementation(
       // @ts-expect-error -- vitest requires a regular function for constructor mocking
-      function () {
-        return { loadActual: async () => topNode };
-      },
+      () => ({ loadActual: async () => topNode }),
     );
 
     when(mockedResolveLicenseContent)
@@ -275,21 +249,21 @@ describe("resolveNpmDependencies", () => {
     expect(replacements3).toBe(replacements);
   });
 
-  it.each([new Error("Something went wrong"), "Something went wrong"])(
-    "should warning log if resolveLicenseContent throws an error",
-    async error => {
-      when(mockedResolveLicenseContent)
-        .calledWith(child1Realpath, expect.anything(), expect.anything())
-        .thenReject(error);
+  it.each([
+    new Error("Something went wrong"),
+    "Something went wrong",
+  ])("should warning log if resolveLicenseContent throws an error", async (error) => {
+    when(mockedResolveLicenseContent)
+      .calledWith(child1Realpath, expect.anything(), expect.anything())
+      .thenReject(error);
 
-      await resolveDependenciesForNpmProject("/some/path/package.json", new Map());
+    await resolveDependenciesForNpmProject("/some/path/package.json", new Map());
 
-      expect(mockedLogger.warn).toHaveBeenCalledTimes(1);
-      expect(mockedLogger.warn).toHaveBeenCalledWith(
-        `Unable to determine license content for ${child1Name}@${child1Version} with error:\nSomething went wrong\n`,
-      );
-    },
-  );
+    expect(mockedLogger.warn).toHaveBeenCalledTimes(1);
+    expect(mockedLogger.warn).toHaveBeenCalledWith(
+      `Unable to determine license content for ${child1Name}@${child1Version} with error:\nSomething went wrong\n`,
+    );
+  });
 
   describe("when no options are provided", () => {
     it("should include non-dev dependencies in the result", async () => {
@@ -298,17 +272,13 @@ describe("resolveNpmDependencies", () => {
       await resolveDependenciesForNpmProject("/some/path/package.json", licensesMap);
 
       const child1LicenseContentMap = licensesMap.get(child1LicenseNoticePair);
-      expect(child1LicenseContentMap?.dependencies.find(c => c.name === child1Name)).toBeDefined();
+      expect(child1LicenseContentMap?.dependencies.find((c) => c.name === child1Name)).toBeDefined();
 
       const child1_1LicenseContentMap = licensesMap.get(child1_1LicenseNoticePair);
-      expect(
-        child1_1LicenseContentMap?.dependencies.find(c => c.name === child1_1Name),
-      ).toBeDefined();
+      expect(child1_1LicenseContentMap?.dependencies.find((c) => c.name === child1_1Name)).toBeDefined();
 
       const child1_2LicenseContentMap = licensesMap.get(child1_2LicenseNoticePair);
-      expect(
-        child1_2LicenseContentMap?.dependencies.find(c => c.name === child1_2Name),
-      ).toBeDefined();
+      expect(child1_2LicenseContentMap?.dependencies.find((c) => c.name === child1_2Name)).toBeDefined();
     });
 
     it("should not include dev dependencies in the result", async () => {
@@ -344,42 +314,26 @@ describe("resolveNpmDependencies", () => {
     it("should skip it without throwing and not include it in the results", async () => {
       const licensesMap = new Map<LicenseNoticeKey, ResolvedLicense>();
 
-      const optionalNode = createMockNode(
-        optionalName,
-        optionalVersion,
-        optionalRealpath,
-        false,
-        false,
-        true,
-      );
+      const optionalNode = createMockNode(optionalName, optionalVersion, optionalRealpath, false, false, true);
       addRootEdge(optionalNode);
 
       const topNodeWithOptional: Arborist.Node = {
-        children: new Map([
-          ...Array.from(topNode.children.entries()),
-          [optionalName, optionalNode],
-        ]),
+        children: new Map([...Array.from(topNode.children.entries()), [optionalName, optionalNode]]),
       } as Arborist.Node;
 
       // Ensure the package.json for the optional node appears missing
-      when(mockedDoesFileExist)
-        .calledWith(join(optionalRealpath, "package.json"))
-        .thenResolve(false);
+      when(mockedDoesFileExist).calledWith(join(optionalRealpath, "package.json")).thenResolve(false);
 
       mockedArborist.mockImplementationOnce(
         // @ts-expect-error -- vitest requires a regular function for constructor mocking
-        function () {
-          return { loadActual: async () => topNodeWithOptional };
-        },
+        () => ({ loadActual: async () => topNodeWithOptional }),
       );
 
-      await expect(
-        resolveDependenciesForNpmProject("/some/path/package.json", licensesMap),
-      ).resolves.toBeUndefined();
+      await expect(resolveDependenciesForNpmProject("/some/path/package.json", licensesMap)).resolves.toBeUndefined();
 
       // It should not have produced any license entries for the optional node
       const keys = Array.from(licensesMap.keys());
-      expect(keys.some(k => k.includes(optionalName))).toBe(false);
+      expect(keys.some((k) => k.includes(optionalName))).toBe(false);
       // And no warning should be logged for this case
       expect(mockedLogger.warn).not.toHaveBeenCalled();
     });
@@ -389,14 +343,7 @@ describe("resolveNpmDependencies", () => {
       const missingVersion = "5.0.0";
       const missingRealpath = "/some/path/child-missing";
 
-      const missingNode = createMockNode(
-        missingName,
-        missingVersion,
-        missingRealpath,
-        false,
-        false,
-        false,
-      );
+      const missingNode = createMockNode(missingName, missingVersion, missingRealpath, false, false, false);
       addRootEdge(missingNode);
 
       const topNodeWithMissing: Arborist.Node = {
@@ -406,20 +353,16 @@ describe("resolveNpmDependencies", () => {
         ]),
       } as Arborist.Node;
 
-      when(mockedDoesFileExist)
-        .calledWith(join(missingRealpath, "package.json"))
-        .thenResolve(false);
+      when(mockedDoesFileExist).calledWith(join(missingRealpath, "package.json")).thenResolve(false);
 
       mockedArborist.mockImplementationOnce(
         // @ts-expect-error -- vitest requires a regular function for constructor mocking
-        function () {
-          return { loadActual: async () => topNodeWithMissing };
-        },
+        () => ({ loadActual: async () => topNodeWithMissing }),
       );
 
-      await expect(
-        resolveDependenciesForNpmProject("/some/path/package.json", new Map()),
-      ).rejects.toThrow(`Missing package.json for required package (${missingRealpath})`);
+      await expect(resolveDependenciesForNpmProject("/some/path/package.json", new Map())).rejects.toThrow(
+        `Missing package.json for required package (${missingRealpath})`,
+      );
     });
   });
 
@@ -432,15 +375,13 @@ describe("resolveNpmDependencies", () => {
       });
 
       const child1LicenseContentMap = licensesMap.get(child1LicenseNoticePair);
-      expect(child1LicenseContentMap?.dependencies.find(c => c.name === child1Name)).toBeDefined();
+      expect(child1LicenseContentMap?.dependencies.find((c) => c.name === child1Name)).toBeDefined();
 
       const child1_1LicenseContentMap = licensesMap.get(child1_1LicenseNoticePair);
       expect(child1_1LicenseContentMap).toBeUndefined();
 
       const child1_2LicenseContentMap = licensesMap.get(child1_2LicenseNoticePair);
-      expect(
-        child1_2LicenseContentMap?.dependencies.find(c => c.name === child1_2Name),
-      ).toBeDefined();
+      expect(child1_2LicenseContentMap?.dependencies.find((c) => c.name === child1_2Name)).toBeDefined();
     });
 
     it("should not include the dependency in the result if specified by name only", async () => {
@@ -451,15 +392,13 @@ describe("resolveNpmDependencies", () => {
       });
 
       const child1LicenseContentMap = licensesMap.get(child1LicenseNoticePair);
-      expect(child1LicenseContentMap?.dependencies.find(c => c.name === child1Name)).toBeDefined();
+      expect(child1LicenseContentMap?.dependencies.find((c) => c.name === child1Name)).toBeDefined();
 
       const child1_1LicenseContentMap = licensesMap.get(child1_1LicenseNoticePair);
       expect(child1_1LicenseContentMap).toBeUndefined();
 
       const child1_2LicenseContentMap = licensesMap.get(child1_2LicenseNoticePair);
-      expect(
-        child1_2LicenseContentMap?.dependencies.find(c => c.name === child1_2Name),
-      ).toBeDefined();
+      expect(child1_2LicenseContentMap?.dependencies.find((c) => c.name === child1_2Name)).toBeDefined();
     });
   });
   describe("when a directory inside node_modules starts with '.'", () => {
@@ -470,14 +409,7 @@ describe("resolveNpmDependencies", () => {
     it("should skip it without attempting to read its package.json", async () => {
       const licensesMap = new Map<LicenseNoticeKey, ResolvedLicense>();
 
-      const dotDirNode = createMockNode(
-        dotDirName,
-        dotDirVersion,
-        dotDirRealpath,
-        false,
-        false,
-        true,
-      );
+      const dotDirNode = createMockNode(dotDirName, dotDirVersion, dotDirRealpath, false, false, true);
       addRootEdge(dotDirNode);
 
       const topNodeWithDotName: Arborist.Node = {
@@ -489,21 +421,15 @@ describe("resolveNpmDependencies", () => {
 
       mockedArborist.mockImplementationOnce(
         // @ts-expect-error -- vitest requires a regular function for constructor mocking
-        function () {
-          return { loadActual: async () => topNodeWithDotName };
-        },
+        () => ({ loadActual: async () => topNodeWithDotName }),
       );
 
       await resolveDependenciesForNpmProject("/some/path/package.json", licensesMap);
 
       const keys = Array.from(licensesMap.keys());
-      expect(keys.some(k => k.includes(dotDirName))).toBe(false);
-      expect(
-        mockedDoesFileExist.mock.calls.some(call => (call[0] as string).includes(dotDirRealpath)),
-      ).toBe(false);
-      expect(
-        mockedReadFile.mock.calls.some(call => (call[0] as string).includes(dotDirRealpath)),
-      ).toBe(false);
+      expect(keys.some((k) => k.includes(dotDirName))).toBe(false);
+      expect(mockedDoesFileExist.mock.calls.some((call) => (call[0] as string).includes(dotDirRealpath))).toBe(false);
+      expect(mockedReadFile.mock.calls.some((call) => (call[0] as string).includes(dotDirRealpath))).toBe(false);
       expect(mockedLogger.warn).not.toHaveBeenCalled();
     });
   });
@@ -513,8 +439,6 @@ describe("resolveNpmDependencies", () => {
     const packageJsonContent = JSON.stringify({ name, version });
 
     when(mockedDoesFileExist).calledWith(fullPackageJsonPath).thenResolve(true);
-    when(mockedReadFile)
-      .calledWith(fullPackageJsonPath, { encoding: "utf-8" })
-      .thenResolve(packageJsonContent);
+    when(mockedReadFile).calledWith(fullPackageJsonPath, { encoding: "utf-8" }).thenResolve(packageJsonContent);
   };
 });

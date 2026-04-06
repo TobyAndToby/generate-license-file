@@ -1,7 +1,7 @@
-import { vi, describe, it, expect, beforeEach, afterAll } from "vitest";
+import { afterAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { when } from "vitest-when";
-import { getLicenseFileText, GetLicenseFileTextOptions } from "../src/lib/getLicenseFileText";
-import { ResolvedLicense, resolveLicenses } from "../src/lib/internal/resolveLicenses";
+import { type GetLicenseFileTextOptions, getLicenseFileText } from "../src/lib/getLicenseFileText";
+import { type ResolvedLicense, resolveLicenses } from "../src/lib/internal/resolveLicenses";
 import { readFile } from "../src/lib/utils/file.utils";
 
 vi.mock("../src/lib/internal/resolveLicenses", () => ({
@@ -134,12 +134,8 @@ describe("getLicenseFileText", () => {
   });
 
   it("should append the given files", async () => {
-    when(mockedReadFile)
-      .calledWith("first", { encoding: "utf-8" })
-      .thenResolve("first file content");
-    when(mockedReadFile)
-      .calledWith("second", { encoding: "utf-8" })
-      .thenResolve("second file content");
+    when(mockedReadFile).calledWith("first", { encoding: "utf-8" }).thenResolve("first file content");
+    when(mockedReadFile).calledWith("second", { encoding: "utf-8" }).thenResolve("second file content");
 
     const result = await getLicenseFileText("path", { append: ["first", "second"] });
 

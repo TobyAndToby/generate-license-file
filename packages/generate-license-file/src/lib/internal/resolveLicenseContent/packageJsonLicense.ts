@@ -1,15 +1,15 @@
-import { join } from "path";
+import { join } from "node:path";
 import logger from "../../utils/console.utils";
 import { doesFileExist, readFile } from "../../utils/file.utils";
-import { PackageJson, PackageJsonLicense } from "../../utils/packageJson.utils";
-import { Resolution } from "./index";
+import type { PackageJson, PackageJsonLicense } from "../../utils/packageJson.utils";
+import type { Resolution } from "./index";
 
 // This file specifically handles cases where the package.json links
 // to a license file that is on disk and is a part of the package.
 //
 // If it instead finds a URL to a license file, it will return that URL as-is.
 
-export const packageJsonLicense: Resolution = async inputs => {
+export const packageJsonLicense: Resolution = async (inputs) => {
   const { packageJson, directory } = inputs;
   const { license, licenses } = packageJson;
 
@@ -70,7 +70,7 @@ const readLicenseFromDisk = async (dir: string, path: string): Promise<string | 
 
   try {
     return await readFile(absolutePath, { encoding: "utf-8" });
-  } catch (e) {
+  } catch (_e) {
     logger.warn(`Could not read license file '${absolutePath}'`);
     return null;
   }

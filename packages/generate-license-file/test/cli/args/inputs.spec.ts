@@ -1,7 +1,7 @@
-import { vi, describe, it, expect, beforeEach, afterAll } from "vitest";
 import { prompt } from "enquirer";
+import { afterAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { Inputs } from "../../../src/lib/cli/args/inputs";
-import { CombinedConfig } from "../../../src/lib/cli/commands/main";
+import type { CombinedConfig } from "../../../src/lib/cli/commands/main";
 import { spinner } from "../../../src/lib/cli/spinner";
 import { doesFileExist } from "../../../src/lib/utils/file.utils";
 
@@ -255,14 +255,8 @@ describe("Inputs", () => {
           }
 
           expect(mockedWarnSpinner).toHaveBeenCalledTimes(2);
-          expect(mockedWarnSpinner).toHaveBeenNthCalledWith(
-            1,
-            "./does-not-exist.json could not be found.",
-          );
-          expect(mockedWarnSpinner).toHaveBeenNthCalledWith(
-            2,
-            "./also-does-not-exist.json could not be found.",
-          );
+          expect(mockedWarnSpinner).toHaveBeenNthCalledWith(1, "./does-not-exist.json could not be found.");
+          expect(mockedWarnSpinner).toHaveBeenNthCalledWith(2, "./also-does-not-exist.json could not be found.");
         });
 
         it("should prompt the user if they want to cancel", async () => {
@@ -371,14 +365,8 @@ describe("Inputs", () => {
         }
 
         expect(mockedWarnSpinner).toHaveBeenCalledTimes(2);
-        expect(mockedWarnSpinner).toHaveBeenNthCalledWith(
-          1,
-          "./does-not-exist could not be found.",
-        );
-        expect(mockedWarnSpinner).toHaveBeenNthCalledWith(
-          2,
-          "./also-does-not-exist.json could not be found.",
-        );
+        expect(mockedWarnSpinner).toHaveBeenNthCalledWith(1, "./does-not-exist could not be found.");
+        expect(mockedWarnSpinner).toHaveBeenNthCalledWith(2, "./also-does-not-exist.json could not be found.");
       });
 
       it("should throw if any given file does not exist", async () => {
@@ -390,9 +378,7 @@ describe("Inputs", () => {
           inputs: ["./does-not-exist", "./exists.json"],
         };
 
-        await expect(inputs.parse(args)).rejects.toThrowError(
-          "One or more given --input files not found",
-        );
+        await expect(inputs.parse(args)).rejects.toThrowError("One or more given --input files not found");
       });
     });
   });
