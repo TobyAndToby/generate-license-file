@@ -1,0 +1,17 @@
+
+[0m[2m[35m$[0m [2m[1mtsdown[0m
+[34mℹ[39m [34mtsdown v0.21.7[39m powered by [38;2;255;126;23mrolldown v1.0.0-rc.12[39m
+[34mℹ[39m config file: [4m/home/toby/src/glf-new/packages/webpack-plugin/tsdown.config.ts[24m 
+[34mℹ[39m entry: [34msrc/index.ts[39m
+[34mℹ[39m tsconfig: [34mtsconfig.json[39m
+[34mℹ[39m Build start
+[34mℹ[39m Cleaning 4 files
+[34mℹ[39m [33m[CJS][39m [2mdist/[22m[1mindex.cjs[22m  [2m3.07 kB[22m [2m│ gzip: 1.12 kB[22m
+[34mℹ[39m [33m[CJS][39m 1 files, total: 3.07 kB
+[34mℹ[39m [33m[CJS][39m [2mdist/[22m[32m[1mindex.d.cts[22m[39m  [2m2.62 kB[22m [2m│ gzip: 1.00 kB[22m
+[34mℹ[39m [33m[CJS][39m 1 files, total: 2.62 kB
+[32m✔[39m Build complete in [32m592ms[39m
+[34mℹ[39m [34m[ESM][39m [2mdist/[22m[1mindex.mjs[22m    [2m2.80 kB[22m [2m│ gzip: 1.03 kB[22m
+[34mℹ[39m [34m[ESM][39m [2mdist/[22m[32m[1mindex.d.mts[22m[39m  [2m2.62 kB[22m [2m│ gzip: 1.00 kB[22m
+[34mℹ[39m [34m[ESM][39m 2 files, total: 5.43 kB
+[32m✔[39m Build complete in [32m593ms[39m

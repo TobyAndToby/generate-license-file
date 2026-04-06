@@ -1,21 +1,8 @@
 {
   "private": true,
-  "name": "multiple-inputs",
-  "version": "1.0.0",
+  "name": "@generate-license-file-e2e/multiple-inputs",
+  "version": "0.0.0",
   "scripts": {
-    "e2e": "jest"
-  },
-  "dependencies": {
-    "dep-three": "file:../.dependencies/dep-3",
-    "dep-six": "file:../.dependencies/dep-6"
-  },
-  "devDependencies": {
-    "@generate-license-file/e2e-helpers": "file:../../src/dist/packages/e2e-helpers",
-    "@types/jest": "^29.0.0",
-    "@types/node": "^24.0.0",
-    "generate-license-file": "file:../../src/dist/packages/generate-license-file",
-    "jest": "^29.0.0",
-    "ts-jest": "^29.0.0",
-    "typescript": "^5.0.0"
+    "e2e": "npm ci --prefix ../../e2e/multiple-inputs && npm run e2e --prefix ../../e2e/multiple-inputs"
   }
 }

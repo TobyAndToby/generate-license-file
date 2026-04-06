@@ -1,0 +1,78 @@
+{
+  "name": "generate-license-file",
+  "version": "*",
+  "type": "module",
+  "description": "Generates a text file containing all of the licenses for your production dependencies",
+  "main": "dist/index.cjs",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.cts",
+  "license": "ISC",
+  "contributors": [
+    {
+      "name": "Toby Smith",
+      "url": "https://github.com/tobysmith568"
+    },
+    {
+      "name": "Toby Bessant",
+      "url": "https://github.com/tobybessant"
+    }
+  ],
+  "files": [
+    "dist",
+    "bin"
+  ],
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    }
+  },
+  "keywords": [
+    "cli",
+    "license",
+    "licence",
+    "third",
+    "party",
+    "file",
+    "generate",
+    "oss"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TobyAndToby/generate-license-file.git",
+    "directory": "src/packages/generate-license-file"
+  },
+  "bugs": {
+    "url": "https://github.com/TobyAndToby/generate-license-file/issues"
+  },
+  "homepage": "https://generate-license-file.js.org",
+  "bin": {
+    "generate-license-file": "bin/generate-license-file"
+  },
+  "scripts": {
+    "build": "tsdown",
+    "test": "bun test",
+    "lint": "biome check src test"
+  },
+  "dependencies": {
+    "@commander-js/extra-typings": "^14.0.0",
+    "@npmcli/arborist": "^9.0.0",
+    "cli-spinners": "^2.6.0",
+    "commander": "^14.0.2",
+    "cosmiconfig": "^9.0.0",
+    "enquirer": "^2.4.1",
+    "glob": "^13.0.0",
+    "json5": "^2.2.3",
+    "ora": "^5.4.1",
+    "zod": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/npmcli__arborist": "^6.0.0"
+  }
+}
