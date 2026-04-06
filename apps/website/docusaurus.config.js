@@ -28,7 +28,7 @@ const config = {
         docs: {
           includeCurrentVersion: true,
           sidebarPath: require.resolve("./sidebars.js"),
-          editUrl: "https://github.com/TobyAndToby/generate-license-file/tree/main/website",
+          editUrl: "https://github.com/TobyAndToby/generate-license-file/tree/main/apps/website",
         },
         theme: {
           customCss: require.resolve("./src/css/custom.css"),
