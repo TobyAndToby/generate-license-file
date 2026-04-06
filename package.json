@@ -12,6 +12,7 @@
     "serve": "turbo run serve"
   },
   "workspaces": [
+    "apps/**",
     "packages/**",
     "e2e/**"
   ],
