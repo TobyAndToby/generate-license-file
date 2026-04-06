@@ -1,25 +1,22 @@
-import fs from "node:fs/promises";
-import os from "node:os";
-import path from "node:path";
 import { describeEachLineEnding, describeRelativeAndAbsolutePaths } from "@generate-license-file/e2e-helpers";
+import fs from "node:fs/promises";
 import { generateLicenseFile, type LineEnding } from "generate-license-file";
-import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";
+import { afterAll, beforeEach, describe, expect, it, vi } from "vitest";
+
+vi.mock("node:fs/promises", async importOriginal => ({
+  ...(await importOriginal()),
+  writeFile: vi.fn(),
+  mkdir: vi.fn(),
+}));
 
 const allLineEndings: LineEnding[] = ["crlf", "lf"];
 
 describe("generateLicenseFile", () => {
-  let tmpDir: string;
+  const mockedWriteFile = vi.mocked(fs.writeFile);
+  const mockedMkdir = vi.mocked(fs.mkdir);
 
-  beforeAll(async () => {
-    tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "glf-e2e-"));
-  });
-
-  afterAll(async () => {
-    await fs.rm(tmpDir, { recursive: true, force: true });
-  });
-
-  let outputCounter = 0;
-  const getOutputPath = () => path.join(tmpDir, `output-${outputCounter++}.txt`);
+  beforeEach(() => vi.resetAllMocks());
+  afterAll(() => vi.restoreAllMocks());
 
   describeRelativeAndAbsolutePaths("./package.json", packageJsonPath =>
     describeEachLineEnding((lineEnding, lineEndingLiteral) => {
@@ -30,65 +27,65 @@ describe("generateLicenseFile", () => {
       });
 
       it("should match snapshot", async () => {
-        const outputPath = getOutputPath();
+        const outputPath = "/output/path.txt";
 
         await generateLicenseFile(packageJsonPath, outputPath, { lineEnding });
 
-        const fileContent = await fs.readFile(outputPath, "utf8");
+        const fileContent = mockedWriteFile.mock.calls[0][1];
         expect(fileContent).toMatchSnapshot();
       });
 
       it("should contain the correct line ending value", async () => {
         const expectedLineEndingValue = lineEndingLiteral;
-        const outputPath = getOutputPath();
+        const outputPath = "/output/path.txt";
 
         await generateLicenseFile(packageJsonPath, outputPath, { lineEnding });
 
-        const fileContent = await fs.readFile(outputPath, "utf8");
+        const fileContent = mockedWriteFile.mock.calls[0][1];
         expect(fileContent).toContain(expectedLineEndingValue);
       });
 
       for (const otherLineEnding of lineEndingsNotUnderTest) {
         it(`should not contain the incorrect line ending value (${otherLineEnding})`, async () => {
           const incorrectLineEndingValue = lineEndingLiteral;
-          const outputPath = getOutputPath();
+          const outputPath = "/output/path.txt";
 
           await generateLicenseFile(packageJsonPath, outputPath, {
             lineEnding,
           });
 
-          const fileContent = await fs.readFile(outputPath, "utf8");
+          const fileContent = mockedWriteFile.mock.calls[0][1];
           expect(fileContent).not.toContain(incorrectLineEndingValue);
         });
       }
 
       it("should write the file to the correct output path", async () => {
-        const outputPath = getOutputPath();
+        const outputPath = "/output/path.txt";
 
         await generateLicenseFile(packageJsonPath, outputPath, { lineEnding });
 
-        await expect(fs.stat(outputPath)).resolves.toBeDefined();
+        const filePath = mockedWriteFile.mock.calls[0][0];
+        expect(filePath).toBe(outputPath);
       });
 
       it("should create the output directory if it does not exist", async () => {
-        const outputDirectory = path.join(tmpDir, `nested-${outputCounter++}`);
-        const outputPath = path.join(outputDirectory, "filename.txt");
+        const outputDirectory = "/output/path";
+        const outputPath = outputDirectory + "/filename.txt";
 
         await generateLicenseFile(packageJsonPath, outputPath, { lineEnding });
 
-        await expect(fs.stat(outputDirectory)).resolves.toBeDefined();
+        const directoryPath = mockedMkdir.mock.calls[0][0];
+        expect(directoryPath).toBe(outputDirectory);
       });
     }),
   );
 
   it("should omit versions when omitVersions is true", async () => {
-    const outputPath = getOutputPath();
-
-    await generateLicenseFile("./package.json", outputPath, {
+    await generateLicenseFile("./package.json", "/output/path.txt", {
       omitVersions: true,
     });
 
-    const fileContent = await fs.readFile(outputPath, "utf8");
+    const fileContent = mockedWriteFile.mock.calls[0][1];
     expect(fileContent).toMatchSnapshot();
   });
 });

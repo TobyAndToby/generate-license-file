@@ -65,6 +65,29 @@
         "generate-license-file": "workspace:*",
       },
     },
+    "e2e/npm-monorepo": {
+      "name": "@generate-license-file-e2e/npm-monorepo",
+      "version": "0.0.0",
+      "dependencies": {
+        "dep-three": "workspace:*",
+        "nested-a": "workspace:*",
+        "nested-b": "workspace:*",
+      },
+    },
+    "e2e/npm-monorepo/packages/nested-a": {
+      "name": "nested-a",
+      "version": "1.0.0",
+      "dependencies": {
+        "dep-one": "workspace:*",
+      },
+    },
+    "e2e/npm-monorepo/packages/nested-b": {
+      "name": "nested-b",
+      "version": "1.0.0",
+      "dependencies": {
+        "dep-two": "workspace:*",
+      },
+    },
     "e2e/npm-package": {
       "name": "@generate-license-file-e2e/npm-package",
       "version": "0.0.0",
@@ -645,6 +668,8 @@
     "@generate-license-file-e2e/config-file": ["@generate-license-file-e2e/config-file@workspace:e2e/config-file"],
 
     "@generate-license-file-e2e/multiple-inputs": ["@generate-license-file-e2e/multiple-inputs@workspace:e2e/multiple-inputs"],
+
+    "@generate-license-file-e2e/npm-monorepo": ["@generate-license-file-e2e/npm-monorepo@workspace:e2e/npm-monorepo"],
 
     "@generate-license-file-e2e/npm-package": ["@generate-license-file-e2e/npm-package@workspace:e2e/npm-package"],
 
@@ -2087,6 +2112,10 @@
     "negotiator": ["negotiator@0.6.4", "", {}, "sha512-myRT3DiWPHqho5PrJaIRyaMv2kgYf0mUVgBNOYMuCH5Ki1yEiQaf/ZJuQ62nvpc44wL5WDbTX7yGJi1Neevw8w=="],
 
     "neo-async": ["neo-async@2.6.2", "", {}, "sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw=="],
+
+    "nested-a": ["nested-a@workspace:e2e/npm-monorepo/packages/nested-a"],
+
+    "nested-b": ["nested-b@workspace:e2e/npm-monorepo/packages/nested-b"],
 
     "no-case": ["no-case@3.0.4", "", { "dependencies": { "lower-case": "^2.0.2", "tslib": "^2.0.3" } }, "sha512-fgAN3jGAh+RoxUGZHTSOLJIqUc2wmoBwGR4tbpNAKmmovFoWq0OdRkb0VkldReO2a2iBT/OEulG9XSUc10r3zg=="],
 

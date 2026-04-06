@@ -1,28 +1,14 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`generateLicenseFile > should match snapshot 1`] = `
+exports[`when using an npm monorepo > nested-a package.json > should match snapshot 1`] = `
 "This file was generated with the generate-license-file npm package!
 https://www.npmjs.com/package/generate-license-file
 
 The following npm package may be included in this product:
 
- - dep-four@1.0.0
+ - dep-one@1.0.0
 
 This package contains the following license:
-
-# Dep Four
-
-This license file is spelt \`LICENCE\`.
-This license should be found.
-
------------
-
-The following npm packages may be included in this product:
-
- - dep-one@1.0.0
- - dep-six@1.0.0
-
-These packages each contain the following license:
 
 # Dep One
 
@@ -31,17 +17,36 @@ This license should be found.
 
 -----------
 
+This file was generated with the generate-license-file npm package!
+https://www.npmjs.com/package/generate-license-file
+"
+`;
+
+exports[`when using an npm monorepo > nested-b package.json > should match snapshot 1`] = `
+"This file was generated with the generate-license-file npm package!
+https://www.npmjs.com/package/generate-license-file
+
 The following npm package may be included in this product:
 
- - dep-seven@1.0.0
+ - dep-two@1.0.0
 
 This package contains the following license:
 
-# Dep Seven
+# Dep Two
 
+This license file is spelt \`LICENCE.md\`.
 This license should be found.
 
 -----------
+
+This file was generated with the generate-license-file npm package!
+https://www.npmjs.com/package/generate-license-file
+"
+`;
+
+exports[`when using an npm monorepo > top-level package.json > should match snapshot 1`] = `
+"This file was generated with the generate-license-file npm package!
+https://www.npmjs.com/package/generate-license-file
 
 The following npm package may be included in this product:
 
@@ -58,25 +63,12 @@ This license should be found.
 
 The following npm packages may be included in this product:
 
- - dep-two-duplicate@1.0.0
- - dep-two@1.0.0
+ - nested-a@1.0.0
+ - nested-b@1.0.0
 
 These packages each contain the following license:
 
-# Dep Two
-
-This license file is spelt \`LICENCE.md\`.
-This license should be found.
-
------------
-
-The following npm package may be included in this product:
-
- - dep-five@1.0.0
-
-This package contains the following license:
-
-MIT
+ISC
 
 -----------
 

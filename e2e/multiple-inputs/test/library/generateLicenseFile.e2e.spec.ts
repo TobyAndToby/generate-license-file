@@ -1,27 +1,26 @@
 import fs from "node:fs/promises";
-import os from "node:os";
-import path from "node:path";
 import { generateLicenseFile } from "generate-license-file";
-import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { afterAll, beforeEach, describe, expect, it, vi } from "vitest";
+
+vi.mock("node:fs/promises", async importOriginal => ({
+  ...(await importOriginal()),
+  writeFile: vi.fn(),
+  mkdir: vi.fn(),
+}));
 
 describe("generateLicenseFile", () => {
-  let tmpDir: string;
+  const mockedWriteFile = vi.mocked(fs.writeFile);
 
-  beforeAll(async () => {
-    tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "glf-e2e-multi-"));
-  });
-
-  afterAll(async () => {
-    await fs.rm(tmpDir, { recursive: true, force: true });
-  });
+  beforeEach(() => vi.resetAllMocks());
+  afterAll(() => vi.restoreAllMocks());
 
   it("should match snapshot", async () => {
     const inputPaths = ["./package.json", "./../npm-package/package.json"];
-    const outputPath = path.join(tmpDir, "output.txt");
+    const outputPath = "/output/path.txt";
 
     await generateLicenseFile(inputPaths, outputPath);
 
-    const fileContent = await fs.readFile(outputPath, "utf8");
+    const fileContent = mockedWriteFile.mock.calls[0][1];
     expect(fileContent).toMatchSnapshot();
   });
 });

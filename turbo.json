@@ -22,6 +22,10 @@
       "dependsOn": ["generate-license-file#build"],
       "cache": false
     },
+    "@generate-license-file-e2e/npm-monorepo#e2e": {
+      "dependsOn": ["generate-license-file#build"],
+      "cache": false
+    },
     "dev": {
       "persistent": true,
       "cache": false
