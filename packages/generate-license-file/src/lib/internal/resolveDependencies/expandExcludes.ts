@@ -37,7 +37,7 @@ const isRegexPattern = (input: string): false | [string, string] => {
 export const expandExcludes = (patterns: string[] | undefined): IExclude[] => {
   if (!patterns) return [];
 
-  return patterns.map((pattern) => {
+  return patterns.map(pattern => {
     const regexMatch = isRegexPattern(pattern);
     if (regexMatch) {
       const [regexPattern, flags] = regexMatch;

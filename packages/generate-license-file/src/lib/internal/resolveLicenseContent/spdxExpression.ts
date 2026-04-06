@@ -4,7 +4,7 @@ import type { Resolution } from "./index";
 
 // This file specifically handles cases where the package.json contains an SPDX license expression.
 
-export const spdxExpression: Resolution = async (input) => {
+export const spdxExpression: Resolution = async input => {
   const { packageJson } = input;
 
   const { license, licenses } = packageJson;

@@ -9,7 +9,7 @@ import type { Resolution } from "./index";
 //
 // If it instead finds a URL to a license file, it will return that URL as-is.
 
-export const packageJsonLicense: Resolution = async (inputs) => {
+export const packageJsonLicense: Resolution = async inputs => {
   const { packageJson, directory } = inputs;
   const { license, licenses } = packageJson;
 

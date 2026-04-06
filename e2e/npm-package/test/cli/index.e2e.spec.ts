@@ -11,7 +11,7 @@ const execAsync = promisify(exec);
 const allLineEndings: LineEnding[] = ["crlf", "lf"];
 
 describe("cli", () => {
-  describeRelativeAndAbsolutePaths("./package.json", (packageJsonPath) => {
+  describeRelativeAndAbsolutePaths("./package.json", packageJsonPath => {
     let outputFileName = "";
 
     let input = "";
@@ -79,7 +79,7 @@ describe("cli", () => {
       let lineEndingsNotUnderTest: LineEnding[] = [];
 
       beforeEach(() => {
-        lineEndingsNotUnderTest = allLineEndings.filter((x) => x !== lineEnding);
+        lineEndingsNotUnderTest = allLineEndings.filter(x => x !== lineEnding);
       });
 
       it("should match snapshot when --eol is given", async () => {

@@ -54,7 +54,7 @@ describe("packageJsonLicense", () => {
   it.each([
     "http://some.url",
     "www.some.url",
-  ])("should return the license URL if the license field is a URL: %s", async (url) => {
+  ])("should return the license URL if the license field is a URL: %s", async url => {
     const inputs: ResolutionInputs = {
       packageJson: new PackageJson(undefined, undefined, url),
       directory: "/some/directory",
@@ -137,7 +137,7 @@ describe("packageJsonLicense", () => {
       "SEE LICENSE IN 'license.txt'",
       'SEE LICENSE IN "license.txt"',
       "SEE LICENSE IN <license.txt>",
-    ])("should ignore punctuation wrapping the license file path", async (licenseFile) => {
+    ])("should ignore punctuation wrapping the license file path", async licenseFile => {
       const expectedPath = join("/some/directory", "license.txt");
 
       when(mockedDoesFileExist).calledWith(expectedPath).thenResolve(true);
@@ -159,7 +159,7 @@ describe("packageJsonLicense", () => {
     it.each([
       "http://some.url",
       "www.some.url",
-    ])("should return the packages.json SPDX expression if the license file is a URL", async (url) => {
+    ])("should return the packages.json SPDX expression if the license file is a URL", async url => {
       const inputs: ResolutionInputs = {
         packageJson: new PackageJson(undefined, undefined, `SEE LICENSE IN ${url}`),
         directory: "/some/directory",

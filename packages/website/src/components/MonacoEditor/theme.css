@@ -1,0 +1,280 @@
+/**
+ * Taken from: https://github.com/PrismJS/prism-themes
+ */
+
+.monaco pre[class*="language-"],
+.monaco code[class*="language-"] {
+  color: #d4d4d4;
+  font-size: 13px;
+  text-shadow: none;
+  font-family: Menlo, Monaco, Consolas, "Andale Mono", "Ubuntu Mono", "Courier New", monospace;
+  direction: ltr;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  line-height: 1.5;
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+  tab-size: 4;
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+.monaco pre[class*="language-"]::selection,
+.monaco code[class*="language-"]::selection,
+.monaco pre[class*="language-"] *::selection,
+.monaco code[class*="language-"] *::selection {
+  text-shadow: none;
+  background: #264f78;
+}
+
+@media print {
+  .monaco pre[class*="language-"],
+  .monaco code[class*="language-"] {
+    text-shadow: none;
+  }
+}
+
+.monaco pre[class*="language-"] {
+  padding: 1em;
+  margin: 0.5em 0;
+  overflow: auto;
+  background: #1e1e1e;
+}
+
+.monaco :not(pre) > code[class*="language-"] {
+  padding: 0.1em 0.3em;
+  border-radius: 0.3em;
+  color: #db4c69;
+  background: #1e1e1e;
+}
+/*********************************************************
+ * Tokens
+ */
+.monaco .namespace {
+  opacity: 0.7;
+}
+
+.monaco .token.doctype .token.doctype-tag {
+  color: #569cd6;
+}
+
+.monaco .token.doctype .token.name {
+  color: #9cdcfe;
+}
+
+.monaco .token.comment,
+.monaco .token.prolog {
+  color: #6a9955;
+}
+
+.monaco .token.punctuation,
+.monaco .language-html .language-css .token.punctuation,
+.monaco .language-html .language-javascript .token.punctuation {
+  color: #d4d4d4;
+}
+
+.monaco .token.property,
+.monaco .token.tag,
+.monaco .token.boolean,
+.monaco .token.number,
+.monaco .token.constant,
+.monaco .token.symbol,
+.monaco .token.inserted,
+.monaco .token.unit {
+  color: #b5cea8;
+}
+
+.monaco .token.selector,
+.monaco .token.attr-name,
+.monaco .token.string,
+.monaco .token.char,
+.monaco .token.builtin,
+.monaco .token.deleted {
+  color: #ce9178;
+}
+
+.monaco .language-css .token.string.url {
+  text-decoration: underline;
+}
+
+.monaco .token.operator,
+.monaco .token.entity {
+  color: #d4d4d4;
+}
+
+.monaco .token.operator.arrow {
+  color: #569cd6;
+}
+
+.monaco .token.atrule {
+  color: #ce9178;
+}
+
+.monaco .token.atrule .token.rule {
+  color: #c586c0;
+}
+
+.monaco .token.atrule .token.url {
+  color: #9cdcfe;
+}
+
+.monaco .token.atrule .token.url .token.function {
+  color: #dcdcaa;
+}
+
+.monaco .token.atrule .token.url .token.punctuation {
+  color: #d4d4d4;
+}
+
+.monaco .token.keyword {
+  color: #569cd6;
+}
+
+.monaco .token.keyword.module,
+.monaco .token.keyword.control-flow {
+  color: #c586c0;
+}
+
+.monaco .token.function,
+.monaco .token.function .token.maybe-class-name {
+  color: #dcdcaa;
+}
+
+.monaco .token.regex {
+  color: #d16969;
+}
+
+.monaco .token.important {
+  color: #569cd6;
+}
+
+.monaco .token.italic {
+  font-style: italic;
+}
+
+.monaco .token.constant {
+  color: #9cdcfe;
+}
+
+.monaco .token.class-name,
+.monaco .token.maybe-class-name {
+  color: #4ec9b0;
+}
+
+.monaco .token.console {
+  color: #9cdcfe;
+}
+
+.monaco .token.parameter {
+  color: #9cdcfe;
+}
+
+.monaco .token.interpolation {
+  color: #9cdcfe;
+}
+
+.monaco .token.punctuation.interpolation-punctuation {
+  color: #569cd6;
+}
+
+.monaco .token.boolean {
+  color: #569cd6;
+}
+
+.monaco .token.property,
+.monaco .token.variable,
+.monaco .token.imports.token.maybe-class-name,
+.monaco .token.imports .token.maybe-class-name,
+.monaco .token.exports .token.maybe-class-name {
+  color: #9cdcfe;
+}
+
+.monaco .token.selector {
+  color: #d7ba7d;
+}
+
+.monaco .token.escape {
+  color: #d7ba7d;
+}
+
+.monaco .token.tag {
+  color: #569cd6;
+}
+
+.monaco .token.tag .token.punctuation {
+  color: #808080;
+}
+
+.monaco .token.cdata {
+  color: #808080;
+}
+
+.monaco .token.attr-name {
+  color: #9cdcfe;
+}
+
+.monaco .token.attr-value,
+.monaco .token.attr-value .token.punctuation {
+  color: #ce9178;
+}
+
+.monaco .token.attr-value .token.punctuation.attr-equals {
+  color: #d4d4d4;
+}
+
+.monaco .token.entity {
+  color: #569cd6;
+}
+
+.monaco .token.namespace {
+  color: #4ec9b0;
+}
+/*********************************************************
+ * Language Specific
+ */
+
+.monaco pre[class*="language-javascript"],
+.monaco code[class*="language-javascript"],
+.monaco pre[class*="language-jsx"],
+.monaco code[class*="language-jsx"],
+.monaco pre[class*="language-typescript"],
+.monaco code[class*="language-typescript"],
+.monaco pre[class*="language-tsx"],
+.monaco code[class*="language-tsx"] {
+  color: #9cdcfe;
+}
+
+.monaco pre[class*="language-css"],
+.monaco code[class*="language-css"] {
+  color: #ce9178;
+}
+
+.monaco pre[class*="language-html"],
+.monaco code[class*="language-html"] {
+  color: #d4d4d4;
+}
+
+.monaco .language-regex .token.anchor {
+  color: #dcdcaa;
+}
+
+.monaco .language-html .token.punctuation {
+  color: #808080;
+}
+/*********************************************************
+ * Line highlighting
+ */
+.monaco pre[class*="language-"] > code[class*="language-"] {
+  position: relative;
+  z-index: 1;
+}
+
+.monaco .line-highlight.line-highlight {
+  background: #f7ebc6;
+  box-shadow: inset 5px 0 0 #f7d87c;
+  z-index: 0;
+}

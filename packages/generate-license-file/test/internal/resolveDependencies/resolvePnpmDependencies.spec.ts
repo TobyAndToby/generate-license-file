@@ -106,7 +106,7 @@ describe("resolveDependenciesForPnpmProject", () => {
   describe.each([
     { major: 7, minor: 33, patch: 0 },
     { major: 8, minor: 0, patch: 0 },
-  ])("when the pnpm version is a supported version (%p)", (pnpmVersion) => {
+  ])("when the pnpm version is a supported version (%p)", pnpmVersion => {
     it("should call getPnpmProjectDependencies", async () => {
       mockedGetPnpmVersion.mockResolvedValue(pnpmVersion);
       mockedGetPnpmProjectDependencies.mockResolvedValue([]);
@@ -200,19 +200,19 @@ describe("resolveDependenciesForPnpmProject", () => {
       expect(
         licensesMap
           .get(dependency1LicenseNoticePair)
-          ?.dependencies?.find((d) => d.name === "dependency1" && d.version === "1.0.0"),
+          ?.dependencies?.find(d => d.name === "dependency1" && d.version === "1.0.0"),
       ).toBeDefined();
       expect(
         licensesMap
           .get(dependency2LicenseNoticePair)
-          ?.dependencies?.find((d) => d.name === "dependency2" && d.version === "2.0.0"),
+          ?.dependencies?.find(d => d.name === "dependency2" && d.version === "2.0.0"),
       ).toBeDefined();
     });
 
     it.each([
       new Error("Something went wrong"),
       "Something went wrong",
-    ])("should warning log if resolveLicenseContent throws an error", async (error) => {
+    ])("should warning log if resolveLicenseContent throws an error", async error => {
       mockedGetPnpmVersion.mockResolvedValue(pnpmVersion);
       mockedGetPnpmProjectDependencies.mockResolvedValue([dependency1, dependency2, dependency3]);
 

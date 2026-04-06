@@ -53,7 +53,7 @@ describe("lineEndings", () => {
       expect(result).toBe(false);
     });
 
-    ["foo", "bar"].forEach((value) => {
+    ["foo", "bar"].forEach(value => {
       it(`should return false for unknown values (${value})`, () => {
         const result = isLineEnding(value);
 

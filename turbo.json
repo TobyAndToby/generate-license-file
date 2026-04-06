@@ -21,6 +21,26 @@
     "@generate-license-file-e2e/pnpm#e2e": {
       "dependsOn": ["generate-license-file#build"],
       "cache": false
+    },
+    "dev": {
+      "persistent": true,
+      "cache": false
+    },
+    "serve": {
+      "persistent": true,
+      "cache": false
+    },
+    "@generate-license-file/website#build": {
+      "inputs": [
+        "docs/**",
+        "versioned_docs/**",
+        "versioned_sidebars/**",
+        "src/**",
+        "static/**",
+        "sidebars.js",
+        "docusaurus.config.js"
+      ],
+      "outputs": ["build/**"]
     }
   }
 }

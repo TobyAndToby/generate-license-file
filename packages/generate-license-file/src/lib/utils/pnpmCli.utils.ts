@@ -18,7 +18,7 @@ const v9DependencyValidator = z.object({
   paths: z.string().array(),
 });
 
-const dependencyValidator = v8DependencyValidator.or(v9DependencyValidator).transform((dep) => ({
+const dependencyValidator = v8DependencyValidator.or(v9DependencyValidator).transform(dep => ({
   name: dep.name,
   paths: "paths" in dep ? dep.paths : [dep.path],
 }));

@@ -18,6 +18,7 @@
   },
   "javascript": {
     "formatter": {
+      "arrowParentheses": "asNeeded",
       "quoteStyle": "double",
       "trailingCommas": "all"
     }

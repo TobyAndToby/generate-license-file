@@ -8,7 +8,7 @@ export type CompilationTap = (compilation: Compilation) => void;
 export const compilationTapFactory = (options: Options, compiler: Compiler): CompilationTap => {
   const pluginName = LicenseFilePlugin.name;
 
-  return (compilation) => {
+  return compilation => {
     const processAssetTap = asyncProcessAssetTapFactory(options, compiler, compilation);
 
     const assetOptions = {

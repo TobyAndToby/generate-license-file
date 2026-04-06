@@ -29,7 +29,7 @@ describe("replacementHttp", () => {
     expect(result).toBeNull();
   });
 
-  it.each(["http", "www"])("should fetch the content if the location is a url beginning with %s", async (prefix) => {
+  it.each(["http", "www"])("should fetch the content if the location is a url beginning with %s", async prefix => {
     const location = `${prefix}/anything/else`;
 
     await replacementHttp(location);

@@ -39,7 +39,7 @@ describe("spdxExpression", () => {
       "Apache-2.0",
       "BSD-2-Clause",
       "MIT",
-    ])("should return the license field if it is not empty", async (expression) => {
+    ])("should return the license field if it is not empty", async expression => {
       const inputs: ResolutionInputs = {
         packageJson: new PackageJson(undefined, undefined, expression),
         directory: "/some/directory",

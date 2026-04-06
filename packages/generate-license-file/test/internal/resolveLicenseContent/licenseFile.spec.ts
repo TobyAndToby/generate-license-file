@@ -53,7 +53,7 @@ describe("licenseFile", () => {
 
   it.each(
     extensionDenyList,
-  )("should return null if all license files are in the extension deny list", async (extension) => {
+  )("should return null if all license files are in the extension deny list", async extension => {
     mockedGlob.mockResolvedValue([`/some/directory/license${extension}`]);
 
     const result = await licenseFile(resolutionInputs);

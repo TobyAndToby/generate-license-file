@@ -31,12 +31,12 @@ export const asyncProcessAssetTapFactory = (
     const implementation = resolveImplementation(isDev);
 
     implementation(pathToPackageJson, getLicenseFileTextOptions)
-      .then((text) => {
+      .then(text => {
         const outputPath = join(outputFolder, outputFileName);
         compilation.emitAsset(outputPath, new RawSource(text));
         resolve();
       })
-      .catch((error) => {
+      .catch(error => {
         const errorMessage = `${pluginName}: ${error ?? unknownError}`;
         const webpackError = new WebpackError(errorMessage);
         compilation.errors.push(webpackError);

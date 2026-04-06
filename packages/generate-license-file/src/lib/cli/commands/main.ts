@@ -50,7 +50,7 @@ export const mainCommand = new Command()
   )
   .option("--omit-versions", "Omit the package version numbers from the output.")
   .option("-v,--version", "Prints the installed version of generate-license-file")
-  .action(async (givenArgs) => {
+  .action(async givenArgs => {
     if (givenArgs.version) {
       await printPackageVersion();
       return;

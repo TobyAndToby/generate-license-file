@@ -43,7 +43,7 @@ describe("Output", () => {
 
     it("should prompt for a bool if an output is given but it exists", async () => {
       const testOutput = "any output value";
-      mockDoesFileExist.mockImplementation((path) => Promise.resolve(path === testOutput));
+      mockDoesFileExist.mockImplementation(path => Promise.resolve(path === testOutput));
 
       mockPrompt.mockResolvedValue({ value: true });
 
@@ -70,7 +70,7 @@ describe("Output", () => {
 
     it("should prompt for a bool if no output file is given and the later given output does exist", async () => {
       const testOutput = "any output value";
-      mockDoesFileExist.mockImplementation((path) => Promise.resolve(path === testOutput));
+      mockDoesFileExist.mockImplementation(path => Promise.resolve(path === testOutput));
       mockPrompt.mockResolvedValue({ value: testOutput });
 
       const args: CombinedConfig = {};
@@ -83,7 +83,7 @@ describe("Output", () => {
 
     it("should prompt for a string/bool pair twice if the user disallows overwriting with no output given", async () => {
       const testOutput = "any output value";
-      mockDoesFileExist.mockImplementation((path) => Promise.resolve(path === testOutput));
+      mockDoesFileExist.mockImplementation(path => Promise.resolve(path === testOutput));
       mockPrompt
         .mockResolvedValueOnce({ value: testOutput })
         .mockResolvedValueOnce({ value: false })

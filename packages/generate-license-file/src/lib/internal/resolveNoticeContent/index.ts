@@ -14,7 +14,7 @@ export const resolveNotices = async (directory: string): Promise<string[]> => {
     return [];
   }
 
-  const contents = await Promise.all(noticeFiles.map(async (f) => await readFile(f, { encoding: "utf-8" })));
+  const contents = await Promise.all(noticeFiles.map(async f => await readFile(f, { encoding: "utf-8" })));
 
   return contents;
 };

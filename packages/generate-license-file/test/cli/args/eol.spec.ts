@@ -32,7 +32,7 @@ describe("Eol", () => {
       expect(answer).toBeUndefined();
     });
 
-    lineEndings.forEach((lineEnding) => {
+    lineEndings.forEach(lineEnding => {
       it(`should return '${lineEnding}' if '--eol' is '${lineEnding}'`, async () => {
         const args: CombinedConfig = {
           eol: lineEnding,
@@ -116,7 +116,7 @@ describe("Eol", () => {
       { key: "CRLF", value: "crlf" },
       { key: "LF", value: "lf" },
       { key: "System default", value: undefined },
-    ].forEach((testCase) => {
+    ].forEach(testCase => {
       it(`should return ${testCase.value} if the user selects ${testCase.key} from the multiple choice prompt`, async () => {
         mockedPrompt.mockResolvedValue({
           value: testCase.key,
@@ -142,7 +142,7 @@ describe("Eol", () => {
       expect(answer).toBeUndefined();
     });
 
-    lineEndings.forEach((lineEnding) => {
+    lineEndings.forEach(lineEnding => {
       it(`should return '${lineEnding}' if '--eol' is '${lineEnding}'`, async () => {
         const args: CombinedConfig = {
           eol: lineEnding,

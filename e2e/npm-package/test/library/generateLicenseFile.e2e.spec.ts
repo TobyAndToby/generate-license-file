@@ -21,12 +21,12 @@ describe("generateLicenseFile", () => {
   let outputCounter = 0;
   const getOutputPath = () => path.join(tmpDir, `output-${outputCounter++}.txt`);
 
-  describeRelativeAndAbsolutePaths("./package.json", (packageJsonPath) =>
+  describeRelativeAndAbsolutePaths("./package.json", packageJsonPath =>
     describeEachLineEnding((lineEnding, lineEndingLiteral) => {
       let lineEndingsNotUnderTest: LineEnding[] = [];
 
       beforeEach(() => {
-        lineEndingsNotUnderTest = allLineEndings.filter((x) => x !== lineEnding);
+        lineEndingsNotUnderTest = allLineEndings.filter(x => x !== lineEnding);
       });
 
       it("should match snapshot", async () => {

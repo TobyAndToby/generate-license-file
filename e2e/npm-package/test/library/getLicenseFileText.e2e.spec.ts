@@ -6,12 +6,12 @@ import { beforeEach, describe, expect, it } from "vitest";
 const allLineEndings: LineEnding[] = ["crlf", "lf"];
 
 describe("getLicenseFileText", () => {
-  describeRelativeAndAbsolutePaths("./package.json", (packageJsonPath) =>
+  describeRelativeAndAbsolutePaths("./package.json", packageJsonPath =>
     describeEachLineEnding((lineEnding, lineEndingLiteral) => {
       let lineEndingsNotUnderTest: LineEnding[] = [];
 
       beforeEach(() => {
-        lineEndingsNotUnderTest = allLineEndings.filter((x) => x !== lineEnding);
+        lineEndingsNotUnderTest = allLineEndings.filter(x => x !== lineEnding);
       });
 
       it("should match snapshot", async () => {

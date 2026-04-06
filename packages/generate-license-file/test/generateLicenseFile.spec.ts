@@ -49,7 +49,7 @@ describe("generateLicenseFile", () => {
     });
   });
 
-  it.each([...lineEndings, undefined])("should call getLicenseFileText with the line ending %s", async (lineEnding) => {
+  it.each([...lineEndings, undefined])("should call getLicenseFileText with the line ending %s", async lineEnding => {
     await generateLicenseFile("path", "outputPath", { lineEnding });
 
     const firstCallSecondArg = mockGetLicenseFileText.mock.calls[0][1];

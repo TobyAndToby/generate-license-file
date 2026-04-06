@@ -23,7 +23,7 @@ export async function getProjectLicenses(
   const results: ILicense[] = [];
 
   for (const license of licenses) {
-    const dependencies = license.dependencies.map((dep) => {
+    const dependencies = license.dependencies.map(dep => {
       if (options?.omitVersions) {
         return dep.name;
       }

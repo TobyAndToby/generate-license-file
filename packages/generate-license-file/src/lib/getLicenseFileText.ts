@@ -58,7 +58,7 @@ export async function getLicenseFileText(
   let licenseFile = credit + EOL + EOL;
 
   for (const resolvedLicense of sortedLicenses) {
-    const dependencies = resolvedLicense.dependencies.map((dep) => {
+    const dependencies = resolvedLicense.dependencies.map(dep => {
       if (options?.omitVersions) {
         return dep.name;
       }

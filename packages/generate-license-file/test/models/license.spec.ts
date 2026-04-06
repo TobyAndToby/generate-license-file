@@ -21,7 +21,7 @@ describe("License", () => {
       expect(result.startsWith(prefix)).toBeTruthy();
     });
 
-    it.each(lineEndings)("should use the %s line ending twice after the prefix", (lineEnding) => {
+    it.each(lineEndings)("should use the %s line ending twice after the prefix", lineEnding => {
       const eol = getLineEndingCharacters(lineEnding);
 
       const license = new License("", [], []);
@@ -44,7 +44,7 @@ describe("License", () => {
       expect(resultLines[5]).toEqual(` - ${dependency4}`);
     });
 
-    it.each(lineEndings)("should use the %s line ending twice after the dependencies", (lineEnding) => {
+    it.each(lineEndings)("should use the %s line ending twice after the dependencies", lineEnding => {
       const eol = getLineEndingCharacters(lineEnding);
 
       const lastDep = "last dep";
@@ -94,7 +94,7 @@ describe("License", () => {
       expect(noticeTwoIndex).toBeGreaterThan(noticeOneIndex);
     });
 
-    it.each(lineEndings)("should normalise the line endings in the license content to %s", (lineEnding) => {
+    it.each(lineEndings)("should normalise the line endings in the license content to %s", lineEnding => {
       const eol = getLineEndingCharacters(lineEnding);
 
       const originalLicenseContent = `The\rlicense\nfile\r\ncontent`;

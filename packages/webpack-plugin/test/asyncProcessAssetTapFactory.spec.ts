@@ -106,7 +106,7 @@ describe("asyncProcessAssetTapFactory", () => {
       expect(firstCallFirstArg).toBe(options.pathToPackageJson);
     });
 
-    (["lf", "crlf"] as LineEnding[]).forEach((lineEnding) => {
+    (["lf", "crlf"] as LineEnding[]).forEach(lineEnding => {
       it(`should call generate-license-file with the ${lineEnding} line ending `, () => {
         options.lineEnding = lineEnding;
 
@@ -240,7 +240,7 @@ describe("asyncProcessAssetTapFactory", () => {
         expect(firstError.message).toBe(`LicenseFilePlugin: ${errorMessage}`);
       });
 
-      [null, undefined].forEach((falsyValue) => {
+      [null, undefined].forEach(falsyValue => {
         it(`should use the unknown error message if the given error is falsy (${falsyValue})`, async () => {
           mockGetLicenseFileText.mockRejectedValue(falsyValue);
 

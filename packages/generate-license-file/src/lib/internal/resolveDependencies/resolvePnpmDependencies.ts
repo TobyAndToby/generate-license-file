@@ -29,7 +29,7 @@ export const resolveDependenciesForPnpmProject = async (
     for (const dependencyPath of dependency.paths) {
       const packageJson = await readPackageJson(join(dependencyPath, "package.json"));
 
-      if (exclude.some((excludeRule) => excludeRule.match(packageJson))) {
+      if (exclude.some(excludeRule => excludeRule.match(packageJson))) {
         continue;
       }
 
@@ -47,7 +47,7 @@ export const resolveDependenciesForPnpmProject = async (
         };
 
         const alreadyExists = resolvedLicense.dependencies.find(
-          (dep) => dep.name === dependency.name && dep.version === packageJson.version,
+          dep => dep.name === dependency.name && dep.version === packageJson.version,
         );
 
         if (!alreadyExists) {

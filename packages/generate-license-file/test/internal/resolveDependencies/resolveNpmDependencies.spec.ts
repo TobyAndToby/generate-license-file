@@ -250,7 +250,7 @@ describe("resolveNpmDependencies", () => {
   it.each([
     new Error("Something went wrong"),
     "Something went wrong",
-  ])("should warning log if resolveLicenseContent throws an error", async (error) => {
+  ])("should warning log if resolveLicenseContent throws an error", async error => {
     when(mockedResolveLicenseContent)
       .calledWith(child1Realpath, expect.anything(), expect.anything())
       .thenReject(error);
@@ -270,13 +270,13 @@ describe("resolveNpmDependencies", () => {
       await resolveDependenciesForNpmProject("/some/path/package.json", licensesMap);
 
       const child1LicenseContentMap = licensesMap.get(child1LicenseNoticePair);
-      expect(child1LicenseContentMap?.dependencies.find((c) => c.name === child1Name)).toBeDefined();
+      expect(child1LicenseContentMap?.dependencies.find(c => c.name === child1Name)).toBeDefined();
 
       const child1_1LicenseContentMap = licensesMap.get(child1_1LicenseNoticePair);
-      expect(child1_1LicenseContentMap?.dependencies.find((c) => c.name === child1_1Name)).toBeDefined();
+      expect(child1_1LicenseContentMap?.dependencies.find(c => c.name === child1_1Name)).toBeDefined();
 
       const child1_2LicenseContentMap = licensesMap.get(child1_2LicenseNoticePair);
-      expect(child1_2LicenseContentMap?.dependencies.find((c) => c.name === child1_2Name)).toBeDefined();
+      expect(child1_2LicenseContentMap?.dependencies.find(c => c.name === child1_2Name)).toBeDefined();
     });
 
     it("should not include dev dependencies in the result", async () => {
@@ -328,7 +328,7 @@ describe("resolveNpmDependencies", () => {
 
       // It should not have produced any license entries for the optional node
       const keys = Array.from(licensesMap.keys());
-      expect(keys.some((k) => k.includes(optionalName))).toBe(false);
+      expect(keys.some(k => k.includes(optionalName))).toBe(false);
       // And no warning should be logged for this case
       expect(mockedLogger.warn).not.toHaveBeenCalled();
     });
@@ -364,13 +364,13 @@ describe("resolveNpmDependencies", () => {
       });
 
       const child1LicenseContentMap = licensesMap.get(child1LicenseNoticePair);
-      expect(child1LicenseContentMap?.dependencies.find((c) => c.name === child1Name)).toBeDefined();
+      expect(child1LicenseContentMap?.dependencies.find(c => c.name === child1Name)).toBeDefined();
 
       const child1_1LicenseContentMap = licensesMap.get(child1_1LicenseNoticePair);
       expect(child1_1LicenseContentMap).toBeUndefined();
 
       const child1_2LicenseContentMap = licensesMap.get(child1_2LicenseNoticePair);
-      expect(child1_2LicenseContentMap?.dependencies.find((c) => c.name === child1_2Name)).toBeDefined();
+      expect(child1_2LicenseContentMap?.dependencies.find(c => c.name === child1_2Name)).toBeDefined();
     });
 
     it("should not include the dependency in the result if specified by name only", async () => {
@@ -381,13 +381,13 @@ describe("resolveNpmDependencies", () => {
       });
 
       const child1LicenseContentMap = licensesMap.get(child1LicenseNoticePair);
-      expect(child1LicenseContentMap?.dependencies.find((c) => c.name === child1Name)).toBeDefined();
+      expect(child1LicenseContentMap?.dependencies.find(c => c.name === child1Name)).toBeDefined();
 
       const child1_1LicenseContentMap = licensesMap.get(child1_1LicenseNoticePair);
       expect(child1_1LicenseContentMap).toBeUndefined();
 
       const child1_2LicenseContentMap = licensesMap.get(child1_2LicenseNoticePair);
-      expect(child1_2LicenseContentMap?.dependencies.find((c) => c.name === child1_2Name)).toBeDefined();
+      expect(child1_2LicenseContentMap?.dependencies.find(c => c.name === child1_2Name)).toBeDefined();
     });
   });
   describe("when a directory inside node_modules starts with '.'", () => {
@@ -410,9 +410,9 @@ describe("resolveNpmDependencies", () => {
       await resolveDependenciesForNpmProject("/some/path/package.json", licensesMap);
 
       const keys = Array.from(licensesMap.keys());
-      expect(keys.some((k) => k.includes(dotDirName))).toBe(false);
-      expect(mockedDoesFileExist.mock.calls.some((call) => (call[0] as string).includes(dotDirRealpath))).toBe(false);
-      expect(mockedReadFile.mock.calls.some((call) => (call[0] as string).includes(dotDirRealpath))).toBe(false);
+      expect(keys.some(k => k.includes(dotDirName))).toBe(false);
+      expect(mockedDoesFileExist.mock.calls.some(call => (call[0] as string).includes(dotDirRealpath))).toBe(false);
+      expect(mockedReadFile.mock.calls.some(call => (call[0] as string).includes(dotDirRealpath))).toBe(false);
       expect(mockedLogger.warn).not.toHaveBeenCalled();
     });
   });

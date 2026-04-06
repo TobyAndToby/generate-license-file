@@ -1,0 +1,46 @@
+---
+title: Webpack Plugin
+---
+
+If you use Webpack as your module bundler, you can use the [generate license
+file webpack plugin](https://www.npmjs.com/package/generate-license-file-webpack-plugin). This
+plugin uses generate license file as part of your webpack build pipeline to automatically
+generate your third party licenses file as an asset of the project.
+
+## Installation
+
+```sh
+npm install --save-dev generate-license-file-webpack-plugin
+```
+
+## Usage
+
+To use the default configuration, construct the plugin in your webpack plugins array:
+
+```js
+// webpack.config.js
+const { LicenseFilePlugin } = require("generate-license-file-webpack-plugin");
+
+module.exports = {
+  plugins: [new LicenseFilePlugin()],
+};
+```
+
+The plugin can be configured using the following options. Below shows the default values:
+
+```js
+// webpack.config.js
+const { LicenseFilePlugin } = require("generate-license-file-webpack-plugin");
+
+module.exports = {
+  plugins: [
+    new LicenseFilePlugin({
+      outputFileName: "third-party-licenses.txt",
+      outputFolder: "./", // Relative to your build output directory.
+      pathToPackageJson: "./package.json",
+      isDev: false, // When true, uses placeholder content to reduce compilation time.
+      lineEnding: undefined, // Can be 'crlf' or 'lf'. If omitted, the system default will be used.
+    }),
+  ],
+};
+```
