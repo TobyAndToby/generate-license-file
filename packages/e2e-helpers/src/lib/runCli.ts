@@ -14,6 +14,13 @@ export type RunCliResult = {
   exitCode: number;
 };
 
+type WorkerResponse = {
+  id: number;
+  stdout: string;
+  stderr: string;
+  exitCode: number;
+};
+
 const require = createRequire(import.meta.url);
 
 const cliEntry = (() => {
@@ -23,34 +30,59 @@ const cliEntry = (() => {
 
 const workerUrl = new URL("./cliWorker.ts", import.meta.url);
 
-export const runCli = (args: string[], opts: RunCliOptions = {}): Promise<RunCliResult> => {
-  return new Promise<RunCliResult>((resolvePromise, reject) => {
-    const worker = new Worker(fileURLToPath(workerUrl), {
-      workerData: {
-        args,
-        cwd: opts.cwd,
-        env: opts.env,
-        cliEntry,
-      },
-    });
+let workerInstance: Worker | null = null;
+let nextId = 0;
+const pending = new Map<number, (r: RunCliResult) => void>();
+let readyPromise: Promise<void> | null = null;
 
-    let settled = false;
+const getWorker = (): Worker => {
+  if (workerInstance) return workerInstance;
 
-    worker.once("message", (result: RunCliResult) => {
-      settled = true;
-      resolvePromise(result);
-      worker.terminate();
-    });
+  workerInstance = new Worker(fileURLToPath(workerUrl), {
+    workerData: { cliEntry },
+  });
 
-    worker.once("error", err => {
-      settled = true;
-      reject(err);
-    });
+  readyPromise = new Promise<void>(resolveReady => {
+    const onFirstMessage = () => {
+      resolveReady();
+    };
+    workerInstance?.once("message", onFirstMessage);
+  });
 
-    worker.once("exit", code => {
-      if (!settled) {
-        reject(new Error(`cliWorker exited without response (code ${code})`));
-      }
-    });
+  workerInstance.on("message", (msg: WorkerResponse) => {
+    if (msg.id === -1) return; // ready signal
+    const cb = pending.get(msg.id);
+    if (cb) {
+      pending.delete(msg.id);
+      cb({ stdout: msg.stdout, stderr: msg.stderr, exitCode: msg.exitCode });
+    }
+  });
+
+  workerInstance.on("error", err => {
+    for (const cb of pending.values()) {
+      cb({ stdout: "", stderr: `cliWorker error: ${err.message}`, exitCode: 1 });
+    }
+    pending.clear();
+  });
+
+  return workerInstance;
+};
+
+export const closeCliWorker = async (): Promise<void> => {
+  if (!workerInstance) return;
+  await workerInstance.terminate();
+  workerInstance = null;
+  readyPromise = null;
+  pending.clear();
+};
+
+export const runCli = async (args: string[], opts: RunCliOptions = {}): Promise<RunCliResult> => {
+  const worker = getWorker();
+  if (readyPromise) await readyPromise;
+
+  const id = nextId++;
+  return new Promise<RunCliResult>(resolvePromise => {
+    pending.set(id, resolvePromise);
+    worker.postMessage({ id, args, cwd: opts.cwd, env: opts.env });
   });
 };
