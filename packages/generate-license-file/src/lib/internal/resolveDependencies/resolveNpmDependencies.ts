@@ -21,9 +21,9 @@ export const resolveDependenciesForNpmProject = async (
   const replacements = options?.replace ?? {};
   const exclude = expandExcludes(options?.exclude);
 
-  const path = resolvePath(packageJson);
+  const projectPath = resolvePath(packageJson);
 
-  const topNode = await loadArboristTree(path);
+  const topNode = await loadArboristTree(projectPath);
 
   const visitedNodes = new Set<Node | Link>();
 
@@ -96,7 +96,7 @@ export const resolveDependenciesForNpmProject = async (
   };
 
   for (const child of topNode.children.values()) {
-    const isTopLevel = isTopLevelDependency(child);
+    const isTopLevel = isTopLevelDependency(child, projectPath);
     if (isTopLevel) {
       await parseNode(child);
     }
@@ -109,9 +109,9 @@ const resolvePath = (path: string): string => {
   return dirname(absolutePackageJson);
 };
 
-const isTopLevelDependency = (node: Node | Link): boolean => {
+const isTopLevelDependency = (node: Node | Link, packageJsonDir: string): boolean => {
   for (const edge of node.edgesIn) {
-    if (edge.from?.isRoot) {
+    if (edge.from?.path === packageJsonDir) {
       return true;
     }
   }

@@ -21,6 +21,8 @@ vi.mock("../../../src/lib/internal/resolveLicenseContent", () => ({
 }));
 
 describe("resolveNpmDependencies", () => {
+  const projectPackageJsonDir = "/some/path";
+
   const mockedLogger = vi.mocked(logger);
   const mockedReadFile = vi.mocked(readFile);
   const mockedDoesFileExist = vi.mocked(doesFileExist);
@@ -103,7 +105,7 @@ describe("resolveNpmDependencies", () => {
   };
 
   const addRootEdge = (to: Node) => {
-    to.edgesIn.add({ from: { isRoot: true } } as Edge);
+    to.edgesIn.add({ from: { path: projectPackageJsonDir } } as Edge);
   };
 
   const child1Node = createMockNode(child1Name, child1Version, child1Realpath, false, false);
@@ -390,6 +392,7 @@ describe("resolveNpmDependencies", () => {
       expect(child1_2LicenseContentMap?.dependencies.find(c => c.name === child1_2Name)).toBeDefined();
     });
   });
+
   describe("when a directory inside node_modules starts with '.'", () => {
     const dotDirName = ".dotdir";
     const dotDirVersion = "0.0.0";
@@ -414,6 +417,33 @@ describe("resolveNpmDependencies", () => {
       expect(mockedDoesFileExist.mock.calls.some(call => (call[0] as string).includes(dotDirRealpath))).toBe(false);
       expect(mockedReadFile.mock.calls.some(call => (call[0] as string).includes(dotDirRealpath))).toBe(false);
       expect(mockedLogger.warn).not.toHaveBeenCalled();
+    });
+  });
+
+  describe("when a top-level dependency edge points to a different project directory", () => {
+    it("should exclude it from the result", async () => {
+      const otherName = "other";
+      const otherVersion = "9.0.0";
+      const otherRealpath = "/some/path/other";
+      const otherNode = createMockNode(otherName, otherVersion, otherRealpath, false, false);
+      otherNode.edgesIn = new Set([{ from: { path: "/different/root" } } as Edge]);
+
+      const topNodeWithOther: Node = {
+        children: new Map([...Array.from(topNode.children.entries()), [otherName, otherNode]]),
+      } as Node;
+
+      mockedLoadArboristTree.mockResolvedValueOnce(topNodeWithOther);
+
+      when(mockedResolveLicenseContent)
+        .calledWith(otherRealpath, expect.anything(), expect.anything())
+        .thenResolve("license contents for other");
+      setUpPackageJson(otherRealpath, otherName, otherVersion);
+
+      const licensesMap = new Map<LicenseNoticeKey, ResolvedLicense>();
+      await resolveDependenciesForNpmProject("/some/path/package.json", licensesMap);
+
+      const keys = Array.from(licensesMap.keys());
+      expect(keys.some(k => k.includes(otherName))).toBe(false);
     });
   });
 
