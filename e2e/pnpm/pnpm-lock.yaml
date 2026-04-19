@@ -1,57 +1,62 @@
-lockfileVersion: '6.0'
+lockfileVersion: '9.0'
 
 settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-dependencies:
-  dep-five:
-    specifier: file:../test-dependencies/dep-five
-    version: file:../test-dependencies/dep-five
-  dep-four:
-    specifier: file:../test-dependencies/dep-four
-    version: file:../test-dependencies/dep-four
-  dep-one:
-    specifier: file:../test-dependencies/dep-one
-    version: file:../test-dependencies/dep-one
-  dep-three:
-    specifier: file:../test-dependencies/dep-three
-    version: file:../test-dependencies/dep-three
-  dep-two:
-    specifier: file:../test-dependencies/dep-two
-    version: file:../test-dependencies/dep-two
-  dep-two-duplicate:
-    specifier: file:../test-dependencies/dep-two-duplicate
-    version: file:../test-dependencies/dep-two-duplicate
+importers:
+
+  .:
+    dependencies:
+      dep-five:
+        specifier: file:../test-dependencies/dep-five
+        version: file:../test-dependencies/dep-five
+      dep-four:
+        specifier: file:../test-dependencies/dep-four
+        version: file:../test-dependencies/dep-four
+      dep-one:
+        specifier: file:../test-dependencies/dep-one
+        version: file:../test-dependencies/dep-one
+      dep-three:
+        specifier: file:../test-dependencies/dep-three
+        version: file:../test-dependencies/dep-three
+      dep-two:
+        specifier: file:../test-dependencies/dep-two
+        version: file:../test-dependencies/dep-two
+      dep-two-duplicate:
+        specifier: file:../test-dependencies/dep-two-duplicate
+        version: file:../test-dependencies/dep-two-duplicate
 
 packages:
 
-  file:../test-dependencies/dep-five:
+  dep-five@file:../test-dependencies/dep-five:
     resolution: {directory: ../test-dependencies/dep-five, type: directory}
-    name: dep-five
-    dev: false
 
-  file:../test-dependencies/dep-four:
+  dep-four@file:../test-dependencies/dep-four:
     resolution: {directory: ../test-dependencies/dep-four, type: directory}
-    name: dep-four
-    dev: false
 
-  file:../test-dependencies/dep-one:
+  dep-one@file:../test-dependencies/dep-one:
     resolution: {directory: ../test-dependencies/dep-one, type: directory}
-    name: dep-one
-    dev: false
 
-  file:../test-dependencies/dep-three:
+  dep-three@file:../test-dependencies/dep-three:
     resolution: {directory: ../test-dependencies/dep-three, type: directory}
-    name: dep-three
-    dev: false
 
-  file:../test-dependencies/dep-two:
-    resolution: {directory: ../test-dependencies/dep-two, type: directory}
-    name: dep-two
-    dev: false
-
-  file:../test-dependencies/dep-two-duplicate:
+  dep-two-duplicate@file:../test-dependencies/dep-two-duplicate:
     resolution: {directory: ../test-dependencies/dep-two-duplicate, type: directory}
-    name: dep-two-duplicate
-    dev: false
+
+  dep-two@file:../test-dependencies/dep-two:
+    resolution: {directory: ../test-dependencies/dep-two, type: directory}
+
+snapshots:
+
+  dep-five@file:../test-dependencies/dep-five: {}
+
+  dep-four@file:../test-dependencies/dep-four: {}
+
+  dep-one@file:../test-dependencies/dep-one: {}
+
+  dep-three@file:../test-dependencies/dep-three: {}
+
+  dep-two-duplicate@file:../test-dependencies/dep-two-duplicate: {}
+
+  dep-two@file:../test-dependencies/dep-two: {}
