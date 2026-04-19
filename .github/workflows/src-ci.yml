@@ -151,6 +151,11 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    # Root package.json declares packageManager: bun, which causes corepack to reject
+    # pnpm invocations. Disable strict mode so the matrix-activated pnpm version is used.
+    env:
+      COREPACK_ENABLE_STRICT: "0"
+
     steps:
       - name: Checkout
         uses: actions/checkout@v6
