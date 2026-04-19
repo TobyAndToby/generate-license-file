@@ -1,11 +1,6 @@
-import { exec } from "node:child_process";
 import fs from "node:fs/promises";
-import { promisify } from "node:util";
+import { runCli } from "@generate-license-file/e2e-helpers";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-
-const execAsync = promisify(exec);
-
-const cli = "node ../../packages/generate-license-file/bin/generate-license-file";
 
 describe("when using an npm monorepo", () => {
   let output = "";
@@ -20,7 +15,7 @@ describe("when using an npm monorepo", () => {
 
   describe("top-level package.json", () => {
     it("should match snapshot", async () => {
-      await execAsync(`${cli} --input ./package.json --output ${output} --overwrite --eol lf`);
+      await runCli(["--input", "./package.json", "--output", output, "--overwrite", "--eol", "lf"]);
 
       const result = await fs.readFile(output, "utf8");
       expect(result).toMatchSnapshot();
@@ -29,7 +24,7 @@ describe("when using an npm monorepo", () => {
 
   describe("nested-a package.json", () => {
     it("should match snapshot", async () => {
-      await execAsync(`${cli} --input ./packages/nested-a/package.json --output ${output} --overwrite --eol lf`);
+      await runCli(["--input", "./packages/nested-a/package.json", "--output", output, "--overwrite", "--eol", "lf"]);
 
       const result = await fs.readFile(output, "utf8");
       expect(result).toMatchSnapshot();
@@ -38,7 +33,7 @@ describe("when using an npm monorepo", () => {
 
   describe("nested-b package.json", () => {
     it("should match snapshot", async () => {
-      await execAsync(`${cli} --input ./packages/nested-b/package.json --output ${output} --overwrite --eol lf`);
+      await runCli(["--input", "./packages/nested-b/package.json", "--output", output, "--overwrite", "--eol", "lf"]);
 
       const result = await fs.readFile(output, "utf8");
       expect(result).toMatchSnapshot();

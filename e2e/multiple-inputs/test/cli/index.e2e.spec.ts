@@ -1,9 +1,6 @@
-import { exec } from "node:child_process";
 import fs from "node:fs/promises";
-import { promisify } from "node:util";
+import { runCli } from "@generate-license-file/e2e-helpers";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-
-const execAsync = promisify(exec);
 
 describe("cli", () => {
   let output = "";
@@ -17,9 +14,14 @@ describe("cli", () => {
   });
 
   it("should match snapshot", async () => {
-    await execAsync(
-      `node ../../packages/generate-license-file/bin/generate-license-file --input ./package.json --input ./../npm-package/package.json --output ${output}`,
-    );
+    await runCli([
+      "--input",
+      "./package.json",
+      "--input",
+      "./../npm-package/package.json",
+      "--output",
+      output,
+    ]);
 
     const result = await fs.readFile(output, "utf8");
     expect(result).toMatchSnapshot();

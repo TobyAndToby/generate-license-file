@@ -15,6 +15,7 @@
     "dep-five": "workspace:*"
   },
   "devDependencies": {
+    "@generate-license-file/e2e-helpers": "workspace:*",
     "generate-license-file": "workspace:*"
   }
 }
