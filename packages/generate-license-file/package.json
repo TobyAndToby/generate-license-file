@@ -58,7 +58,9 @@
   "scripts": {
     "build": "tsdown",
     "test": "vitest run",
-    "lint": "biome check ."
+    "lint": "biome check .",
+    "set-version": "bun ../../tools/scripts/version.ts",
+    "publish": "npm publish --access public --provenance"
   },
   "dependencies": {
     "@commander-js/extra-typings": "^14.0.0",

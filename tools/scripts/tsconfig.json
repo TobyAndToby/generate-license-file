@@ -1,0 +1,5 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "include": ["./**/*"],
+  "compilerOptions": { "types": ["bun"], "module": "preserve", "target": "esnext" }
+}

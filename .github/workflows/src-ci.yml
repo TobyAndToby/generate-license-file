@@ -11,8 +11,7 @@ on:
   workflow_call:
     inputs:
       version:
-        description: The npm version to use for generate-license-file
-        default: "0.0.0"
+        description: The npm version to stamp into published packages
         required: false
         type: string
 
@@ -35,7 +34,7 @@ jobs:
         run: bun install --frozen-lockfile
 
       - name: Lint
-        run: turbo run lint
+        run: bun run lint
 
   build:
     name: Build
@@ -51,20 +50,20 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile
 
-      - name: Build
-        run: turbo run build
-
       - name: Set Version
         if: inputs.version != ''
-        run: |
-          bun run tools/scripts/version.mjs generate-license-file ${{ inputs.version }}
-          bun run tools/scripts/version.mjs webpack-plugin ${{ inputs.version }}
+        run: bun run set-version ${{ inputs.version }}
+
+      - name: Build
+        run: bun run build
 
       - name: Upload Build
         uses: actions/upload-artifact@v7
         with:
           name: Build
-          path: packages/*/dist
+          path: |
+            packages/*/dist
+            packages/*/package.json
           retention-days: 1
 
   test:
@@ -82,7 +81,7 @@ jobs:
         run: bun install --frozen-lockfile
 
       - name: Run Unit Tests
-        run: turbo run test -- --coverage
+        run: bun run test -- --coverage
 
       - name: Codecov
         uses: codecov/codecov-action@v5.5.3
@@ -135,7 +134,7 @@ jobs:
           path: packages
 
       - name: Run E2E Tests
-        run: turbo run e2e --filter='!@generate-license-file-e2e/pnpm'
+        run: bun run test:e2e --filter='!@generate-license-file-e2e/pnpm'
 
   e2e-pnpm:
     needs:
@@ -174,4 +173,4 @@ jobs:
           path: packages
 
       - name: Run E2E Tests
-        run: turbo run e2e --filter='@generate-license-file-e2e/pnpm'
+        run: bun run test:e2e --filter='@generate-license-file-e2e/pnpm'

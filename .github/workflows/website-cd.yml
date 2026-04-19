@@ -30,7 +30,7 @@ jobs:
         run: bun install --frozen-lockfile
 
       - name: Build Website
-        run: turbo run build --filter='@generate-license-file/website'
+        run: bun run build --filter='@generate-license-file/website'
 
       - name: Upload Build
         uses: actions/upload-pages-artifact@v4

@@ -71,14 +71,7 @@ jobs:
         uses: tobysmith568/npm-publish-latest-tag@v1
         id: latest_tag
         with:
-          package-json: packages/generate-license-file/dist/package.json
+          package-json: packages/generate-license-file/package.json
 
-      - name: Publish generate-license-file
-        run: bun run tools/scripts/publish.mjs generate-license-file ${{ steps.latest_tag.outputs.latest-tag }}
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.npm_token }}
-
-      - name: Publish webpack-plugin
-        run: bun run tools/scripts/publish.mjs webpack-plugin ${{ steps.latest_tag.outputs.latest-tag }}
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.npm_token }}
+      - name: Publish
+        run: bun run publish --tag ${{ steps.latest_tag.outputs.latest-tag }}
