@@ -2,7 +2,6 @@
   "private": true,
   "name": "@generate-license-file-e2e/pnpm",
   "version": "0.0.0",
-  "packageManager": "pnpm@10.0.0",
   "scripts": {
     "install-deps": "pnpm install --frozen-lockfile",
     "e2e": "vitest run",
