@@ -145,7 +145,7 @@ function getMessageFromCaughtUnknown(e: unknown): string {
 }
 
 const printPackageVersion = async (): Promise<void> => {
-  const packageJsonLocation = join(import.meta.dirname, "../../../../package.json");
+  const packageJsonLocation = join(import.meta.dirname, "../package.json");
   const { version } = await readPackageJson(packageJsonLocation);
   logger.log(`v${version}`);
 };

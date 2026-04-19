@@ -9,6 +9,6 @@ export default defineConfig({
   platform: "node",
   dts: true,
   clean: true,
-  unbundle: true,
+  unbundle: false,
   minify: false,
 });
