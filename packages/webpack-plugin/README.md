@@ -48,8 +48,9 @@ module.exports = {
 ## Building the plugin yourself
 
 ```bash
-npm install
-npm run build
+# cwd: repo root
+bun install
+bun run build
 ```
 
 ## License

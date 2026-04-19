@@ -101,22 +101,22 @@ npx generate-license-file --config ./my-config.json
 
 # Contributing and Building From Source
 
-generate-license-file is an NX Monorepo. We have aliased common commands in the scripts section of the `src/package.json` to make working with the project easier.
+generate-license-file is a [Bun](https://bun.sh/) + [Turborepo](https://turborepo.com/) monorepo. Common commands are aliased in the root `package.json`.
 
-Each package in the monorepo (under `src/packages/`) contains a README with further information. The main library and CLI is under `packages/generate-license-file`.
+Each package under `packages/` contains a README with further information. The main library and CLI is under `packages/generate-license-file`.
 
 ```bash
-# cwd: src/
+# cwd: repo root
 
-npm install
+bun install
 
-npm run lint
+bun run lint   # Biome
 
-npm run test  # unit tests
+bun run test  # unit tests (Vitest)
 
-npm run test:e2e  # e2e tests
+bun run test:e2e  # e2e tests
 
-npm run build  # will build all packages into src/dist/[package name]
+bun run build  # builds all packages to packages/<name>/dist/
 ```
 
 # License
