@@ -58,6 +58,12 @@ jobs:
     runs-on: windows-latest
 
     steps:
+      - name: Disable Defender real-time monitoring
+        shell: pwsh
+        run: |
+          Set-MpPreference -DisableRealtimeMonitoring $true
+          Get-MpPreference | Select-Object DisableRealtimeMonitoring
+
       - name: Checkout
         uses: actions/checkout@v6
 
