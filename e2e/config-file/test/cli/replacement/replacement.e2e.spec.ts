@@ -10,7 +10,7 @@ describe("cli", () => {
   it("should match snapshot when a package is replaced", async () => {
     const configPath = "./test/cli/replacement/config.js";
 
-    await execAsync(`npx generate-license-file -c ${configPath}`);
+    await execAsync(`node ../../packages/generate-license-file/bin/generate-license-file -c ${configPath}`);
 
     const result = await fs.readFile(outputFileName, "utf8");
     expect(result).toMatchSnapshot();

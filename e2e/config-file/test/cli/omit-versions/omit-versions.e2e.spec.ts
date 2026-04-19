@@ -10,7 +10,7 @@ describe("cli", () => {
   it("should omit versions when omitVersions is true in config", async () => {
     const configPath = "./test/cli/omit-versions/config.js";
 
-    await execAsync(`npx generate-license-file -c ${configPath}`);
+    await execAsync(`node ../../packages/generate-license-file/bin/generate-license-file -c ${configPath}`);
 
     const result = await fs.readFile(outputFileName, "utf8");
 
