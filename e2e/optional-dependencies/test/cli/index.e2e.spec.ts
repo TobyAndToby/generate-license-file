@@ -17,7 +17,9 @@ describe("cli", () => {
   });
 
   it("should match snapshot", async () => {
-    await execAsync(`node ../../packages/generate-license-file/bin/generate-license-file --input ./package.json --output ${output}`);
+    await execAsync(
+      `node ../../packages/generate-license-file/bin/generate-license-file --input ./package.json --output ${output}`,
+    );
 
     const result = await fs.readFile(output, "utf8");
     expect(result).toMatchSnapshot();

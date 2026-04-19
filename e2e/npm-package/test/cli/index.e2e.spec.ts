@@ -35,14 +35,18 @@ describe("cli", () => {
     });
 
     it("should match snapshot with just --input and --output", async () => {
-      await execAsync(`node ../../packages/generate-license-file/bin/generate-license-file --input ${input} --output ${output}`);
+      await execAsync(
+        `node ../../packages/generate-license-file/bin/generate-license-file --input ${input} --output ${output}`,
+      );
 
       const result = await fs.readFile(output, "utf8");
       expect(result).toMatchSnapshot();
     });
 
     it("should match snapshot with --output given before --input", async () => {
-      await execAsync(`node ../../packages/generate-license-file/bin/generate-license-file --output ${output} --input ${input}`);
+      await execAsync(
+        `node ../../packages/generate-license-file/bin/generate-license-file --output ${output} --input ${input}`,
+      );
 
       const result = await fs.readFile(output, "utf8");
       expect(result).toMatchSnapshot();
@@ -56,7 +60,9 @@ describe("cli", () => {
     });
 
     it("should match snapshot with --input and --output wrapped in double quotes", async () => {
-      await execAsync(`node ../../packages/generate-license-file/bin/generate-license-file --input "${input}" --output "${output}"`);
+      await execAsync(
+        `node ../../packages/generate-license-file/bin/generate-license-file --input "${input}" --output "${output}"`,
+      );
 
       const result = await fs.readFile(output, "utf8");
       expect(result).toMatchSnapshot();
@@ -68,7 +74,9 @@ describe("cli", () => {
 
         await fs.writeFile(output, fileContent);
 
-        await execAsync(`node ../../packages/generate-license-file/bin/generate-license-file --input ${input} --output ${output} --overwrite`);
+        await execAsync(
+          `node ../../packages/generate-license-file/bin/generate-license-file --input ${input} --output ${output} --overwrite`,
+        );
 
         const result = await fs.readFile(output, "utf8");
         expect(result).not.toMatch(fileContent);
@@ -83,7 +91,9 @@ describe("cli", () => {
       });
 
       it("should match snapshot when --eol is given", async () => {
-        await execAsync(`node ../../packages/generate-license-file/bin/generate-license-file --input ${input} --output ${output} --eol ${lineEnding}`);
+        await execAsync(
+          `node ../../packages/generate-license-file/bin/generate-license-file --input ${input} --output ${output} --eol ${lineEnding}`,
+        );
 
         const result = await fs.readFile(output, "utf8");
         expect(result).toMatchSnapshot();
@@ -92,7 +102,9 @@ describe("cli", () => {
       it("should contain the correct line ending value", async () => {
         const expectedLineEndingValue = lineEndingLiteral;
 
-        await execAsync(`node ../../packages/generate-license-file/bin/generate-license-file --input ${input} --output ${output} --eol ${lineEnding}`);
+        await execAsync(
+          `node ../../packages/generate-license-file/bin/generate-license-file --input ${input} --output ${output} --eol ${lineEnding}`,
+        );
 
         const result = await fs.readFile(output, "utf8");
         expect(result).toContain(`package!${expectedLineEndingValue}https://`);
@@ -102,7 +114,9 @@ describe("cli", () => {
         it(`should not contain the incorrect line ending value (${otherLineEnding})`, async () => {
           const incorrectLineEndingValue = lineEndingLiteral;
 
-          await execAsync(`node ../../packages/generate-license-file/bin/generate-license-file --input ${input} --output ${output} --eol ${lineEnding}`);
+          await execAsync(
+            `node ../../packages/generate-license-file/bin/generate-license-file --input ${input} --output ${output} --eol ${lineEnding}`,
+          );
 
           const result = await fs.readFile(output, "utf8");
           expect(result).not.toContain(`package!${incorrectLineEndingValue}https://`);
@@ -112,7 +126,9 @@ describe("cli", () => {
 
     describe("no-spinner", () => {
       it("should match snapshot when --no-spinner is given", async () => {
-        await execAsync(`node ../../packages/generate-license-file/bin/generate-license-file --input ${input} --output ${output} --no-spinner`);
+        await execAsync(
+          `node ../../packages/generate-license-file/bin/generate-license-file --input ${input} --output ${output} --no-spinner`,
+        );
 
         const result = await fs.readFile(output, "utf8");
         expect(result).toMatchSnapshot();
@@ -121,7 +137,9 @@ describe("cli", () => {
 
     describe("ci", () => {
       it("should match snapshot when --ci is given", async () => {
-        await execAsync(`node ../../packages/generate-license-file/bin/generate-license-file --input ${input} --output ${output} --ci`);
+        await execAsync(
+          `node ../../packages/generate-license-file/bin/generate-license-file --input ${input} --output ${output} --ci`,
+        );
 
         const result = await fs.readFile(output, "utf8");
         expect(result).toMatchSnapshot();
@@ -130,7 +148,9 @@ describe("cli", () => {
 
     describe("omit-versions", () => {
       it("should match snapshot when --omit-versions is given", async () => {
-        await execAsync(`node ../../packages/generate-license-file/bin/generate-license-file --input ${input} --output ${output} --omit-versions`);
+        await execAsync(
+          `node ../../packages/generate-license-file/bin/generate-license-file --input ${input} --output ${output} --omit-versions`,
+        );
 
         const result = await fs.readFile(output, "utf8");
         expect(result).toMatchSnapshot();
@@ -141,13 +161,17 @@ describe("cli", () => {
       beforeEach(() => (requiresUnlink = false));
 
       it("should not produce an output when --version is given", async () => {
-        await execAsync(`node ../../packages/generate-license-file/bin/generate-license-file --input ${input} --output ${output} --version`);
+        await execAsync(
+          `node ../../packages/generate-license-file/bin/generate-license-file --input ${input} --output ${output} --version`,
+        );
 
         await expect(fs.stat(output)).rejects.toThrow();
       });
 
       it("should not produce an output when -v is given", async () => {
-        await execAsync(`node ../../packages/generate-license-file/bin/generate-license-file -i ${input} -o ${output} -v`);
+        await execAsync(
+          `node ../../packages/generate-license-file/bin/generate-license-file -i ${input} -o ${output} -v`,
+        );
 
         await expect(fs.stat(output)).rejects.toThrow();
       });
@@ -155,7 +179,9 @@ describe("cli", () => {
       it("should return the current version when --version is given", async () => {
         const versionInPackageJson = "*";
 
-        const { stdout } = await execAsync(`node ../../packages/generate-license-file/bin/generate-license-file --version`);
+        const { stdout } = await execAsync(
+          `node ../../packages/generate-license-file/bin/generate-license-file --version`,
+        );
 
         expect(stdout.trim()).toBe(`v${versionInPackageJson}`);
       });
