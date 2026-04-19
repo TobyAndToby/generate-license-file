@@ -1,0 +1,69 @@
+{
+  "name": "generate-license-file-webpack-plugin",
+  "version": "*",
+  "type": "module",
+  "main": "dist/index.cjs",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.cts",
+  "license": "ISC",
+  "description": "Webpack plugin to generate a text file asset containing all of the licenses for your production third-party dependencies.",
+  "homepage": "https://github.com/TobyAndToby/generate-license-file#readme",
+  "keywords": [
+    "webpack",
+    "plugin",
+    "license",
+    "licence",
+    "third",
+    "party",
+    "file",
+    "generate",
+    "oss"
+  ],
+  "contributors": [
+    {
+      "name": "Toby Smith",
+      "url": "https://github.com/tobysmith568"
+    },
+    {
+      "name": "Toby Bessant",
+      "url": "https://github.com/tobybessant"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TobyAndToby/generate-license-file.git",
+    "directory": "src/packages/webpack-plugin"
+  },
+  "bugs": {
+    "url": "https://github.com/TobyAndToby/generate-license-file/issues"
+  },
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    }
+  },
+  "scripts": {
+    "build": "tsdown",
+    "test": "vitest run",
+    "lint": "biome check .",
+    "set-version": "bun ../../tools/scripts/version.ts",
+    "publish": "npm publish --access public --provenance"
+  },
+  "dependencies": {
+    "generate-license-file": "workspace:*",
+    "webpack": "^5.75.0"
+  },
+  "devDependencies": {
+    "@types/webpack": "^5.28.0"
+  }
+}

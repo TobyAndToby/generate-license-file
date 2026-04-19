@@ -1,0 +1,14 @@
+{
+  "private": true,
+  "name": "@generate-license-file-e2e/npm-monorepo",
+  "version": "0.0.0",
+  "scripts": {
+    "e2e": "vitest run",
+    "lint": "biome check ."
+  },
+  "dependencies": {
+    "dep-three": "workspace:*",
+    "nested-a": "workspace:*",
+    "nested-b": "workspace:*"
+  }
+}

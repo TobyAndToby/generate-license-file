@@ -1,17 +1,20 @@
-import fs from "fs/promises";
+import fs from "node:fs/promises";
 import { generateLicenseFile } from "generate-license-file";
+import { afterAll, beforeEach, describe, expect, it, vi } from "vitest";
 
-jest.mock("fs/promises", () => ({
-  ...jest.requireActual<typeof fs>("fs/promises"),
-  writeFile: jest.fn(),
-  mkdir: jest.fn(),
-}));
+vi.mock("node:fs/promises", async importOriginal => {
+  const actual = await importOriginal<typeof import("node:fs/promises")>();
+  return {
+    ...actual,
+    default: { ...actual, writeFile: vi.fn(), mkdir: vi.fn() },
+  };
+});
 
 describe("generateLicenseFile", () => {
-  const mockedWriteFile = jest.mocked(fs.writeFile);
+  const mockedWriteFile = vi.mocked(fs.writeFile);
 
-  beforeEach(() => jest.resetAllMocks());
-  afterAll(() => jest.restoreAllMocks());
+  beforeEach(() => vi.resetAllMocks());
+  afterAll(() => vi.restoreAllMocks());
 
   it("should match snapshot", async () => {
     const inputPaths = ["./package.json", "./../npm-package/package.json"];

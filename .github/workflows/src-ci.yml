@@ -11,14 +11,12 @@ on:
   workflow_call:
     inputs:
       version:
-        description: The npm version to use for generate-license-file
-        default: "0.0.0"
+        description: The npm version to stamp into published packages
         required: false
         type: string
 
 env:
   NODE_VERSION: 24
-  CWD: ./src
 
 jobs:
   lint:
@@ -29,24 +27,14 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v6
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: npm
-          cache-dependency-path: ${{ env.CWD }}/package-lock.json
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
 
       - name: Install dependencies
-        working-directory: ${{ env.CWD }}
-        run: npm ci
+        run: bun install --frozen-lockfile
 
-      - name: Run ESLint
-        working-directory: ${{ env.CWD }}
-        run: npx nx run-many --target lint
-
-      - name: Run Prettier
-        working-directory: ${{ env.CWD }}
-        run: npx prettier --check .
+      - name: Lint
+        run: bun run lint
 
   build:
     name: Build
@@ -56,35 +44,26 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v6
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: npm
-          cache-dependency-path: ${{ env.CWD }}/package-lock.json
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
 
       - name: Install dependencies
-        working-directory: ${{ env.CWD }}
-        run: npm ci
-
-      - name: Build
-        working-directory: ${{ env.CWD }}
-        run: npx nx run-many --target build
-
-      - name: Log Version
-        shell: pwsh
-        run: Write-Host ${{ inputs.version }}
+        run: bun install --frozen-lockfile
 
       - name: Set Version
         if: inputs.version != ''
-        working-directory: ${{ env.CWD }}
-        run: npx nx run-many --target version --args="--version=${{ inputs.version }}"
+        run: bun run set-version ${{ inputs.version }}
+
+      - name: Build
+        run: bun run build
 
       - name: Upload Build
         uses: actions/upload-artifact@v7
         with:
           name: Build
-          path: ${{ env.CWD }}/dist
+          path: |
+            packages/*/dist
+            packages/*/package.json
           retention-days: 1
 
   test:
@@ -95,26 +74,20 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v6
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: npm
-          cache-dependency-path: ${{ env.CWD }}/package-lock.json
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
 
       - name: Install dependencies
-        working-directory: ${{ env.CWD }}
-        run: npm ci
+        run: bun install --frozen-lockfile
 
       - name: Run Unit Tests
-        working-directory: ${{ env.CWD }}
-        run: npx nx run-many --target test -- --ci --coverage
+        run: bun run test -- --coverage
 
       - name: Codecov
         uses: codecov/codecov-action@v5.5.3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          directory: ${{ env.CWD }}/coverage
+          directory: packages/*/coverage
 
   e2e:
     needs:
@@ -143,32 +116,25 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
-      - name: Install Node.JS
+      - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
           node-version: ${{ matrix.node }}
-          cache: npm
-          cache-dependency-path: ${{ env.CWD }}/package-lock.json
 
-      - name: Install latest npm
-        run: |
-          npm i -g npm@8.19.2
-          node --version
-          npm --version
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
 
       - name: Install dependencies
-        working-directory: ${{ env.CWD }}
-        run: npm ci
+        run: bun install --frozen-lockfile
 
       - name: Download Build
         uses: actions/download-artifact@v8
         with:
           name: Build
-          path: ${{ env.CWD }}/dist
+          path: packages
 
       - name: Run E2E Tests
-        working-directory: ${{ env.CWD }}
-        run: npx nx run-many --target e2e --exclude pnpm
+        run: bun run test:e2e --filter='!@generate-license-file-e2e/pnpm'
 
   e2e-pnpm:
     needs:
@@ -185,15 +151,18 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    # Root package.json declares packageManager: bun, which corepack rejects when the
+    # matrix invokes pnpm. Tell corepack to ignore the project spec so the
+    # matrix-activated pnpm version is used.
+    env:
+      COREPACK_ENABLE_PROJECT_SPEC: "0"
+
     steps:
       - name: Checkout
         uses: actions/checkout@v6
 
-      - name: Install Node.JS
-        uses: actions/setup-node@v6
-        with:
-          cache: npm
-          cache-dependency-path: ${{ env.CWD }}/package-lock.json
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
 
       - name: Install pnpm
         run: |
@@ -201,15 +170,13 @@ jobs:
           corepack prepare pnpm@${{ matrix.pnpm }} --activate
 
       - name: Install dependencies
-        working-directory: ${{ env.CWD }}
-        run: npm ci
+        run: bun install --frozen-lockfile
 
       - name: Download Build
         uses: actions/download-artifact@v8
         with:
           name: Build
-          path: ${{ env.CWD }}/dist
+          path: packages
 
       - name: Run E2E Tests
-        working-directory: ${{ env.CWD }}
-        run: npx nx run pnpm:e2e
+        run: bun run test:e2e --filter='@generate-license-file-e2e/pnpm'

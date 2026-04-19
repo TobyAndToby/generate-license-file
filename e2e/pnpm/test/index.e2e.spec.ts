@@ -1,6 +1,7 @@
-import { exec } from "child_process";
-import { promisify } from "util";
-import fs from "fs/promises";
+import { exec } from "node:child_process";
+import fs from "node:fs/promises";
+import { promisify } from "node:util";
+import { afterEach, describe, expect, it } from "vitest";
 
 const execAsync = promisify(exec);
 
@@ -14,7 +15,7 @@ describe("when using pnpm", () => {
 
   it("should match the snapshot", async () => {
     await execAsync(
-      `node "../../src/dist/packages/generate-license-file/bin/generate-license-file" --input ${input} --output ${output} --overwrite --eol lf`
+      `node ../../packages/generate-license-file/bin/generate-license-file --input ${input} --output ${output} --overwrite --eol lf`,
     );
 
     const result = await fs.readFile(output, "utf8");

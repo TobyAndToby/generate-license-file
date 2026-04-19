@@ -1,0 +1,16 @@
+{
+  "name": "@generate-license-file/e2e-helpers",
+  "version": "0.0.1",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "lint": "biome check ."
+  },
+  "dependencies": {
+    "generate-license-file": "workspace:*"
+  },
+  "devDependencies": {
+    "vitest": "^4.1.2"
+  }
+}

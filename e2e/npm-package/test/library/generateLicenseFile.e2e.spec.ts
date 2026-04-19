@@ -1,30 +1,31 @@
-import {
-  describeEachLineEnding,
-  describeRelativeAndAbsolutePaths,
-} from "@generate-license-file/e2e-helpers";
-import fs from "fs/promises";
-import { generateLicenseFile, LineEnding } from "generate-license-file";
-import { lineEndings } from "generate-license-file/src/lib/lineEndings";
+import fs from "node:fs/promises";
+import { describeEachLineEnding, describeRelativeAndAbsolutePaths } from "@generate-license-file/e2e-helpers";
+import { generateLicenseFile, type LineEnding } from "generate-license-file";
+import { afterAll, beforeEach, describe, expect, it, vi } from "vitest";
 
-jest.mock("fs/promises", () => ({
-  ...jest.requireActual<typeof fs>("fs/promises"),
-  writeFile: jest.fn(),
-  mkdir: jest.fn(),
-}));
+vi.mock("node:fs/promises", async importOriginal => {
+  const actual = await importOriginal<typeof import("node:fs/promises")>();
+  return {
+    ...actual,
+    default: { ...actual, writeFile: vi.fn(), mkdir: vi.fn() },
+  };
+});
+
+const allLineEndings: LineEnding[] = ["crlf", "lf"];
 
 describe("generateLicenseFile", () => {
-  const mockedWriteFile = jest.mocked(fs.writeFile);
-  const mockedMkdir = jest.mocked(fs.mkdir);
+  const mockedWriteFile = vi.mocked(fs.writeFile);
+  const mockedMkdir = vi.mocked(fs.mkdir);
 
-  beforeEach(() => jest.resetAllMocks());
-  afterAll(() => jest.restoreAllMocks());
+  beforeEach(() => vi.resetAllMocks());
+  afterAll(() => vi.restoreAllMocks());
 
-  describeRelativeAndAbsolutePaths("./package.json", (packageJsonPath) =>
+  describeRelativeAndAbsolutePaths("./package.json", packageJsonPath =>
     describeEachLineEnding((lineEnding, lineEndingLiteral) => {
       let lineEndingsNotUnderTest: LineEnding[] = [];
 
       beforeEach(() => {
-        lineEndingsNotUnderTest = lineEndings.filter((x) => x !== lineEnding);
+        lineEndingsNotUnderTest = allLineEndings.filter(x => x !== lineEnding);
       });
 
       it("should match snapshot", async () => {
@@ -46,7 +47,7 @@ describe("generateLicenseFile", () => {
         expect(fileContent).toContain(expectedLineEndingValue);
       });
 
-      lineEndingsNotUnderTest.forEach((otherLineEnding) =>
+      for (const otherLineEnding of lineEndingsNotUnderTest) {
         it(`should not contain the incorrect line ending value (${otherLineEnding})`, async () => {
           const incorrectLineEndingValue = lineEndingLiteral;
           const outputPath = "/output/path.txt";
@@ -57,8 +58,8 @@ describe("generateLicenseFile", () => {
 
           const fileContent = mockedWriteFile.mock.calls[0][1];
           expect(fileContent).not.toContain(incorrectLineEndingValue);
-        })
-      );
+        });
+      }
 
       it("should write the file to the correct output path", async () => {
         const outputPath = "/output/path.txt";
@@ -71,14 +72,14 @@ describe("generateLicenseFile", () => {
 
       it("should create the output directory if it does not exist", async () => {
         const outputDirectory = "/output/path";
-        const outputPath = outputDirectory + "/filename.txt";
+        const outputPath = `${outputDirectory}/filename.txt`;
 
         await generateLicenseFile(packageJsonPath, outputPath, { lineEnding });
 
         const directoryPath = mockedMkdir.mock.calls[0][0];
         expect(directoryPath).toBe(outputDirectory);
       });
-    })
+    }),
   );
 
   it("should omit versions when omitVersions is true", async () => {

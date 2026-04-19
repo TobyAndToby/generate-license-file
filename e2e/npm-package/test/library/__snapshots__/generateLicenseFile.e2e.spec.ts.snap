@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`generateLicenseFile for a relative path for line ending crlf should match snapshot 1`] = `
+exports[`generateLicenseFile > for a relative path > for line ending crlf > should match snapshot 1`] = `
 "This file was generated with the generate-license-file npm package!
 https://www.npmjs.com/package/generate-license-file
 
@@ -88,7 +88,7 @@ https://www.npmjs.com/package/generate-license-file
 "
 `;
 
-exports[`generateLicenseFile for a relative path for line ending lf should match snapshot 1`] = `
+exports[`generateLicenseFile > for a relative path > for line ending lf > should match snapshot 1`] = `
 "This file was generated with the generate-license-file npm package!
 https://www.npmjs.com/package/generate-license-file
 
@@ -176,7 +176,7 @@ https://www.npmjs.com/package/generate-license-file
 "
 `;
 
-exports[`generateLicenseFile for an absolute path for line ending crlf should match snapshot 1`] = `
+exports[`generateLicenseFile > for an absolute path > for line ending crlf > should match snapshot 1`] = `
 "This file was generated with the generate-license-file npm package!
 https://www.npmjs.com/package/generate-license-file
 
@@ -264,7 +264,7 @@ https://www.npmjs.com/package/generate-license-file
 "
 `;
 
-exports[`generateLicenseFile for an absolute path for line ending lf should match snapshot 1`] = `
+exports[`generateLicenseFile > for an absolute path > for line ending lf > should match snapshot 1`] = `
 "This file was generated with the generate-license-file npm package!
 https://www.npmjs.com/package/generate-license-file
 
@@ -352,7 +352,7 @@ https://www.npmjs.com/package/generate-license-file
 "
 `;
 
-exports[`generateLicenseFile should omit versions when omitVersions is true 1`] = `
+exports[`generateLicenseFile > should omit versions when omitVersions is true 1`] = `
 "This file was generated with the generate-license-file npm package!
 https://www.npmjs.com/package/generate-license-file
 

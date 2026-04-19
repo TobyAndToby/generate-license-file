@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`when using pnpm should match the snapshot 1`] = `
+exports[`when using pnpm > should match the snapshot 1`] = `
 "This file was generated with the generate-license-file npm package!
 https://www.npmjs.com/package/generate-license-file
 

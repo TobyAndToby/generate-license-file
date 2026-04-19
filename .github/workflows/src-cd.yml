@@ -7,7 +7,6 @@ on:
 
 env:
   NODE_VERSION: 24
-  CWD: ./src
 
 jobs:
   get-version:
@@ -24,8 +23,7 @@ jobs:
         uses: battila7/get-version-action@v2
 
       - name: Log Version
-        shell: pwsh
-        run: Write-Host ${{ steps.get_version.outputs.version-without-v }}
+        run: echo "${{ steps.get_version.outputs.version-without-v }}"
 
   ci:
     needs:
@@ -55,34 +53,25 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: npm
-          cache-dependency-path: ${{ env.CWD }}/package-lock.json
           registry-url: https://registry.npmjs.org/
 
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+
       - name: Install dependencies
-        working-directory: ${{ env.CWD }}
-        run: npm ci
+        run: bun install --frozen-lockfile
 
       - name: Download Build
         uses: actions/download-artifact@v8
         with:
           name: Build
-          path: ${{ env.CWD }}/dist
+          path: packages
 
       - name: Get Latest Tag
         uses: tobysmith568/npm-publish-latest-tag@v1
         id: latest_tag
         with:
-          package-json: ${{ env.CWD }}/dist/packages/generate-license-file/package.json
-
-      - name: Download Build
-        uses: actions/download-artifact@v8
-        with:
-          name: Build
-          path: ${{ env.CWD }}/dist
+          package-json: packages/generate-license-file/package.json
 
       - name: Publish
-        working-directory: ${{ env.CWD }}
-        run: npx nx run-many --target publish --args="--tag=${{ steps.latest_tag.outputs.latest-tag }}"
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.npm_token }}
+        run: bun run publish --tag ${{ steps.latest_tag.outputs.latest-tag }}

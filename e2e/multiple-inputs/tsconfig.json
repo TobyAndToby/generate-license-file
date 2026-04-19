@@ -1,13 +1,4 @@
 {
-  "compilerOptions": {
-    "target": "es2015",
-    "module": "commonjs",
-    "declaration": true,
-    "outDir": "./dist",
-    "rootDir": "test",
-    "strict": true,
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true
-  },
-  "include": ["test/**/*.ts"]
+  "extends": "../../tsconfig.base.json",
+  "include": ["test/**/*"]
 }

@@ -1,4 +1,5 @@
 import { getLicenseFileText } from "generate-license-file";
+import { describe, expect, it } from "vitest";
 
 describe("getLicenseFileText", () => {
   it("should match snapshot", async () => {

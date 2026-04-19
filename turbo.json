@@ -1,0 +1,61 @@
+{
+  "$schema": "https://turborepo.dev/schema.json",
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "inputs": ["src/**", "tsconfig*.json", "tsdown.config.ts", "bin/**"],
+      "outputs": ["dist/**"]
+    },
+    "test": {
+      "inputs": ["src/**", "test/**", "tsconfig*.json", "vitest.config.ts"],
+      "cache": true
+    },
+    "dev": {
+      "persistent": true,
+      "cache": false
+    },
+    "serve": {
+      "persistent": true,
+      "cache": false
+    },
+    "lint": {
+      "inputs": ["src/**", "test/**", "{workspaceRoot}/biome.json"],
+      "cache": true
+    },
+    "e2e": {
+      "dependsOn": ["^build"],
+      "cache": false
+    },
+    "set-version": {
+      "cache": false
+    },
+    "publish": {
+      "dependsOn": ["build"],
+      "cache": false
+    },
+    "@generate-license-file-e2e/pnpm#e2e": {
+      "dependsOn": ["generate-license-file#build", "@generate-license-file-e2e/pnpm#install-deps"],
+      "cache": false
+    },
+    "@generate-license-file-e2e/pnpm#install-deps": {
+      "inputs": ["package.json", "pnpm-lock.yaml"],
+      "cache": false
+    },
+    "@generate-license-file-e2e/npm-monorepo#e2e": {
+      "dependsOn": ["generate-license-file#build"],
+      "cache": false
+    },
+    "@generate-license-file/website#build": {
+      "inputs": [
+        "docs/**",
+        "versioned_docs/**",
+        "versioned_sidebars/**",
+        "src/**",
+        "static/**",
+        "sidebars.js",
+        "docusaurus.config.js"
+      ],
+      "outputs": ["build/**"]
+    }
+  }
+}
