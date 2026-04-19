@@ -53,6 +53,7 @@
         "dep-two-duplicate": "workspace:*",
       },
       "devDependencies": {
+        "@generate-license-file/e2e-helpers": "workspace:*",
         "generate-license-file": "workspace:*",
       },
     },
@@ -64,6 +65,7 @@
         "dep-three": "workspace:*",
       },
       "devDependencies": {
+        "@generate-license-file/e2e-helpers": "workspace:*",
         "generate-license-file": "workspace:*",
       },
     },
@@ -74,6 +76,10 @@
         "dep-three": "workspace:*",
         "nested-a": "workspace:*",
         "nested-b": "workspace:*",
+      },
+      "devDependencies": {
+        "@generate-license-file/e2e-helpers": "workspace:*",
+        "generate-license-file": "workspace:*",
       },
     },
     "e2e/npm-monorepo/packages/nested-a": {
@@ -114,6 +120,7 @@
         "dep-one": "workspace:*",
       },
       "devDependencies": {
+        "@generate-license-file/e2e-helpers": "workspace:*",
         "generate-license-file": "workspace:*",
       },
       "optionalDependencies": {
@@ -176,7 +183,6 @@
     },
     "packages/generate-license-file": {
       "name": "generate-license-file",
-      "version": "9.9.9-test.1",
       "bin": {
         "generate-license-file": "bin/generate-license-file",
       },
@@ -198,7 +204,6 @@
     },
     "packages/webpack-plugin": {
       "name": "generate-license-file-webpack-plugin",
-      "version": "9.9.9-test.1",
       "dependencies": {
         "generate-license-file": "workspace:*",
         "webpack": "^5.75.0",

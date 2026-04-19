@@ -28,7 +28,7 @@ export interface ProgramOptions {
   omitVersions: boolean;
 }
 
-export const mainCommand = new Command()
+export const createMainCommand = () => new Command()
   .name("generate-license-file")
   .description("Generates a text file containing all of the licenses for your production dependencies")
   .helpOption("-h,--help", "Display help text")

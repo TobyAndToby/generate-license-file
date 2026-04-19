@@ -1,6 +1,7 @@
 {
   "name": "@generate-license-file/e2e-helpers",
   "version": "0.0.1",
+  "type": "module",
   "exports": {
     ".": "./src/index.ts"
   },
