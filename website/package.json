@@ -17,8 +17,8 @@
     "typecheck": "tsc"
   },
   "dependencies": {
-    "@docusaurus/core": "^3.0.1",
-    "@docusaurus/preset-classic": "^3.0.1",
+    "@docusaurus/core": "^3.10.1",
+    "@docusaurus/preset-classic": "^3.10.1",
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",
     "@mdx-js/react": "^3.0.0",
