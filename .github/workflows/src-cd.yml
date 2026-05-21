@@ -84,5 +84,3 @@ jobs:
       - name: Publish
         working-directory: ${{ env.CWD }}
         run: npx nx run-many --target publish --args="--tag=${{ steps.latest_tag.outputs.latest-tag }}"
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.npm_token }}
