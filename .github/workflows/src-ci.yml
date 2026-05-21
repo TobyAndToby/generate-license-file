@@ -194,6 +194,7 @@ jobs:
         uses: actions/setup-node@v6
         with:
           cache: npm
+          node-version: ${{ env.NODE_VERSION }}
           cache-dependency-path: ${{ env.CWD }}/package-lock.json
 
       - name: Install pnpm
