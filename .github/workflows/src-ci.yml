@@ -180,6 +180,7 @@ jobs:
         pnpm:
           - 9.15.4
           - 10.0.0
+          - 11.0.0
 
     name: E2E (pnpm ${{ matrix.pnpm }})
 
