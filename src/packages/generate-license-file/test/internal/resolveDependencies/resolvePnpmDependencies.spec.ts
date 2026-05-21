@@ -93,7 +93,7 @@ describe("resolveDependenciesForPnpmProject", () => {
 
       await expect(resolveDependenciesForPnpmProject).rejects.toThrow(
         "Unsupported pnpm version: 7.32.999.\n" +
-          "Generate license file currently only supports pnpm versions >=7.33.0 & >=8.0.0\n" +
+          "Generate license file currently only supports pnpm versions >=7.33.0\n" +
           "Please either switch to a supported version of pnpm or raise an issue on the generate-license-file repository for us to support your version of pnpm:\n" +
           "https://github.com/TobyAndToby/generate-license-file",
       );
@@ -111,6 +111,9 @@ describe("resolveDependenciesForPnpmProject", () => {
   describe.each([
     { major: 7, minor: 33, patch: 0 },
     { major: 8, minor: 0, patch: 0 },
+    { major: 9, minor: 0, patch: 0 },
+    { major: 10, minor: 0, patch: 0 },
+    { major: 11, minor: 0, patch: 0 },
   ])("when the pnpm version is a supported version (%p)", pnpmVersion => {
     it("should call getPnpmProjectDependencies", async () => {
       mockedGetPnpmVersion.mockResolvedValue(pnpmVersion);
