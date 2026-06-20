@@ -146,6 +146,7 @@ jobs:
         pnpm:
           - 9.15.4
           - 10.0.0
+          - 11.0.0
 
     name: E2E (pnpm ${{ matrix.pnpm }})
 
@@ -160,6 +161,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: ${{ env.NODE_VERSION }}
 
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
