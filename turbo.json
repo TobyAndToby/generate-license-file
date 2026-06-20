@@ -22,6 +22,11 @@
       "inputs": ["src/**", "test/**", "{workspaceRoot}/biome.json"],
       "cache": true
     },
+    "typecheck": {
+      "dependsOn": ["^build"],
+      "inputs": ["src/**", "docs/**", "versioned_docs/**", "tsconfig*.json"],
+      "cache": true
+    },
     "e2e": {
       "dependsOn": ["^build"],
       "cache": false
