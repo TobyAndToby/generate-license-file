@@ -38,7 +38,7 @@
         "@docusaurus/types": "^3.0.1",
         "@types/react": "^19.0.0",
         "@types/react-toggle": "^4.0.3",
-        "typescript": "^5.3.2",
+        "typescript": "^6.0.0",
       },
     },
     "e2e/config-file": {
@@ -2962,8 +2962,6 @@
     "@generate-license-file-e2e/pnpm/dep-two": ["dep-two@file:e2e/test-dependencies/dep-two", {}],
 
     "@generate-license-file-e2e/pnpm/dep-two-duplicate": ["dep-two-duplicate@file:e2e/test-dependencies/dep-two-duplicate", {}],
-
-    "@generate-license-file/website/typescript": ["typescript@5.9.3", "", { "bin": { "tsc": "bin/tsc", "tsserver": "bin/tsserver" } }, "sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw=="],
 
     "@jest/types/@jest/schemas": ["@jest/schemas@29.6.3", "", { "dependencies": { "@sinclair/typebox": "^0.27.8" } }, "sha512-mo5j5X+jIZmJQveBKeS/clAueipV7KgiX1vMgCxam1RNYiqE1w62n0/tJJnHtjW8ZHcQco5gY85jA3mi0L+nSA=="],
 
