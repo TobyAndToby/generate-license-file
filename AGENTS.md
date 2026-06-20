@@ -4,49 +4,39 @@ CLI and library tool that aggregates third-party production dependency licenses 
 
 ## Project Structure
 
-NX monorepo. All source lives under `src/` and commands are run from there:
+Bun + Turborepo monorepo with three workspace roots:
 
 ```
-src/
-  packages/
-    generate-license-file/       # Main package: CLI + library API
-    webpack-plugin/              # Webpack integration (wraps main package)
-    e2e-helpers/                 # Shared E2E test utilities
-    generate-license-file-e2e/   # E2E test suites (npm, pnpm, config-file, etc.)
-  dist/                          # Build output (gitignored)
+packages/
+  generate-license-file/       # Main package: CLI + library API
+  webpack-plugin/              # Webpack integration (wraps main package)
+  e2e-helpers/                 # Shared E2E test utilities
+apps/
+  website/                     # Docusaurus documentation site
+e2e/
+  config-file/                 # E2E: config file support
+  multiple-inputs/             # E2E: multiple input paths
+  npm-package/                 # E2E: npm package resolution
+  optional-dependencies/       # E2E: optional deps handling
+  pnpm/                        # E2E: pnpm workspace support
+  test-dependencies/           # E2E: test dependency fixtures
 ```
 
 ## Common Commands
 
-All commands must be run from the `src/` directory:
+All commands are run from the repo root using Turbo:
 
 ```bash
-npm run build          # Build all packages (outputs to src/dist/)
-npm run lint           # ESLint --fix + Prettier --write
-npm run test           # Unit tests across all packages
-npm run test:e2e       # End-to-end tests
-```
-
-**Running tests for a specific package:**
-```bash
-nx test generate-license-file
-nx test webpack-plugin
+bun run build          # Build all packages (tsdown → dist/)
+bun run lint           # Biome check across all packages
+bun run test           # Unit tests (Vitest) across all packages
+bun run test:e2e       # End-to-end tests
+bun run dev            # Dev mode (website + watch builds)
 ```
 
 **Running a single test file:**
 ```bash
-nx run generate-license-file:test --testFile=packages/generate-license-file/test/foo.spec.ts
-```
-
-Or pass Jest flags directly:
-```bash
-nx run generate-license-file:test -- --testNamePattern="my test name"
-```
-
-**Running the built CLI locally:**
-```bash
-nx run generate-license-file:run
-# or: node ./dist/packages/generate-license-file/bin/generate-license-file
+cd packages/generate-license-file && bunx vitest run test/path/to/file.spec.ts
 ```
 
 ## Architecture: Main Package (`generate-license-file`)
@@ -85,12 +75,11 @@ Config file support via cosmiconfig (looks for `.glf`, `.generatelicensefile`, o
 
 ## Code Conventions
 
-- **Prettier**: `printWidth: 100`, double quotes, trailing commas, `prettier-plugin-organize-imports`
-- **TypeScript**: strict mode, `ES2015` target, `ESNext` modules
-- Tests use **Jest** with `jest-when` for mock setup; test files live in `test/` alongside `src/`
-- The `/* istanbul ignore */` comment is used to exclude CLI entry points and unreachable branches from coverage
-- NX enforces module boundaries via ESLint — packages cannot import from each other arbitrarily
+- **Biome**: `lineWidth: 120`, double quotes, trailing commas, LF line endings, organized imports
+- **TypeScript**: strict mode, built with tsdown (dual CJS/ESM output)
+- Tests use **Vitest** with `vitest-when` for mock setup; test files live in `test/` alongside `src/`
+- Package manager: **Bun** (`bun.lock`)
 
 ## Adding a New Package Manager
 
-The package manager is detected in `src/lib/internal/resolveDependencies/index.ts` by checking for a lock file. Add a new `case` to the switch and implement a corresponding resolver module following the pattern of `resolveNpmDependencies.ts`.
+The package manager is detected in `packages/generate-license-file/src/lib/internal/resolveDependencies/index.ts` by checking for a lock file. Add a new `case` to the switch and implement a corresponding resolver module following the pattern of `resolveNpmDependencies.ts`.

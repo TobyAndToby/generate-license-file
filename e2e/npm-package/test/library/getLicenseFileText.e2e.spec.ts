@@ -1,17 +1,17 @@
-import {
-  describeEachLineEnding,
-  describeRelativeAndAbsolutePaths,
-} from "@generate-license-file/e2e-helpers";
-import { getLicenseFileText, LineEnding } from "generate-license-file";
-import { lineEndings } from "generate-license-file/src/lib/lineEndings";
+import { describeEachLineEnding, describeRelativeAndAbsolutePaths } from "@generate-license-file/e2e-helpers";
+import type { LineEnding } from "generate-license-file";
+import { getLicenseFileText } from "generate-license-file";
+import { beforeEach, describe, expect, it } from "vitest";
+
+const allLineEndings: LineEnding[] = ["crlf", "lf"];
 
 describe("getLicenseFileText", () => {
-  describeRelativeAndAbsolutePaths("./package.json", (packageJsonPath) =>
+  describeRelativeAndAbsolutePaths("./package.json", packageJsonPath =>
     describeEachLineEnding((lineEnding, lineEndingLiteral) => {
       let lineEndingsNotUnderTest: LineEnding[] = [];
 
       beforeEach(() => {
-        lineEndingsNotUnderTest = lineEndings.filter((x) => x !== lineEnding);
+        lineEndingsNotUnderTest = allLineEndings.filter(x => x !== lineEnding);
       });
 
       it("should match snapshot", async () => {
@@ -32,7 +32,7 @@ describe("getLicenseFileText", () => {
         expect(result).toContain(expectedLineEndingValue);
       });
 
-      lineEndingsNotUnderTest.forEach((otherLineEnding) =>
+      for (const otherLineEnding of lineEndingsNotUnderTest) {
         it(`should not contain the incorrect line ending value (${otherLineEnding})`, async () => {
           const incorrectLineEndingValue = lineEndingLiteral;
 
@@ -41,9 +41,9 @@ describe("getLicenseFileText", () => {
           });
 
           expect(result).not.toContain(incorrectLineEndingValue);
-        })
-      );
-    })
+        });
+      }
+    }),
   );
 
   it("should omit versions when omitVersions is true", async () => {

@@ -1,0 +1,8 @@
+{
+  "name": "nested-a",
+  "version": "1.0.0",
+  "license": "ISC",
+  "dependencies": {
+    "dep-one": "workspace:*"
+  }
+}

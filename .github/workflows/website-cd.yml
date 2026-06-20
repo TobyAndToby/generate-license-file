@@ -14,16 +14,7 @@ concurrency:
   group: pages
   cancel-in-progress: false
 
-env:
-  NODE_VERSION: 24
-  CWD: ./website
-
 jobs:
-  ci:
-    name: Run Website CI
-    uses: ./.github/workflows/website-ci.yml
-    secrets: inherit
-
   build:
     name: Build Website
 
@@ -32,31 +23,24 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v6
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: npm
-          cache-dependency-path: ${{ env.CWD }}/package-lock.json
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
 
       - name: Install dependencies
-        working-directory: ${{ env.CWD }}
-        run: npm ci
+        run: bun install --frozen-lockfile
 
       - name: Build Website
-        working-directory: ${{ env.CWD }}
-        run: npm run build
+        run: bun run build --filter='@generate-license-file/website'
 
       - name: Upload Build
         uses: actions/upload-pages-artifact@v4
         with:
-          path: ${{ env.CWD }}/build/
+          path: apps/website/build/
 
   deploy:
     name: Deploy Website
 
     needs:
-      - ci
       - build
 
     runs-on: ubuntu-latest

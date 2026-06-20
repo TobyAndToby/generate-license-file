@@ -1,12 +1,18 @@
 import { describeRelativeAndAbsolutePaths } from "@generate-license-file/e2e-helpers";
-import { getProjectLicenses } from "generate-license-file";
+import { getProjectLicenses, type ILicense } from "generate-license-file";
+import { describe, expect, it } from "vitest";
+
+const sortLicenses = (licenses: ILicense[]) =>
+  licenses
+    .map(l => ({ ...l, dependencies: [...l.dependencies].sort() }))
+    .sort((a, b) => a.dependencies[0].localeCompare(b.dependencies[0]));
 
 describe("getProjectLicenses", () => {
-  describeRelativeAndAbsolutePaths("./package.json", (packageJsonPath) => {
+  describeRelativeAndAbsolutePaths("./package.json", packageJsonPath => {
     it("should match snapshot", async () => {
       const result = await getProjectLicenses(packageJsonPath);
 
-      expect(result).toMatchSnapshot();
+      expect(sortLicenses(result)).toMatchSnapshot();
     });
   });
 
@@ -15,6 +21,6 @@ describe("getProjectLicenses", () => {
       omitVersions: true,
     });
 
-    expect(result).toMatchSnapshot();
+    expect(sortLicenses(result)).toMatchSnapshot();
   });
 });

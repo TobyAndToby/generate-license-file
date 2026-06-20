@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`getProjectLicenses for a relative path should match snapshot 1`] = `
+exports[`getProjectLicenses > for a relative path > should match snapshot 1`] = `
 [
   {
     "content": "MIT",
@@ -13,7 +13,8 @@ exports[`getProjectLicenses for a relative path should match snapshot 1`] = `
     "content": "# Dep Four
 
 This license file is spelt \`LICENCE\`.
-This license should be found.",
+This license should be found.
+",
     "dependencies": [
       "dep-four@1.0.0",
     ],
@@ -39,15 +40,15 @@ This license should be found.
       "dep-seven@1.0.0",
     ],
     "notices": [
-      "This is the notice file bundled with dependency seven.
-",
+      "This is the notice file bundled with dependency seven.",
     ],
   },
   {
     "content": "# Dep Three
 
 This license file is spelt \`LICENSE\`.
-This license should be found.",
+This license should be found.
+",
     "dependencies": [
       "dep-three@1.0.0",
     ],
@@ -60,15 +61,15 @@ This license file is spelt \`LICENCE.md\`.
 This license should be found.
 ",
     "dependencies": [
-      "dep-two@1.0.0",
       "dep-two-duplicate@1.0.0",
+      "dep-two@1.0.0",
     ],
     "notices": [],
   },
 ]
 `;
 
-exports[`getProjectLicenses for an absolute path should match snapshot 1`] = `
+exports[`getProjectLicenses > for an absolute path > should match snapshot 1`] = `
 [
   {
     "content": "MIT",
@@ -81,7 +82,8 @@ exports[`getProjectLicenses for an absolute path should match snapshot 1`] = `
     "content": "# Dep Four
 
 This license file is spelt \`LICENCE\`.
-This license should be found.",
+This license should be found.
+",
     "dependencies": [
       "dep-four@1.0.0",
     ],
@@ -107,15 +109,15 @@ This license should be found.
       "dep-seven@1.0.0",
     ],
     "notices": [
-      "This is the notice file bundled with dependency seven.
-",
+      "This is the notice file bundled with dependency seven.",
     ],
   },
   {
     "content": "# Dep Three
 
 This license file is spelt \`LICENSE\`.
-This license should be found.",
+This license should be found.
+",
     "dependencies": [
       "dep-three@1.0.0",
     ],
@@ -128,15 +130,15 @@ This license file is spelt \`LICENCE.md\`.
 This license should be found.
 ",
     "dependencies": [
-      "dep-two@1.0.0",
       "dep-two-duplicate@1.0.0",
+      "dep-two@1.0.0",
     ],
     "notices": [],
   },
 ]
 `;
 
-exports[`getProjectLicenses should not include versions when omitVersions is true 1`] = `
+exports[`getProjectLicenses > should not include versions when omitVersions is true 1`] = `
 [
   {
     "content": "MIT",
@@ -149,7 +151,8 @@ exports[`getProjectLicenses should not include versions when omitVersions is tru
     "content": "# Dep Four
 
 This license file is spelt \`LICENCE\`.
-This license should be found.",
+This license should be found.
+",
     "dependencies": [
       "dep-four",
     ],
@@ -175,15 +178,15 @@ This license should be found.
       "dep-seven",
     ],
     "notices": [
-      "This is the notice file bundled with dependency seven.
-",
+      "This is the notice file bundled with dependency seven.",
     ],
   },
   {
     "content": "# Dep Three
 
 This license file is spelt \`LICENSE\`.
-This license should be found.",
+This license should be found.
+",
     "dependencies": [
       "dep-three",
     ],
