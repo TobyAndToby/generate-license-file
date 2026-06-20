@@ -1,5 +1,12 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": ["local>TobyAndToby/renovate-config"],
-  "stopUpdatingLabel": "parked"
+  "stopUpdatingLabel": "parked",
+  "packageRules": [
+    {
+      "matchPackageNames": ["ora"],
+      "enabled": false,
+      "description": "Pinned to v5 (CJS). Later majors are pure ESM; not worth the upgrade churn for now."
+    }
+  ]
 }
