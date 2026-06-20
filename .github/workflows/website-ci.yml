@@ -39,7 +39,5 @@ jobs:
       - name: Typecheck
         run: bun run typecheck --filter='@generate-license-file/website'
 
-      # Builds with onBrokenLinks / onBrokenAnchors / onBrokenMarkdownLinks set to
-      # "throw" in docusaurus.config.js, so broken links and anchors fail the job.
       - name: Build
         run: bun run build --filter='@generate-license-file/website'
