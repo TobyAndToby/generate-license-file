@@ -184,8 +184,6 @@ describe("ConsoleUtils", () => {
   });
 
   const setMockIsSpinning = (state: boolean) => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-expect-error
     // noinspection JSConstantReassignment
     mockSpinner.isSpinning = state;
   };
