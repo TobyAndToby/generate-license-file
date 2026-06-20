@@ -17,7 +17,8 @@ const TabItem = styled.div<{ isActive: boolean }>`
 `;
 
 export const Tabs: FC<PropsWithChildren<Record<string, unknown>>> = ({ children }) => {
-  const [activeTabLabel, setActiveTabLabel] = useState(children[0].props.label);
+  const tabs = React.Children.toArray(children);
+  const [activeTabLabel, setActiveTabLabel] = useState((tabs[0] as any)?.props.label);
 
   return (
     <>

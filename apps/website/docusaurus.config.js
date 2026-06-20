@@ -7,8 +7,14 @@ const config = {
   url: "https://generate-license-file.js.org",
   baseUrl: "/",
   onBrokenLinks: "throw",
-  onBrokenMarkdownLinks: "throw",
+  onBrokenAnchors: "throw",
   favicon: "favicon.ico",
+
+  markdown: {
+    hooks: {
+      onBrokenMarkdownLinks: "throw",
+    },
+  },
 
   organizationName: "TobyAndToby",
   projectName: "generate-license-file",
