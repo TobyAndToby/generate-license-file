@@ -33,7 +33,7 @@ jobs:
         run: bun run build --filter='@generate-license-file/website'
 
       - name: Upload Build
-        uses: actions/upload-pages-artifact@v4
+        uses: actions/upload-pages-artifact@v5
         with:
           path: apps/website/build/
 
