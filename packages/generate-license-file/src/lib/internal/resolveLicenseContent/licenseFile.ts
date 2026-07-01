@@ -23,7 +23,10 @@ export const licenseFile: Resolution = async inputs => {
     maxDepth: 1,
   });
 
-  const filteredLicenseFiles = licenseFiles.filter(file => !extensionDenyList.includes(extname(file)));
+  // glob returns matches in filesystem order, which differs between
+  // case-sensitive and case-insensitive filesystems. Sort so the chosen
+  // file (and the warning) are deterministic across platforms.
+  const filteredLicenseFiles = licenseFiles.filter(file => !extensionDenyList.includes(extname(file))).sort();
 
   if (filteredLicenseFiles.length === 0) {
     return null;

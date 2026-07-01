@@ -51,6 +51,26 @@ describe("licenseFile", () => {
     expect(result).toBe("license contents");
   });
 
+  it("should pick the same file regardless of the order glob returns matches in", async () => {
+    // glob returns matches in filesystem order, which differs between
+    // case-sensitive and case-insensitive filesystems. The chosen file must
+    // not depend on that order.
+    const license = "/some/directory/LICENSE";
+    const thirdParty = "/some/directory/LICENSE-3rdparty.csv";
+
+    when(mockedReadFile).calledWith(license, { encoding: "utf-8" }).thenResolve("license contents");
+    when(mockedReadFile).calledWith(thirdParty, { encoding: "utf-8" }).thenResolve("third party contents");
+
+    mockedGlob.mockResolvedValueOnce([license, thirdParty]);
+    const forwards = await licenseFile(resolutionInputs);
+
+    mockedGlob.mockResolvedValueOnce([thirdParty, license]);
+    const backwards = await licenseFile(resolutionInputs);
+
+    expect(forwards).toBe("license contents");
+    expect(backwards).toBe("license contents");
+  });
+
   it.each(
     extensionDenyList,
   )("should return null if all license files are in the extension deny list", async extension => {
