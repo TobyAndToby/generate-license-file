@@ -64,7 +64,7 @@
   },
   "dependencies": {
     "@commander-js/extra-typings": "^14.0.0",
-    "@npmcli/arborist": "^9.0.0",
+    "@npmcli/arborist": "^10.0.0",
     "cli-spinners": "^3.4.0",
     "commander": "^14.0.2",
     "cosmiconfig": "^9.0.0",
