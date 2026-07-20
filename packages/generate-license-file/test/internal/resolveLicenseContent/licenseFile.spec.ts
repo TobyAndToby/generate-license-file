@@ -51,6 +51,32 @@ describe("licenseFile", () => {
     expect(result).toBe("license contents");
   });
 
+  it("should pick the base license file over decorated variants regardless of glob's order or casing", async () => {
+    // glob({ nocase: true }) returns matches using the pattern's case on
+    // case-insensitive filesystems (macOS yields "license") but the on-disk
+    // case elsewhere (Linux yields "LICENSE"), in filesystem order either way.
+    // The real license must win over a decorated variant like
+    // "LICENSE-3rdparty.csv" on both, so the output is identical cross-platform.
+    const upperLicense = "/some/directory/LICENSE";
+    const lowerLicense = "/some/directory/license";
+    const thirdParty = "/some/directory/LICENSE-3rdparty.csv";
+
+    when(mockedReadFile).calledWith(upperLicense, { encoding: "utf-8" }).thenResolve("license contents");
+    when(mockedReadFile).calledWith(lowerLicense, { encoding: "utf-8" }).thenResolve("license contents");
+    when(mockedReadFile).calledWith(thirdParty, { encoding: "utf-8" }).thenResolve("third party contents");
+
+    // Case-sensitive filesystem (e.g. Linux): glob yields the on-disk "LICENSE"
+    mockedGlob.mockResolvedValueOnce([thirdParty, upperLicense]);
+    const caseSensitive = await licenseFile(resolutionInputs);
+
+    // Case-insensitive filesystem (e.g. macOS): glob yields the pattern's "license"
+    mockedGlob.mockResolvedValueOnce([thirdParty, lowerLicense]);
+    const caseInsensitive = await licenseFile(resolutionInputs);
+
+    expect(caseSensitive).toBe("license contents");
+    expect(caseInsensitive).toBe("license contents");
+  });
+
   it.each(
     extensionDenyList,
   )("should return null if all license files are in the extension deny list", async extension => {
