@@ -46,7 +46,18 @@ describe("pnpmCli.utils", () => {
       expect(mockedExecAsync).toHaveBeenCalledTimes(1);
       expect(mockedExecAsync).toHaveBeenCalledWith("pnpm licenses list --json --prod", {
         cwd: projectDirectory,
+        maxBuffer: 256 * 1024 * 1024,
       });
+    });
+
+    it("should not use the default exec maxBuffer, which large monorepos exceed", async () => {
+      const projectDirectory = "/path/to/project";
+      mockedExecAsync.mockResolvedValue({ stdout: "{}" } as MockExecStdOut);
+
+      await getPnpmProjectDependencies(projectDirectory);
+
+      const [, options] = mockedExecAsync.mock.calls[0];
+      expect(options?.maxBuffer).toBeGreaterThan(1024 * 1024);
     });
 
     it("should be able to handle <9.0.0 command output", async () => {

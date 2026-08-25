@@ -35,8 +35,15 @@ export const getPnpmVersion = async (): Promise<PnpmVersion> => {
   return { major, minor, patch };
 };
 
+// pnpm licenses list output can grow past exec's 1MB default maxBuffer on large
+// monorepos, so raise it to a ceiling we won't realistically hit.
+const licensesMaxBuffer = 256 * 1024 * 1024;
+
 export const getPnpmProjectDependencies = async (projectDirectory: string): Promise<PnpmDependency[]> => {
-  const { stdout } = await execAsync("pnpm licenses list --json --prod", { cwd: projectDirectory });
+  const { stdout } = await execAsync("pnpm licenses list --json --prod", {
+    cwd: projectDirectory,
+    maxBuffer: licensesMaxBuffer,
+  });
 
   const parsedOutput = JSON.parse(stdout);
   const commandOutput = pnpmLsJsonStdOutValidator.safeParse(parsedOutput);
