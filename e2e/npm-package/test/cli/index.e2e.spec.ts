@@ -177,7 +177,9 @@ describe("cli", () => {
       });
 
       it("should return the current version when --version is given", async () => {
-        const versionInPackageJson = "*";
+        const { version: versionInPackageJson } = JSON.parse(
+          await fs.readFile("../../packages/generate-license-file/package.json", "utf8"),
+        );
 
         const { stdout } = await execAsync(
           `node ../../packages/generate-license-file/bin/generate-license-file --version`,
@@ -187,7 +189,9 @@ describe("cli", () => {
       });
 
       it("should return the current version when -v is given", async () => {
-        const versionInPackageJson = "*";
+        const { version: versionInPackageJson } = JSON.parse(
+          await fs.readFile("../../packages/generate-license-file/package.json", "utf8"),
+        );
 
         const { stdout } = await execAsync(`node ../../packages/generate-license-file/bin/generate-license-file -v`);
 
