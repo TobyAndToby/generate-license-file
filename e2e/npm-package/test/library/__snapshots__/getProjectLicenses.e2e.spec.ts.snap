@@ -3,6 +3,18 @@
 exports[`getProjectLicenses > for a relative path > should match snapshot 1`] = `
 [
   {
+    "content": "# Dep Eight
+
+This license file is spelt \`LICENSE\`.
+This license should be found, even though a decorated variant
+(\`LICENSE-3rdparty.csv\`) also exists alongside it.
+",
+    "dependencies": [
+      "dep-eight@1.0.0",
+    ],
+    "notices": [],
+  },
+  {
     "content": "MIT",
     "dependencies": [
       "dep-five@1.0.0",
@@ -72,6 +84,18 @@ This license should be found.
 exports[`getProjectLicenses > for an absolute path > should match snapshot 1`] = `
 [
   {
+    "content": "# Dep Eight
+
+This license file is spelt \`LICENSE\`.
+This license should be found, even though a decorated variant
+(\`LICENSE-3rdparty.csv\`) also exists alongside it.
+",
+    "dependencies": [
+      "dep-eight@1.0.0",
+    ],
+    "notices": [],
+  },
+  {
     "content": "MIT",
     "dependencies": [
       "dep-five@1.0.0",
@@ -140,6 +164,18 @@ This license should be found.
 
 exports[`getProjectLicenses > should not include versions when omitVersions is true 1`] = `
 [
+  {
+    "content": "# Dep Eight
+
+This license file is spelt \`LICENSE\`.
+This license should be found, even though a decorated variant
+(\`LICENSE-3rdparty.csv\`) also exists alongside it.
+",
+    "dependencies": [
+      "dep-eight",
+    ],
+    "notices": [],
+  },
   {
     "content": "MIT",
     "dependencies": [

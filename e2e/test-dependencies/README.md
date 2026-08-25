@@ -10,3 +10,4 @@
 | dep-five        | NO LICENSE FILE | TRUE  | The README should be used as a substitute for the license file. |
 | dep-six         | LICENSE.md      | TRUE  | Should not be used in a test bed that also uses `dep-one`       |
 | dep-seven       | LICENSE.md      | TRUE  |                                                                 |
+| dep-eight       | LICENSE         | TRUE  | Also has a `LICENSE-3rdparty.csv` file, which should not be found.  |
