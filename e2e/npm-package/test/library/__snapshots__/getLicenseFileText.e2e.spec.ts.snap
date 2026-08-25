@@ -6,6 +6,20 @@ https://www.npmjs.com/package/generate-license-file
 
 The following npm package may be included in this product:
 
+ - dep-eight@1.0.0
+
+This package contains the following license:
+
+# Dep Eight
+
+This license file is spelt \`LICENSE\`.
+This license should be found, even though a decorated variant
+(\`LICENSE-3rdparty.csv\`) also exists alongside it.
+
+-----------
+
+The following npm package may be included in this product:
+
  - dep-four@1.0.0
 
 This package contains the following license:
@@ -91,6 +105,20 @@ https://www.npmjs.com/package/generate-license-file
 exports[`getLicenseFileText > for a relative path > for line ending lf > should match snapshot 1`] = `
 "This file was generated with the generate-license-file npm package!
 https://www.npmjs.com/package/generate-license-file
+
+The following npm package may be included in this product:
+
+ - dep-eight@1.0.0
+
+This package contains the following license:
+
+# Dep Eight
+
+This license file is spelt \`LICENSE\`.
+This license should be found, even though a decorated variant
+(\`LICENSE-3rdparty.csv\`) also exists alongside it.
+
+-----------
 
 The following npm package may be included in this product:
 
@@ -182,6 +210,20 @@ https://www.npmjs.com/package/generate-license-file
 
 The following npm package may be included in this product:
 
+ - dep-eight@1.0.0
+
+This package contains the following license:
+
+# Dep Eight
+
+This license file is spelt \`LICENSE\`.
+This license should be found, even though a decorated variant
+(\`LICENSE-3rdparty.csv\`) also exists alongside it.
+
+-----------
+
+The following npm package may be included in this product:
+
  - dep-four@1.0.0
 
 This package contains the following license:
@@ -270,6 +312,20 @@ https://www.npmjs.com/package/generate-license-file
 
 The following npm package may be included in this product:
 
+ - dep-eight@1.0.0
+
+This package contains the following license:
+
+# Dep Eight
+
+This license file is spelt \`LICENSE\`.
+This license should be found, even though a decorated variant
+(\`LICENSE-3rdparty.csv\`) also exists alongside it.
+
+-----------
+
+The following npm package may be included in this product:
+
  - dep-four@1.0.0
 
 This package contains the following license:
@@ -355,6 +411,20 @@ https://www.npmjs.com/package/generate-license-file
 exports[`getLicenseFileText > should omit versions when omitVersions is true 1`] = `
 "This file was generated with the generate-license-file npm package!
 https://www.npmjs.com/package/generate-license-file
+
+The following npm package may be included in this product:
+
+ - dep-eight
+
+This package contains the following license:
+
+# Dep Eight
+
+This license file is spelt \`LICENSE\`.
+This license should be found, even though a decorated variant
+(\`LICENSE-3rdparty.csv\`) also exists alongside it.
+
+-----------
 
 The following npm package may be included in this product:
 

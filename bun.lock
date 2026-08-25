@@ -94,6 +94,7 @@
       "name": "@generate-license-file-e2e/npm-package",
       "version": "0.0.0",
       "dependencies": {
+        "dep-eight": "workspace:*",
         "dep-five": "workspace:*",
         "dep-four": "workspace:*",
         "dep-one": "workspace:*",
@@ -131,6 +132,10 @@
         "dep-two": "file:../test-dependencies/dep-two",
         "dep-two-duplicate": "file:../test-dependencies/dep-two-duplicate",
       },
+    },
+    "e2e/test-dependencies/dep-eight": {
+      "name": "dep-eight",
+      "version": "1.0.0",
     },
     "e2e/test-dependencies/dep-five": {
       "name": "dep-five",
@@ -1464,6 +1469,8 @@
     "defu": ["defu@6.1.7", "", {}, "sha512-7z22QmUWiQ/2d0KkdYmANbRUVABpZ9SNYyH5vx6PZ+nE5bcC0l7uFvEfHlyld/HcGBFTL536ClDt3DEcSlEJAQ=="],
 
     "delayed-stream": ["delayed-stream@1.0.0", "", {}, "sha512-ZySD7Nf91aLB0RxL4KGrKHBXl7Eds1DAmEdcoVawXnLD7SDhpNgtuII2aAkg7a7QS41jxPSZ17p4VdGnMHk3MQ=="],
+
+    "dep-eight": ["dep-eight@workspace:e2e/test-dependencies/dep-eight"],
 
     "dep-five": ["dep-five@workspace:e2e/test-dependencies/dep-five"],
 

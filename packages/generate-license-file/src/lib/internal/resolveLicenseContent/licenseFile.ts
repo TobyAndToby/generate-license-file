@@ -23,7 +23,20 @@ export const licenseFile: Resolution = async inputs => {
     maxDepth: 1,
   });
 
-  const filteredLicenseFiles = licenseFiles.filter(file => !extensionDenyList.includes(extname(file)));
+  // glob({ nocase: true }) returns matches using the pattern's case on
+  // case-insensitive filesystems (e.g. "license" on macOS) but the on-disk
+  // case elsewhere (e.g. "LICENSE" on Linux), and in filesystem order either
+  // way. Sort case-insensitively (locale-independently, for determinism) so
+  // the chosen file and the warning are stable across platforms; the base
+  // name (e.g. "license") then sorts ahead of decorated variants
+  // (e.g. "license-3rdparty.csv"), which is usually the real license.
+  const filteredLicenseFiles = licenseFiles
+    .filter(file => !extensionDenyList.includes(extname(file)))
+    .sort((a, b) => {
+      const lowerA = a.toLowerCase();
+      const lowerB = b.toLowerCase();
+      return lowerA < lowerB ? -1 : lowerA > lowerB ? 1 : 0;
+    });
 
   if (filteredLicenseFiles.length === 0) {
     return null;

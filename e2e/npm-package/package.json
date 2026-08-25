@@ -13,7 +13,8 @@
     "dep-three": "workspace:*",
     "dep-four": "workspace:*",
     "dep-five": "workspace:*",
-    "dep-seven": "workspace:*"
+    "dep-seven": "workspace:*",
+    "dep-eight": "workspace:*"
   },
   "devDependencies": {
     "generate-license-file": "workspace:*",
