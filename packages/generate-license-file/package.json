@@ -67,7 +67,7 @@
     "@npmcli/arborist": "^9.0.0",
     "cli-spinners": "^3.4.0",
     "commander": "^15.0.0",
-    "cosmiconfig": "^9.0.0",
+    "cosmiconfig": "^10.0.0",
     "enquirer": "^2.4.1",
     "glob": "^13.0.0",
     "json5": "^2.2.3",
