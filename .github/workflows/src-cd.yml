@@ -74,4 +74,4 @@ jobs:
           package-json: packages/generate-license-file/package.json
 
       - name: Publish
-        run: bun run publish --tag ${{ steps.latest_tag.outputs.latest-tag }}
+        run: bun run release --tag ${{ steps.latest_tag.outputs.latest-tag }}

@@ -12,7 +12,7 @@
     "dev": "turbo run dev",
     "serve": "turbo run serve",
     "set-version": "turbo run set-version --",
-    "publish": "turbo run publish --"
+    "release": "turbo run release --"
   },
   "workspaces": [
     "apps/**",
