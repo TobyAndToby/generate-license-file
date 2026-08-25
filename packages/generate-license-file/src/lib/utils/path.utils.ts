@@ -1,4 +1,4 @@
-import { dirname, join } from "node:path/posix";
+import { dirname, join } from "node:path";
 import { doesFolderExist } from "./file.utils";
 
 export const resolveNodeModulesPath = async (startPath: string): Promise<string> => {
