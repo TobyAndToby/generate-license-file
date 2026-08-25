@@ -36,7 +36,8 @@
     },
     "publish": {
       "dependsOn": ["build"],
-      "cache": false
+      "cache": false,
+      "passThroughEnv": ["ACTIONS_ID_TOKEN_REQUEST_URL", "ACTIONS_ID_TOKEN_REQUEST_TOKEN"]
     },
     "@generate-license-file-e2e/pnpm#e2e": {
       "dependsOn": ["generate-license-file#build", "@generate-license-file-e2e/pnpm#install-deps"],
