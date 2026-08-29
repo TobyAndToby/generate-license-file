@@ -35,6 +35,19 @@ export const getPnpmVersion = async (): Promise<PnpmVersion> => {
   return { major, minor, patch };
 };
 
+export type PnpmNodeLinker = "isolated" | "hoisted" | "pnp";
+
+// pnpm reads the node linker from a different place depending on its version - .npmrc before
+// pnpm 10, pnpm-workspace.yaml from pnpm 10 - so ask the pnpm cli rather than reading either
+// ourselves. An unset linker prints "undefined", which means the isolated default.
+export const getPnpmNodeLinker = async (projectDirectory: string): Promise<PnpmNodeLinker> => {
+  const { stdout } = await execAsync("pnpm config get node-linker", { cwd: projectDirectory });
+
+  const nodeLinker = stdout.trim();
+
+  return nodeLinker === "hoisted" || nodeLinker === "pnp" ? nodeLinker : "isolated";
+};
+
 // pnpm licenses list output can grow past exec's 1MB default maxBuffer on large
 // monorepos, so raise it to a ceiling we won't realistically hit.
 const licensesMaxBuffer = 256 * 1024 * 1024;

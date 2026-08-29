@@ -47,6 +47,14 @@
       "inputs": ["package.json", "pnpm-lock.yaml"],
       "cache": false
     },
+    "@generate-license-file-e2e/pnpm-hoisted#e2e": {
+      "dependsOn": ["generate-license-file#build", "@generate-license-file-e2e/pnpm-hoisted#install-deps"],
+      "cache": false
+    },
+    "@generate-license-file-e2e/pnpm-hoisted#install-deps": {
+      "inputs": ["package.json", "pnpm-lock.yaml", ".npmrc", "pnpm-workspace.yaml"],
+      "cache": false
+    },
     "@generate-license-file-e2e/npm-monorepo#e2e": {
       "dependsOn": ["generate-license-file#build"],
       "cache": false

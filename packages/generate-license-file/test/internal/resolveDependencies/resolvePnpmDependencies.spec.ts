@@ -1,17 +1,28 @@
 import { join } from "node:path";
 import { afterAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { when } from "vitest-when";
+import { resolveDependenciesForNpmProject } from "../../../src/lib/internal/resolveDependencies/resolveNpmDependencies";
 import { resolveDependenciesForPnpmProject } from "../../../src/lib/internal/resolveDependencies/resolvePnpmDependencies";
 import { resolveLicenseContent } from "../../../src/lib/internal/resolveLicenseContent";
 import type { LicenseNoticeKey, ResolvedLicense } from "../../../src/lib/internal/resolveLicenses";
 import { resolveNotices } from "../../../src/lib/internal/resolveNoticeContent";
 import logger from "../../../src/lib/utils/console.utils";
 import { doesFileExist, readFile } from "../../../src/lib/utils/file.utils";
-import { getPnpmProjectDependencies, getPnpmVersion, type PnpmDependency } from "../../../src/lib/utils/pnpmCli.utils";
+import {
+  getPnpmNodeLinker,
+  getPnpmProjectDependencies,
+  getPnpmVersion,
+  type PnpmDependency,
+} from "../../../src/lib/utils/pnpmCli.utils";
 
 vi.mock("../../../src/lib/utils/pnpmCli.utils", () => ({
   getPnpmVersion: vi.fn(),
+  getPnpmNodeLinker: vi.fn(),
   getPnpmProjectDependencies: vi.fn(),
+}));
+
+vi.mock("../../../src/lib/internal/resolveDependencies/resolveNpmDependencies", () => ({
+  resolveDependenciesForNpmProject: vi.fn(),
 }));
 
 vi.mock("../../../src/lib/utils/file.utils");
@@ -49,12 +60,16 @@ describe("resolveDependenciesForPnpmProject", () => {
   const mockedReadFile = vi.mocked(readFile);
   const mockedDoesFileExist = vi.mocked(doesFileExist);
   const mockedGetPnpmVersion = vi.mocked(getPnpmVersion);
+  const mockedGetPnpmNodeLinker = vi.mocked(getPnpmNodeLinker);
+  const mockedResolveDependenciesForNpmProject = vi.mocked(resolveDependenciesForNpmProject);
   const mockedGetPnpmProjectDependencies = vi.mocked(getPnpmProjectDependencies);
   const mockedResolveLicenseContent = vi.mocked(resolveLicenseContent);
   const mockedResolveNotices = vi.mocked(resolveNotices);
 
   beforeEach(() => {
     vi.resetAllMocks();
+
+    mockedGetPnpmNodeLinker.mockResolvedValue("isolated");
 
     when(mockedResolveLicenseContent)
       .calledWith(dependency1.paths[0], expect.anything(), expect.anything())
@@ -109,6 +124,7 @@ describe("resolveDependenciesForPnpmProject", () => {
     { major: 9, minor: 0, patch: 0 },
     { major: 10, minor: 0, patch: 0 },
     { major: 11, minor: 0, patch: 0 },
+    { major: 12, minor: 0, patch: 0 },
   ])("when the pnpm version is a supported version (%p)", pnpmVersion => {
     it("should call getPnpmProjectDependencies", async () => {
       mockedGetPnpmVersion.mockResolvedValue(pnpmVersion);
@@ -263,6 +279,57 @@ describe("resolveDependenciesForPnpmProject", () => {
           expect.anything(),
         );
       });
+    });
+  });
+
+  describe("when the node linker is hoisted", () => {
+    // A hoisted install leaves the .pnpm virtual store empty, so the paths pnpm reports point at
+    // nothing. The resulting node_modules is npm shaped, so the npm resolver reads it instead.
+    beforeEach(() => {
+      mockedGetPnpmVersion.mockResolvedValue({ major: 11, minor: 0, patch: 0 });
+      mockedGetPnpmNodeLinker.mockResolvedValue("hoisted");
+    });
+
+    it("should ask for the node linker of the project directory", async () => {
+      await resolveDependenciesForPnpmProject("/some/path/package.json", new Map());
+
+      expect(mockedGetPnpmNodeLinker).toHaveBeenCalledTimes(1);
+      expect(mockedGetPnpmNodeLinker).toHaveBeenCalledWith("/some/path");
+    });
+
+    it("should hand the project to the npm resolver", async () => {
+      const licensesMap = new Map<LicenseNoticeKey, ResolvedLicense>();
+      const options = { exclude: ["dependency2@2.0.0"] };
+
+      await resolveDependenciesForPnpmProject("/some/path/package.json", licensesMap, options);
+
+      expect(mockedResolveDependenciesForNpmProject).toHaveBeenCalledTimes(1);
+      expect(mockedResolveDependenciesForNpmProject).toHaveBeenCalledWith(
+        "/some/path/package.json",
+        licensesMap,
+        options,
+      );
+    });
+
+    it("should not call getPnpmProjectDependencies", async () => {
+      await resolveDependenciesForPnpmProject("/some/path/package.json", new Map());
+
+      expect(mockedGetPnpmProjectDependencies).not.toHaveBeenCalled();
+    });
+  });
+
+  describe.each(["isolated", "pnp"] as const)("when the node linker is %s", nodeLinker => {
+    beforeEach(() => {
+      mockedGetPnpmVersion.mockResolvedValue({ major: 11, minor: 0, patch: 0 });
+      mockedGetPnpmNodeLinker.mockResolvedValue(nodeLinker);
+      mockedGetPnpmProjectDependencies.mockResolvedValue([dependency1]);
+    });
+
+    it("should not hand the project to the npm resolver", async () => {
+      await resolveDependenciesForPnpmProject("/some/path/package.json", new Map());
+
+      expect(mockedResolveDependenciesForNpmProject).not.toHaveBeenCalled();
+      expect(mockedGetPnpmProjectDependencies).toHaveBeenCalledTimes(1);
     });
   });
 
