@@ -199,4 +199,21 @@ describe("cli", () => {
       });
     });
   });
+
+  describe("input validation", () => {
+    it("should fail without producing an output when the input is not named package.json", async () => {
+      const output = `test-${Math.floor(Math.random() * 1000)}.txt`;
+
+      await expect(
+        execAsync(
+          `node ../../packages/generate-license-file/bin/generate-license-file --ci --input ./package2.json --output ${output}`,
+        ),
+      ).rejects.toMatchObject({
+        code: 1,
+        stderr: expect.stringContaining("./package2.json is not named package.json"),
+      });
+
+      await expect(fs.stat(output)).rejects.toThrow();
+    });
+  });
 });

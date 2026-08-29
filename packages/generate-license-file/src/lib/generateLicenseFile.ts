@@ -13,7 +13,7 @@ export type GenerateLicenseFileOptions = IntersectionExpander<
 
 /**
  * Scans the project found at the given path and creates a license file at the given output location
- * @param pathToPackageJson A path to the package.json for the project
+ * @param pathToPackageJson A path to the package.json for the project. The file must be named package.json
  * @param outputPath A file path for the resulting license file
  * @param options Additional options for the license file generation
  */
@@ -25,7 +25,7 @@ export async function generateLicenseFile(
 
 /**
  * Scans the projects found at the given paths and creates a license file at the given output location
- * @param pathsToPackageJsons Paths to the package.jsons for the projects
+ * @param pathsToPackageJsons Paths to the package.jsons for the projects. Each file must be named package.json
  * @param outputPath A file path for the resulting license file
  * @param options Additional options for the license file generation
  */

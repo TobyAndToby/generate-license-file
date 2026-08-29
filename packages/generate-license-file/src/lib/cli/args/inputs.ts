@@ -1,3 +1,4 @@
+import { basename } from "node:path";
 import { doesFileExist } from "../../utils/file.utils";
 import type { CombinedConfig } from "../commands/main";
 import { spinner } from "../spinner";
@@ -27,23 +28,23 @@ export class Inputs extends Argument<string[]> {
       throw new Error("No --input argument given.");
     }
 
-    let allValid = true;
+    const problems: string[] = [];
 
     for (const input of inputs) {
-      const inputExists = await doesFileExist(input);
+      const problem = await this.findProblem(input);
 
-      if (!inputExists) {
-        spinner.warn(`${input} could not be found.`);
-        allValid = false;
+      if (problem) {
+        spinner.warn(problem);
+        problems.push(problem);
       }
     }
 
-    if (!allValid && inputs.length === 1) {
-      throw new Error("Given --input file not found");
+    if (problems.length > 0 && inputs.length === 1) {
+      throw new Error(problems[0]);
     }
 
-    if (!allValid) {
-      throw new Error("One or more given --input files not found");
+    if (problems.length > 0) {
+      throw new Error("One or more given --input files cannot be used");
     }
 
     return inputs;
@@ -52,15 +53,15 @@ export class Inputs extends Argument<string[]> {
   private async resolveOne(input?: string): Promise<string[]> {
     const initialValue = await this.getInputPromptInitialValue();
 
-    let inputExists = input ? await doesFileExist(input) : false;
+    let problem = input ? await this.findProblem(input) : undefined;
 
-    while (!input || !inputExists) {
-      if (!!input && !inputExists) {
-        spinner.fail("Given --input file not found");
+    while (!input || problem) {
+      if (!!input && problem) {
+        spinner.fail(problem);
       }
 
       input = await this.promptForString(this.question, initialValue);
-      inputExists = await doesFileExist(input);
+      problem = await this.findProblem(input);
     }
 
     return [input];
@@ -71,10 +72,10 @@ export class Inputs extends Argument<string[]> {
     let allValid = true;
 
     for (const input of inputs) {
-      const inputExists = await doesFileExist(input);
+      const problem = await this.findProblem(input);
 
-      if (!inputExists) {
-        spinner.warn(`${input} could not be found.`);
+      if (problem) {
+        spinner.warn(problem);
         allValid = false;
 
         continue;
@@ -90,6 +91,18 @@ export class Inputs extends Argument<string[]> {
     return validInputs;
   }
 
+  private async findProblem(input: string): Promise<string | undefined> {
+    if (!(await doesFileExist(input))) {
+      return `${input} could not be found.`;
+    }
+
+    if (basename(input) !== "package.json") {
+      return `${input} is not named package.json, so its dependencies cannot be resolved.`;
+    }
+
+    return undefined;
+  }
+
   private async getInputPromptInitialValue(): Promise<string> {
     const packageJsonExists = await doesFileExist("./package.json");
     return packageJsonExists ? "./package.json" : "";
@@ -97,7 +110,7 @@ export class Inputs extends Argument<string[]> {
 
   private async promptForTermination(): Promise<void> {
     const shouldContinue = await this.promptForBoolean(
-      "One or more given --input files not found. Do you want to continue?",
+      "One or more given --input files cannot be used. Do you want to continue?",
     );
 
     if (!shouldContinue) {

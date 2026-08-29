@@ -10,7 +10,7 @@ export type GetProjectLicensesOptions = IntersectionExpander<ReplaceOption & Exc
 /**
  * Scans the project found at the given path and returns an array of objects each
  * containing the details of an identified license and the dependencies it pertains to.
- * @param pathToPackageJson A path to the package.json for the project
+ * @param pathToPackageJson A path to the package.json for the project. The file must be named package.json
  * @param options Additional options for the license discovery
  * @returns Array of `ILicense`s each containing the license content and respective dependencies
  */
