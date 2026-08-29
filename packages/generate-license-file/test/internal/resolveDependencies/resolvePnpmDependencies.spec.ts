@@ -124,6 +124,7 @@ describe("resolveDependenciesForPnpmProject", () => {
     { major: 9, minor: 0, patch: 0 },
     { major: 10, minor: 0, patch: 0 },
     { major: 11, minor: 0, patch: 0 },
+    { major: 12, minor: 0, patch: 0 },
   ])("when the pnpm version is a supported version (%p)", pnpmVersion => {
     it("should call getPnpmProjectDependencies", async () => {
       mockedGetPnpmVersion.mockResolvedValue(pnpmVersion);
