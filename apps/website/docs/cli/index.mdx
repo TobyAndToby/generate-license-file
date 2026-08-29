@@ -18,11 +18,6 @@ be set using the CLI.
 
 The input parameter is required and needs be a path to the `package.json` of the project. It can be a relative or absolute path.
 
-The file itself must be named `package.json`. The path tells generate-license-file which project to report on, but the
-dependency tree is resolved by npm and pnpm, both of which look for `package.json` by name in each package directory. A
-file with any other name can't be used as an input, and will be rejected rather than silently producing an empty output
-file.
-
 ```bash
 npx generate-license-file --input ./myProject/package.json
 

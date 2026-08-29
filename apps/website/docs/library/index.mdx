@@ -10,14 +10,6 @@ Our library APIs allow you to interact with generate license file's functionalit
 This page outlines a summary of primary use cases for the methods we expose. If you're looking for
 a detailed spec on the method signatures and types, please read the [API spec](./api.mdx) page.
 
-:::note
-
-Every method below takes a path to a project's `package.json`. The file must be named `package.json` — the path
-identifies which project to report on, but the dependency tree is resolved by npm and pnpm, both of which look for
-`package.json` by name. Passing a path to a differently named file will throw.
-
-:::
-
 ## Generate and write a license file to disk
 
 To programatically run the generate license file program you can use the `generateLicenseFile` method.
