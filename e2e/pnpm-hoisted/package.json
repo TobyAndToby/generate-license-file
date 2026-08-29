@@ -1,0 +1,18 @@
+{
+  "private": true,
+  "name": "@generate-license-file-e2e/pnpm-hoisted",
+  "version": "0.0.0",
+  "scripts": {
+    "install-deps": "pnpm install --frozen-lockfile",
+    "e2e": "vitest run",
+    "lint": "biome check ."
+  },
+  "dependencies": {
+    "dep-one": "file:../test-dependencies/dep-one",
+    "dep-two": "file:../test-dependencies/dep-two",
+    "dep-two-duplicate": "file:../test-dependencies/dep-two-duplicate",
+    "dep-three": "file:../test-dependencies/dep-three",
+    "dep-four": "file:../test-dependencies/dep-four",
+    "dep-five": "file:../test-dependencies/dep-five"
+  }
+}

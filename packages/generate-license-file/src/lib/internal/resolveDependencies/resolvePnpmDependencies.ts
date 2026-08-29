@@ -1,11 +1,12 @@
 ﻿import { dirname, join } from "node:path";
 import logger from "../../utils/console.utils";
 import { readPackageJson } from "../../utils/packageJson.utils";
-import { getPnpmProjectDependencies, getPnpmVersion } from "../../utils/pnpmCli.utils";
+import { getPnpmNodeLinker, getPnpmProjectDependencies, getPnpmVersion } from "../../utils/pnpmCli.utils";
 import { resolveLicenseContent } from "../resolveLicenseContent";
 import type { LicenseNoticeKey, ResolvedLicense } from "../resolveLicenses";
 import { resolveNotices } from "../resolveNoticeContent";
 import { expandExcludes } from "./expandExcludes";
+import { resolveDependenciesForNpmProject } from "./resolveNpmDependencies";
 
 type ResolveLicensesOptions = {
   replace?: Record<string, string>;
@@ -23,6 +24,14 @@ export const resolveDependenciesForPnpmProject = async (
   await verifyPnpmVersion();
 
   const projectDirectory = dirname(packageJson);
+
+  // pnpm licenses list reports paths inside the .pnpm virtual store whatever the node linker is,
+  // but a hoisted install writes packages straight into node_modules and leaves the virtual store
+  // empty, so those paths point at nothing. That layout is npm shaped, so read it as an npm one.
+  if ((await getPnpmNodeLinker(projectDirectory)) === "hoisted") {
+    return resolveDependenciesForNpmProject(packageJson, licensesMap, options);
+  }
+
   const dependencies = await getPnpmProjectDependencies(projectDirectory);
 
   for (const dependency of dependencies) {

@@ -134,7 +134,7 @@ jobs:
           path: packages
 
       - name: Run E2E Tests
-        run: bun run test:e2e --filter='!@generate-license-file-e2e/pnpm'
+        run: bun run test:e2e --filter='!@generate-license-file-e2e/pnpm*'
 
   e2e-pnpm:
     needs:
@@ -185,4 +185,4 @@ jobs:
           path: packages
 
       - name: Run E2E Tests
-        run: bun run test:e2e --filter='@generate-license-file-e2e/pnpm'
+        run: bun run test:e2e --filter='@generate-license-file-e2e/pnpm*'

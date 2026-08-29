@@ -1,6 +1,6 @@
 import { afterAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { execAsync } from "../../src/lib/utils/exec.utils";
-import { getPnpmProjectDependencies, getPnpmVersion } from "../../src/lib/utils/pnpmCli.utils";
+import { getPnpmNodeLinker, getPnpmProjectDependencies, getPnpmVersion } from "../../src/lib/utils/pnpmCli.utils";
 
 vi.mock("../../src/lib/utils/exec.utils", () => ({
   execAsync: vi.fn(),
@@ -33,6 +33,38 @@ describe("pnpmCli.utils", () => {
       const result = await getPnpmVersion();
 
       expect(result).toEqual({ major: 1, minor: 2, patch: 3 });
+    });
+  });
+
+  describe("getPnpmNodeLinker", () => {
+    it("should call the pnpm cli with the correct arguments", async () => {
+      const projectDirectory = "/path/to/project";
+      mockedExecAsync.mockResolvedValue({ stdout: "undefined" } as MockExecStdOut);
+
+      await getPnpmNodeLinker(projectDirectory);
+
+      expect(mockedExecAsync).toHaveBeenCalledTimes(1);
+      expect(mockedExecAsync).toHaveBeenCalledWith("pnpm config get node-linker", { cwd: projectDirectory });
+    });
+
+    it.each(["hoisted", "pnp", "isolated"])("should return the configured %s linker", async nodeLinker => {
+      mockedExecAsync.mockResolvedValue({ stdout: `${nodeLinker}\n` } as MockExecStdOut);
+
+      const result = await getPnpmNodeLinker("/path/to/project");
+
+      expect(result).toBe(nodeLinker);
+    });
+
+    it.each([
+      "undefined",
+      "",
+      "something-we-do-not-know",
+    ])("should fall back to the isolated default when the pnpm cli prints %p", async stdout => {
+      mockedExecAsync.mockResolvedValue({ stdout } as MockExecStdOut);
+
+      const result = await getPnpmNodeLinker("/path/to/project");
+
+      expect(result).toBe("isolated");
     });
   });
 

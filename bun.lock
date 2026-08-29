@@ -133,6 +133,18 @@
         "dep-two-duplicate": "file:../test-dependencies/dep-two-duplicate",
       },
     },
+    "e2e/pnpm-hoisted": {
+      "name": "@generate-license-file-e2e/pnpm-hoisted",
+      "version": "0.0.0",
+      "dependencies": {
+        "dep-five": "file:../test-dependencies/dep-five",
+        "dep-four": "file:../test-dependencies/dep-four",
+        "dep-one": "file:../test-dependencies/dep-one",
+        "dep-three": "file:../test-dependencies/dep-three",
+        "dep-two": "file:../test-dependencies/dep-two",
+        "dep-two-duplicate": "file:../test-dependencies/dep-two-duplicate",
+      },
+    },
     "e2e/test-dependencies/dep-eight": {
       "name": "dep-eight",
       "version": "1.0.0",
@@ -685,6 +697,8 @@
     "@generate-license-file-e2e/optional-dependencies": ["@generate-license-file-e2e/optional-dependencies@workspace:e2e/optional-dependencies"],
 
     "@generate-license-file-e2e/pnpm": ["@generate-license-file-e2e/pnpm@workspace:e2e/pnpm"],
+
+    "@generate-license-file-e2e/pnpm-hoisted": ["@generate-license-file-e2e/pnpm-hoisted@workspace:e2e/pnpm-hoisted"],
 
     "@generate-license-file/e2e-helpers": ["@generate-license-file/e2e-helpers@workspace:packages/e2e-helpers"],
 
@@ -3007,6 +3021,18 @@
     "@generate-license-file-e2e/pnpm/dep-two": ["dep-two@file:e2e/test-dependencies/dep-two", {}],
 
     "@generate-license-file-e2e/pnpm/dep-two-duplicate": ["dep-two-duplicate@file:e2e/test-dependencies/dep-two-duplicate", {}],
+
+    "@generate-license-file-e2e/pnpm-hoisted/dep-five": ["dep-five@file:e2e/test-dependencies/dep-five", {}],
+
+    "@generate-license-file-e2e/pnpm-hoisted/dep-four": ["dep-four@file:e2e/test-dependencies/dep-four", {}],
+
+    "@generate-license-file-e2e/pnpm-hoisted/dep-one": ["dep-one@file:e2e/test-dependencies/dep-one", {}],
+
+    "@generate-license-file-e2e/pnpm-hoisted/dep-three": ["dep-three@file:e2e/test-dependencies/dep-three", {}],
+
+    "@generate-license-file-e2e/pnpm-hoisted/dep-two": ["dep-two@file:e2e/test-dependencies/dep-two", {}],
+
+    "@generate-license-file-e2e/pnpm-hoisted/dep-two-duplicate": ["dep-two-duplicate@file:e2e/test-dependencies/dep-two-duplicate", {}],
 
     "@generate-license-file/website/typescript": ["typescript@5.9.3", "", { "bin": { "tsc": "bin/tsc", "tsserver": "bin/tsserver" } }, "sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw=="],
 
