@@ -1,0 +1,9 @@
+{
+  "//": "Deliberately misnamed. A real manifest that would resolve fine if it were called package.json, used by test/cli/index.e2e.spec.ts to assert that a differently named --input is rejected. See https://github.com/TobyAndToby/generate-license-file/issues/752.",
+  "name": "misnamed-manifest",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "dep-one": "workspace:*"
+  }
+}

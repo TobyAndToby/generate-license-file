@@ -206,11 +206,11 @@ describe("cli", () => {
 
       await expect(
         execAsync(
-          `node ../../packages/generate-license-file/bin/generate-license-file --ci --input ./tsconfig.json --output ${output}`,
+          `node ../../packages/generate-license-file/bin/generate-license-file --ci --input ./package2.json --output ${output}`,
         ),
       ).rejects.toMatchObject({
         code: 1,
-        stderr: expect.stringContaining("./tsconfig.json is not named package.json"),
+        stderr: expect.stringContaining("./package2.json is not named package.json"),
       });
 
       await expect(fs.stat(output)).rejects.toThrow();
