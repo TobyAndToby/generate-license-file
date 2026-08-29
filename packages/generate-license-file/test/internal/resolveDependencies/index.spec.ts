@@ -70,6 +70,31 @@ describe("resolveDependencies", () => {
     });
   });
 
+  describe("when the input is not named package.json", () => {
+    beforeEach(() => mockPnpmLockFileToNotExist());
+
+    const differentlyNamedFile = join(projectDirectory, "package2.json");
+
+    it("should throw an error naming the given file", async () => {
+      await expect(resolveDependencies(differentlyNamedFile, dependencies, options)).rejects.toThrow(
+        /Expected a path to a file named "package\.json" but was given "package2\.json"/,
+      );
+    });
+
+    it("should not resolve dependencies for either package manager", async () => {
+      await expect(resolveDependencies(differentlyNamedFile, dependencies, options)).rejects.toThrow();
+
+      expect(mockedResolveDependenciesForNpmProject).not.toHaveBeenCalled();
+      expect(mockedResolveDependenciesForPnpmProject).not.toHaveBeenCalled();
+    });
+
+    it("should throw before looking for a lock file", async () => {
+      await expect(resolveDependencies(differentlyNamedFile, dependencies, options)).rejects.toThrow();
+
+      expect(mockedDoesFileExist).not.toHaveBeenCalled();
+    });
+  });
+
   const mockPnpmLockFileToExist = () => {
     when(mockedDoesFileExist).calledWith(pnpmLockFile).thenResolve(true);
   };

@@ -68,12 +68,12 @@ describe("Inputs", () => {
     it("should unescape escaped double quotes", async () => {
       mockedDoesFileExist.mockResolvedValue(true);
 
-      mockedPrompt.mockResolvedValueOnce({ value: '\\"./package.\\"json\\"' });
+      mockedPrompt.mockResolvedValueOnce({ value: '\\"./my dir\\"/package.json' });
 
       const args: CombinedConfig = {};
       const answer = await inputs.resolve(args);
 
-      expect(answer).toStrictEqual(['"./package."json"']);
+      expect(answer).toStrictEqual(['"./my dir"/package.json']);
     });
 
     describe("When the '--input' value is undefined", () => {
@@ -150,10 +150,10 @@ describe("Inputs", () => {
 
       it("should not fail the spinner", async () => {
         mockedDoesFileExist.mockImplementation((path: string) => {
-          return Promise.resolve(path === "./exists.json");
+          return Promise.resolve(path === "./exists/package.json");
         });
 
-        mockedPrompt.mockResolvedValueOnce({ value: "./exists.json" });
+        mockedPrompt.mockResolvedValueOnce({ value: "./exists/package.json" });
 
         const args: CombinedConfig = {};
 
@@ -166,13 +166,13 @@ describe("Inputs", () => {
     describe("when the '--input' value doesn't exist", () => {
       it("should fail the spinner if the initial input value doesn't exist", async () => {
         mockedDoesFileExist.mockImplementation((path: string) => {
-          return Promise.resolve(path === "./exists.json");
+          return Promise.resolve(path === "./exists/package.json");
         });
 
-        mockedPrompt.mockResolvedValueOnce({ value: "./exists.json" });
+        mockedPrompt.mockResolvedValueOnce({ value: "./exists/package.json" });
 
         const args: CombinedConfig = {
-          inputs: ["./not-exists.json"],
+          inputs: ["./not-exists/package.json"],
         };
 
         await inputs.resolve(args);
@@ -182,14 +182,14 @@ describe("Inputs", () => {
 
       it("should continue prompting for a value if the value doesn't exist", async () => {
         mockedDoesFileExist.mockImplementation((path: string) => {
-          return Promise.resolve(path === "./exists.json");
+          return Promise.resolve(path === "./exists/package.json");
         });
 
         mockedPrompt
-          .mockResolvedValueOnce({ value: "./not-exists.json" })
-          .mockResolvedValueOnce({ value: "./not-exists.json" })
-          .mockResolvedValueOnce({ value: "./not-exists.json" })
-          .mockResolvedValueOnce({ value: "./exists.json" });
+          .mockResolvedValueOnce({ value: "./not-exists/package.json" })
+          .mockResolvedValueOnce({ value: "./not-exists/package.json" })
+          .mockResolvedValueOnce({ value: "./not-exists/package.json" })
+          .mockResolvedValueOnce({ value: "./exists/package.json" });
 
         const args: CombinedConfig = {};
 
@@ -200,22 +200,42 @@ describe("Inputs", () => {
 
       it("should continue failing the spinner if the value doesn't exist", async () => {
         mockedDoesFileExist.mockImplementation((path: string) => {
-          return Promise.resolve(path === "./exists.json");
+          return Promise.resolve(path === "./exists/package.json");
         });
 
         mockedPrompt
-          .mockResolvedValueOnce({ value: "./not-exists.json" })
-          .mockResolvedValueOnce({ value: "./not-exists.json" })
-          .mockResolvedValueOnce({ value: "./not-exists.json" })
-          .mockResolvedValueOnce({ value: "./exists.json" });
+          .mockResolvedValueOnce({ value: "./not-exists/package.json" })
+          .mockResolvedValueOnce({ value: "./not-exists/package.json" })
+          .mockResolvedValueOnce({ value: "./not-exists/package.json" })
+          .mockResolvedValueOnce({ value: "./exists/package.json" });
 
         const args: CombinedConfig = {
-          inputs: ["./not-exists.json"],
+          inputs: ["./not-exists/package.json"],
         };
 
         await inputs.resolve(args);
 
         expect(mockedFailSpinner).toHaveBeenCalledTimes(4);
+      });
+    });
+
+    describe("when the '--input' value is not named package.json", () => {
+      it("should fail the spinner and prompt for another value", async () => {
+        mockedDoesFileExist.mockResolvedValue(true);
+
+        mockedPrompt.mockResolvedValueOnce({ value: "./package.json" });
+
+        const args: CombinedConfig = {
+          inputs: ["./package2.json"],
+        };
+
+        const answer = await inputs.resolve(args);
+
+        expect(mockedFailSpinner).toHaveBeenCalledTimes(1);
+        expect(mockedFailSpinner).toHaveBeenCalledWith(
+          "./package2.json is not named package.json, so its dependencies cannot be resolved.",
+        );
+        expect(answer).toStrictEqual(["./package.json"]);
       });
     });
 
@@ -225,7 +245,7 @@ describe("Inputs", () => {
           mockedDoesFileExist.mockResolvedValue(true);
 
           const inputFile1 = "./package.json";
-          const inputFile2 = "./second-package.json";
+          const inputFile2 = "./second/package.json";
           const args: CombinedConfig = {
             inputs: [inputFile1, inputFile2],
           };
@@ -239,13 +259,13 @@ describe("Inputs", () => {
       describe("when some of the '--input' values do not exist", () => {
         it("should warn the spinner for each value that does not exist", async () => {
           mockedDoesFileExist.mockImplementation((path: string) => {
-            return Promise.resolve(path === "./exists.json");
+            return Promise.resolve(path === "./exists/package.json");
           });
 
           mockedPrompt.mockResolvedValueOnce({ value: false });
 
           const args: CombinedConfig = {
-            inputs: ["./does-not-exist.json", "./exists.json", "./also-does-not-exist.json"],
+            inputs: ["./does-not-exist/package.json", "./exists/package.json", "./also-does-not-exist/package.json"],
           };
 
           try {
@@ -255,19 +275,22 @@ describe("Inputs", () => {
           }
 
           expect(mockedWarnSpinner).toHaveBeenCalledTimes(2);
-          expect(mockedWarnSpinner).toHaveBeenNthCalledWith(1, "./does-not-exist.json could not be found.");
-          expect(mockedWarnSpinner).toHaveBeenNthCalledWith(2, "./also-does-not-exist.json could not be found.");
+          expect(mockedWarnSpinner).toHaveBeenNthCalledWith(1, "./does-not-exist/package.json could not be found.");
+          expect(mockedWarnSpinner).toHaveBeenNthCalledWith(
+            2,
+            "./also-does-not-exist/package.json could not be found.",
+          );
         });
 
         it("should prompt the user if they want to cancel", async () => {
           mockedDoesFileExist.mockImplementation((path: string) => {
-            return Promise.resolve(path === "./exists.json");
+            return Promise.resolve(path === "./exists/package.json");
           });
 
           mockedPrompt.mockResolvedValueOnce({ value: false });
 
           const args: CombinedConfig = {
-            inputs: ["./does-not-exist.json", "./exists.json"],
+            inputs: ["./does-not-exist/package.json", "./exists/package.json"],
           };
 
           try {
@@ -278,7 +301,7 @@ describe("Inputs", () => {
 
           expect(mockedPrompt).toHaveBeenCalledTimes(1);
           expect(mockedPrompt).toHaveBeenCalledWith({
-            message: "One or more given --input files not found. Do you want to continue?",
+            message: "One or more given --input files cannot be used. Do you want to continue?",
             name: "value",
             type: "confirm",
           });
@@ -286,13 +309,13 @@ describe("Inputs", () => {
 
         it("should throw if the user wants to cancel", async () => {
           mockedDoesFileExist.mockImplementation((path: string) => {
-            return Promise.resolve(path === "./exists.json");
+            return Promise.resolve(path === "./exists/package.json");
           });
 
           mockedPrompt.mockResolvedValueOnce({ value: false });
 
           const args: CombinedConfig = {
-            inputs: ["./does-not-exist.json", "./exists.json"],
+            inputs: ["./does-not-exist/package.json", "./exists/package.json"],
           };
 
           await expect(inputs.resolve(args)).rejects.toThrowError("Process terminated by user");
@@ -300,13 +323,13 @@ describe("Inputs", () => {
 
         it("should not throw if the user does not want to cancel", async () => {
           mockedDoesFileExist.mockImplementation((path: string) => {
-            return Promise.resolve(path === "./exists.json");
+            return Promise.resolve(path === "./exists/package.json");
           });
 
           mockedPrompt.mockResolvedValueOnce({ value: true });
 
           const args: CombinedConfig = {
-            inputs: ["./does-not-exist.json", "./exists.json"],
+            inputs: ["./does-not-exist/package.json", "./exists/package.json"],
           };
 
           await expect(inputs.resolve(args)).resolves.not.toThrowError();
@@ -332,7 +355,22 @@ describe("Inputs", () => {
           inputs: ["./package.json"],
         };
 
-        return expect(inputs.parse(args)).rejects.toThrow("Given --input file not found");
+        return expect(inputs.parse(args)).rejects.toThrow("./package.json could not be found.");
+      });
+
+      it("should throw if the given input is not named package.json", async () => {
+        mockedDoesFileExist.mockResolvedValue(true);
+
+        const args: CombinedConfig = {
+          inputs: ["./package2.json"],
+        };
+
+        await expect(inputs.parse(args)).rejects.toThrow(
+          "./package2.json is not named package.json, so its dependencies cannot be resolved.",
+        );
+        expect(mockedWarnSpinner).toHaveBeenCalledWith(
+          "./package2.json is not named package.json, so its dependencies cannot be resolved.",
+        );
       });
 
       it("should return the given input if it exists", async () => {
@@ -351,11 +389,11 @@ describe("Inputs", () => {
     describe("when multiple '--input' values are given", () => {
       it("should warn for each of the values that don't exist", async () => {
         mockedDoesFileExist.mockImplementation((path: string) => {
-          return Promise.resolve(path === "./exists.json");
+          return Promise.resolve(path === "./exists/package.json");
         });
 
         const args: CombinedConfig = {
-          inputs: ["./does-not-exist", "./exists.json", "./also-does-not-exist.json"],
+          inputs: ["./does-not-exist/package.json", "./exists/package.json", "./also-does-not-exist/package.json"],
         };
 
         try {
@@ -365,20 +403,20 @@ describe("Inputs", () => {
         }
 
         expect(mockedWarnSpinner).toHaveBeenCalledTimes(2);
-        expect(mockedWarnSpinner).toHaveBeenNthCalledWith(1, "./does-not-exist could not be found.");
-        expect(mockedWarnSpinner).toHaveBeenNthCalledWith(2, "./also-does-not-exist.json could not be found.");
+        expect(mockedWarnSpinner).toHaveBeenNthCalledWith(1, "./does-not-exist/package.json could not be found.");
+        expect(mockedWarnSpinner).toHaveBeenNthCalledWith(2, "./also-does-not-exist/package.json could not be found.");
       });
 
       it("should throw if any given file does not exist", async () => {
         mockedDoesFileExist.mockImplementation((path: string) => {
-          return Promise.resolve(path === "./exists.json");
+          return Promise.resolve(path === "./exists/package.json");
         });
 
         const args: CombinedConfig = {
-          inputs: ["./does-not-exist", "./exists.json"],
+          inputs: ["./does-not-exist/package.json", "./exists/package.json"],
         };
 
-        await expect(inputs.parse(args)).rejects.toThrowError("One or more given --input files not found");
+        await expect(inputs.parse(args)).rejects.toThrowError("One or more given --input files cannot be used");
       });
     });
   });
