@@ -17,8 +17,7 @@ export interface Options {
   outputFolder: string;
 
   /**
-   * Path to the project's package.json. The file must be named package.json - the path selects which
-   * project to report on, but npm and pnpm both resolve dependencies by that file name.
+   * Path to the project's package.json.
    *
    * @default "./package.json".
    */
