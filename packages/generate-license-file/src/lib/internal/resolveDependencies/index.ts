@@ -11,8 +11,6 @@ type ResolveLicensesOptions = {
 
 type PackageManager = "npm" | "pnpm";
 
-const PACKAGE_JSON_FILE_NAME = "package.json";
-
 export const resolveDependencies = async (
   packageJson: string,
   licensesMap: Map<LicenseNoticeKey, ResolvedLicense>,
@@ -45,13 +43,13 @@ export const resolveDependencies = async (
 const verifyPackageJsonFileName = (packageJson: string): void => {
   const fileName = basename(packageJson);
 
-  if (fileName === PACKAGE_JSON_FILE_NAME) {
+  if (fileName === "package.json") {
     return;
   }
 
   throw new Error(
-    `Expected a path to a file named "${PACKAGE_JSON_FILE_NAME}" but was given "${fileName}" (${packageJson}). ` +
-      `Dependencies are resolved by npm and pnpm using the "${PACKAGE_JSON_FILE_NAME}" file name, so a file with a ` +
+    `Expected a path to a file named "package.json" but was given "${fileName}" (${packageJson}). ` +
+      `Dependencies are resolved by npm and pnpm using the "package.json" file name, so a file with a ` +
       `different name cannot be used as an input.`,
   );
 };

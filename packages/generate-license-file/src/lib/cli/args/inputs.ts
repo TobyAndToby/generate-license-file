@@ -4,8 +4,6 @@ import type { CombinedConfig } from "../commands/main";
 import { spinner } from "../spinner";
 import { Argument } from "./argument";
 
-const PACKAGE_JSON_FILE_NAME = "package.json";
-
 export class Inputs extends Argument<string[]> {
   private question = "Package.json location: ";
 
@@ -101,8 +99,8 @@ export class Inputs extends Argument<string[]> {
       return `${input} could not be found.`;
     }
 
-    if (basename(input) !== PACKAGE_JSON_FILE_NAME) {
-      return `${input} is not named ${PACKAGE_JSON_FILE_NAME}, so its dependencies cannot be resolved.`;
+    if (basename(input) !== "package.json") {
+      return `${input} is not named package.json, so its dependencies cannot be resolved.`;
     }
 
     return undefined;
