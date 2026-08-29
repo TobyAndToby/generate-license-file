@@ -91,9 +91,6 @@ export class Inputs extends Argument<string[]> {
     return validInputs;
   }
 
-  // The path identifies which project to report on, but npm and pnpm both resolve the dependency tree using the
-  // "package.json" file name, so a differently named file can never be read. Rejecting it here keeps the CLI from
-  // going on to produce an output file with no dependencies in it.
   private async findProblem(input: string): Promise<string | undefined> {
     if (!(await doesFileExist(input))) {
       return `${input} could not be found.`;
