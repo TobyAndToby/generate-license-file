@@ -2,7 +2,7 @@
   "private": true,
   "name": "monorepo",
   "version": "0.0.0",
-  "packageManager": "bun@1.4.1",
+  "packageManager": "bun@1.4.2",
   "scripts": {
     "lint": "turbo run lint",
     "typecheck": "turbo run typecheck",
