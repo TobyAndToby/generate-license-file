@@ -84,7 +84,7 @@ jobs:
         run: bun run test -- --coverage
 
       - name: Codecov
-        uses: codecov/codecov-action@v7.1.0
+        uses: codecov/codecov-action@v7.1.1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           directory: packages/*/coverage
