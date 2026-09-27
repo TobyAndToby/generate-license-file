@@ -28,6 +28,6 @@
     "turbo": "^2.5.0",
     "typescript": "^6.0.0",
     "vitest": "^4.1.2",
-    "vitest-when": "^0.10.0"
+    "vitest-when": "^1.0.0"
   }
 }
