@@ -21,7 +21,7 @@
     "@emotion/styled": "^11.8.1",
     "@mdx-js/react": "^3.0.0",
     "clsx": "^2.0.0",
-    "jotai": "^2.0.3",
+    "jotai": "^3.0.0",
     "prism-react-renderer": "^2.3.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
