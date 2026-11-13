@@ -1,4 +1,4 @@
-﻿import { basename, dirname, join } from "node:path";
+﻿import { basename, dirname, join, resolve } from "node:path";
 import { doesFileExist } from "../../utils/file.utils";
 import type { LicenseNoticeKey, ResolvedLicense } from "../resolveLicenses";
 import { resolveDependenciesForNpmProject } from "./resolveNpmDependencies";
@@ -55,12 +55,23 @@ const verifyPackageJsonFileName = (packageJson: string): void => {
 };
 
 const resolvePackageManager = async (packageJson: string): Promise<PackageManager> => {
-  const directory = dirname(packageJson);
+  // The input path can be relative (the CLI passes it through as given), and dirname
+  // of a relative path has no parent to walk to, so resolve it first.
+  let directory = resolve(dirname(packageJson));
 
-  const potentialPnpmLockFile = join(directory, "pnpm-lock.yaml");
-  if (await doesFileExist(potentialPnpmLockFile)) {
-    return "pnpm";
+  // In a pnpm workspace the single lock file lives at the workspace root, not beside each
+  // package's package.json, so look in the parent directories as well.
+  while (true) {
+    const potentialPnpmLockFile = join(directory, "pnpm-lock.yaml");
+    if (await doesFileExist(potentialPnpmLockFile)) {
+      return "pnpm";
+    }
+
+    const parentDirectory = dirname(directory);
+    if (parentDirectory === directory) {
+      return "npm";
+    }
+
+    directory = parentDirectory;
   }
-
-  return "npm";
 };
