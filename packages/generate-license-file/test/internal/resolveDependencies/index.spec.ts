@@ -1,4 +1,4 @@
-import { join } from "node:path";
+import { join, resolve } from "node:path";
 import { afterAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { when } from "vitest-when";
 import { resolveDependencies } from "../../../src/lib/internal/resolveDependencies";
@@ -67,6 +67,43 @@ describe("resolveDependencies", () => {
 
       expect(mockedResolveDependenciesForPnpmProject).toHaveBeenCalledTimes(1);
       expect(mockedResolveDependenciesForPnpmProject).toHaveBeenCalledWith(packageJson, dependencies, options);
+    });
+  });
+
+  describe("for pnpm workspaces", () => {
+    const workspacePackageJson = join("/some/directory", "packages/app/package.json");
+    const workspacePnpmLockFile = join("/some/directory", "pnpm-lock.yaml");
+
+    beforeEach(() => {
+      when(mockedDoesFileExist).calledWith(join("/some/directory", "packages/app/pnpm-lock.yaml")).thenResolve(false);
+      when(mockedDoesFileExist).calledWith(workspacePnpmLockFile).thenResolve(true);
+    });
+
+    it("should not call resolveDependenciesForNpmProject when the lock file is at the workspace root", async () => {
+      await resolveDependencies(workspacePackageJson, dependencies, options);
+
+      expect(mockedResolveDependenciesForNpmProject).not.toHaveBeenCalled();
+    });
+
+    it("should call resolveDependenciesForPnpmProject when the lock file is at the workspace root", async () => {
+      await resolveDependencies(workspacePackageJson, dependencies, options);
+
+      expect(mockedResolveDependenciesForPnpmProject).toHaveBeenCalledTimes(1);
+      expect(mockedResolveDependenciesForPnpmProject).toHaveBeenCalledWith(workspacePackageJson, dependencies, options);
+    });
+
+    it("should find the lock file at the workspace root for a relative input path", async () => {
+      const relativePackageJson = join("packages", "app", "package.json");
+      const absoluteAppDirectory = resolve(join("packages", "app"));
+      const absolutePackagesDirectory = resolve("packages");
+
+      when(mockedDoesFileExist).calledWith(join(absoluteAppDirectory, "pnpm-lock.yaml")).thenResolve(false);
+      when(mockedDoesFileExist).calledWith(join(absolutePackagesDirectory, "pnpm-lock.yaml")).thenResolve(true);
+
+      await resolveDependencies(relativePackageJson, dependencies, options);
+
+      expect(mockedResolveDependenciesForPnpmProject).toHaveBeenCalledTimes(1);
+      expect(mockedResolveDependenciesForPnpmProject).toHaveBeenCalledWith(relativePackageJson, dependencies, options);
     });
   });
 
