@@ -1,0 +1,8 @@
+{
+  "private": true,
+  "name": "dep-transitive",
+  "version": "1.0.0",
+  "dependencies": {
+    "dep-one": "file:../dep-one"
+  }
+}
